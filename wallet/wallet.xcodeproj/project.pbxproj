@@ -13,6 +13,7 @@
 		0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDA23BA91F70089DB22 /* ZcashButton.swift */; };
 		0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDD23BA92A50089DB22 /* Colors.swift */; };
 		0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDF23BAAB170089DB22 /* BackupWallet.swift */; };
+		0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EE123BAB1B80089DB22 /* SeedBackup.swift */; };
 		0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510223B557E40014EE3A /* AppDelegate.swift */; };
 		0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510423B557E40014EE3A /* SceneDelegate.swift */; };
 		0D12510923B557E60014EE3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		0D100EDA23BA91F70089DB22 /* ZcashButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashButton.swift; sourceTree = "<group>"; };
 		0D100EDD23BA92A50089DB22 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		0D100EDF23BAAB170089DB22 /* BackupWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWallet.swift; sourceTree = "<group>"; };
+		0D100EE123BAB1B80089DB22 /* SeedBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBackup.swift; sourceTree = "<group>"; };
 		0D1250FF23B557E40014EE3A /* wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12510223B557E40014EE3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D12510423B557E40014EE3A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */,
 				0D100EDA23BA91F70089DB22 /* ZcashButton.swift */,
 				0D100EDF23BAAB170089DB22 /* BackupWallet.swift */,
+				0D100EE123BAB1B80089DB22 /* SeedBackup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
