@@ -9,8 +9,21 @@
 import SwiftUI
 
 struct ZcashLogo: View {
+
+    
+   var radialGradient: some View {
+          let colors = Gradient(colors: [Color.zGray, .black])
+          let conic = RadialGradient(gradient: colors, center: .center, startRadius: 50, endRadius: 200)
+          return Circle()
+              .fill(conic)
+              .frame(width: 400, height: 400)
+      }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            radialGradient
+            Image("zcash-icon-gradient")
+        }
     }
 }
 
