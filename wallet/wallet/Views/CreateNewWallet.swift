@@ -14,7 +14,9 @@ struct CreateNewWallet: View {
         UINavigationBar.appearance().backgroundColor = .black
     }
     
-   
+    let itemSpacing: CGFloat = 24
+    let buttonPadding: CGFloat = 40
+    let buttonHeight: CGFloat = 58
     var body: some View {
         
         NavigationView {
@@ -22,25 +24,29 @@ struct CreateNewWallet: View {
                 
                 Color.black
                 
-                VStack(alignment: .center, spacing: 24) {
+                VStack(alignment: .center, spacing: itemSpacing) {
                     Spacer()
                     ZcashLogo()
                     Spacer()
                     Text("12% Synced")
                     Spacer()
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                    NavigationLink(destination: BackupWallet().navigationBarHidden(true)) {
                         ZcashButton(color: Color.black, fill: Color.zYellow, text: "Create New Wallet")
-                            .frame(height: 58)
-                    }.padding([.leading, .trailing], 40)
-                    
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                        ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
-                            .frame(height: 58)
-                    }.padding([.leading, .trailing], 40)
+                                .frame(height: buttonHeight)
+                         .padding([.leading, .trailing], buttonPadding)
+                        
+                    }
+                        
+                    ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
+                        .frame(height: buttonHeight)
+                    .padding([.leading, .trailing], buttonPadding)
+                   
                     Spacer()
                 }
             }
         }
+        .navigationBarTitle(Text(""))
+        .navigationBarHidden(true)
     }
 }
 
