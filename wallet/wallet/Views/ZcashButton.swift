@@ -22,7 +22,7 @@ struct ZcashButton: View {
                 
             Text(text)
             .foregroundColor(color)
-                .font(.headline)
+                .font(.body)
         }
     }
 }
