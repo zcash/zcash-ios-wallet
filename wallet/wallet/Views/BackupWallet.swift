@@ -14,24 +14,33 @@ struct BackupWallet: View {
         UINavigationBar.appearance().backgroundColor = .black
     }
     
+    var radialGradient: some View {
+        let colors = Gradient(colors: [Color.zGray, .black])
+        let conic = RadialGradient(gradient: colors, center: .center, startRadius: 50, endRadius: 200)
+        return Circle()
+            .fill(conic)
+            .frame(width: 400, height: 400)
+    }
+    
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
-     @State private var showModal: Bool = false
+    
+    @State private var showModal: Bool = false
     var body: some View {
         
         ZStack {
             
-            Color.black
-            
+            Background()
             VStack(alignment: .center, spacing: itemSpacing) {
                 Spacer()
                 ZcashLogo()
+                    .scaleEffect(0.5)
                 Spacer()
                 Text("92% Synced")
                 Spacer()
                 Button(action: {
-                     self.showModal = true
+                    self.showModal = true
                 }) {
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Backup Wallet")
                         .frame(height: buttonHeight)
@@ -40,7 +49,7 @@ struct BackupWallet: View {
                 
                 
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
-                    Text("Restore")
+                    Text("Skip")
                         .foregroundColor(Color.zYellow)
                         .font(.body)
                         .frame(height: buttonHeight)
@@ -49,11 +58,11 @@ struct BackupWallet: View {
                 Spacer()
             }
         }
-    .navigationBarTitle(Text(""))
-    .navigationBarHidden(true)
-    .sheet(isPresented: self.$showModal) {
-        SeedBackup(words: FakeProvider().seedWords(limit: 16))
-    }
+        .navigationBarTitle(Text(""))
+        .navigationBarHidden(true)
+        .sheet(isPresented: self.$showModal) {
+            SeedBackup(words: FakeProvider().seedWords(limit: 16))
+        }
     }
 }
 
