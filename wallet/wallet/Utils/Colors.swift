@@ -11,7 +11,13 @@ import SwiftUI
 
 extension Color {
     static let zYellow = Color(red: 1, green: 185.0/255.0, blue: 0)
+    
+    
     static let zAmberGradient1 = Color(red: 1.0, green:0.64, blue:0.0)
     static let zAmberGradient2 = Color(red: 1.0, green:0.74, blue:0.0)
+    
+    static let zBlackGradient1 = Color(red:0.16, green:0.16, blue:0.17)
+    static let zBlackGradient2 = Color.black
+    
     static let zGray = Color(red:0.16, green:0.16, blue:0.17)
 }

@@ -21,6 +21,8 @@
 		0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
 		0D12511A23B557E60014EE3A /* walletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12511923B557E60014EE3A /* walletTests.swift */; };
 		0D12512523B557E60014EE3A /* walletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12512423B557E60014EE3A /* walletUITests.swift */; };
+		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
+		0D60F2ED23BE1BC9006F5FAD /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* Background.swift */; };
 		0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEC5DF823BD60CF002EFD0D /* Ring.swift */; };
 		EAB9083C349011831ECD4B1E /* Pods_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9B4F6DA9664614DB691EAAB /* Pods_wallet.framework */; };
 /* End PBXBuildFile section */
@@ -63,6 +65,8 @@
 		0D12512023B557E60014EE3A /* walletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12512423B557E60014EE3A /* walletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletUITests.swift; sourceTree = "<group>"; };
 		0D12512623B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		0D60F2EC23BE1BC9006F5FAD /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		0DEC5DF823BD60CF002EFD0D /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
 		1B234A6D8FF47F233B4E92BF /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
 		B9B4F6DA9664614DB691EAAB /* Pods_wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +105,7 @@
 				0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */,
 				0D100EDF23BAAB170089DB22 /* BackupWallet.swift */,
 				0D100EE123BAB1B80089DB22 /* SeedBackup.swift */,
+				0D60F2EA23BE1B87006F5FAD /* Home.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 			children = (
 				0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */,
 				0D100EDA23BA91F70089DB22 /* ZcashButton.swift */,
+				0D60F2EC23BE1BC9006F5FAD /* Background.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -409,6 +415,7 @@
 				0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
+				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
 				0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */,
 				0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */,
@@ -416,6 +423,7 @@
 				0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */,
 				0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */,
 				0D100ED923BA8DE80089DB22 /* CreateNewWallet.swift in Sources */,
+				0D60F2ED23BE1BC9006F5FAD /* Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

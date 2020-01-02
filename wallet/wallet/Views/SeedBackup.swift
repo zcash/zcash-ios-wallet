@@ -15,7 +15,7 @@ struct SeedBackup: View {
     
     var body: some View {
         ZStack {
-            Color.black
+            Background()
             VStack(alignment: .leading, spacing: 24) {
                 Text("Your Seed Backup")
                     .font(.title)
