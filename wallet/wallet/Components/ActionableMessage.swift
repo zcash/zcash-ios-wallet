@@ -27,7 +27,7 @@ struct ActionableMessage: View {
         }
         .padding()
         .cornerRadius(cornerRadius)
-        .background(Color.zDarkGray)
+        .background(Color.zDarkGray2)
         .overlay(
             RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(Color.zLightGray, lineWidth: 1)
