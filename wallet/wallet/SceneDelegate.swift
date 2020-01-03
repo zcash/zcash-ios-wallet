@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView = NavigationView {
             CreateNewWallet()
         }
-        .navigationBarTitle("")
+        .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
       
 
