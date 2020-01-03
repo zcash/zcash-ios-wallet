@@ -26,10 +26,11 @@ extension Color {
     
     static let zDarkGray1 = Color(red: 0.17, green: 0.17, blue: 0.17)
     
-    static let zDarkGray2 = Color(red: 0.9, green: 0.9, blue: 0.9)
+    static let zDarkGray2 = Color(red: 0.09, green: 0.09, blue: 0.09)
 }
 
 
 extension UIColor {
     static let zLightGray = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1.0)
+    static let zDarkGray = UIColor(red: 0.16, green: 0.16, blue: 0.16, alpha:  1)
 }

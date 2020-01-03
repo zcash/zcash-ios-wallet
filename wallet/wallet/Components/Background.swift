@@ -35,7 +35,7 @@ struct Background: View {
                     )
                 }
             }
-        }
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 

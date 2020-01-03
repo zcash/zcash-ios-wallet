@@ -13,7 +13,6 @@ struct Home: View {
     @Binding var sendZecAmount: Double
     init(amount: Binding<Double> = .constant(Double.zero)) {
         _sendZecAmount = amount
-        
     }
     
     
@@ -23,14 +22,6 @@ struct Home: View {
             Background(showGradient: $sendZecAmount.wrappedValue > 0)
             
             VStack(alignment: .center, spacing: 30) {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(alignment: .bottom) {
-                        Image("QRCodeIcon")
-                            .renderingMode(.original)
-                            .scaleEffect(0.5)
-                        Spacer()
-                    }
-                }
                 
                 SendZecView(zatoshi: $sendZecAmount)
                     .opacity($sendZecAmount.wrappedValue > 0 ? 1.0 : 0.3)
@@ -73,12 +64,23 @@ struct Home: View {
                 Spacer()
                 
             }
-        }
+        }.navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading:
+                    NavigationLink(destination: ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
+                               .navigationBarHidden(false)
+                               .navigationBarTitle("", displayMode: .inline)
+                               ) {
+                               Image("QRCodeIcon")
+                               .renderingMode(.original)
+                               .scaleEffect(0.5)
+                           }
+            )
+        
     }
 }
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home(amount: .constant(2))
+        Home(amount: .constant(0))
     }
 }
