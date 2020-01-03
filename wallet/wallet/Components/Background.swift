@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Background: View {
     
-    
+    var showGradient = true
     func radialGradient(radius: CGFloat, center: UnitPoint = .center) -> some View {
         let colors = Gradient(colors: [Color.zBlackGradient1, Color.zBlackGradient2])
         
@@ -21,19 +21,19 @@ struct Background: View {
     
     var body: some View {
         GeometryReader { geometry in
-             
+            
             ZStack {
                 Color.black
-
-                self.radialGradient(
-                    radius: max(geometry.size.width, geometry.size.height),
-                    center: UnitPoint(
-                        x: 0.5,
-                        y: 0.3
+                
+                if self.showGradient {
+                    self.radialGradient(
+                        radius: max(geometry.size.width, geometry.size.height),
+                        center: UnitPoint(
+                            x: 0.5,
+                            y: 0.3
                         )
                     )
-                
-                
+                }
             }
         }
     }
