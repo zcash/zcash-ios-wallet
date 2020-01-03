@@ -10,23 +10,12 @@ import SwiftUI
 
 struct BackupWallet: View {
     
-    init() {
-        UINavigationBar.appearance().backgroundColor = .black
-    }
-    
-    var radialGradient: some View {
-        let colors = Gradient(colors: [Color.zGray, .black])
-        let conic = RadialGradient(gradient: colors, center: .center, startRadius: 50, endRadius: 200)
-        return Circle()
-            .fill(conic)
-            .frame(width: 400, height: 400)
-    }
-    
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
     
     @State private var showModal: Bool = false
+    
     var body: some View {
         
         ZStack {
@@ -38,6 +27,7 @@ struct BackupWallet: View {
                     .scaleEffect(0.5)
                 Spacer()
                 Text("92% Synced")
+                    .foregroundColor(.white)
                 Spacer()
                 Button(action: {
                     self.showModal = true
@@ -48,7 +38,7 @@ struct BackupWallet: View {
                 .padding([.leading, .trailing], buttonPadding)
                 
                 
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                NavigationLink(destination: Home(amount: .constant(1.2345))) {
                     Text("Skip")
                         .foregroundColor(Color.zYellow)
                         .font(.body)
@@ -58,11 +48,9 @@ struct BackupWallet: View {
                 Spacer()
             }
         }
-        .navigationBarTitle(Text(""))
-        .navigationBarHidden(true)
         .sheet(isPresented: self.$showModal) {
             SeedBackup(words: FakeProvider().seedWords(limit: 16))
-        }
+            }
     }
 }
 

@@ -15,31 +15,31 @@ struct ZcashButton: View {
     var body: some View {
         
         ZStack {
-            ZcashButtonBackground()
+            GeometryReader { geometry in
+                ZcashButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
                 .fill(self.fill)
-            ZcashButtonBackground()
-                .stroke(self.color, lineWidth: 1.0)
                 
-            Text(text)
-            .foregroundColor(color)
+                ZcashButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
+                .stroke(self.color, lineWidth: 1.0)
+            }
+                Text(self.text)
+                    .foregroundColor(self.color)
                 .font(.body)
+            
         }
     }
 }
 
-private struct ZcashButtonBackground: Shape {
-    
+struct ZcashButtonBackground: Shape {
+    var cornerTrim: CGFloat
     func path(in rect: CGRect) -> Path {
         
         Path {
             path in
             
-            let lipLength = min(rect.size.height, rect.size.width) / 4.0
-            
-            
             path.move(
                 to: CGPoint(
-                    x: lipLength,
+                    x: cornerTrim,
                     y: rect.origin.y
                 )
             )
@@ -47,7 +47,7 @@ private struct ZcashButtonBackground: Shape {
             // top border
             path.addLine(
                 to: CGPoint(
-                    x: rect.width - lipLength,
+                    x: rect.width - cornerTrim,
                     y: rect.origin.y
                 )
             )
@@ -56,7 +56,7 @@ private struct ZcashButtonBackground: Shape {
             path.addLine(
                 to: CGPoint(
                     x: rect.width,
-                    y: lipLength
+                    y: cornerTrim
                 )
             )
             
@@ -65,14 +65,14 @@ private struct ZcashButtonBackground: Shape {
             path.addLine(
                 to: CGPoint(
                     x: rect.width,
-                    y: rect.height - lipLength
+                    y: rect.height - cornerTrim
                 )
             )
             
             // bottom right lip
             path.addLine(
                 to: CGPoint(
-                    x: rect.width - lipLength,
+                    x: rect.width - cornerTrim,
                     y: rect.height
                 )
             )
@@ -81,7 +81,7 @@ private struct ZcashButtonBackground: Shape {
             
             path.addLine(
                 to: CGPoint(
-                    x: lipLength,
+                    x: cornerTrim,
                     y: rect.height
                 )
             )
@@ -91,7 +91,7 @@ private struct ZcashButtonBackground: Shape {
             path.addLine(
                 to: CGPoint(
                     x: rect.origin.x,
-                    y: rect.height - lipLength
+                    y: rect.height - cornerTrim
                 )
             )
             
@@ -100,14 +100,14 @@ private struct ZcashButtonBackground: Shape {
             path.addLine(
                 to: CGPoint(
                     x: rect.origin.x,
-                    y: lipLength
+                    y: cornerTrim
                 )
             )
             
             // top left lip
             path.addLine(
                 to: CGPoint(
-                    x: rect.origin.x + lipLength,
+                    x: rect.origin.x + cornerTrim,
                     y: rect.origin.y
                 )
             )
@@ -120,7 +120,7 @@ struct ZcashButton_Previews: PreviewProvider {
         ZStack {
             Color.black
             ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Create New Wallet")
-            .frame(width: 300, height: 60)
+                .frame(width: 300, height: 60)
         }
     }
 }

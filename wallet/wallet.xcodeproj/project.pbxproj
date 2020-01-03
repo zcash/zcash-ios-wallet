@@ -14,6 +14,12 @@
 		0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDD23BA92A50089DB22 /* Colors.swift */; };
 		0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDF23BAAB170089DB22 /* BackupWallet.swift */; };
 		0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EE123BAB1B80089DB22 /* SeedBackup.swift */; };
+		0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C22C23BF807E001CF6F7 /* ReceiveFunds.swift */; };
+		0D11C22F23BF8181001CF6F7 /* QRCodeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C22E23BF8181001CF6F7 /* QRCodeContainer.swift */; };
+		0D11C23123BF966C001CF6F7 /* ScanAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23023BF966C001CF6F7 /* ScanAddress.swift */; };
+		0D11C23323BFA810001CF6F7 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23223BFA810001CF6F7 /* HostingController.swift */; };
+		0D11C23523BFB33B001CF6F7 /* NavigationConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */; };
+		0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23623BFB666001CF6F7 /* ShareScreen.swift */; };
 		0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510223B557E40014EE3A /* AppDelegate.swift */; };
 		0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510423B557E40014EE3A /* SceneDelegate.swift */; };
 		0D12510923B557E60014EE3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
@@ -59,6 +65,12 @@
 		0D100EDD23BA92A50089DB22 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		0D100EDF23BAAB170089DB22 /* BackupWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWallet.swift; sourceTree = "<group>"; };
 		0D100EE123BAB1B80089DB22 /* SeedBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBackup.swift; sourceTree = "<group>"; };
+		0D11C22C23BF807E001CF6F7 /* ReceiveFunds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveFunds.swift; sourceTree = "<group>"; };
+		0D11C22E23BF8181001CF6F7 /* QRCodeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeContainer.swift; sourceTree = "<group>"; };
+		0D11C23023BF966C001CF6F7 /* ScanAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanAddress.swift; sourceTree = "<group>"; };
+		0D11C23223BFA810001CF6F7 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationConfigurator.swift; sourceTree = "<group>"; };
+		0D11C23623BFB666001CF6F7 /* ShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreen.swift; sourceTree = "<group>"; };
 		0D1250FF23B557E40014EE3A /* wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12510223B557E40014EE3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D12510423B557E40014EE3A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +132,9 @@
 				0D100EDF23BAAB170089DB22 /* BackupWallet.swift */,
 				0D100EE123BAB1B80089DB22 /* SeedBackup.swift */,
 				0D60F2EA23BE1B87006F5FAD /* Home.swift */,
+				0D11C22C23BF807E001CF6F7 /* ReceiveFunds.swift */,
+				0D11C23023BF966C001CF6F7 /* ScanAddress.swift */,
+				0D11C23623BFB666001CF6F7 /* ShareScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -130,6 +145,8 @@
 				0D100EDD23BA92A50089DB22 /* Colors.swift */,
 				0DC167B023BE37B300332890 /* BalanceUtils.swift */,
 				0DE51DAD23BEB0E500709636 /* Fonts.swift */,
+				0D11C23223BFA810001CF6F7 /* HostingController.swift */,
+				0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -219,6 +236,7 @@
 				0DE51DAF23BEBE5100709636 /* KeyPad.swift */,
 				0DE51DB123BED85C00709636 /* ActionableMessage.swift */,
 				0D92967823BEEFFC001518F3 /* BalanceDetail.swift */,
+				0D11C22E23BF8181001CF6F7 /* QRCodeContainer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -441,16 +459,22 @@
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
 				0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */,
+				0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */,
 				0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */,
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
+				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,
+				0D11C23523BFB33B001CF6F7 /* NavigationConfigurator.swift in Sources */,
 				0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */,
 				0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */,
+				0D11C23123BF966C001CF6F7 /* ScanAddress.swift in Sources */,
 				0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */,
 				0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */,
 				0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */,
+				0D11C22F23BF8181001CF6F7 /* QRCodeContainer.swift in Sources */,
 				0D100ED923BA8DE80089DB22 /* CreateNewWallet.swift in Sources */,
+				0D11C23323BFA810001CF6F7 /* HostingController.swift in Sources */,
 				0D60F2ED23BE1BC9006F5FAD /* Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -641,6 +666,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

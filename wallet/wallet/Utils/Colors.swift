@@ -17,16 +17,20 @@ extension Color {
     static let zAmberGradient2 = Color(red: 1.0, green:0.74, blue:0.0)
     
     static let zBlackGradient1 = Color(red:0.16, green:0.16, blue:0.17)
+    
     static let zBlackGradient2 = Color.black
     
     static let zGray = Color(red:0.16, green:0.16, blue:0.17)
    
     static let zLightGray = Color(red: 151/255, green: 151/255, blue: 151/255)
     
-    static let zDarkGray = Color(red: 23/255, green: 23/255, blue: 23/255)
+    static let zDarkGray1 = Color(red: 0.17, green: 0.17, blue: 0.17)
+    
+    static let zDarkGray2 = Color(red: 0.09, green: 0.09, blue: 0.09)
 }
 
 
 extension UIColor {
     static let zLightGray = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1.0)
+    static let zDarkGray = UIColor(red: 0.16, green: 0.16, blue: 0.16, alpha:  1)
 }
