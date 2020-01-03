@@ -12,8 +12,12 @@ struct SendZecView: View {
     
     @Binding var zatoshi: Double
     
-    var formatter: NumberFormatter {
-        NumberFormatter.zecAmountFormatter
+    func format(amount: Double) ->  String {
+        if amount <= 0 {
+            return "0"
+        }
+        
+        return NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? "ERROR"
     }
     
     var body: some View {
@@ -25,7 +29,7 @@ struct SendZecView: View {
                     .frame(width: 25, height: 25)
                     .offset(x: 0, y: -10)
                 
-                Text(self.formatter.string(from: NSNumber(value: self.$zatoshi.wrappedValue)) ?? "ERROR" )
+                Text(self.format(amount: self.$zatoshi.wrappedValue))
                     .foregroundColor(.white)
                     .font(
                         Font.system(

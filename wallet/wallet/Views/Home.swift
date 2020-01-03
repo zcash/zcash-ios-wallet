@@ -19,12 +19,18 @@ struct Home: View {
     var body: some View {
         
         ZStack {
-            Background(showGradient: $sendZecAmount.wrappedValue > 0)
+            
+            if $sendZecAmount.wrappedValue > 0 {
+                Background(showGradient: $sendZecAmount.wrappedValue > 0)
+            } else {
+                Color.black
+                .edgesIgnoringSafeArea(.all)
+            }
             
             VStack(alignment: .center, spacing: 30) {
-                
+              
                 SendZecView(zatoshi: $sendZecAmount)
-                    .opacity($sendZecAmount.wrappedValue > 0 ? 1.0 : 0.3)
+                    .opacity($sendZecAmount.wrappedValue > 0 ? 1.0 : 1.0)
                 
                 if $sendZecAmount.wrappedValue > 0 {
                     BalanceDetail(availableZec: $sendZecAmount.wrappedValue, status: .available)

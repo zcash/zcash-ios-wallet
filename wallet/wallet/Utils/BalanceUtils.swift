@@ -34,5 +34,18 @@ extension NumberFormatter {
         return fmt
         
     }
+    
+    static var zeroBalanceFormatter: NumberFormatter {
+        
+        let fmt = NumberFormatter()
+        
+        fmt.alwaysShowsDecimalSeparator = false
+        fmt.allowsFloats = true
+        fmt.maximumFractionDigits = 0
+        fmt.minimumFractionDigits = 0
+        fmt.minimumIntegerDigits = 1
+        return fmt
+        
+    }
 }
 
