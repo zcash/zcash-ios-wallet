@@ -10,14 +10,21 @@ import SwiftUI
 
 struct ScanAddress: View {
     
-    
     var body: some View {
         ZStack {
             Background()
+            VStack {
+                Text("Scan Recipient Address")
+                    .frame(height: 64)
+                    
+                .foregroundColor(.white)
+                .edgesIgnoringSafeArea([.all])
+                Spacer()
+            }
+            
             Text("Scan Address")
                 .foregroundColor(.white)
-            }
-        .navigationBarTitle("Scan Recipient Address", displayMode: .inline)
+        }
     }
 }
 

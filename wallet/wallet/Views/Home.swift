@@ -11,10 +11,13 @@ import SwiftUI
 struct Home: View {
     
     @Binding var sendZecAmount: Double
+    
+    @State var showReceiveFunds = false
+    @State var showProfile = false
+    
     init(amount: Binding<Double> = .constant(Double.zero)) {
         _sendZecAmount = amount
     }
-    
     
     var body: some View {
         
@@ -24,11 +27,11 @@ struct Home: View {
                 Background(showGradient: $sendZecAmount.wrappedValue > 0)
             } else {
                 Color.black
-                .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
             }
             
             VStack(alignment: .center, spacing: 30) {
-              
+                
                 SendZecView(zatoshi: $sendZecAmount)
                     .opacity($sendZecAmount.wrappedValue > 0 ? 1.0 : 1.0)
                 
@@ -71,16 +74,27 @@ struct Home: View {
                 
             }
         }.navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading:
-                    NavigationLink(destination: ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
-                               .navigationBarHidden(false)
-                               .navigationBarTitle("", displayMode: .inline)
-                               ) {
-                               Image("QRCodeIcon")
-                               .renderingMode(.original)
-                               .scaleEffect(0.5)
-                           }
-            )
+            .navigationBarItems(leading:
+                Button(action: {
+                    self.showReceiveFunds = true
+                }) {
+                    Image("QRCodeIcon")
+                        .accessibility(label: Text("Receive Funds"))
+                        .scaleEffect(0.5)
+                }, trailing:
+                    Button(action: {
+                        self.showProfile = true
+                    }) {
+                        Image(systemName: "person.crop.circle")
+                        .imageScale(.large)
+                        .accessibility(label: Text("Your Profile"))
+                        .padding()
+                    })
+            .sheet(isPresented: $showReceiveFunds){
+                ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
+                .navigationBarHidden(false)
+                .navigationBarTitle("", displayMode: .inline)
+        }
         
     }
 }
