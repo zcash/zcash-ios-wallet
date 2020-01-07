@@ -30,6 +30,7 @@
 		0D12512523B557E60014EE3A /* walletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12512423B557E60014EE3A /* walletUITests.swift */; };
 		0D27C4A723C4C3AE0044B48E /* EnterRecipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */; };
 		0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
+		0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */; };
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
 		0D60F2ED23BE1BC9006F5FAD /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* Background.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
@@ -90,6 +91,7 @@
 		0D12512623B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterRecipient.swift; sourceTree = "<group>"; };
 		0D27C4A823C4C4640044B48E /* ZcashTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTextField.swift; sourceTree = "<group>"; };
+		0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0D60F2EC23BE1BC9006F5FAD /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				0DE51DAD23BEB0E500709636 /* Fonts.swift */,
 				0D11C23223BFA810001CF6F7 /* HostingController.swift */,
 				0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */,
+				0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
+				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
 				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,
 				0D11C23523BFB33B001CF6F7 /* NavigationConfigurator.swift in Sources */,
 				0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */,

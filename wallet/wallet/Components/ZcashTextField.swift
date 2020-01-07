@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-
-
 struct ZcashTextField: View {
     
     var title: String
@@ -17,6 +15,8 @@ struct ZcashTextField: View {
     
     var accessoryIcon: Image?
     var action: (() -> Void)?
+    var contentType: UITextContentType?
+    var keyboardType: UIKeyboardType
     
     @Binding var text: String
     
@@ -76,7 +76,8 @@ struct ZcashTextField: View {
         
                 HStack {
                     TextField("", text: $text)
-                        .textContentType(.none)
+                        .textContentType(contentType)
+                        .keyboardType(keyboardType)
                         .font(.body)
                         .foregroundColor(.white)
                         .padding([.top])
@@ -92,11 +93,13 @@ struct ZcashTextField: View {
         }
     }
     
-    init(title: String, subtitle: String?, binding: Binding<String>, action: (() -> Void)? = nil, accessoryIcon: Image?) {
+    init(title: String, subtitle: String?, contentType: UITextContentType? = nil, keyboardType: UIKeyboardType  = .default, binding: Binding<String>, action: (() -> Void)? = nil, accessoryIcon: Image? = nil) {
         self.title = title
         self.accessoryIcon = accessoryIcon
         self.action = action
         self.subtitle = subtitle
+        self.contentType = contentType
+        self.keyboardType = keyboardType
         self._text = binding
     }
     

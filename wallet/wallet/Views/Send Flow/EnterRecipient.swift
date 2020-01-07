@@ -10,17 +10,16 @@ import SwiftUI
 
 struct EnterRecipient: View {
     
-    var amount: Double
     var verifiedBalance: Double
-    
-    @State var text: String = ""
-    
+    var amount: Double
+    @State var zAddress: String = ""
+    @State var amountText: String = ""
     var availableBalance: Bool {
         verifiedBalance > 0
     }
     
     var amountSubtitle: String {
-        if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) {
+        if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: verifiedBalance)) {
             return "You Have \(balance) sendable ZEC"
         } else {
             return "You don't have any sendable ZEC yet"
@@ -28,7 +27,7 @@ struct EnterRecipient: View {
     }
     
     var validAddress: Bool {
-        text.count > 0
+        zAddress.count > 0
     }
     
     var validForm: Bool {
@@ -38,34 +37,45 @@ struct EnterRecipient: View {
     var body: some View {
         ZStack {
             Background()
+           
             VStack(alignment: .leading, spacing: 20) {
-                HStack(alignment: .center) {
-                    Spacer().frame(width: 48)
-                    Text("Sending")
-                        .frame(height: 64)
-                        .foregroundColor(.white)
-                    
-                    Spacer()
-                    
-                }
-                .edgesIgnoringSafeArea([.top])
-                
+
                 Spacer().frame(height: 96)
-                ZcashTextField(title: "To", subtitle: "Enter a shielded Zcash address", binding: $text, action: {
-                    print("qr pressed")
-                }, accessoryIcon: Image("QRCodeIcon")
-                .renderingMode(.original))
+                ZcashTextField(
+                    title: "To",
+                    subtitle: "Enter a shielded Zcash address",
+                    keyboardType: UIKeyboardType.alphabet,
+                    binding: $zAddress,
+                    action: {
+                        print("qr pressed")
+                },
+                    accessoryIcon: Image("QRCodeIcon")
+                        .renderingMode(.original)
+                )
                 
-                ZcashTextField(title: "Amount", subtitle: "You have 23.451234 sendable ZEC", binding: $text, action: {
-                    print("qr pressed")
-                }, accessoryIcon: Image("QRCodeIcon")
-                .renderingMode(.original))
+                ZcashTextField(
+                    title: "Amount",
+                    subtitle: "You have 23.451234 sendable ZEC",
+                    keyboardType: UIKeyboardType.decimalPad,
+                    binding: $amountText
+                )
+                
                 
                 ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: {})
+                Spacer()
+                Button(action:{}) {
+                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Next")
+                        .frame(height: 58)
+                        .padding([.leading, .trailing], 40)
+                }
+                    .opacity(validForm ? 1.0 : 0.3 ) // validate this
+                    .disabled(!validForm)
                 Spacer()
                 
             }.padding([.horizontal], 24)
             
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }.navigationBarItems(trailing: Image("infobutton"))
     }
     
@@ -73,6 +83,7 @@ struct EnterRecipient: View {
         
         self.amount = amount
         self.verifiedBalance = verifiedBalance
+        self.amountText = "23421"
     }
 }
 
