@@ -134,6 +134,23 @@ class KeyPadViewModelTests: XCTestCase {
         
     }
     
+    func testUpdates() {
+        let viewModel = KeyPadViewModel()
+        let expect = XCTestExpectation(description: self.description)
+        _ = viewModel.$value.sink(receiveValue: { value in
+            expect.fulfill()
+            XCTAssertEqual(0.0, value)
+        })
+        
+        viewModel.valuePressed("1")
+        _ = viewModel.$value.sink(receiveValue: { value in
+            expect.fulfill()
+            XCTAssertEqual(1.0, value)
+        })
+        wait(for: [expect], timeout: 1)
+        
+        
+    }
     func tapKey(_ key: String, times: Int, on viewModel: KeyPadViewModel) {
         for _ in 0 ..< times {
             viewModel.valuePressed(key)

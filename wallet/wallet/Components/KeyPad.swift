@@ -10,7 +10,6 @@ import SwiftUI
 
 struct KeyPad: View {
     
-    //    @Published var amount: Double = 0.0
     let keySize: CGFloat = 60
     let hSpacing: CGFloat = 50
     let vSpacing: CGFloat = 20
@@ -29,7 +28,7 @@ struct KeyPad: View {
                     ForEach(row, id: \.self) { pad in
                         
                         Button(action: {
-                            
+                            self.viewModel.numberTapped(pad)
                         }) {
                             Text(pad)
                         }.buttonStyle(KeyPadButtonStyle(size: self.keySize))
@@ -87,6 +86,7 @@ class KeyPadViewModel: ObservableObject {
             value = 0
             return
         }
+        
         let number = NSNumber(value: initialValue)
         let formatter = initialValue <= 0 ? NumberFormatter.zeroBalanceFormatter : NumberFormatter.zecAmountFormatter
         
