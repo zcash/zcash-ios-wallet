@@ -20,12 +20,14 @@ extension Color {
     
     static let zBlackGradient2 = Color.black
     
-    static let zGray = Color(red:0.16, green:0.16, blue:0.17)
+    // #282828
+    static let zGray = Color(red:0.16, green:0.16, blue:0.16)
    
     static let zLightGray = Color(red: 151/255, green: 151/255, blue: 151/255)
     
     static let zDarkGray1 = Color(red: 0.17, green: 0.17, blue: 0.17)
     
+    // #171717
     static let zDarkGray2 = Color(red: 0.09, green: 0.09, blue: 0.09)
 }
 
