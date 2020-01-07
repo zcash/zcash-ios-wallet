@@ -28,7 +28,7 @@ struct KeyPad: View {
                     ForEach(row, id: \.self) { pad in
                         
                         Button(action: {
-                            self.viewModel.numberTapped(pad)
+                            self.viewModel.valuePressed(pad)
                         }) {
                             Text(pad)
                         }.buttonStyle(KeyPadButtonStyle(size: self.keySize))
