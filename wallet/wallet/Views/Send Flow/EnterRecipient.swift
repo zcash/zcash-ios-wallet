@@ -83,7 +83,7 @@ struct EnterRecipient: View {
         
         self.amount = amount
         self.verifiedBalance = verifiedBalance
-        self.amountText = "23421"
+        self.amountText = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
     }
 }
 
