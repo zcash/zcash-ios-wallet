@@ -20,26 +20,25 @@ struct SeedBackup: View {
                 Text("Your Seed Backup")
                     .font(.title)
                     .foregroundColor(Color.zYellow)
-               
                 
-                    VStack(alignment: .center, spacing: 8) {
+                
+                VStack(alignment: .center, spacing: 8) {
+                    
+                    ForEach(words.chunked(into: wordsPerRow), id: \.self) { row in
                         
-                        ForEach(words.chunked(into: wordsPerRow), id: \.self) { row in
-                            
-                            HStack(alignment: .firstTextBaseline, spacing: 20) {
-                                ForEach(row, id:\.self) { word in
-                                    Text(word)
-                                        .foregroundColor(Color.zYellow)
-                                        .font(.headline)
-                                        .lineLimit(1)
-                                        .padding(8)
-                                        .background(Color.zGray)
-                                    
-                                }
+                        HStack(alignment: .firstTextBaseline, spacing: 20) {
+                            ForEach(row, id:\.self) { word in
+                                Text(word)
+                                    .foregroundColor(Color.zYellow)
+                                    .font(.headline)
+                                    .lineLimit(1)
+                                    .padding(8)
+                                    .background(Color.zGray)
+                                
                             }
                         }
                     }
-                
+                }
             }
         }
         .navigationBarTitle("Your Seed Backup")

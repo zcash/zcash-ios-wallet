@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */; };
 		0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */; };
 		0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED623BA78990089DB22 /* ZcashSymbol.swift */; };
 		0D100ED923BA8DE80089DB22 /* CreateNewWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPadViewModelTests.swift; sourceTree = "<group>"; };
 		0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashLogo.swift; sourceTree = "<group>"; };
 		0D100ED623BA78990089DB22 /* ZcashSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSymbol.swift; sourceTree = "<group>"; };
 		0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewWallet.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			children = (
 				0D12511923B557E60014EE3A /* walletTests.swift */,
 				0D12511B23B557E60014EE3A /* Info.plist */,
+				0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */,
 			);
 			path = walletTests;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */,
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
