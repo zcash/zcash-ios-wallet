@@ -9,7 +9,13 @@
 import SwiftUI
 
 struct CreateNewWallet: View {
-    
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().tintColor = .white
+    }
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
@@ -33,6 +39,7 @@ struct CreateNewWallet: View {
                     NavigationLink(destination:
                         BackupWallet()
                         .navigationBarHidden(true)
+
                     ) {
                         ZcashButton(color: Color.black, fill: Color.zYellow, text: "Create New Wallet")
                             .frame(height: self.buttonHeight)

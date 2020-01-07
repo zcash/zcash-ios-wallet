@@ -38,7 +38,7 @@ struct BackupWallet: View {
                 .padding([.leading, .trailing], buttonPadding)
                 
                 
-                NavigationLink(destination: Home(amount: .constant(1.2345))) {
+                NavigationLink(destination: Home(amount: 0, verifiedBalance: 1.2345)) {
                     Text("Skip")
                         .foregroundColor(Color.zYellow)
                         .font(.body)
