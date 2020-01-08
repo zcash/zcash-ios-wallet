@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ZcashMemoTextView: View {
-    @State var text: String = ""
+    @Binding var text: String
     var charLimit: Int = 255
     var body: some View {
         ZStack{
@@ -53,7 +53,7 @@ struct ZcasMemoTextField_Previews: PreviewProvider {
         ZStack {
             Background()
             VStack(alignment: .center) {
-                ZcashMemoTextView()
+                ZcashMemoTextView(text: .constant(""))
                     
                     .padding([.leading, .trailing], 24)
             }

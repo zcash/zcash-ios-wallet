@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ZcashCheckCircle: View {
-    @State var isChecked: Bool = false
+    @Binding var isChecked: Bool
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .center){
@@ -49,7 +49,7 @@ struct ZcashCheckCircle_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Background()
-            ZcashCheckCircle()
+            ZcashCheckCircle(isChecked: .constant(false))
         }
     }
 }
