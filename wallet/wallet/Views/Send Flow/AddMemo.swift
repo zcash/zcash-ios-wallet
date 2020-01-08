@@ -17,6 +17,9 @@ struct AddMemo: View {
     var legend: String {
         includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
     }
+    var sendText: String {
+        includeSendingAddress || memo.count > 0 ? "Discard and Send" : "Send Now"
+    }
     var body: some View {
         
         ZStack {
@@ -33,10 +36,10 @@ struct AddMemo: View {
                 Text(legend)
                     .lineLimit(nil)
                     .multilineTextAlignment(.center)
-//                    .frame(minHeight: 0, maxHeight: 200)
                     .foregroundColor(Color.zLightGray2)
                     .opacity(0.4)
                     .padding([.horizontal], 30)
+                    .frame(minHeight: 64)
                     .layoutPriority(0.5)
                 Spacer()
                 
@@ -44,7 +47,7 @@ struct AddMemo: View {
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
                 
-                ZcashButton(color: .white, fill: .clear, text: "Send Now")
+                ZcashButton(color: .white, fill: .clear, text: sendText)
                 .frame(height: self.buttonHeight)
                 .padding([.leading, .trailing], self.buttonPadding)
                 Spacer()

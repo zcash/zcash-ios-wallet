@@ -37,9 +37,9 @@ struct EnterRecipient: View {
     var body: some View {
         ZStack {
             Background()
-           
+            
             VStack(alignment: .leading, spacing: 20) {
-
+                
                 Spacer().frame(height: 96)
                 ZcashTextField(
                     title: "To",
@@ -63,7 +63,7 @@ struct EnterRecipient: View {
                 
                 ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: {})
                 Spacer()
-                Button(action:{}) {
+                NavigationLink(destination: AddMemo()){
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Next")
                         .frame(height: 58)
                         .padding([.leading, .trailing], 40)
