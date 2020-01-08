@@ -9,14 +9,14 @@
 import SwiftUI
 
 struct ZcashBackground: View {
-    var color1: Color = Color.zBlackGradient1
-    var color2: Color = Color.zBlackGradient2
+    var backgroundColor: Color = .black
+    var colors: [Color] = [Color.zBlackGradient1, Color.zBlackGradient2]
     
     var showGradient = true
     func radialGradient(radius: CGFloat, center: UnitPoint = .center) -> some View {
-        let colors = Gradient(colors: [color1, color2])
+        let gradientColors = Gradient(colors: colors)
         
-        let conic = RadialGradient(gradient: colors, center: center, startRadius: 0, endRadius: radius)
+        let conic = RadialGradient(gradient: gradientColors, center: center, startRadius: 0, endRadius: radius)
         return conic
         
     }
@@ -25,7 +25,7 @@ struct ZcashBackground: View {
         GeometryReader { geometry in
             
             ZStack {
-                Color.black
+                self.backgroundColor
                 
                 if self.showGradient {
                     self.radialGradient(
@@ -41,8 +41,18 @@ struct ZcashBackground: View {
     }
 }
 
-struct Background_Previews: PreviewProvider {
-    static var previews: some View {
-        ZcashBackground()
+extension ZcashBackground {
+    static var amberGradient: ZcashBackground {
+        ZcashBackground(colors: [Color.zAmberGradient0, .zAmberGradient3, .zAmberGradient4])
+    }
+    static var amberSplashScreen: ZcashBackground {
+        ZcashBackground(colors: [Color.zAmberGradient0, .zAmberGradient3, .zAmberGradient4])
     }
 }
+struct Background_Previews: PreviewProvider {
+    static var previews: some View {
+        ZcashBackground.amberGradient
+        
+    }
+}
+

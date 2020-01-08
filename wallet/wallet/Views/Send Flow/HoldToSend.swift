@@ -15,7 +15,7 @@ struct HoldToSend: View {
     var zecAmount: Double
     var networkFee: Double = 0.0001
     var pressAndHoldSeconds: TimeInterval = 5
-    
+    @State var holdOk = false
     var includesMemoView: AnyView {
         guard includesMemo else { return AnyView(EmptyView()) }
         return  AnyView(
@@ -62,7 +62,19 @@ struct HoldToSend: View {
                     print("isPressing \(isPressing)")
                 }, perform: {
                     print("long pressed!!!")
+                    self.holdOk = true
                 })
+                
+                NavigationLink(destination:
+                        Sending(zAddress: zAddress, includesMemo: includesMemo, zecAmount: zecAmount, detailCardModel: DetailModel(
+                        zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                        date: Date(),
+                        zecAmount: -12.345,
+                        status: .paid
+                        ), isDone: false),isActive: $holdOk
+                ) {
+                    EmptyView()
+                }
                 
                 Spacer()
                 

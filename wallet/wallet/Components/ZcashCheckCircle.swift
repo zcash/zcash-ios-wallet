@@ -10,12 +10,29 @@ import SwiftUI
 
 struct ZcashCheckCircle: View {
     @Binding var isChecked: Bool
+    var externalRingColor: Color = Color.zGray2
+    var internalRingColor: Color = Color.zAmberGradient2
+    var backgroundColor: Color = .clear
+    func backgroundShape(size: CGSize) -> some View {
+        Path { path in
+            path.addArc(
+                center: CGPoint(
+                    x: size.width / 2,
+                    y: size.height / 2
+                    ),
+                radius: size.width / 2,
+                startAngle: Angle(degrees: 0),
+                endAngle: Angle(degrees: 360),
+                clockwise: true)
+        }.fill(self.backgroundColor)
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .center){
-                
-                self.ring(size: geometry.size, color: Color.zGray2, lineWidth: 2)
-                self.ring(size: CGSize(width: geometry.size.width , height: geometry.size.height), color: Color.zAmberGradient2, lineWidth: 4)
+                self.backgroundShape(size: geometry.size)
+                self.ring(size: geometry.size, color: self.externalRingColor, lineWidth: 2)
+                self.ring(size: CGSize(width: geometry.size.width , height: geometry.size.height), color: self.internalRingColor, lineWidth: 4)
                     .scaleEffect(0.9, anchor: UnitPoint(x: 0.5,y: 0.5))
                     .opacity(self.$isChecked.wrappedValue ? 1 : 0)
                 Image("checkmark")
@@ -28,7 +45,7 @@ struct ZcashCheckCircle: View {
         }
     }
     
-    func ring(size: CGSize, color: Color, lineWidth: CGFloat) -> some View {
+    func ringPath(size: CGSize) -> Path {
         Path { path in
             path.addArc(
                 center: CGPoint(
@@ -39,7 +56,11 @@ struct ZcashCheckCircle: View {
                 startAngle: Angle(degrees: 0),
                 endAngle: Angle(degrees: 360),
                 clockwise: true)
-        }.stroke(color,lineWidth: lineWidth)
+        }
+    }
+    func ring(size: CGSize, color: Color, lineWidth: CGFloat) -> some View {
+        ringPath(size: size)
+            .stroke(color,lineWidth: lineWidth)
     }
     
     
