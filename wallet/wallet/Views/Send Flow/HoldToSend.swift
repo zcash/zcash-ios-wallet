@@ -30,7 +30,7 @@ struct HoldToSend: View {
     }
     var body: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             
             VStack(alignment: .center) {
                 Spacer()

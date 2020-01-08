@@ -36,7 +36,7 @@ struct EnterRecipient: View {
     
     var body: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             
             VStack(alignment: .leading, spacing: 20) {
                 

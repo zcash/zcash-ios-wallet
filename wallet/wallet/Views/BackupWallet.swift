@@ -20,7 +20,7 @@ struct BackupWallet: View {
         
         ZStack {
             
-            Background()
+            ZcashBackground()
             VStack(alignment: .center, spacing: itemSpacing) {
                 Spacer()
                 ZcashLogo()

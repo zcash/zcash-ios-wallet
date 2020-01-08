@@ -48,7 +48,7 @@ struct ZcashCheckCircle: View {
 struct ZcashCheckCircle_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             ZcashCheckCircle(isChecked: .constant(false))
         }
     }

@@ -23,7 +23,7 @@ struct AddMemo: View {
     var body: some View {
         
         ZStack {
-            Background()
+            ZcashBackground()
             VStack(alignment: .center, spacing: 15) {
                 Spacer()
                 ZcashMemoTextView(text: $memo)

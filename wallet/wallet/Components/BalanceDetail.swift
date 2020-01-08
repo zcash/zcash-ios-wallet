@@ -71,7 +71,7 @@ struct BalanceDetail: View {
 struct BalanceDetail_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             VStack(alignment: .center, spacing: 50) {
                 BalanceDetail(availableZec: 2.0011,status: .available)
                 BalanceDetail(availableZec: 0.0011,status: .expecting(zec: 2))

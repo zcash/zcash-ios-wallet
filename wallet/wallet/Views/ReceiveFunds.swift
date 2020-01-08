@@ -22,7 +22,7 @@ struct ReceiveFunds: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Background()
+                ZcashBackground()
                 VStack(alignment: .center, spacing: 40) {
                     Spacer()
                     QRCodeContainer(qrImage: Image("QrCode"))

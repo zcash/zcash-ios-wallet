@@ -77,7 +77,7 @@ struct Home: View {
         ZStack {
             
             if isSendingEnabled {
-                Background(showGradient: self.isSendingEnabled)
+                ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
                 Color.black
                     .edgesIgnoringSafeArea(.all)

@@ -23,7 +23,7 @@ struct QRCodeContainer_Previews: PreviewProvider {
     static var previews: some View {
         
         ZStack {
-            Background()
+            ZcashBackground()
             QRCodeContainer(qrImage: Image("QrCode"))
             .frame(width: 285, height: 285)
             

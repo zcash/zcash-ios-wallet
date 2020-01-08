@@ -12,7 +12,7 @@ struct ScanAddress: View {
     
     var body: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             VStack {
                 Text("Scan Recipient Address")
                     .frame(height: 64)

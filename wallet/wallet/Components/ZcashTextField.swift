@@ -110,7 +110,7 @@ struct ZcashTextField_Previews: PreviewProvider {
     @State static var text: String = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             ZcashTextField(title: "To", subtitle: "Enter Shielded Address", binding: $text, action: {}, accessoryIcon:Image("QRCodeIcon")
             .renderingMode(.original)
                    )

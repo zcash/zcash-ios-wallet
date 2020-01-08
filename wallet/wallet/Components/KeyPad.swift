@@ -169,7 +169,7 @@ class KeyPadViewModel: ObservableObject {
 struct KeyPad_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             KeyPad()
         }
     }

@@ -1,5 +1,5 @@
 //
-//  Background.swift
+//  ZcashBackground.swift
 //  wallet
 //
 //  Created by Francisco Gindre on 1/2/20.
@@ -8,11 +8,13 @@
 
 import SwiftUI
 
-struct Background: View {
+struct ZcashBackground: View {
+    var color1: Color = Color.zBlackGradient1
+    var color2: Color = Color.zBlackGradient2
     
     var showGradient = true
     func radialGradient(radius: CGFloat, center: UnitPoint = .center) -> some View {
-        let colors = Gradient(colors: [Color.zBlackGradient1, Color.zBlackGradient2])
+        let colors = Gradient(colors: [color1, color2])
         
         let conic = RadialGradient(gradient: colors, center: center, startRadius: 0, endRadius: radius)
         return conic
@@ -41,6 +43,6 @@ struct Background: View {
 
 struct Background_Previews: PreviewProvider {
     static var previews: some View {
-        Background()
+        ZcashBackground()
     }
 }

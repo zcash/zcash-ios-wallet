@@ -51,7 +51,7 @@ struct ZcashMemoTextView: View {
 struct ZcasMemoTextField_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             VStack(alignment: .center) {
                 ZcashMemoTextView(text: .constant(""))
                     

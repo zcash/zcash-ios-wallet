@@ -12,7 +12,7 @@ struct ShareScreen: View {
     var body: some View {
         
         ZStack {
-            Background()
+            ZcashBackground()
             Text("Share Screen")
                 .foregroundColor(.white)
         }

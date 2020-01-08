@@ -36,7 +36,7 @@ struct CreateNewWallet: View {
             
             ZStack {
                 
-                Background()
+                ZcashBackground()
                 
                 VStack(alignment: .center, spacing: self.itemSpacing) {
                     Spacer()
