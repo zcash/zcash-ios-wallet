@@ -43,13 +43,26 @@ struct AddMemo: View {
                     .layoutPriority(0.5)
                 Spacer()
                 
-                ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
-                
-                ZcashButton(color: .white, fill: .clear, text: sendText)
-                .frame(height: self.buttonHeight)
-                .padding([.leading, .trailing], self.buttonPadding)
+                NavigationLink(
+                    destination: HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                                            includesMemo: true,
+                                            zecAmount: 12.345)
+                    ) {
+                        ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
+                        .frame(height: self.buttonHeight)
+                        .padding([.leading, .trailing], self.buttonPadding)
+                }
+                NavigationLink(
+                    destination: HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                    includesMemo: false,
+                    zecAmount: 12.345)
+                ) {
+                    ZcashButton(color: .white, fill: .clear, text: sendText)
+                        .frame(height: self.buttonHeight)
+                        .padding([.leading, .trailing], self.buttonPadding)
+
+                }
+               
                 Spacer()
                 
             }

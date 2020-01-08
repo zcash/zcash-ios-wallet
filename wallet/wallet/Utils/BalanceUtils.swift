@@ -19,6 +19,10 @@ extension Double {
     func toZatoshi() -> Int64 {
         Int64(self * Double(ZcashSDK.ZATOSHI_PER_ZEC))
     }
+    
+    func toZecAmount() -> String {
+        NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
 }
 
 extension NumberFormatter {
