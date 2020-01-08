@@ -17,8 +17,12 @@ struct AddMemo: View {
     var legend: String {
         includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
     }
+    var isMemoEmpty: Bool {
+        memo.count == 0 && !includeSendingAddress
+    }
+    
     var sendText: String {
-        includeSendingAddress || memo.count > 0 ? "Discard and Send" : "Send Now"
+        !isMemoEmpty ? "Discard and Send" : "Send Now"
     }
     var body: some View {
         
@@ -51,7 +55,8 @@ struct AddMemo: View {
                         ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
                         .frame(height: self.buttonHeight)
                         .padding([.leading, .trailing], self.buttonPadding)
-                }
+                }.disabled(isMemoEmpty)
+                    .opacity( isMemoEmpty ? 0.3 : 1 )
                 NavigationLink(
                     destination: HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                     includesMemo: false,
