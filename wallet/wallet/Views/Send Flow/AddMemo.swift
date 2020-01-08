@@ -54,6 +54,7 @@ struct AddMemo: View {
                 
             }
         }
+        .navigationBarTitle("Add Memo (optional)", displayMode: .inline)
     }
 }
 

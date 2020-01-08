@@ -15,7 +15,7 @@ struct ZcashMemoTextView: View {
         ZStack{
             VStack(alignment: .trailing, spacing: 0) {
                 TextField("",text: $text)
-                    
+                    .foregroundColor(.white)
                     .frame(height: 174)
                     .padding(4)
                     .multilineTextAlignment(.leading)
