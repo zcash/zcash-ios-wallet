@@ -9,18 +9,14 @@
 import SwiftUI
 
 struct Sending: View {
-    var zAddress: String
-    var includesMemo: Bool
-    var zecAmount: Double
     
-    var detailCardModel: DetailModel?
-    @State var isDone = false
+    @EnvironmentObject var flow: SendFlowEnvironment
     
     var includesMemoView: AnyView {
-        guard includesMemo else { return AnyView(EmptyView()) }
+        guard flow.includesMemo else { return AnyView(Divider()) }
         return  AnyView(
             HStack {
-                ZcashCheckCircle(isChecked: .constant(includesMemo),externalRingColor: .clear, backgroundColor: .black)
+                ZcashCheckCircle(isChecked: .constant(flow.includesMemo),externalRingColor: .clear, backgroundColor: .black)
                     .disabled(true)
                 Text("Includes memo")
                     .foregroundColor(.black)
@@ -30,7 +26,7 @@ struct Sending: View {
     }
     
     var doneButton: AnyView {
-        guard isDone else { return AnyView(EmptyView()) }
+        guard flow.isDone else { return AnyView(EmptyView()) }
         return AnyView(
             ZcashButton(
                 color: Color.black,
@@ -51,28 +47,23 @@ struct Sending: View {
     }
     
     var send: String {
-        isDone ? sendPastTense : sendGerund
+        flow.isDone ? sendPastTense : sendGerund
     }
     
     var card: AnyView {
-        guard let model = detailCardModel else { return AnyView(EmptyView()) }
-        return AnyView(
-            DetailCard(viewModel:
-                DetailCardViewModel(model: model)
-            )
-        )
-        
+       AnyView(EmptyView())
     }
+    
     var body: some View {
         ZStack {
             ZcashBackground.amberGradient
             
             VStack(alignment: .center) {
                 Spacer()
-                Text("\(send) \(zecAmount.toZecAmount()) ZEC to")
+                Text("\(send) \(flow.amount) ZEC to")
                     .foregroundColor(.black)
                     .font(.title)
-                Text("\(zAddress)")
+                Text("\(flow.address)")
                     .truncationMode(.middle)
                     .foregroundColor(.black)
                     .font(.title)
@@ -82,7 +73,6 @@ struct Sending: View {
                 doneButton
                 card
                 
-                
             }.padding([.horizontal], 40)
         }
     }
@@ -90,11 +80,11 @@ struct Sending: View {
 
 struct Sending_Previews: PreviewProvider {
     static var previews: some View {
-        Sending(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", includesMemo: true, zecAmount: 12.345, detailCardModel: DetailModel(
-            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-            date: Date(),
-            zecAmount: -12.345,
-            status: .paid
-        ), isDone: true)
+        
+        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456)
+        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+        flow.includesMemo = true
+        flow.isDone = false
+        return Sending()
     }
 }

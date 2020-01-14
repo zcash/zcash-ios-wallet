@@ -33,6 +33,7 @@
 		0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF723C65B8F00E5E55E /* HoldToSend.swift */; };
 		0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF923C66B7500E5E55E /* Sending.swift */; };
 		0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AFE23C67DCE00E5E55E /* DetailCard.swift */; };
+		0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */; };
 		0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */; };
 		0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100223C52CE200CD2854 /* AddMemo.swift */; };
 		0D4C100523C52D3400CD2854 /* ZcashMemoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */; };
@@ -47,6 +48,8 @@
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
 		0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DB123BED85C00709636 /* ActionableMessage.swift */; };
 		0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEC5DF823BD60CF002EFD0D /* Ring.swift */; };
+		0DFC0CF123C7787F0009DD7E /* ZcashSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashSendButton.swift */; };
+		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		EAB9083C349011831ECD4B1E /* Pods_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9B4F6DA9664614DB691EAAB /* Pods_wallet.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +103,7 @@
 		0D421AF723C65B8F00E5E55E /* HoldToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldToSend.swift; sourceTree = "<group>"; };
 		0D421AF923C66B7500E5E55E /* Sending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sending.swift; sourceTree = "<group>"; };
 		0D421AFE23C67DCE00E5E55E /* DetailCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCard.swift; sourceTree = "<group>"; };
+		0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFlowEnvironment.swift; sourceTree = "<group>"; };
 		0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		0D4C100223C52CE200CD2854 /* AddMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemo.swift; sourceTree = "<group>"; };
 		0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashMemoTextView.swift; sourceTree = "<group>"; };
@@ -114,6 +118,8 @@
 		0DE51DAF23BEBE5100709636 /* KeyPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPad.swift; sourceTree = "<group>"; };
 		0DE51DB123BED85C00709636 /* ActionableMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableMessage.swift; sourceTree = "<group>"; };
 		0DEC5DF823BD60CF002EFD0D /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		0DFC0CF023C7787F0009DD7E /* ZcashSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSendButton.swift; sourceTree = "<group>"; };
+		0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCloseButton.swift; sourceTree = "<group>"; };
 		1B234A6D8FF47F233B4E92BF /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
 		B9B4F6DA9664614DB691EAAB /* Pods_wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB7A9CABDC5C1369E18E5879 /* Pods-wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.debug.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.debug.xcconfig"; sourceTree = "<group>"; };
@@ -198,6 +204,7 @@
 		0D12510123B557E40014EE3A /* wallet */ = {
 			isa = PBXGroup;
 			children = (
+				0D4364C523CCF49E008B7DAC /* Environment */,
 				0DEC5DFA23BD63AA002EFD0D /* Components */,
 				0DEC5DF723BD60B0002EFD0D /* Shapes */,
 				0D100EDC23BA92970089DB22 /* Utils */,
@@ -251,6 +258,14 @@
 			path = "Send Flow";
 			sourceTree = "<group>";
 		};
+		0D4364C523CCF49E008B7DAC /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		0DEC5DF723BD60B0002EFD0D /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,6 +290,8 @@
 				0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */,
 				0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */,
 				0D421AFE23C67DCE00E5E55E /* DetailCard.swift */,
+				0DFC0CF023C7787F0009DD7E /* ZcashSendButton.swift */,
+				0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -505,8 +522,11 @@
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */,
+				0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
 				0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */,
+				0DFC0CF123C7787F0009DD7E /* ZcashSendButton.swift in Sources */,
+				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */,
 				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
 				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,

@@ -106,10 +106,13 @@ struct Home: View {
                     syncingButton
                 } else {
                     NavigationLink(
-                        destination: EnterRecipient(
-                            amount: $viewModel.sendZecAmount.wrappedValue,
-                            verifiedBalance: $viewModel.verifiedBalance.wrappedValue),
-                        isActive: $viewModel.sendingPushed) {
+                        destination: EnterRecipient().environmentObject(
+                            SendFlowEnvironment(
+                                amount: self.viewModel.sendZecAmount,
+                                verifiedBalance: self.viewModel.verifiedBalance
+                                )
+                            )
+                    ) {
                             enterAddressButton
                     }.disabled(!isAmountValid)
                 }

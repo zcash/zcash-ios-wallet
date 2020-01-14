@@ -21,84 +21,96 @@ struct DetailModel {
     var status: Status
     var shielded: Bool = true
     
+    var title: String {
+
+        switch status {
+        case .paid:
+            return "You paid \(zAddress)"
+        case .received:
+            return "\(shielded ? "Unknown" : zAddress) paid you"
+
+        }
+    }
+    
 }
 
-final class DetailCardViewModel: ObservableObject {
-    var model: DetailModel {
-        didSet {
-            setup()
-        }
-    }
-    
-    var title: String {
-        
-        switch model.status {
-        case .paid:
-            return "You paid \(model.zAddress)"
-        case .received:
-            return "\(model.shielded ? "Unknown" : model.zAddress) paid you"
-            
-        }
-    }
-    
-    var showShield: Bool {
-        model.shielded
-    }
-    
-    var zecAmountColor: Color
-    
-    var zecAmount: String {
-        model.zecAmount.toZecAmount() + " ZEC"
-    }
-    
-    init(model: DetailModel) {
-        self.model = model
-        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
-    }
-    
-    func setup() {
-        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
-        
-    }
-}
+//final class DetailCardViewModel {
+//    var model: DetailModel
+//
+//    var title: String {
+//
+//        switch model.status {
+//        case .paid:
+//            return "You paid \(model.zAddress)"
+//        case .received:
+//            return "\(model.shielded ? "Unknown" : model.zAddress) paid you"
+//
+//        }
+//    }
+//
+//    var showShield: Bool {
+//        model.shielded
+//    }
+//
+//    var zecAmountColor: Color
+//
+//    var zecAmount: String {
+//        model.zecAmount.toZecAmount() + " ZEC"
+//    }
+//
+//    init(model: DetailModel) {
+//        self.model = model
+//        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
+//    }
+//
+//    func setup() {
+//        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
+//
+//    }
+//}
 
 
 struct DetailCard: View {
  
-    var viewModel: DetailCardViewModel
+    var model: DetailModel
     var backgroundColor: Color = .black
     
     var shieldImage: AnyView {
-        viewModel.showShield ? AnyView(Image("ic_shieldtick")) : AnyView(EmptyView())
+        model.shielded ? AnyView(Image("ic_shieldtick")) : AnyView(EmptyView())
     }
+    
+    var zecAmountColor: Color {
+        model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
+    }
+    
     var body: some View {
         ZStack {
             backgroundColor
             HStack {
                 Spacer()
-                StatusLine(status: viewModel.model.status)
+                StatusLine(status: model.status)
                     .frame(width: 6.0)
                     .padding(.vertical, 8)
-                
+
                 VStack(alignment: .leading){
                     HStack {
                         shieldImage
-                        Text(viewModel.title)
+                        Text(model.title)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.white)
                             .layoutPriority(0.5)
-                         
+
                     }
                     Text("1 of 10 confirmations")
                         .font(.footnote)
                         .foregroundColor(.zLightGray2)
                         .opacity(0.4)
-                    
+
                 }
                 .padding(.vertical, 8)
-                Text(viewModel.zecAmount)
-                    .foregroundColor(viewModel.zecAmountColor)
+                Text(model.zecAmount.toZecAmount())
+                .foregroundColor(zecAmountColor)
                 .padding()
             }
             padding(8)
@@ -144,15 +156,15 @@ struct DetailRow_Previews: PreviewProvider {
         ZStack {
             ZcashBackground.amberGradient
             VStack {
-                DetailCard(viewModel:
-                    DetailCardViewModel(model: DetailModel(
+                DetailCard(model:
+                    DetailModel(
                             zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                             date: Date(),
                             zecAmount: -12.345,
                             status: .paid
                             )
                     )
-                )
+                
                 .padding()
             }
         }

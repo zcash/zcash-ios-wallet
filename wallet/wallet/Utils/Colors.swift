@@ -67,6 +67,10 @@ extension Color {
     /// \# FF4242 Color(red:1.0, green:0.26, blue:0.26)
     static let zPaidCardGradient2 = Color(red:1.0, green:0.26, blue:0.26)
     
+    /// #Hold Button
+    /// \#979797  Color(red:0.59, green:0.59, blue:0.59)
+    static let zHoldButtonGray = Color(red:0.59, green:0.59, blue:0.59)
+    
 }
 
 extension Gradient {

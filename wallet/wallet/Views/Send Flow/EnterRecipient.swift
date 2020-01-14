@@ -9,17 +9,14 @@
 import SwiftUI
 
 struct EnterRecipient: View {
+    @EnvironmentObject var flow: SendFlowEnvironment
     
-    var verifiedBalance: Double
-    var amount: Double
-    @State var zAddress: String = ""
-    @State var amountText: String = ""
     var availableBalance: Bool {
-        verifiedBalance > 0
+        flow.verifiedBalance > 0
     }
     
     var amountSubtitle: String {
-        if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: verifiedBalance)) {
+        if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: flow.verifiedBalance)) {
             return "You Have \(balance) sendable ZEC"
         } else {
             return "You don't have any sendable ZEC yet"
@@ -27,7 +24,7 @@ struct EnterRecipient: View {
     }
     
     var validAddress: Bool {
-        zAddress.count > 0
+        flow.address.count > 0
     }
     
     var validForm: Bool {
@@ -45,7 +42,7 @@ struct EnterRecipient: View {
                     title: "To",
                     subtitle: "Enter a shielded Zcash address",
                     keyboardType: UIKeyboardType.alphabet,
-                    binding: $zAddress,
+                    binding: $flow.address,
                     action: {
                         print("qr pressed")
                 },
@@ -57,13 +54,13 @@ struct EnterRecipient: View {
                     title: "Amount",
                     subtitle: "You have 23.451234 sendable ZEC",
                     keyboardType: UIKeyboardType.decimalPad,
-                    binding: $amountText
+                    binding: $flow.amount
                 )
                 
                 
                 ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: {})
                 Spacer()
-                NavigationLink(destination: AddMemo()){
+                NavigationLink(destination: AddMemo().environmentObject(flow)){
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Next")
                         .frame(height: 58)
                         .padding([.leading, .trailing], 40)
@@ -79,16 +76,10 @@ struct EnterRecipient: View {
         }.navigationBarItems(trailing: Image("infobutton"))
     }
     
-    init(amount: Double, verifiedBalance: Double) {
-        
-        self.amount = amount
-        self.verifiedBalance = verifiedBalance
-        self.amountText = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
-    }
 }
 
 struct EnterRecipient_Previews: PreviewProvider {
     static var previews: some View {
-        EnterRecipient(amount: 1.2345, verifiedBalance: 23.451234)
+        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456))
     }
 }

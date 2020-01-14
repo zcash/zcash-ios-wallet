@@ -9,18 +9,17 @@
 import SwiftUI
 
 struct HoldToSend: View {
+    @EnvironmentObject var flow: SendFlowEnvironment
     
-    var zAddress: String
-    var includesMemo: Bool
-    var zecAmount: Double
     var networkFee: Double = 0.0001
     var pressAndHoldSeconds: TimeInterval = 5
     @State var holdOk = false
+    
     var includesMemoView: AnyView {
-        guard includesMemo else { return AnyView(EmptyView()) }
+        guard flow.includesMemo else { return AnyView(EmptyView()) }
         return  AnyView(
             HStack {
-                ZcashCheckCircle(isChecked: .constant(includesMemo))
+                ZcashCheckCircle(isChecked: .constant(flow.includesMemo))
                     .disabled(true)
                 Text("Includes memo")
                     .foregroundColor(.white)
@@ -28,53 +27,38 @@ struct HoldToSend: View {
             }
         )
     }
+    
     var body: some View {
         ZStack {
             ZcashBackground()
             
             VStack(alignment: .center) {
                 Spacer()
-                Text("Send \(zecAmount.toZecAmount()) ZEC to")
+                Text("Send \(flow.amount) ZEC to")
                     .foregroundColor(.white)
                     .font(.title)
-                Text("\(zAddress)?")
+                Text("\(flow.address)?")
                     .truncationMode(.middle)
                     .foregroundColor(.white)
                     .font(.title)
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                ZStack{
-                    Text("Press and hold\nto send ZEC")
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                    
-                    
-                }
-                .frame(
-                    width: 167,
-                    height: 167,
-                    alignment: .center
-                )
-                .padding()
-                .onLongPressGesture(minimumDuration: 5, maximumDistance: 10, pressing: { (isPressing) in
-                    print("isPressing \(isPressing)")
-                }, perform: {
-                    print("long pressed!!!")
+                ZcashSendButton(longPressCancelled: {}, longPressSucceded: {
                     self.holdOk = true
                 })
                 
                 NavigationLink(destination:
-                        Sending(zAddress: zAddress, includesMemo: includesMemo, zecAmount: zecAmount, detailCardModel: DetailModel(
-                        zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                        date: Date(),
-                        zecAmount: -12.345,
-                        status: .paid
-                        ), isDone: false),isActive: $holdOk
-                ) {
-                    EmptyView()
-                }
+                    
+                    Sending().environmentObject(flow)
+                    .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarBackButtonHidden(true)
+                    ,
+                    
+                        isActive: $holdOk
+                    ) {
+                        EmptyView()
+                    }
                 
                 Spacer()
                 
@@ -88,11 +72,18 @@ struct HoldToSend: View {
             .padding([.horizontal], 40)
         }
         .navigationBarTitle("", displayMode: .inline)
+        .navigationBarItems(trailing: ZcashCloseButton(action: {
+            self.flow.isActive = false
+        }))
     }
 }
 
 struct HoldToSend_Previews: PreviewProvider {
+    
     static var previews: some View {
-        HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", includesMemo: true, zecAmount: 12.345)
+        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456)
+        
+        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+        return HoldToSend().environmentObject(flow)
     }
 }

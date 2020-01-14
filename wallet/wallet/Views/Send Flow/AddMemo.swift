@@ -10,15 +10,16 @@ import SwiftUI
 
 struct AddMemo: View {
     
+    @EnvironmentObject var flow: SendFlowEnvironment
+    @State var isShown = false
     @State var includeSendingAddress: Bool = false
-    @State var memo: String = ""
     let buttonHeight: CGFloat = 58
     let buttonPadding: CGFloat = 30
     var legend: String {
         includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
     }
     var isMemoEmpty: Bool {
-        memo.count == 0 && !includeSendingAddress
+        flow.memo.count == 0 && !includeSendingAddress
     }
     
     var sendText: String {
@@ -30,7 +31,7 @@ struct AddMemo: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 15) {
                 Spacer()
-                ZcashMemoTextView(text: $memo)
+                ZcashMemoTextView(text: $flow.memo)
                 HStack {
                     ZcashCheckCircle(isChecked: $includeSendingAddress)
                     Text("Include your sending address in a memo")
@@ -48,9 +49,7 @@ struct AddMemo: View {
                 Spacer()
                 
                 NavigationLink(
-                    destination: HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                                            includesMemo: true,
-                                            zecAmount: 12.345)
+                    destination: HoldToSend().environmentObject(flow)
                     ) {
                         ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
                         .frame(height: self.buttonHeight)
@@ -58,14 +57,18 @@ struct AddMemo: View {
                 }.disabled(isMemoEmpty)
                     .opacity( isMemoEmpty ? 0.3 : 1 )
                 NavigationLink(
-                    destination: HoldToSend(zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                    includesMemo: false,
-                    zecAmount: 12.345)
+                    destination: HoldToSend().environmentObject(flow),
+                    isActive: self.$isShown
                 ) {
+                    EmptyView()
+                }
+                Button(action: {
+                    self.flow.includesMemo = false
+                    self.isShown = true
+                }) {
                     ZcashButton(color: .white, fill: .clear, text: sendText)
-                        .frame(height: self.buttonHeight)
-                        .padding([.leading, .trailing], self.buttonPadding)
-
+                    .frame(height: self.buttonHeight)
+                    .padding([.leading, .trailing], self.buttonPadding)
                 }
                
                 Spacer()
@@ -73,6 +76,7 @@ struct AddMemo: View {
             }
         }
         .navigationBarTitle("Add Memo (optional)", displayMode: .inline)
+        .navigationBarItems(trailing: Image("infobutton"))
     }
 }
 
