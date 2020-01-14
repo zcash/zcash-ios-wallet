@@ -30,7 +30,7 @@ struct ActionableMessage: View {
         .background(Color.zDarkGray2)
         .overlay(
             RoundedRectangle(cornerRadius: cornerRadius)
-                .stroke(Color.zLightGray, lineWidth: 1)
+                .stroke(Color.zGray, lineWidth: 1)
         )
         
     
@@ -41,7 +41,7 @@ struct ActionableMessage: View {
 struct ActionableMessage_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Background()
+            ZcashBackground()
             ActionableMessage(message: "Zcash address in buffer!", actionText: "Paste", action: {})
             .padding()
             

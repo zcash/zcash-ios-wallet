@@ -15,6 +15,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showProfile: Bool
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
+    @Published var sendingPushed: Bool = false
     
     init(amount: Double, balance: Double) {
         verifiedBalance = balance
@@ -58,16 +59,12 @@ struct Home: View {
     }
     
     var enterAddressButton: some View {
-       
+        ZcashButton(color: Color.black, fill: Color.zYellow, text: "Enter Address")
+            .frame(height: 58)
+            .padding([.leading, .trailing], 40)
+            .opacity(isAmountValid ? 1.0 : 0.3 ) // validate this
+            .disabled(!isAmountValid)
         
-        Button(action:{}) {
-                ZcashButton(color: Color.black, fill: Color.zYellow, text: "Create New Wallet")
-                .frame(height: 58)
-                .padding([.leading, .trailing], 40)
-        }
-        .opacity(isAmountValid ? 1.0 : 0.3 ) // validate this
-        .disabled(!isAmountValid)
-
     }
     
     var isAmountValid: Bool {
@@ -80,7 +77,7 @@ struct Home: View {
         ZStack {
             
             if isSendingEnabled {
-                Background(showGradient: self.isSendingEnabled)
+                ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
@@ -108,7 +105,16 @@ struct Home: View {
                 if $viewModel.isSyncing.wrappedValue {
                     syncingButton
                 } else {
-                    enterAddressButton
+                    NavigationLink(
+                        destination: EnterRecipient().environmentObject(
+                            SendFlowEnvironment(
+                                amount: self.viewModel.sendZecAmount,
+                                verifiedBalance: self.viewModel.verifiedBalance
+                                )
+                            )
+                    ) {
+                            enterAddressButton
+                    }.disabled(!isAmountValid)
                 }
                 
                 Spacer()

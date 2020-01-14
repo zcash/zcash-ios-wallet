@@ -1,5 +1,5 @@
 //
-//  Background.swift
+//  ZcashBackground.swift
 //  wallet
 //
 //  Created by Francisco Gindre on 1/2/20.
@@ -8,13 +8,15 @@
 
 import SwiftUI
 
-struct Background: View {
+struct ZcashBackground: View {
+    var backgroundColor: Color = .black
+    var colors: [Color] = [Color.zBlackGradient1, Color.zBlackGradient2]
     
     var showGradient = true
     func radialGradient(radius: CGFloat, center: UnitPoint = .center) -> some View {
-        let colors = Gradient(colors: [Color.zBlackGradient1, Color.zBlackGradient2])
+        let gradientColors = Gradient(colors: colors)
         
-        let conic = RadialGradient(gradient: colors, center: center, startRadius: 0, endRadius: radius)
+        let conic = RadialGradient(gradient: gradientColors, center: center, startRadius: 0, endRadius: radius)
         return conic
         
     }
@@ -23,7 +25,7 @@ struct Background: View {
         GeometryReader { geometry in
             
             ZStack {
-                Color.black
+                self.backgroundColor
                 
                 if self.showGradient {
                     self.radialGradient(
@@ -39,8 +41,18 @@ struct Background: View {
     }
 }
 
-struct Background_Previews: PreviewProvider {
-    static var previews: some View {
-        Background()
+extension ZcashBackground {
+    static var amberGradient: ZcashBackground {
+        ZcashBackground(colors: [Color.zAmberGradient0, .zAmberGradient3, .zAmberGradient4])
+    }
+    static var amberSplashScreen: ZcashBackground {
+        ZcashBackground(colors: [Color.zAmberGradient0, .zAmberGradient3, .zAmberGradient4])
     }
 }
+struct Background_Previews: PreviewProvider {
+    static var previews: some View {
+        ZcashBackground.amberGradient
+        
+    }
+}
+
