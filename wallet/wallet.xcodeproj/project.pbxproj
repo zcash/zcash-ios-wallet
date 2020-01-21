@@ -41,6 +41,8 @@
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
 		0D60F2ED23BE1BC9006F5FAD /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
+		0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203C23D77D4B006F1510 /* WalletDetails.swift */; };
+		0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */; };
 		0DC167AF23BE35B300332890 /* SendZecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC167AE23BE35B300332890 /* SendZecView.swift */; };
 		0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC167B023BE37B300332890 /* BalanceUtils.swift */; };
 		0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
@@ -111,6 +113,8 @@
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashBackground.swift; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
+		0D9C203C23D77D4B006F1510 /* WalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetails.swift; sourceTree = "<group>"; };
+		0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailsHeader.swift; sourceTree = "<group>"; };
 		0DC167AE23BE35B300332890 /* SendZecView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendZecView.swift; sourceTree = "<group>"; };
 		0DC167B023BE37B300332890 /* BalanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceUtils.swift; sourceTree = "<group>"; };
 		0DE51DAB23BEB03C00709636 /* Zboto.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zboto.otf; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 		0D100ED323BA75870089DB22 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0D9C203B23D77D2E006F1510 /* Wallet Details */,
 				0D27C4A523C4C3480044B48E /* Send Flow */,
 				0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */,
 				0D100EDF23BAAB170089DB22 /* BackupWallet.swift */,
@@ -264,6 +269,15 @@
 				0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */,
 			);
 			path = Environment;
+			sourceTree = "<group>";
+		};
+		0D9C203B23D77D2E006F1510 /* Wallet Details */ = {
+			isa = PBXGroup;
+			children = (
+				0D9C203C23D77D4B006F1510 /* WalletDetails.swift */,
+				0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */,
+			);
+			path = "Wallet Details";
 			sourceTree = "<group>";
 		};
 		0DEC5DF723BD60B0002EFD0D /* Shapes */ = {
@@ -515,6 +529,7 @@
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
+				0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */,
 				0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */,
 				0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */,
 				0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */,
@@ -526,6 +541,7 @@
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
 				0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */,
 				0DFC0CF123C7787F0009DD7E /* ZcashSendButton.swift in Sources */,
+				0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */,
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */,
 				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
