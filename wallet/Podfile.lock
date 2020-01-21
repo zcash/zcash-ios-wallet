@@ -25,12 +25,12 @@ PODS:
     - gRPC-Core (~> 1.23.0)
     - SwiftProtobuf (~> 1.7.0)
   - SwiftProtobuf (1.7.0)
-  - ZcashLightClientKit (0.0.1):
-    - SQLite.swift
-    - SwiftGRPC
+  - ZcashLightClientKit (0.1.0):
+    - SQLite.swift (~> 0.12.2)
+    - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
-  - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `feature/single-pod-mainnet`)"
+  - ZcashLightClientKit
 
 SPEC REPOS:
   trunk:
@@ -40,16 +40,7 @@ SPEC REPOS:
     - SQLite.swift
     - SwiftGRPC
     - SwiftProtobuf
-
-EXTERNAL SOURCES:
-  ZcashLightClientKit:
-    :branch: feature/single-pod-mainnet
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
-
-CHECKOUT OPTIONS:
-  ZcashLightClientKit:
-    :commit: c7e1aaf33e9886dc16bae34dddb2e99ddb4868dc
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
+    - ZcashLightClientKit
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -58,8 +49,8 @@ SPEC CHECKSUMS:
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
-  ZcashLightClientKit: 4f2cd3b3da3cdcb2d8ed93402b7c8192d5f13680
+  ZcashLightClientKit: 6157bc35562e2fe09f97f0739b80013f4224298c
 
-PODFILE CHECKSUM: 5c93bc8d18e4848b558abf53c2e29a29a4a1fba3
+PODFILE CHECKSUM: 1ff7c6eb22404441d734c180b589b91ca3f12d48
 
 COCOAPODS: 1.8.4
