@@ -8,13 +8,13 @@
 
 import SwiftUI
 
-struct DetailModel {
+struct DetailModel: Identifiable {
     
     enum Status {
         case paid(success: Bool)
         case received
     }
-    
+    var id: String
     var zAddress: String
     var date: Date
     var zecAmount: Double
@@ -109,7 +109,6 @@ struct DetailCard: View {
             Text(text)
                 .foregroundColor(color)
                 .opacity(opacity)
-                .padding()
             )
     }
     
@@ -135,14 +134,13 @@ struct DetailCard: View {
                         .font(.body)
                         .foregroundColor(.zLightGray2)
                         .opacity(0.6)
-
                 }
                 .padding(.vertical, 8)
                 Spacer()
                 zecAmount
                
             }
-            .padding(8)
+            
         }.cornerRadius(5)
         
     }
@@ -202,6 +200,7 @@ struct DetailRow_Previews: PreviewProvider {
         Group {
                 DetailCard(model:
                     DetailModel(
+                        id: "bb031",
                             zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                             date: Date(),
                             zecAmount: -12.345,
@@ -212,6 +211,7 @@ struct DetailRow_Previews: PreviewProvider {
             
             DetailCard(model:
             DetailModel(
+                id: "bb032",
                     zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                     date: Date(),
                     zecAmount: 2.0,
@@ -222,6 +222,7 @@ struct DetailRow_Previews: PreviewProvider {
             
             DetailCard(model:
             DetailModel(
+                id: "bb033",
                     zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                     date: Date(),
                     zecAmount: 2.0,
