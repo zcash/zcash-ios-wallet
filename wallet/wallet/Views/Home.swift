@@ -119,7 +119,9 @@ struct Home: View {
                 
                 Spacer()
                 
-                Button(action: {})  {
+                
+                NavigationLink(destination: WalletDetails(balance: self.viewModel.verifiedBalance, zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", status: BalanceStatus.waiting(change: 0.304), items: DetailModel.mockDetails)
+                    .navigationBarTitle(Text(""), displayMode: .inline)) {
                     HStack(alignment: .center, spacing: 10) {
                         Image("wallet_details_icon")
                         Text("Wallet Details")

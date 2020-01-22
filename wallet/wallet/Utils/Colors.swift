@@ -62,10 +62,28 @@ extension Color {
     /// # Paid Card gradient
     
     /// \#FFB322 Color(red:1.0, green:0.70, blue:0.13)
-    static let zPaidCardGradient1 = Color(red:1.0, green:0.70, blue:0.13)
+    static let zPendingCardGradient1 = Color(red:1.0, green:0.70, blue:0.13)
     
     /// \# FF4242 Color(red:1.0, green:0.26, blue:0.26)
-    static let zPaidCardGradient2 = Color(red:1.0, green:0.26, blue:0.26)
+    static let zPendingCardGradient2 = Color(red:1.0, green:0.26, blue:0.26)
+    
+    // \# FFD649 Color(red: 1, green: 214/255, blue: 73/255)
+    static let zPaidCardGradient1 = Color(red: 1, green: 214/255, blue: 73/255)
+    
+    // \# FFA918 Color(red: 1, green: 169/255, blue: 24/255)
+    static let zPaidCardGradient2 = Color(red: 1, green: 169/255, blue: 24/255)
+    
+    // \#D2D2D2 Color(red: 210/255, green: 210/255, blue: 210/255)
+    static let zFailedCardGradient1 = Color(red: 210/255, green: 210/255, blue: 210/255)
+    
+    // \#838383 Color(red: 131/255, green: 131/255, blue: 131/255)
+    static let zFailedCardGradient2 = Color(red: 131/255, green: 131/255, blue: 131/255)
+    
+    // \#7DFF81 Color(red:125/255, green: 1, blue: 129/255)
+    static let zReceivedCardGradient1 = Color(red:125/255, green: 1, blue: 129/255)
+    
+    // \#42EEFF Color(red:66/255, green: 238/255, blue: 1)
+    static let zReceivedCardGradient2 = Color(red:66/255, green: 238/255, blue: 1)
     
     /// #Hold Button
     /// \#979797  Color(red:0.59, green:0.59, blue:0.59)
@@ -74,7 +92,12 @@ extension Color {
 }
 
 extension Gradient {
+    
     static let paidCard = Gradient(colors: [Color.zPaidCardGradient1, .zPaidCardGradient2])
+    
+    static let failedCard = Gradient(colors: [Color.zFailedCardGradient1, .zFailedCardGradient2])
+    
+    static let receivedCard = Gradient(colors: [Color.zReceivedCardGradient1, .zReceivedCardGradient2])
 }
 
 

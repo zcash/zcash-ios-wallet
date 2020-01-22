@@ -2,7 +2,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'wallet' do 
- pod 'ZcashLightClientKit', :git => 'git@github.com:zcash/ZcashLightClientKit.git', :branch => 'feature/single-pod-mainnet'
+ pod 'ZcashLightClientKit'
 end
 
 post_install do |installer|

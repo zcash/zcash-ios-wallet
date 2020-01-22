@@ -8,13 +8,13 @@
 
 import SwiftUI
 
-struct DetailModel {
+struct DetailModel: Identifiable {
     
     enum Status {
-        case paid
+        case paid(success: Bool)
         case received
     }
-    
+    var id: String
     var zAddress: String
     var date: Date
     var zecAmount: Double
@@ -24,13 +24,14 @@ struct DetailModel {
     var title: String {
 
         switch status {
-        case .paid:
-            return "You paid \(zAddress)"
+        case .paid(let success):
+            return success ? "You paid \(zAddress)" : "Unsent Transaction"
         case .received:
             return "\(shielded ? "Unknown" : zAddress) paid you"
-
         }
     }
+    
+    var subtitle: String
     
 }
 
@@ -76,20 +77,47 @@ struct DetailCard: View {
     var backgroundColor: Color = .black
     
     var shieldImage: AnyView {
-        model.shielded ? AnyView(Image("ic_shieldtick")) : AnyView(EmptyView())
+        
+        let view = model.shielded ? AnyView(Image("ic_shieldtick")) : AnyView(EmptyView())
+        switch model.status {
+        case .paid(let success):
+            return success ? view : AnyView(EmptyView())
+        default:
+            return view
+        }
+        
     }
     
-    var zecAmountColor: Color {
-        model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
+    var zecAmount: AnyView {
+        let amount = model.zecAmount.toZecAmount()
+        var text = ((model.zecAmount > 0) ? "+ " : "") +  amount + " ZEC"
+        var color = Color.zPositiveZecAmount
+        var opacity = Double(1)
+        switch model.status {
+        case .paid(let success):
+            color = success ? Color.zNegativeZecAmount : Color.zLightGray2
+            opacity = success ? 1 : 0.6
+            
+            text = success ? text : "(\(amount) ZEC)"
+            
+        default:
+            break
+        }
+        
+        
+        return AnyView(
+            Text(text)
+                .foregroundColor(color)
+                .opacity(opacity)
+            )
     }
     
     var body: some View {
         ZStack {
             backgroundColor
             HStack {
-                Spacer()
                 StatusLine(status: model.status)
-                    .frame(width: 6.0)
+                    .frame(width: 3.0)
                     .padding(.vertical, 8)
 
                 VStack(alignment: .leading){
@@ -102,26 +130,38 @@ struct DetailCard: View {
                             .layoutPriority(0.5)
 
                     }
-                    Text("1 of 10 confirmations")
-                        .font(.footnote)
+                    Text(model.subtitle)
+                        .font(.body)
                         .foregroundColor(.zLightGray2)
-                        .opacity(0.4)
-
+                        .opacity(0.6)
                 }
                 .padding(.vertical, 8)
-                Text(model.zecAmount.toZecAmount())
-                .foregroundColor(zecAmountColor)
-                .padding()
+                Spacer()
+                zecAmount
+               
             }
-            padding(8)
+            
         }.cornerRadius(5)
-        .frame(height: 69)
+        
     }
     
 }
 
 struct StatusLine: View {
-    var status: DetailModel.Status = .paid
+    var status: DetailModel.Status = .paid(success: true)
+    
+    var opacity: Double {
+        var _opacity = Double(1)
+        switch status {
+        case .paid(let success):
+            if !success {
+                _opacity = 0.6
+            }
+        default:
+            break
+        }
+        return _opacity
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -131,42 +171,67 @@ struct StatusLine: View {
                 .fill(
                     LinearGradient.gradient(for: self.status)
                 )
+                .opacity(self.opacity)
         }
     }
 }
 
 extension LinearGradient {
     static func gradient(for cardType: DetailModel.Status) -> LinearGradient {
-        
+        var gradient = Gradient.paidCard
         switch cardType {
     
-        default:
-            return LinearGradient(
-                       gradient: Gradient.paidCard,
-                       startPoint: UnitPoint(x: 0.3, y: 0.0),
-                       endPoint: UnitPoint(x: 0.5, y: 0.5)
-            )
+        case .paid(let success):
+            gradient = success ? Gradient.paidCard : Gradient.failedCard
+        case .received:
+            gradient = Gradient.receivedCard
         }
+        return LinearGradient(
+            gradient: gradient,
+            startPoint: UnitPoint(x: 0.3, y: 0.7),
+            endPoint: UnitPoint(x: 0.5, y: 1)
+        )
     }
 }
 
 
 struct DetailRow_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            ZcashBackground.amberGradient
-            VStack {
+        Group {
                 DetailCard(model:
                     DetailModel(
+                        id: "bb031",
                             zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
                             date: Date(),
                             zecAmount: -12.345,
-                            status: .paid
+                            status: .paid(success: true),
+                            subtitle: "1 of 10 confirmations"
                             )
                     )
-                
-                .padding()
-            }
-        }
+                    .padding()
+            
+            
+            DetailCard(model:
+            DetailModel(
+                id: "bb032",
+                    zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                    date: Date(),
+                    zecAmount: 2.0,
+                    status: .received,
+                    subtitle: "Received 11/16/19 4:12pm"
+                    )
+            )
+            
+            DetailCard(model:
+            DetailModel(
+                id: "bb033",
+                    zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                    date: Date(),
+                    zecAmount: 2.0,
+                    status: .paid(success: false),
+                    subtitle: "Received 11/16/19 4:12pm"
+                    )
+            )
+        }.previewLayout(.fixed(width: 360, height: 69))
     }
 }
