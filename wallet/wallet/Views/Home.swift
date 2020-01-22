@@ -16,7 +16,7 @@ final class HomeViewModel: ObservableObject {
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
-    
+    @Published var zAddress = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
     init(amount: Double, balance: Double) {
         verifiedBalance = balance
         sendZecAmount = amount
@@ -76,6 +76,7 @@ struct Home: View {
         
         ZStack {
             
+            
             if isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
@@ -120,7 +121,7 @@ struct Home: View {
                 Spacer()
                 
                 
-                NavigationLink(destination: WalletDetails(balance: self.viewModel.verifiedBalance, zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", status: BalanceStatus.waiting(change: 0.304), items: DetailModel.mockDetails)
+                NavigationLink(destination: WalletDetails(balance: self.viewModel.verifiedBalance, zAddress: self.viewModel.zAddress, status: BalanceStatus.waiting(change: 0.304), items: DetailModel.mockDetails)
                     .navigationBarTitle(Text(""), displayMode: .inline)) {
                     HStack(alignment: .center, spacing: 10) {
                         Image("wallet_details_icon")
@@ -139,20 +140,27 @@ struct Home: View {
                     Image("QRCodeIcon")
                         .accessibility(label: Text("Receive Funds"))
                         .scaleEffect(0.5)
-                }, trailing:
+                }
+                .sheet(isPresented: $viewModel.showReceiveFunds){
+                    ReceiveFunds(address: self.viewModel.zAddress)
+                        .navigationBarHidden(false)
+                        .navigationBarTitle("", displayMode: .inline)
+                }
+                , trailing:
                 Button(action: {
                     self.viewModel.showProfile = true
                 }) {
                     Image(systemName: "person.crop.circle")
                         .imageScale(.large)
+                        .opacity(0.6)
                         .accessibility(label: Text("Your Profile"))
                         .padding()
-            })
-            .sheet(isPresented: $viewModel.showReceiveFunds){
-                ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
-                    .navigationBarHidden(false)
-                    .navigationBarTitle("", displayMode: .inline)
-        }
+                })
+                .sheet(isPresented: $viewModel.showProfile){
+                           ProfileScreen(zAddress: self.$viewModel.zAddress)
+                       }
+            
+           
         
     }
 }

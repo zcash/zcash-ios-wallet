@@ -40,6 +40,8 @@
 		0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */; };
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
 		0D60F2ED23BE1BC9006F5FAD /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
+		0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */; };
+		0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
 		0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203C23D77D4B006F1510 /* WalletDetails.swift */; };
 		0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */; };
@@ -112,6 +114,8 @@
 		0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCheckCircle.swift; sourceTree = "<group>"; };
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashBackground.swift; sourceTree = "<group>"; };
+		0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Zcash.swift"; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
 		0D9C203C23D77D4B006F1510 /* WalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetails.swift; sourceTree = "<group>"; };
 		0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailsHeader.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 				0D11C22C23BF807E001CF6F7 /* ReceiveFunds.swift */,
 				0D11C23023BF966C001CF6F7 /* ScanAddress.swift */,
 				0D11C23623BFB666001CF6F7 /* ShareScreen.swift */,
+				0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -180,6 +185,7 @@
 				0D11C23223BFA810001CF6F7 /* HostingController.swift */,
 				0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */,
 				0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */,
+				0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -525,6 +531,7 @@
 				0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */,
 				0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */,
 				0DC167AF23BE35B300332890 /* SendZecView.swift in Sources */,
+				0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
@@ -544,6 +551,7 @@
 				0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */,
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */,
+				0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */,
 				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
 				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,
 				0D11C23523BFB33B001CF6F7 /* NavigationConfigurator.swift in Sources */,
