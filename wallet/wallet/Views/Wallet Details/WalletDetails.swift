@@ -18,7 +18,6 @@ struct WalletDetails: View {
         ZStack {
             ZcashBackground()
             VStack(alignment: .center) {
-                BalanceDetail(availableZec: balance, status: status)
                 
                 List {
                         WalletDetailsHeader(zAddress: zAddress)
@@ -59,6 +58,13 @@ struct WalletDetails: View {
             UITableView.appearance().backgroundColor = UIColor.white
         }
         .edgesIgnoringSafeArea([.bottom])
+        .navigationBarItems(trailing:
+            HStack {
+                BalanceDetail(availableZec: balance, status: status)
+                Spacer().frame(width: 40)
+            }
+        )
+    
         
         
     }
@@ -67,48 +73,55 @@ struct WalletDetails: View {
 struct WalletDetails_Previews: PreviewProvider {
     static var previews: some View {
         
-        var items =  [DetailModel]()
-        for _ in 0 ... 5 {
-            items.append(contentsOf:
-                [
-                        
-                        DetailModel(
-                            id: "bb031",
-                            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                            date: Date(),
-                            zecAmount: -12.345,
-                            status: .paid(success: true),
-                            subtitle: "1 of 10 confirmations"
-                            
-                        ),
-                        
-                        
-                        DetailModel(
-                            id: "bb032",
-                            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                            date: Date(),
-                            zecAmount: 2.0,
-                            status: .received,
-                            subtitle: "Received 11/16/19 4:12pm"
-                            
-                        ),
-                        
-                        
-                        DetailModel(
-                            id: "bb033",
-                            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                            date: Date(),
-                            zecAmount: 2.0,
-                            status: .paid(success: false),
-                            subtitle: "Received 11/16/19 4:12pm"
-                        )
-                        
-                ]
-            )
-        }
+       
         return WalletDetails(
             balance: 1.2345,
             zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-            status: .available, items: items)
+            status: .available, items: DetailModel.mockDetails)
+    }
+}
+
+extension DetailModel {
+    static var mockDetails: [DetailModel] {
+        var items =  [DetailModel]()
+               for _ in 0 ... 5 {
+                   items.append(contentsOf:
+                       [
+                               
+                               DetailModel(
+                                   id: "bb031",
+                                   zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                                   date: Date(),
+                                   zecAmount: -12.345,
+                                   status: .paid(success: true),
+                                   subtitle: "1 of 10 confirmations"
+                                   
+                               ),
+                               
+                               
+                               DetailModel(
+                                   id: "bb032",
+                                   zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                                   date: Date(),
+                                   zecAmount: 2.0,
+                                   status: .received,
+                                   subtitle: "Received 11/16/19 4:12pm"
+                                   
+                               ),
+                               
+                               
+                               DetailModel(
+                                   id: "bb033",
+                                   zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
+                                   date: Date(),
+                                   zecAmount: 2.0,
+                                   status: .paid(success: false),
+                                   subtitle: "Received 11/16/19 4:12pm"
+                               )
+                               
+                       ]
+                   )
+               }
+        return items
     }
 }

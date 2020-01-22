@@ -208,6 +208,8 @@ struct DetailRow_Previews: PreviewProvider {
                             subtitle: "1 of 10 confirmations"
                             )
                     )
+                    .padding()
+            
             
             DetailCard(model:
             DetailModel(
