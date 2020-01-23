@@ -89,7 +89,7 @@
 		0D11C23223BFA810001CF6F7 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationConfigurator.swift; sourceTree = "<group>"; };
 		0D11C23623BFB666001CF6F7 /* ShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreen.swift; sourceTree = "<group>"; };
-		0D1250FF23B557E40014EE3A /* wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D1250FF23B557E40014EE3A /* zECC Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "zECC Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12510223B557E40014EE3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D12510423B557E40014EE3A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0D12510823B557E60014EE3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -205,7 +205,7 @@
 		0D12510023B557E40014EE3A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0D1250FF23B557E40014EE3A /* wallet.app */,
+				0D1250FF23B557E40014EE3A /* zECC Wallet.app */,
 				0D12511523B557E60014EE3A /* walletTests.xctest */,
 				0D12512023B557E60014EE3A /* walletUITests.xctest */,
 			);
@@ -353,7 +353,7 @@
 			);
 			name = wallet;
 			productName = wallet;
-			productReference = 0D1250FF23B557E40014EE3A /* wallet.app */;
+			productReference = 0D1250FF23B557E40014EE3A /* zECC Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0D12511423B557E60014EE3A /* walletTests */ = {
@@ -744,9 +744,9 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "zECC Wallet";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -766,9 +766,9 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "zECC Wallet";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
