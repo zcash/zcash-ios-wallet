@@ -10,6 +10,8 @@ import SwiftUI
 import Combine
 final class RestoreWalletViewModel: ObservableObject {
     @Published var seedPhrase: String = ""
+   
+    
     var isValidSeed: Bool {
         seedPhrase.count > 0 /// TODO: improve validation
     }
@@ -20,13 +22,20 @@ final class RestoreWalletViewModel: ObservableObject {
 }
 
 struct RestoreWallet: View {
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @ObservedObject var viewModel = RestoreWalletViewModel()
+    @State var proceed: Bool = false
     var body: some View {
         ZStack {
+            NavigationLink(destination: Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()), isActive: $proceed) {
+                EmptyView()
+            }
+            
             ZcashBackground()
+            
             VStack {
                 Spacer()
-                ZcashTextField(title: "Enter your Seed Phrase", subtitle: nil, binding: $viewModel.seedPhrase)
+                ZcashTextField(title: "Enter your Seed Phrase", subtitle: "Make sure nobody is watching you!", binding: $viewModel.seedPhrase)
                 Spacer()
                 Button(action: {
                     self.viewModel.importSeed()
@@ -35,7 +44,7 @@ struct RestoreWallet: View {
                     
                 }
                 .disabled(!viewModel.isValidSeed)
-                .frame(height: 69)
+                .frame(height: 58)
                 
                 Spacer()
             }.padding()
@@ -45,6 +54,6 @@ struct RestoreWallet: View {
 
 struct RestoreWallet_Previews: PreviewProvider {
     static var previews: some View {
-        RestoreWallet()
+        RestoreWallet().environmentObject(try! ZECCWalletEnvironment())
     }
 }

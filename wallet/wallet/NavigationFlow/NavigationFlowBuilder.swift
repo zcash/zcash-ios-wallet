@@ -7,3 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
+class NavigationFlowBuilder {
+    @EnvironmentObject var environment: ZECCWalletEnvironment
+}

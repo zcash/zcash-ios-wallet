@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 
 final class HomeViewModel: ObservableObject {
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @Published var sendZecAmount: Double
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
@@ -131,10 +132,10 @@ struct Home: View {
                             Image("wallet_details_icon")
                             Text("Wallet Details")
                                 .font(.headline)
+                                .frame(height: 48)
                         }.accentColor(Color.zLightGray)
                 }
                 Spacer()
-                    .frame(height:20)
                 
             }
         }.navigationBarBackButtonHidden(true)
@@ -163,7 +164,7 @@ struct Home: View {
             })
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
-        }
+            }
         
     }
 }
@@ -172,15 +173,15 @@ struct Home: View {
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Home(amount: 1.2345, verifiedBalance: 1.2345)
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
                 .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                 .previewDisplayName("iPhone SE")
             
-            Home(amount: 1.2345, verifiedBalance: 1.2345)
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
                 .previewDisplayName("iPhone 8")
             
-            Home(amount: 1.2345, verifiedBalance: 1.2345)
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
         }

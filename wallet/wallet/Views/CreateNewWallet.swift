@@ -27,7 +27,7 @@ struct CreateNewWallet: View {
         UINavigationBar.appearance().tintColor = .white
         
     }
-    
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
@@ -59,9 +59,16 @@ struct CreateNewWallet: View {
                     
                 }
                 
-                ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
+                NavigationLink(
+                    destination: RestoreWallet()
+                    .environmentObject(appEnvironment)
+                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarHidden(true)
+                ) {
+                    ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
+                }
                 
                 Spacer()
             }
