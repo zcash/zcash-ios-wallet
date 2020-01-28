@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'wallet' do 
  pod 'ZcashLightClientKit'
+ pod 'KeychainSwift', '~> 19.0.0'
 end
 
 post_install do |installer|

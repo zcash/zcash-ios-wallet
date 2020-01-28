@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
+    var environment: ZECCWalletEnvironment?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -21,13 +22,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Create the SwiftUI view that provides the window contents.
         
-        let contentView =  CreateNewWallet()
-            
     
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = HostingController(rootView: contentView)
+            window.rootViewController = HostingController(rootView:
+                    AnyView(
+                        NavigationView {
+                            firstView()
+                        }
+                    )
+                )
             self.window = window
             window.makeKeyAndVisible()
         }
@@ -61,5 +66,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
     
+    static var shared: SceneDelegate {
+        UIApplication.shared.windows[0].windowScene?.delegate as! SceneDelegate
+    }
     
+    var createNewWallet: some View {
+        CreateNewWallet()
+        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarHidden(true)
+    }
+    
+    func firstView() -> AnyView {
+        if let walletEnvironment = try? ZECCWalletEnvironment() {
+            switch walletEnvironment.state {
+            case .initalized,
+                 .syncing,
+                 .synced:
+                walletEnvironment.synchronizer.start()
+                return AnyView(
+                    Home(
+                        amount: walletEnvironment.initializer.getBalance().asHumanReadableZecBalance(),
+                        verifiedBalance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()
+                    ).environmentObject(walletEnvironment)
+                )
+            case .uninitialized:
+                return AnyView(
+                    self.createNewWallet.environmentObject(walletEnvironment)
+                )
+            }
+        }
+        return AnyView(
+            self.createNewWallet
+        )
+    }
 }

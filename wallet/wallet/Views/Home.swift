@@ -10,18 +10,33 @@ import SwiftUI
 import Combine
 
 final class HomeViewModel: ObservableObject {
+    
     @Published var sendZecAmount: Double
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
-    @Published var zAddress = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-    init(amount: Double, balance: Double) {
+    @Published var zAddress = ""
+    @Published var balance: Double = 0
+    @Published var progress: Float = 0
+    private var cancellable = [AnyCancellable]()
+    init(amount: Double = 0, balance: Double = 0) {
         verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
+        if let environment = SceneDelegate.shared.environment {
+            cancellable.append(
+                environment.synchronizer.verifiedBalance.subscribe(on: DispatchQueue.main)
+                    .sink(receiveValue: { self.verifiedBalance = $0 })
+            )
+            cancellable.append(environment.synchronizer.balance.subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { self.balance = $0 }))
+            cancellable.append(environment.synchronizer.progress.subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { self.progress = $0 }))
+            zAddress = environment.initializer.getAddress() ?? ""
+        }
     }
 }
 
@@ -50,7 +65,7 @@ struct Home: View {
                 
                 .font(.headline)
                 .foregroundColor(.white)
-                .frame(width: 300, height: 50)
+                .frame(height: 50)
                 .overlay(
                     Capsule(style: .continuous)
                         .stroke(Color.zAmberGradient2, lineWidth: 4)
@@ -73,49 +88,53 @@ struct Home: View {
     }
     
     var body: some View {
-        
         ZStack {
             
-            
-            if isSendingEnabled {
+            if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
             }
             
-            VStack(alignment: .center, spacing: 30) {
+            VStack(alignment: .center) {
+                Spacer()
+                SendZecView(zatoshi: self.$viewModel.sendZecAmount)
+                    .opacity(self.isSendingEnabled ? 1.0 : 1.0)
+                    .scaledToFit()
                 
-                SendZecView(zatoshi: $viewModel.sendZecAmount)
-                    .opacity(isSendingEnabled ? 1.0 : 1.0)
-                
-                if isSendingEnabled {
-                    BalanceDetail(availableZec: $viewModel.verifiedBalance.wrappedValue, status: .available)
+                if self.isSendingEnabled {
+                    Spacer()
+                    BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: .available)
                 } else {
                     Spacer()
                     ActionableMessage(message: "No Balance", actionText: "Fund Now", action: {})
                         .padding()
                 }
                 Spacer()
-                keypad
-                    .opacity(isSendingEnabled ? 1.0 : 0.3)
-                    .disabled($viewModel.verifiedBalance.wrappedValue <= 0)
+                self.keypad
+                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
+                    .disabled(self.$viewModel.verifiedBalance.wrappedValue <= 0)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: 250, alignment: .center)
+                    
+                
                 
                 Spacer()
                 
-                if $viewModel.isSyncing.wrappedValue {
-                    syncingButton
+                if self.$viewModel.isSyncing.wrappedValue {
+                    self.syncingButton
                 } else {
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
                             SendFlowEnvironment(
                                 amount: self.viewModel.sendZecAmount,
                                 verifiedBalance: self.viewModel.verifiedBalance
-                                )
                             )
+                        )
                     ) {
-                            enterAddressButton
-                    }.disabled(!isAmountValid)
+                        self.enterAddressButton
+                    }.disabled(!self.isAmountValid)
                 }
                 
                 Spacer()
@@ -123,11 +142,12 @@ struct Home: View {
                 
                 NavigationLink(destination: WalletDetails(balance: self.viewModel.verifiedBalance, zAddress: self.viewModel.zAddress, status: BalanceStatus.waiting(change: 0.304), items: DetailModel.mockDetails)
                     .navigationBarTitle(Text(""), displayMode: .inline)) {
-                    HStack(alignment: .center, spacing: 10) {
-                        Image("wallet_details_icon")
-                        Text("Wallet Details")
-                            .font(.headline)
-                    }.accentColor(Color.zLightGray)
+                        HStack(alignment: .center, spacing: 10) {
+                            Image("wallet_details_icon")
+                            Text("Wallet Details")
+                                .font(.headline)
+                                .frame(height: 48)
+                        }.accentColor(Color.zLightGray)
                 }
                 Spacer()
                 
@@ -155,12 +175,10 @@ struct Home: View {
                         .opacity(0.6)
                         .accessibility(label: Text("Your Profile"))
                         .padding()
-                })
-                .sheet(isPresented: $viewModel.showProfile){
-                           ProfileScreen(zAddress: self.$viewModel.zAddress)
-                       }
-            
-           
+            })
+            .sheet(isPresented: $viewModel.showProfile){
+                ProfileScreen(zAddress: self.$viewModel.zAddress)
+            }
         
     }
 }
@@ -168,6 +186,18 @@ struct Home: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home(amount: 0, verifiedBalance: 0)
+        Group {
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
+                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+                .previewDisplayName("iPhone 8")
+            
+            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(try! ZECCWalletEnvironment())
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+                .previewDisplayName("iPhone 11")
+        }
     }
 }

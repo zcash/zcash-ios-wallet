@@ -13,6 +13,7 @@ PODS:
     - gRPC-Core/Interface (= 1.23.1)
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.23.1)
+  - KeychainSwift (19.0.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -30,12 +31,14 @@ PODS:
     - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
+  - KeychainSwift (~> 19.0.0)
   - ZcashLightClientKit
 
 SPEC REPOS:
   trunk:
     - BoringSSL-GRPC
     - gRPC-Core
+    - KeychainSwift
     - nanopb
     - SQLite.swift
     - SwiftGRPC
@@ -45,12 +48,13 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   gRPC-Core: 4b1148eb8596225178e5a154e40e35141a3cdf0f
+  KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   ZcashLightClientKit: 6157bc35562e2fe09f97f0739b80013f4224298c
 
-PODFILE CHECKSUM: 1ff7c6eb22404441d734c180b589b91ca3f12d48
+PODFILE CHECKSUM: 5565ef9625673a83c35e42f62e810ffe0264547f
 
 COCOAPODS: 1.8.4

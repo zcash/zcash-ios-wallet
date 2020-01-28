@@ -17,6 +17,9 @@ struct ZcashTextField: View {
     var action: (() -> Void)?
     var contentType: UITextContentType?
     var keyboardType: UIKeyboardType
+    var autocorrect = false
+    var autocapitalize = false
+    
     
     @Binding var text: String
     
@@ -48,8 +51,8 @@ struct ZcashTextField: View {
                     action()
                 }) {
                     img
-                    .resizable()
-                        
+                        .resizable()
+                    
                 }
             )
         } else {
@@ -73,21 +76,21 @@ struct ZcashTextField: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .foregroundColor(.white)
-        
-                HStack {
-                    TextField("", text: $text)
-                        .textContentType(contentType)
-                        .keyboardType(keyboardType)
-                        .font(.body)
-                        .foregroundColor(.white)
-                        .padding([.top])
-                    accessoryView
-                    .frame(width: 25, height: 25)
-                    }.overlay(
-                        Baseline()                        .stroke(Color.zAmberGradient2,lineWidth: 2)
-                        )
-                        
             
+            HStack {
+                TextField("", text: $text)
+                    .textContentType(contentType)
+                    .keyboardType(keyboardType)
+                    .autocapitalization(autocapitalize ? .none : .sentences)
+                    .disableAutocorrection(!autocorrect)
+                    .font(.body)
+                    .foregroundColor(.white)
+                    .padding([.top])
+                accessoryView
+                    .frame(width: 25, height: 25)
+            }.overlay(
+                Baseline().stroke(Color.zAmberGradient2,lineWidth: 2)
+            )
             .font(.footnote)
             subtitleView
         }
@@ -112,9 +115,9 @@ struct ZcashTextField_Previews: PreviewProvider {
         ZStack {
             ZcashBackground()
             ZcashTextField(title: "To", subtitle: "Enter Shielded Address", binding: $text, action: {}, accessoryIcon:Image("QRCodeIcon")
-            .renderingMode(.original)
-                   )
-            .padding()
+                .renderingMode(.original)
+            )
+                .padding()
             
         }
     }
