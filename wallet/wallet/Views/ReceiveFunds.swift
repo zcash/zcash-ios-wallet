@@ -63,7 +63,7 @@ struct ReceiveFunds: View {
                 }
                 
             }.navigationBarTitle(Text(""), displayMode: .inline)
-                .navigationBarHidden(false)
+                .navigationBarHidden(true)
         }
     }
 }

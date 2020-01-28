@@ -163,7 +163,7 @@ struct Home: View {
                 }
                 .sheet(isPresented: $viewModel.showReceiveFunds){
                     ReceiveFunds(address: self.viewModel.zAddress)
-                        .navigationBarHidden(false)
+                        .navigationBarHidden(true)
                         .navigationBarTitle("", displayMode: .inline)
                 }
                 , trailing:

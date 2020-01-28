@@ -78,6 +78,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func firstView() -> AnyView {
         if let walletEnvironment = try? ZECCWalletEnvironment() {
+            self.environment = walletEnvironment
             switch walletEnvironment.state {
             case .initalized,
                  .syncing,
