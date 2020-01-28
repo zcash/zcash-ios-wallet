@@ -39,9 +39,16 @@ struct RestoreWallet: View {
                 Spacer()
                 Button(action: {
                     self.viewModel.importSeed()
+                    do {
+                        try self.appEnvironment.initialize()
+                    } catch {
+                        print("Error \(error)")
+                        return
+                    }
+                    
+                    self.proceed = true
                 }) {
                     ZcashButton(color: .black, fill: .zAmberGradient1, text: "Proceed")
-                    
                 }
                 .disabled(!viewModel.isValidSeed)
                 .frame(height: 58)

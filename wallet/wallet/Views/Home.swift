@@ -10,19 +10,33 @@ import SwiftUI
 import Combine
 
 final class HomeViewModel: ObservableObject {
-    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    
     @Published var sendZecAmount: Double
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
-    @Published var zAddress = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-    init(amount: Double, balance: Double) {
+    @Published var zAddress = ""
+    @Published var balance: Double = 0
+    @Published var progress: Float = 0
+    private var cancellable = [AnyCancellable]()
+    init(amount: Double = 0, balance: Double = 0) {
         verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
+        if let environment = SceneDelegate.shared.environment {
+            cancellable.append(
+                environment.synchronizer.verifiedBalance.subscribe(on: DispatchQueue.main)
+                    .sink(receiveValue: { self.verifiedBalance = $0 })
+            )
+            cancellable.append(environment.synchronizer.balance.subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { self.balance = $0 }))
+            cancellable.append(environment.synchronizer.progress.subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { self.progress = $0 }))
+            zAddress = environment.initializer.getAddress() ?? ""
+        }
     }
 }
 
