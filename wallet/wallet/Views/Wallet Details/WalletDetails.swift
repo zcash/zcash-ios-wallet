@@ -7,12 +7,38 @@
 //
 
 import SwiftUI
+import Combine
+class WalletDetailsViewModel: ObservableObject {
+
+    @Published var items: [DetailModel] = []
+    private var cancellables = Set<AnyCancellable>()
+    func load() {
+        SceneDelegate.shared.environment?.synchronizer.walletDetails
+        .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
+                
+                switch completion {
+                case .failure(let error):
+                    print("error: \(error)")
+                default:
+                    break
+                }
+            }, receiveValue: { self.items = $0 })
+        .store(in: &self.cancellables)
+    }
+    
+}
 
 struct WalletDetails: View {
     @State var balance: Double
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @ObservedObject var viewModel = WalletDetailsViewModel()
+    
     var zAddress: String
-    var status: BalanceStatus
-    var items: [DetailModel]
+    var status: BalanceStatus {
+        appEnvironment.balanceStatus
+    }
+    
     var body: some View {
         
         ZStack {
@@ -24,19 +50,16 @@ struct WalletDetails: View {
                             .listRowBackground(Color.zDarkGray2)
                             .frame(height: 100)
                             .padding([.trailing], 24)
-                        ForEach(items, id: \.id) { row in
+                    ForEach(self.viewModel.items, id: \.id) { row in
                             DetailCard(model: row, backgroundColor: Color.zDarkGray2)
                                 .listRowBackground(Color.zDarkGray2)
-                                
                                 .frame(height: 69)
                                 .padding(.horizontal, 16)
                                 .cornerRadius(0)
                                 .border(Color.zGray, width: 1)
                                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                            
-                        
+                        }
                     }
-                }
                 .cornerRadius(20)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
@@ -49,8 +72,15 @@ struct WalletDetails: View {
             }
         }
         .onAppear() {
+            
             UITableView.appearance().separatorStyle = .none
             UITableView.appearance().backgroundColor = UIColor.clear
+            
+            guard self.viewModel.items.isEmpty else {
+                return
+            }
+            
+            self.viewModel.load()
             
         }
         .onDisappear() {
@@ -61,12 +91,9 @@ struct WalletDetails: View {
         .navigationBarItems(trailing:
             HStack {
                 BalanceDetail(availableZec: balance, status: status)
-                Spacer().frame(width: 40)
+                Spacer().frame(width: 80)
             }
         )
-    
-        
-        
     }
 }
 
@@ -76,9 +103,19 @@ struct WalletDetails_Previews: PreviewProvider {
        
         return WalletDetails(
             balance: 1.2345,
-            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-            status: .available, items: DetailModel.mockDetails)
+            viewModel: MockWalletDetailViewModel(),
+            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+        ).environmentObject(try! ZECCWalletEnvironment())
     }
+}
+
+class MockWalletDetailViewModel: WalletDetailsViewModel {
+    
+    override init() {
+        super.init()
+        self.items = DetailModel.mockDetails
+    }
+    
 }
 
 extension DetailModel {
