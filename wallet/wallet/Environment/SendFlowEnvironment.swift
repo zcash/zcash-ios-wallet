@@ -21,6 +21,7 @@ final class SendFlowEnvironment: ObservableObject {
     init(amount: Double, verifiedBalance: Double) {
         self.amount = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
         self.verifiedBalance = verifiedBalance
+        
     }
     
     

@@ -77,6 +77,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func firstView() -> AnyView {
+        _zECCWalletNavigationBarLookTweaks()
         if let walletEnvironment = try? ZECCWalletEnvironment() {
             self.environment = walletEnvironment
             switch walletEnvironment.state {

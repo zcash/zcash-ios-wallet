@@ -81,3 +81,19 @@ struct BalanceDetail_Previews: PreviewProvider {
         }
     }
 }
+
+extension ZECCWalletEnvironment {
+    var balanceStatus: BalanceStatus {
+        let verifiedBalance = self.initializer.getVerifiedBalance().asHumanReadableZecBalance()
+        let balance = self.initializer.getBalance().asHumanReadableZecBalance()
+        
+        let difference = verifiedBalance - balance
+        if difference.isZero {
+            return BalanceStatus.available
+        } else if difference > 0 {
+            return BalanceStatus.expecting(zec: difference)
+        } else {
+            return BalanceStatus.waiting(change: difference)
+        }
+    }
+}

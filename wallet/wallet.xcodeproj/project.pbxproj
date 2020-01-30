@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */; };
+		0D0B8E7523E0DCB0002FF669 /* Transactions+zECCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */; };
 		0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */; };
 		0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED623BA78990089DB22 /* ZcashSymbol.swift */; };
 		0D100ED923BA8DE80089DB22 /* CreateNewWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */; };
@@ -84,6 +85,7 @@
 
 /* Begin PBXFileReference section */
 		0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPadViewModelTests.swift; sourceTree = "<group>"; };
+		0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transactions+zECCWallet.swift"; sourceTree = "<group>"; };
 		0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashLogo.swift; sourceTree = "<group>"; };
 		0D100ED623BA78990089DB22 /* ZcashSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSymbol.swift; sourceTree = "<group>"; };
 		0D100ED823BA8DE80089DB22 /* CreateNewWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewWallet.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */,
 				0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */,
 				0DDF876623DB5400002BF158 /* URL+Zcash.swift */,
+				0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */,
 				0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */,
+				0D0B8E7523E0DCB0002FF669 /* Transactions+zECCWallet.swift in Sources */,
 				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
 				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,
 				0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */,

@@ -44,7 +44,7 @@ struct Home: View {
     
     var keypad: KeyPad
     @ObservedObject var viewModel: HomeViewModel
-    
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     var isSendingEnabled: Bool {
         $viewModel.verifiedBalance.wrappedValue > 0
     }
@@ -105,20 +105,20 @@ struct Home: View {
                 
                 if self.isSendingEnabled {
                     Spacer()
-                    BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: .available)
+                    BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
                 } else {
                     Spacer()
-                    ActionableMessage(message: "No Balance", actionText: "Fund Now", action: {})
+                    ActionableMessage(message: "No Balance", actionText: "Fund Now", action: { self.viewModel.showReceiveFunds = true })
                         .padding()
                 }
+                
                 Spacer()
+                
                 self.keypad
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
-                    .disabled(self.$viewModel.verifiedBalance.wrappedValue <= 0)
+                    .disabled(!self.isSendingEnabled)
                     .padding()
                     .frame(minWidth: 0, maxWidth: 250, alignment: .center)
-                    
-                
                 
                 Spacer()
                 
@@ -139,9 +139,15 @@ struct Home: View {
                 
                 Spacer()
                 
-                
-                NavigationLink(destination: WalletDetails(balance: self.viewModel.verifiedBalance, zAddress: self.viewModel.zAddress, status: BalanceStatus.waiting(change: 0.304), items: DetailModel.mockDetails)
-                    .navigationBarTitle(Text(""), displayMode: .inline)) {
+                NavigationLink(
+                    destination: WalletDetails(
+                            balance: self.viewModel.verifiedBalance,
+                            zAddress: self.viewModel.zAddress
+                            
+                    )
+                    .environmentObject(appEnvironment)
+                    .navigationBarTitle(Text(""), displayMode: .inline)
+                ) {
                         HStack(alignment: .center, spacing: 10) {
                             Image("wallet_details_icon")
                             Text("Wallet Details")
@@ -163,8 +169,6 @@ struct Home: View {
                 }
                 .sheet(isPresented: $viewModel.showReceiveFunds){
                     ReceiveFunds(address: self.viewModel.zAddress)
-                        .navigationBarHidden(true)
-                        .navigationBarTitle("", displayMode: .inline)
                 }
                 , trailing:
                 Button(action: {

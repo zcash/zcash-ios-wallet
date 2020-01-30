@@ -15,7 +15,7 @@ struct DetailModel: Identifiable {
         case received
     }
     var id: String
-    var zAddress: String
+    var zAddress: String?
     var date: Date
     var zecAmount: Double
     var status: Status
@@ -25,9 +25,9 @@ struct DetailModel: Identifiable {
 
         switch status {
         case .paid(let success):
-            return success ? "You paid \(zAddress)" : "Unsent Transaction"
+            return success ? "You paid \(zAddress?.shortZaddress ?? "Unknown")" : "Unsent Transaction"
         case .received:
-            return "\(shielded ? "Unknown" : zAddress) paid you"
+            return "\(zAddress?.shortZaddress ?? "Unknown") paid you"
         }
     }
     

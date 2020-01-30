@@ -32,7 +32,7 @@ PODS:
 
 DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
-  - ZcashLightClientKit
+  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
 
 SPEC REPOS:
   trunk:
@@ -43,7 +43,10 @@ SPEC REPOS:
     - SQLite.swift
     - SwiftGRPC
     - SwiftProtobuf
-    - ZcashLightClientKit
+
+EXTERNAL SOURCES:
+  ZcashLightClientKit:
+    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -55,6 +58,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   ZcashLightClientKit: 6157bc35562e2fe09f97f0739b80013f4224298c
 
-PODFILE CHECKSUM: 5565ef9625673a83c35e42f62e810ffe0264547f
+PODFILE CHECKSUM: 4423795be61ecb7268b9bdbc5d6408ff660458c7
 
 COCOAPODS: 1.8.4
