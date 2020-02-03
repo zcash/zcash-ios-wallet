@@ -27,7 +27,7 @@ struct RestoreWallet: View {
     @State var proceed: Bool = false
     var body: some View {
         ZStack {
-            NavigationLink(destination: Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()), isActive: $proceed) {
+            NavigationLink(destination: Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment), isActive: $proceed) {
                 EmptyView()
             }
             

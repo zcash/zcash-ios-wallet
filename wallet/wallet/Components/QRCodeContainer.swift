@@ -14,7 +14,10 @@ struct QRCodeContainer: View {
         ZStack {
             ZcashButtonBackground(cornerTrim: 15)
                 .fill(Color.zDarkGray1)
-            qrImage.padding()
+            qrImage.scaledToFit()
+            Image("QR-zcashlogo")
+            .resizable()
+            .frame(width: 64, height: 64)
         }
     }
 }
