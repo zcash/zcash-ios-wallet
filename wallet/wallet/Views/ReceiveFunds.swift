@@ -17,6 +17,13 @@ struct ReceiveFunds: View {
     @State var isCopyAlertShown = false
     @State var isShareModalDisplayed = false
     
+    var qrImage: Image {
+        if let img = QRCodeGenerator.generate(from: self.address) {
+            return Image(img, scale: 1, label: Text("QR Code for \(self.address)"))
+        } else {
+            return Image("zebra_profile")
+        }
+    }
     var address: String
     let qrSize: CGFloat = 285
     var body: some View {
@@ -25,7 +32,7 @@ struct ReceiveFunds: View {
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 40) {
                     Spacer()
-                    QRCodeContainer(qrImage: Image("QrCode"))
+                    QRCodeContainer(qrImage: qrImage)
                         .frame(width: qrSize, height: qrSize)
                     
                     Button(action: {
