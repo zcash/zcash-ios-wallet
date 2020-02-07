@@ -35,8 +35,38 @@ final class HomeViewModel: ObservableObject {
                 .sink(receiveValue: { self.balance = $0 }))
             cancellable.append(environment.synchronizer.progress.subscribe(on: DispatchQueue.main)
                 .sink(receiveValue: { self.progress = $0 }))
-            zAddress = environment.initializer.getAddress() ?? ""
+            zAddress = ""
         }
+        NotificationCenter.default.publisher(for: .qrZaddressScanned)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
+            switch completion {
+            case .failure(let error):
+                print("error scanning: \(error)")
+            case .finished:
+                print("finished scanning")
+            }
+        }) { (notification) in
+            guard let address = notification.userInfo?["zAddress"] as? String else {
+                return
+            }
+            self.showReceiveFunds = false
+            print("got address \(address)")
+            self.zAddress = address
+            DispatchQueue.main.async {
+                self.sendingPushed = true
+            }
+        }
+        .store(in: &cancellable)
+    }
+    
+    
+    var sendFlow: SendFlowEnvironment {
+        SendFlowEnvironment(
+            amount: sendZecAmount,
+            verifiedBalance: verifiedBalance,
+            address: zAddress
+        )
     }
 }
 
@@ -74,12 +104,15 @@ struct Home: View {
     }
     
     var enterAddressButton: some View {
-        ZcashButton(color: Color.black, fill: Color.zYellow, text: "Enter Address")
+        Button(action: {
+            self.viewModel.sendingPushed = true
+        }) {
+            ZcashButton(color: Color.black, fill: Color.zYellow, text: "Enter Address")
             .frame(height: 58)
             .padding([.leading, .trailing], 40)
             .opacity(isAmountValid ? 1.0 : 0.3 ) // validate this
-            .disabled(!isAmountValid)
-        
+         
+        }    .disabled(!isAmountValid)
     }
     
     var isAmountValid: Bool {
@@ -127,11 +160,8 @@ struct Home: View {
                 } else {
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
-                            SendFlowEnvironment(
-                                amount: self.viewModel.sendZecAmount,
-                                verifiedBalance: self.viewModel.verifiedBalance
-                            )
-                        )
+                            self.viewModel.sendFlow
+                        ), isActive: self.$viewModel.sendingPushed
                     ) {
                         self.enterAddressButton
                     }.disabled(!self.isAmountValid)

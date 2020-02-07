@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-
 struct ZcashTextField: View {
     
     var title: String
