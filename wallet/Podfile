@@ -4,6 +4,14 @@ use_frameworks!
 target 'wallet' do 
  pod 'ZcashLightClientKit', :path => '/Users/pacu/Repos/ECC/ZcashLightClientKit'
  pod 'KeychainSwift', '~> 19.0.0'
+ pod 'TinyQRScanner'
+ target 'walletTests' do 
+  inherit! :search_paths
+ end
+
+ target 'walletUITests' do 
+   inherit! :search_paths
+ end
 end
 
 post_install do |installer|

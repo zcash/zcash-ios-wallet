@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import wallet
+@testable import zECC_Wallet
 
 class walletTests: XCTestCase {
 

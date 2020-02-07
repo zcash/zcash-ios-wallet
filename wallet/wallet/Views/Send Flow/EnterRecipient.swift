@@ -7,10 +7,19 @@
 //
 
 import SwiftUI
-
+import Combine
+class EnterRecipientViewModel: ObservableObject {
+    
+    @Published var showScanView = false
+    
+    var dispose = Set<AnyCancellable>()
+    
+}
 struct EnterRecipient: View {
+    
     @EnvironmentObject var flow: SendFlowEnvironment
     
+    @ObservedObject var viewModel = EnterRecipientViewModel()
     var availableBalance: Bool {
         flow.verifiedBalance > 0
     }
@@ -31,6 +40,17 @@ struct EnterRecipient: View {
         availableBalance && validAddress
     }
     
+    var addressInBuffer: AnyView {
+        guard let clipboard = UIPasteboard.general.string,
+            clipboard.shortZaddress != nil else {
+                return AnyView(EmptyView())
+        }
+        
+        return AnyView(
+            ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: { self.flow.address = clipboard })
+                )
+    }
+    
     var body: some View {
         ZStack {
             ZcashBackground()
@@ -44,21 +64,28 @@ struct EnterRecipient: View {
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
-                        print("qr pressed")
+                        self.viewModel.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
                         .renderingMode(.original)
-                )
+                ).sheet(isPresented: $viewModel.showScanView) {
+                    ScanAddress(
+                        viewModel: ScanAddressViewModel(
+                            address: self.$flow.address,
+                            shouldShow: self.$viewModel.showScanView
+                        )
+                    ).environmentObject(SceneDelegate.shared.environment!)
+                }
                 
                 ZcashTextField(
                     title: "Amount",
-                    subtitle: "You have 23.451234 sendable ZEC",
+                    subtitle: "You have \(flow.verifiedBalance) sendable ZEC",
                     keyboardType: UIKeyboardType.decimalPad,
                     binding: $flow.amount
                 )
                 
                 
-                ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: {})
+                addressInBuffer
                 Spacer()
                 NavigationLink(destination: AddMemo().environmentObject(flow)){
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Next")
@@ -74,9 +101,15 @@ struct EnterRecipient: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }.navigationBarItems(trailing: Image("infobutton"))
+        .onAppear() {
+           
+        }
+       
     }
     
 }
+
+
 
 struct EnterRecipient_Previews: PreviewProvider {
     static var previews: some View {
