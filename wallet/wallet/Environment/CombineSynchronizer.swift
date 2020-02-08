@@ -119,6 +119,22 @@ class CombineSynchronizer {
             c.cancel()
         }
     }
+    
+    
+    func send(with spendingKey: String, zatoshi: Int64, to recipientAddress: String, memo: String?,from account: Int) -> Future<PendingTransactionEntity,Error>  {
+        Future<PendingTransactionEntity, Error>() {
+            promise in
+            self.synchronizer.sendToAddress(spendingKey: spendingKey, zatoshi: zatoshi, toAddress: recipientAddress, memo: memo, from: account) { (result) in
+                switch result {
+                case .failure(let error):
+                    promise(.failure(error))
+                case .success(let pendingTx):
+                    promise(.success(pendingTx))
+                }
+            }
+        }
+        
+    }
 }
 
 extension CombineSynchronizer {
