@@ -46,6 +46,7 @@ struct HoldToSend: View {
                 Spacer()
                 ZcashSendButton(longPressCancelled: {}, longPressSucceded: {
                     self.holdOk = true
+                    
                 })
                 
                 NavigationLink(destination:

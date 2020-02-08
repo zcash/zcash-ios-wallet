@@ -7,8 +7,17 @@
 //
 
 import Foundation
+import ZcashLightClientKit
+import Combine
+
+
 
 final class SendFlowEnvironment: ObservableObject {
+    
+    enum FlowError: Error {
+        case invalidEnvironment
+    }
+    
     @Published var amount: String
     @Published var isActive: Bool = false
     @Published var address: String
@@ -22,5 +31,23 @@ final class SendFlowEnvironment: ObservableObject {
         self.amount = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
         self.verifiedBalance = verifiedBalance
         self.address = address
+    }
+    
+    func send() -> Future<PendingTransactionEntity,Error> {
+        
+        guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
+              self.address.isValidZaddress,
+              let environment = SceneDelegate.shared.environment,
+              let spendingKey = SeedManager.default.getKeys()?.first else {
+                  return Future<PendingTransactionEntity,Error>() { $0(.failure(FlowError.invalidEnvironment))}
+        }
+        
+        return environment.synchronizer.send(
+                with: spendingKey,
+                zatoshi: zatoshi,
+                to: self.address,
+                memo: self.memo.isEmpty ? nil : self.memo,
+                from: 0
+            )
     }
 }

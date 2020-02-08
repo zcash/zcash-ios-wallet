@@ -7,10 +7,62 @@
 //
 
 import SwiftUI
-
+import Combine
+import ZcashLightClientKit
+final class SendingViewModel: ObservableObject {
+    
+    var diposables = Set<AnyCancellable>()
+    weak var flow: SendFlowEnvironment?
+    var showError = false
+    var pendingTx: PendingTransactionEntity?
+    var error: Error?
+    
+    var errorMessage: String {
+        guard let e = error else {
+            return "thing is that we really don't know what just went down, sorry!"
+        }
+        
+        return "\(e)"
+    }
+    
+    var sendGerund: String {
+        "Sending"
+    }
+    
+    var sendPastTense: String {
+        "Sent"
+    }
+    
+    var sendText: String {
+        guard let flow = self.flow, self.error != nil  else {
+            return "Unable to send"
+        }
+        
+        return flow.isDone ? sendPastTense : sendGerund
+    }
+    
+    func send() {
+        self.flow?.send()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] (completion) in
+                switch completion {
+                case .finished:
+                    self?.flow?.isDone = true
+                case .failure(let error):
+                    print("error: \(error)")
+                    self?.error = error
+                    self?.showError = true
+                }
+            }) { [weak self] (transaction) in
+                self?.pendingTx = transaction
+        }.store(in: &diposables)
+    }
+}
 struct Sending: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
+    
+    @ObservedObject var viewModel = SendingViewModel()
     
     var includesMemoView: AnyView {
         guard flow.includesMemo else { return AnyView(Divider()) }
@@ -33,25 +85,20 @@ struct Sending: View {
                 fill: Color.zYellow,
                 text: "All Done!"
             )
-            .frame(height: 58)
-            .padding([.leading, .trailing], 30)
+                .frame(height: 58)
+                .padding([.leading, .trailing], 30)
         )
     }
     
-    var sendGerund: String {
-        "Sending"
-    }
     
-    var sendPastTense: String {
-        "Sent"
-    }
-    
-    var send: String {
-        flow.isDone ? sendPastTense : sendGerund
-    }
     
     var card: AnyView {
-       AnyView(EmptyView())
+        guard let pendingTx = viewModel.pendingTx else {
+            return AnyView(EmptyView())
+        }
+        return AnyView(
+            DetailCard(model: DetailModel(pendingTransaction: pendingTx))
+        )
     }
     
     var body: some View {
@@ -60,7 +107,7 @@ struct Sending: View {
             
             VStack(alignment: .center) {
                 Spacer()
-                Text("\(send) \(flow.amount) ZEC to")
+                Text("\(viewModel.sendText) \(flow.amount) ZEC to")
                     .foregroundColor(.black)
                     .font(.title)
                 Text("\(flow.address)")
@@ -74,6 +121,25 @@ struct Sending: View {
                 card
                 
             }.padding([.horizontal], 40)
+                .alert(isPresented: self.$viewModel.showError) {
+                    Alert(
+                        title: Text("Something happened!"),
+                        message: Text(self.viewModel.errorMessage),
+                        dismissButton: .default(Text("dismiss"),
+                                                action: {
+                                                    self.flow.isActive = false
+                        })
+                    )
+            }
+        }.navigationBarItems(trailing: Button(action: {
+            self.flow.isActive = false
+        }) {
+            Image("close")
+                .renderingMode(.original)
+        }.disabled(self.viewModel.error != nil || !self.flow.isDone))
+            .onAppear() {
+                self.viewModel.flow = self.flow
+                self.viewModel.send()
         }
     }
 }
