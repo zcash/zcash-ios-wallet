@@ -69,7 +69,7 @@ class CombineSynchronizer {
     init(initializer: Initializer) throws {
         self.initializer = initializer
         self.synchronizer = try SDKSynchronizer(initializer: initializer)
-        self.status = CurrentValueSubject(.synced)
+        self.status = CurrentValueSubject(.disconnected)
         self.progress = CurrentValueSubject(0)
         self.balance = CurrentValueSubject(0)
         self.verifiedBalance = CurrentValueSubject(0)

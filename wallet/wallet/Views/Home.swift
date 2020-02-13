@@ -198,7 +198,7 @@ struct Home: View {
                         .scaleEffect(0.5)
                 }.disabled(viewModel.isSyncing)
                 .sheet(isPresented: $viewModel.showReceiveFunds){
-                    ReceiveFunds(address: self.viewModel.zAddress)
+                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
                 }
                 , trailing:
                 Button(action: {

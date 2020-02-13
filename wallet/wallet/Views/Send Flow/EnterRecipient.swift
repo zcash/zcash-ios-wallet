@@ -60,7 +60,9 @@ struct EnterRecipient: View {
                 Spacer().frame(height: 96)
                 ZcashTextField(
                     title: "To",
-                    subtitle: "Enter a shielded Zcash address",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: "Enter a shielded Zcash address")
+                        ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
@@ -79,7 +81,9 @@ struct EnterRecipient: View {
                 
                 ZcashTextField(
                     title: "Amount",
-                    subtitle: "You have \(flow.verifiedBalance) sendable ZEC",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: "You have \(flow.verifiedBalance) sendable ZEC")
+                    ),
                     keyboardType: UIKeyboardType.decimalPad,
                     binding: $flow.amount
                 )

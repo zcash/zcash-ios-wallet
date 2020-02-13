@@ -64,6 +64,7 @@
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
 		0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DB123BED85C00709636 /* ActionableMessage.swift */; };
 		0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEC5DF823BD60CF002EFD0D /* Ring.swift */; };
+		0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		C813E51FD2625FD87558A311 /* Pods_walletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62B635FC5467D5367105A0F5 /* Pods_walletTests.framework */; };
@@ -152,6 +153,7 @@
 		0DE51DAF23BEBE5100709636 /* KeyPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPad.swift; sourceTree = "<group>"; };
 		0DE51DB123BED85C00709636 /* ActionableMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableMessage.swift; sourceTree = "<group>"; };
 		0DEC5DF823BD60CF002EFD0D /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "zECC+SwiftUI.swift"; sourceTree = "<group>"; };
 		0DFC0CF023C7787F0009DD7E /* ZcashSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSendButton.swift; sourceTree = "<group>"; };
 		0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCloseButton.swift; sourceTree = "<group>"; };
 		1B234A6D8FF47F233B4E92BF /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */,
 				0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */,
 				0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */,
+				0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -657,6 +660,7 @@
 				0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */,
 				0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */,
 				0DDF876723DB5400002BF158 /* URL+Zcash.swift in Sources */,
+				0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
 				0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */,
 				0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */,
