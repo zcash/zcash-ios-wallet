@@ -96,8 +96,9 @@ struct EnterRecipient: View {
                         .frame(height: 58)
                         .padding([.leading, .trailing], 40)
                 }
-                    .opacity(validForm ? 1.0 : 0.3 ) // validate this
-                    .disabled(!validForm)
+                .isDetailLink(false)
+                .opacity(validForm ? 1.0 : 0.3 ) // validate this
+                .disabled(!validForm)
                 Spacer()
                 
             }.padding([.horizontal], 24)
@@ -117,6 +118,6 @@ struct EnterRecipient: View {
 
 struct EnterRecipient_Previews: PreviewProvider {
     static var previews: some View {
-        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456))
+        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true)))
     }
 }
