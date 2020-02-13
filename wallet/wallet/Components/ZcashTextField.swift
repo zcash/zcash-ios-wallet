@@ -10,14 +10,14 @@ import SwiftUI
 struct ZcashTextField: View {
     
     var title: String
-    var subtitle: String?
-    
+    var placeholder: String = ""
     var accessoryIcon: Image?
     var action: (() -> Void)?
     var contentType: UITextContentType?
     var keyboardType: UIKeyboardType
     var autocorrect = false
     var autocapitalize = false
+    var subtitleView: AnyView
     
     
     @Binding var text: String
@@ -59,17 +59,6 @@ struct ZcashTextField: View {
         }
     }
     
-    var subtitleView: AnyView {
-        if let sub = subtitle {
-            return AnyView(
-                Text(sub)
-                    .foregroundColor(.zLightGray)
-                    .font(.footnote)
-            )
-        } else {
-            return AnyView(EmptyView())
-        }
-    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -77,13 +66,14 @@ struct ZcashTextField: View {
                 .foregroundColor(.white)
             
             HStack {
-                TextField("", text: $text)
+                TextField(placeholder, text: $text)
+                    .foregroundColor(Color.white)
                     .textContentType(contentType)
                     .keyboardType(keyboardType)
                     .autocapitalization(autocapitalize ? .none : .sentences)
                     .disableAutocorrection(!autocorrect)
-                    .font(.body)
-                    .foregroundColor(.white)
+                    
+                    
                     .padding([.top])
                 accessoryView
                     .frame(width: 25, height: 25)
@@ -95,11 +85,15 @@ struct ZcashTextField: View {
         }
     }
     
-    init(title: String, subtitle: String?, contentType: UITextContentType? = nil, keyboardType: UIKeyboardType  = .default, binding: Binding<String>, action: (() -> Void)? = nil, accessoryIcon: Image? = nil) {
+    init(title: String, subtitleView: AnyView? = nil, contentType: UITextContentType? = nil, keyboardType: UIKeyboardType  = .default, binding: Binding<String>, action: (() -> Void)? = nil, accessoryIcon: Image? = nil) {
         self.title = title
         self.accessoryIcon = accessoryIcon
         self.action = action
-        self.subtitle = subtitle
+        if let subtitle = subtitleView {
+            self.subtitleView = AnyView(subtitle)
+        } else {
+            self.subtitleView = AnyView(EmptyView())
+        }
         self.contentType = contentType
         self.keyboardType = keyboardType
         self._text = binding
@@ -113,10 +107,18 @@ struct ZcashTextField_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            ZcashTextField(title: "To", subtitle: "Enter Shielded Address", binding: $text, action: {}, accessoryIcon:Image("QRCodeIcon")
-                .renderingMode(.original)
+            ZcashTextField(title: "To",
+                           subtitleView: AnyView(
+                            Text("Enter Shielded Address")
+                                .foregroundColor(.zLightGray)
+                                .font(.footnote)
+                            ),
+                           binding: $text,
+                           action: {},
+                           accessoryIcon: Image("QRCodeIcon")
+                                                .renderingMode(.original)
             )
-                .padding()
+            .padding()
             
         }
     }

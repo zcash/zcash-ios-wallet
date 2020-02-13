@@ -28,11 +28,8 @@ struct CreateNewWallet: View {
                     .scaleEffect(0.5)
                 
                 Spacer()
-                Text("12% Synced")
-                    .foregroundColor(.white)
-                Spacer()
                 NavigationLink(destination:
-                    BackupWallet()
+                    BackupWallet().environmentObject(appEnvironment)
                         .navigationBarHidden(true)
                     
                 ) {
@@ -42,6 +39,15 @@ struct CreateNewWallet: View {
                     
                 }
                 
+                #if DEBUG
+                Button(action: {
+                    self.appEnvironment.nuke()
+                }) {
+                    Text("NUKE SEED MANAGER")
+                        .foregroundColor(.red)
+                        .font(.title)
+                }
+                #endif
                 NavigationLink(
                     destination: RestoreWallet()
                     .environmentObject(appEnvironment)
@@ -52,6 +58,7 @@ struct CreateNewWallet: View {
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
                 }
+                
                 
                 Spacer()
             }

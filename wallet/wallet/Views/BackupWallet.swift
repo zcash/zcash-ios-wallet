@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BackupWallet: View {
-    
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
@@ -25,9 +25,7 @@ struct BackupWallet: View {
                 Spacer()
                 ZcashLogo()
                     .scaleEffect(0.5)
-                Spacer()
-                Text("92% Synced")
-                    .foregroundColor(.white)
+
                 Spacer()
                 Button(action: {
                     self.showModal = true
@@ -38,7 +36,7 @@ struct BackupWallet: View {
                 .padding([.leading, .trailing], buttonPadding)
                 
                 
-                NavigationLink(destination: Home(amount: 0, verifiedBalance: 1.2345)) {
+                NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
                     Text("Skip")
                         .foregroundColor(Color.zYellow)
                         .font(.body)
@@ -46,6 +44,13 @@ struct BackupWallet: View {
                 }
                 .padding([.leading, .trailing], buttonPadding)
                 Spacer()
+            }
+        }
+        .onAppear() {
+            do {
+                try self.appEnvironment.createNewWallet()
+            } catch {
+                print("could not create new wallet: \(error)")
             }
         }
         .sheet(isPresented: self.$showModal) {
@@ -56,7 +61,7 @@ struct BackupWallet: View {
 
 struct BackupWallet_Previews: PreviewProvider {
     static var previews: some View {
-        BackupWallet()
+        BackupWallet().environmentObject(try! ZECCWalletEnvironment())
     }
 }
 
