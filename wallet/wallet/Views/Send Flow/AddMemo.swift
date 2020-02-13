@@ -47,21 +47,27 @@ struct AddMemo: View {
                     .frame(minHeight: 64)
                     .layoutPriority(0.5)
                 Spacer()
+                Button(action: {
+                    self.flow.includesMemo = true
+                    self.isShown = true
+                }) {
+                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
+                    .frame(height: self.buttonHeight)
+                    .padding([.leading, .trailing], self.buttonPadding)
+                    .opacity( isMemoEmpty ? 0.3 : 1 )
+                }.disabled(isMemoEmpty)
                 
                 NavigationLink(
                     destination: HoldToSend().environmentObject(flow)
                     ) {
-                        ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
-                        .frame(height: self.buttonHeight)
-                        .padding([.leading, .trailing], self.buttonPadding)
-                }.disabled(isMemoEmpty)
-                    .opacity( isMemoEmpty ? 0.3 : 1 )
+                        EmptyView()
+                }.isDetailLink(false)
                 NavigationLink(
                     destination: HoldToSend().environmentObject(flow),
                     isActive: self.$isShown
                 ) {
                     EmptyView()
-                }
+                }.isDetailLink(false)
                 Button(action: {
                     self.flow.includesMemo = false
                     self.isShown = true

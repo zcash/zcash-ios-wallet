@@ -9,7 +9,7 @@
 import Foundation
 import ZcashLightClientKit
 import Combine
-
+import SwiftUI
 
 
 final class SendFlowEnvironment: ObservableObject {
@@ -19,7 +19,7 @@ final class SendFlowEnvironment: ObservableObject {
     }
     
     @Published var amount: String
-    @Published var isActive: Bool = false
+    @Binding var isActive: Bool
     @Published var address: String
     @Published var verifiedBalance: Double
     @Published var memo: String = ""
@@ -27,10 +27,11 @@ final class SendFlowEnvironment: ObservableObject {
     @Published var isDone = false
 
     
-    init(amount: Double, verifiedBalance: Double, address: String = "") {
+    init(amount: Double, verifiedBalance: Double, address: String = "", isActive: Binding<Bool>) {
         self.amount = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
         self.verifiedBalance = verifiedBalance
         self.address = address
+        self._isActive = isActive
     }
     
     func send() -> Future<PendingTransactionEntity,Error> {
@@ -50,4 +51,8 @@ final class SendFlowEnvironment: ObservableObject {
                 from: 0
             )
     }
+}
+
+extension Notification.Name {
+    static let sendFlowClosed = Notification.Name("sendFlowClosed")
 }

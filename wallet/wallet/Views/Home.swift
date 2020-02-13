@@ -16,7 +16,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showProfile: Bool
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
-    @Published var sendingPushed: Bool = false
+    var sendingPushed: Bool = false
     @Published var zAddress = ""
     @Published var balance: Double = 0
     @Published var progress: Float = 0
@@ -60,19 +60,15 @@ final class HomeViewModel: ObservableObject {
         .store(in: &cancellable)
     }
     
-    
-    var sendFlow: SendFlowEnvironment {
-        SendFlowEnvironment(
-            amount: sendZecAmount,
-            verifiedBalance: verifiedBalance,
-            address: zAddress
-        )
+    deinit {
+        cancellable.forEach{ $0.cancel() }
     }
 }
 
 struct Home: View {
     
     var keypad: KeyPad
+    @State var sendingPushed = false
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     var isSendingEnabled: Bool {
@@ -105,7 +101,7 @@ struct Home: View {
     
     var enterAddressButton: some View {
         Button(action: {
-            self.viewModel.sendingPushed = true
+            self.sendingPushed = true
         }) {
             ZcashButton(color: Color.black, fill: Color.zYellow, text: "Enter Address")
             .frame(height: 58)
@@ -158,13 +154,23 @@ struct Home: View {
                 if self.$viewModel.isSyncing.wrappedValue {
                     self.syncingButton
                 } else {
+                 
+                    self.enterAddressButton
+                                                   
+                   
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
-                            self.viewModel.sendFlow
-                        ), isActive: self.$viewModel.sendingPushed
+                            SendFlowEnvironment(
+                                amount: viewModel.sendZecAmount,
+                                verifiedBalance: viewModel.verifiedBalance,
+                                address: viewModel.zAddress,
+                                isActive: $sendingPushed
+                                
+                            )
+                        ), isActive: self.$sendingPushed
                     ) {
-                        self.enterAddressButton
-                    }.disabled(!self.isAmountValid)
+                       EmptyView()
+                    }.isDetailLink(false)
                 }
                 
                 Spacer()
@@ -213,6 +219,9 @@ struct Home: View {
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
             }
+        .onAppear() {
+            self.viewModel.sendingPushed = false
+        }
         
     }
 }

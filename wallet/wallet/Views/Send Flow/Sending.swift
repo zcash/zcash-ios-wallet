@@ -117,7 +117,11 @@ struct Sending: View {
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                doneButton
+                Button(action: {
+                    self.flow.isActive = false
+                }) {
+                    doneButton
+                }
                 card
                 
             }.padding([.horizontal], 40)
@@ -147,7 +151,7 @@ struct Sending: View {
 struct Sending_Previews: PreviewProvider {
     static var previews: some View {
         
-        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456)
+        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456, isActive: .constant(true))
         flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         flow.includesMemo = true
         flow.isDone = false
