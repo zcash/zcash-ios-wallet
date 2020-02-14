@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ProfileScreen: View {
     @Binding var zAddress: String
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     var body: some View {
         NavigationView {
             ZStack {
@@ -24,11 +25,11 @@ struct ProfileScreen: View {
                     
                     Spacer()
                     ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
-                    .frame(height: 68)
+                        .frame(height: 68)
                         .padding(.horizontal, 48)
                     ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
                         .frame(height: 68)
-                    .padding(.horizontal, 48)
+                        .padding(.horizontal, 48)
                     Text("See Application Log")
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
@@ -36,9 +37,17 @@ struct ProfileScreen: View {
                         .frame(height: 68)
                         .padding(.horizontal, 48)
                     
-                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 2", action: {})
-                    .disabled(true)
-                    .padding(.horizontal, 48)
+                    
+                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 6", action: {}) // TODO: get real build number
+                        .disabled(true)
+                        .padding(.horizontal, 48)
+                    Button(action: {
+                        self.appEnvironment.nuke()
+                    }) {
+                        ZcashButton.nukeButton()
+                            .frame(height: 48)
+                            .padding([.leading, .trailing], 48)
+                    }
                     Spacer()
                     
                     

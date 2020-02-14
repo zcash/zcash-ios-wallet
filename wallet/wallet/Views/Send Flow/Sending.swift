@@ -34,7 +34,7 @@ final class SendingViewModel: ObservableObject {
     }
     
     var sendText: String {
-        guard let flow = self.flow, self.error != nil  else {
+        guard let flow = self.flow, self.error == nil  else {
             return "Unable to send"
         }
         

@@ -59,6 +59,7 @@ struct RestoreWallet: View {
                     subtitleView: AnyView(
                         Text.subtitle(text: "Make sure nobody is watching you!")
                         ),
+                    keyboardType: UIKeyboardType.alphabet,
                     binding: $viewModel.seedPhrase
                 )
                 Spacer()

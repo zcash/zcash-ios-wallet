@@ -16,3 +16,9 @@ extension Text {
         .font(.footnote)
     }
 }
+
+extension ZcashButton {
+    static func nukeButton() -> ZcashButton {
+        ZcashButton(color: Color.red, fill: Color.clear, text: "NUKE WALLET")
+    }
+}
