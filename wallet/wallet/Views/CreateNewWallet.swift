@@ -43,16 +43,16 @@ struct CreateNewWallet: View {
                 Button(action: {
                     self.appEnvironment.nuke()
                 }) {
-                    Text("NUKE SEED MANAGER")
-                        .foregroundColor(.red)
-                        .font(.title)
+                    ZcashButton.nukeButton()
+                    .frame(height: self.buttonHeight)
+                    .padding([.leading, .trailing], self.buttonPadding)
                 }
                 #endif
                 NavigationLink(
                     destination: RestoreWallet()
                     .environmentObject(appEnvironment)
                         .navigationBarTitle("", displayMode: .inline)
-                        .navigationBarHidden(true)
+                        .navigationBarHidden(false)
                 ) {
                     ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
                     .frame(height: self.buttonHeight)

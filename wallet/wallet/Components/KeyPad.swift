@@ -61,11 +61,8 @@ class KeyPadViewModel: ObservableObject {
     
     var text: String
     
-    var formatter: NumberFormatter {
-        if value <= 0 {
-            return NumberFormatter.zeroBalanceFormatter
-        }
-        return NumberFormatter.zecAmountFormatter
+    static var formatter: NumberFormatter {
+       NumberFormatter.zecAmountFormatter
     }
     
     var visibleValues: [[String]] {
@@ -73,11 +70,11 @@ class KeyPadViewModel: ObservableObject {
             ["1", "2", "3"],
             ["4", "5", "6"],
             ["7", "8", "9"],
-            [".", "0", "<"]
+            [Self.formatter.currencyDecimalSeparator, "0", "<"]
         ]
     }
     
-    var validValues: Set<String> = ["1", "2", "3","4", "5", "6","7", "8", "9","0",".","<"]
+    var validValues: Set<String> = ["1", "2", "3","4", "5", "6","7", "8", "9","0",KeyPadViewModel.formatter.currencyDecimalSeparator,"<"]
     
     init(initialValue: Double = 0) {
         
@@ -88,9 +85,8 @@ class KeyPadViewModel: ObservableObject {
         }
         
         let number = NSNumber(value: initialValue)
-        let formatter = initialValue <= 0 ? NumberFormatter.zeroBalanceFormatter : NumberFormatter.zecAmountFormatter
         
-        if let textValue = formatter.string(from: number) {
+        if let textValue = Self.formatter.string(from: number) {
             text = textValue
             value = initialValue
         } else {
@@ -161,7 +157,7 @@ class KeyPadViewModel: ObservableObject {
     }
     
     func doubleFromText(_ textValue: String) -> Double? {
-        formatter.number(from: textValue)?.doubleValue
+        Self.formatter.number(from: textValue)?.doubleValue
     }
     
 }

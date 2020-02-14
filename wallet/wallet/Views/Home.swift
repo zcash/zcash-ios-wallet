@@ -190,7 +190,7 @@ struct Home: View {
                                 .font(.headline)
                                 .frame(height: 48)
                         }.accentColor(Color.zLightGray)
-                }
+                }.isDetailLink(false)
                 Spacer()
                 
             }
@@ -218,10 +218,11 @@ struct Home: View {
             })
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
+                    .environmentObject(self.appEnvironment)
             }
-        .onAppear() {
-            self.viewModel.sendingPushed = false
-        }
+//        .onAppear() {
+//            self.viewModel.sendingPushed = false
+//        }
         
     }
 }

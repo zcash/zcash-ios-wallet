@@ -67,6 +67,7 @@ struct ZcashTextField: View {
             
             HStack {
                 TextField(placeholder, text: $text)
+                    .accentColor(.white)
                     .foregroundColor(Color.white)
                     .textContentType(contentType)
                     .keyboardType(keyboardType)
