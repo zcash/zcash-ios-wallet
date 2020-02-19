@@ -12,10 +12,14 @@ import ZcashLightClientKit
 final class SendingViewModel: ObservableObject {
     
     var diposables = Set<AnyCancellable>()
-    weak var flow: SendFlowEnvironment?
+    var flow: SendFlowEnvironment
     var showError = false
     var pendingTx: PendingTransactionEntity?
     var error: Error?
+    
+    init(flow: SendFlowEnvironment) {
+        self.flow = flow
+    }
     
     var errorMessage: String {
         guard let e = error else {
@@ -25,29 +29,13 @@ final class SendingViewModel: ObservableObject {
         return "\(e)"
     }
     
-    var sendGerund: String {
-        "Sending"
-    }
-    
-    var sendPastTense: String {
-        "Sent"
-    }
-    
-    var sendText: String {
-        guard let flow = self.flow, self.error == nil  else {
-            return "Unable to send"
-        }
-        
-        return flow.isDone ? sendPastTense : sendGerund
-    }
-    
     func send() {
-        self.flow?.send()
+        self.flow.send()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] (completion) in
                 switch completion {
                 case .finished:
-                    self?.flow?.isDone = true
+                    self?.flow.isDone = true
                 case .failure(let error):
                     print("error: \(error)")
                     self?.error = error
@@ -62,7 +50,24 @@ struct Sending: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     
-    @ObservedObject var viewModel = SendingViewModel()
+    @ObservedObject var viewModel: SendingViewModel
+    
+    
+    var sendGerund: String {
+        "Sending"
+    }
+    
+    var sendPastTense: String {
+        "Sent"
+    }
+    
+    var sendText: String {
+        guard viewModel.error == nil  else {
+            return "Unable to send"
+        }
+        
+        return flow.isDone ? sendPastTense : sendGerund
+    }
     
     var includesMemoView: AnyView {
         guard flow.includesMemo else { return AnyView(Divider()) }
@@ -107,7 +112,7 @@ struct Sending: View {
             
             VStack(alignment: .center) {
                 Spacer()
-                Text("\(viewModel.sendText) \(flow.amount) ZEC to")
+                Text("\(sendText) \(flow.amount) ZEC to")
                     .foregroundColor(.black)
                     .font(.title)
                 Text("\(flow.address)")
@@ -155,6 +160,6 @@ struct Sending_Previews: PreviewProvider {
         flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         flow.includesMemo = true
         flow.isDone = false
-        return Sending()
+        return Sending(viewModel: SendingViewModel(flow: flow))
     }
 }

@@ -49,6 +49,10 @@ struct AddMemo: View {
                 Spacer()
                 Button(action: {
                     self.flow.includesMemo = true
+                    
+                    guard let address = SceneDelegate.shared.environment?.initializer.getAddress() else { return }
+                    self.flow.memo = SendFlowEnvironment.includeReplyTo(address: address, in: self.flow.memo)
+                    
                     self.isShown = true
                 }) {
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")

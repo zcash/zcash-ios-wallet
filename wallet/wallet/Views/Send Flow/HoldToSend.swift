@@ -51,7 +51,7 @@ struct HoldToSend: View {
                 
                 NavigationLink(destination:
                     
-                    Sending().environmentObject(flow)
+                    Sending(viewModel: SendingViewModel(flow: flow)).environmentObject(flow)
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarBackButtonHidden(true)
                     ,

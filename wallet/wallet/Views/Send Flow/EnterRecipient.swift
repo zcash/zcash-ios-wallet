@@ -24,6 +24,19 @@ struct EnterRecipient: View {
         flow.verifiedBalance > 0
     }
     
+    var addressSubtitle: String {
+    
+        guard !flow.address.isEmpty, let environment = ZECCWalletEnvironment.shared else {
+           return "Enter a shielded Zcash address"
+        }
+        
+        if environment.initializer.isValidShieldedAddress(flow.address) {
+            return "This is a valid shielded address!"
+        } else {
+            return "Invalid shielded address!"
+        }
+    }
+    
     var amountSubtitle: String {
         if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: flow.verifiedBalance)) {
             return "You Have \(balance) sendable ZEC"
@@ -61,7 +74,7 @@ struct EnterRecipient: View {
                 ZcashTextField(
                     title: "To",
                     subtitleView: AnyView(
-                        Text.subtitle(text: "Enter a shielded Zcash address")
+                        Text.subtitle(text: addressSubtitle)
                         ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
