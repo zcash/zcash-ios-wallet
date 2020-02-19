@@ -10,15 +10,7 @@ import SwiftUI
 
 struct SendZecView: View {
     
-    @Binding var zatoshi: Double
-    
-    func format(amount: Double) ->  String {
-        if amount <= 0 {
-            return "0"
-        }
-        
-        return NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? "ERROR"
-    }
+    @Binding var zatoshi: String
     
     var body: some View {
         
@@ -29,7 +21,7 @@ struct SendZecView: View {
                 .frame(width: 25, height: 25)
                 .offset(x: 0, y: -10)
             
-            Text(self.format(amount: self.$zatoshi.wrappedValue))
+            Text(self.$zatoshi.wrappedValue)
                 .lineLimit(1)
                 .foregroundColor(.white)
                 .font(
@@ -47,7 +39,7 @@ struct SendZecView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            SendZecView(zatoshi: .constant(12.345))
+            SendZecView(zatoshi: .constant("12.345"))
         }
     }
 }

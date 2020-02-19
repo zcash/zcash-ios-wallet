@@ -49,4 +49,21 @@ class walletTests: XCTestCase {
         
     }
     
+    func testKeyPadDecimalLimit() {
+        let keyPadViewModel = KeyPadViewModel()
+        
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("hello world"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("0.0"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("1.0"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("100000"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("1.0000000"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("1000000.0000000"))
+        XCTAssertFalse(keyPadViewModel.hasEightOrMoreDecimals("1.0000000"))
+        XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("1.00000000"))
+        XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.000000001"))
+        XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.000000000"))
+        XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.0000000000"))
+        
+        
+    }
 }
