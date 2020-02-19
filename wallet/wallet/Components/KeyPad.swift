@@ -59,7 +59,7 @@ class KeyPadViewModel: ObservableObject {
     
     @Published var value: Double
     
-    var text: String
+    @Published var text: String
     
     static var formatter: NumberFormatter {
        NumberFormatter.zecAmountFormatter
@@ -79,7 +79,7 @@ class KeyPadViewModel: ObservableObject {
     init(initialValue: Double = 0) {
         
         guard initialValue > 0 else {
-            text = ""
+            text = "0"
             value = 0
             return
         }
@@ -90,7 +90,7 @@ class KeyPadViewModel: ObservableObject {
             text = textValue
             value = initialValue
         } else {
-            text = ""
+            text = "0"
             value = 0
         }
     }
@@ -106,8 +106,29 @@ class KeyPadViewModel: ObservableObject {
             numberTapped(text)
         }
     }
+    // this function assumes the given string contains a valid decimal number.
+    func hasEightOrMoreDecimals(_ number: String) -> Bool {
+        guard   Self.formatter.number(from: number) != nil, 
+                let separatorString = Self.formatter.currencyDecimalSeparator,
+                let separatorChar =  separatorString.first,
+                let separatorIndex = number.firstIndex(of: separatorChar) else { return false }
+        
+        let lastIndex = number.endIndex
+        
+        return number.distance(from: number.index(separatorIndex, offsetBy: 1), to: lastIndex) >= 8
+        
+    }
     
     func numberTapped(_ number: String) {
+        //catch leading zeros
+        if text == "0" && number == "0" {
+            return
+        }
+        
+        guard !hasEightOrMoreDecimals(text) else {
+            return
+        }
+        
         let newText = text + number
         
         guard let newValue = doubleFromText(newText) else {
@@ -119,7 +140,7 @@ class KeyPadViewModel: ObservableObject {
     
     
     func clear() {
-        text = ""
+        text = "0"
         value = 0
     }
     

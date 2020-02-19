@@ -12,6 +12,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
     
     @Published var sendZecAmount: Double
+    @Published var sendZecAmountText: String = "0"
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
     @Published var verifiedBalance: Double
@@ -83,6 +84,9 @@ struct Home: View {
         self.keypad.viewModel.$value.receive(on: DispatchQueue.main)
             .assign(to: \.sendZecAmount, on: viewModel)
             .store(in: &disposables)
+        self.keypad.viewModel.$text.receive(on: DispatchQueue.main)
+            .assign(to: \.sendZecAmountText, on: viewModel)
+            .store(in: &disposables)
     }
     
     var syncingButton: some View {
@@ -116,6 +120,17 @@ struct Home: View {
         
     }
     
+    var balanceView: AnyView {
+        if appEnvironment.initializer.getBalance() > 0 {
+           return AnyView (
+            BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
+            )
+        } else {
+           return AnyView(
+            ActionableMessage(message: "No Balance", actionText: "Fund Now", action: { self.viewModel.showReceiveFunds = true })
+            )
+        }
+    }
     var body: some View {
         ZStack {
             
@@ -128,7 +143,7 @@ struct Home: View {
             
             VStack(alignment: .center) {
                 Spacer()
-                SendZecView(zatoshi: self.$viewModel.sendZecAmount)
+                SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(self.isSendingEnabled ? 1.0 : 1.0)
                     .scaledToFit()
                 
@@ -137,7 +152,7 @@ struct Home: View {
                     BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
                 } else {
                     Spacer()
-                    ActionableMessage(message: "No Balance", actionText: "Fund Now", action: { self.viewModel.showReceiveFunds = true })
+                    balanceView
                         .padding()
                 }
                 
