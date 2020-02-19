@@ -30,6 +30,7 @@ final class RestoreWalletViewModel: ObservableObject {
     func isValidSeed(_ seed: String) -> Bool {
         seed.lengthOfBytes(using: .utf8) >= 32
     }
+    
     func importBirthday() throws {
         let b = BlockHeight(self.walletBirthDay) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
         try SeedManager.default.importBirthday(b)

@@ -8,13 +8,17 @@
 
 import SwiftUI
 
+
+
 struct ZcashMemoTextView: View {
     @Binding var text: String
+    
+    @State var textHeight: CGFloat = 174
     var charLimit: Int = 255
     var body: some View {
         ZStack{
             VStack(alignment: .trailing, spacing: 0) {
-                TextField("",text: $text)
+                TextView(placeholder: "Add Memo Here", text: $text, minHeight: self.textHeight, calculatedHeight: $textHeight)
                     .foregroundColor(.white)
                     .frame(height: 174)
                     .padding(4)
@@ -29,7 +33,8 @@ struct ZcashMemoTextView: View {
                 HStack {
                     Text("Add a memo here")
                     .foregroundColor(Color.zLightGray2)
-                    .opacity(0.6)
+                        .opacity(self.text.isEmpty ? 0.6 : 0)
+                        
                     Spacer()
                 }
                 .padding([.leading], 8)

@@ -14,6 +14,7 @@ import SwiftUI
 
 final class SendFlowEnvironment: ObservableObject {
     
+    let maxMemoLength: Int = 512
     enum FlowError: Error {
         case invalidEnvironment
     }
@@ -50,6 +51,19 @@ final class SendFlowEnvironment: ObservableObject {
                 memo: self.memo.isEmpty ? nil : self.memo,
                 from: 0
             )
+    }
+    
+    static func includeReplyTo(address: String, in memo: String) -> String {
+        
+        let replyTo = "...\nReply to:\n\(address)"
+        
+        if (memo.count + replyTo.count) >= 512 {
+            let truncatedMemo = String(memo[memo.startIndex ..< memo.index(memo.startIndex, offsetBy: (memo.count - replyTo.count))])
+            
+            return truncatedMemo + replyTo
+        }
+        return memo + replyTo
+        
     }
 }
 

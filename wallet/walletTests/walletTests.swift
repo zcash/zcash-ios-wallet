@@ -27,11 +27,26 @@ class walletTests: XCTestCase {
         XCTAssertNil("testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6".shortZaddress)
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testReplyToMemo() {
+        let memo = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments!"
+        let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+        let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
+        
+        let expected = memo + "\nReply to:\n\(replyTo)"
+        XCTAssertTrue(replyToMemo.count <= 512)
+        XCTAssertEqual(replyToMemo, expected)
+        
     }
-
+    
+    func testReplyToHugeMemo() {
+        let memo = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments!"
+        let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+        let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
+        
+        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "...\nReply to:\n\(replyTo)"
+        XCTAssertTrue(replyToMemo.count <= 512)
+        XCTAssertEqual(replyToMemo, expected)
+        
+    }
+    
 }
