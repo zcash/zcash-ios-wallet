@@ -91,9 +91,9 @@ extension ZECCWalletEnvironment {
         if difference.isZero {
             return BalanceStatus.available
         } else if difference > 0 {
-            return BalanceStatus.expecting(zec: difference)
+            return BalanceStatus.expecting(zec: abs(difference))
         } else {
-            return BalanceStatus.waiting(change: difference)
+            return BalanceStatus.waiting(change: abs(difference))
         }
     }
 }
