@@ -193,7 +193,7 @@ struct Home: View {
                 NavigationLink(
                     destination: WalletDetails(
                             balance: self.viewModel.verifiedBalance,
-                            zAddress: self.viewModel.zAddress
+                            zAddress: appEnvironment.initializer.getAddress() ?? ""
                             
                     )
                     .environmentObject(appEnvironment)
