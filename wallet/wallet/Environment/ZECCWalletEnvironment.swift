@@ -18,6 +18,9 @@ enum WalletState {
 }
 
 final class ZECCWalletEnvironment: ObservableObject {
+    
+    static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
+    
     @Published var state: WalletState
     
     let endpoint = LightWalletEndpoint(address: ZcashSDK.isMainnet ? "lightwalletd.z.cash" : "lightwalletd.testnet.z.cash", port: "9067", secure: true)
@@ -26,7 +29,9 @@ final class ZECCWalletEnvironment: ObservableObject {
     var pendingDbURL: URL
     var outputParamsURL: URL
     var spendParamsURL: URL
-    var initializer: Initializer
+    var initializer: Initializer {
+        synchronizer.initializer
+    }
     var synchronizer: CombineSynchronizer
     var cancellables = [AnyCancellable]()
     
@@ -37,7 +42,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         return .initalized
     }
     
-    init() throws {
+   private init() throws {
         self.dataDbURL = try URL.dataDbURL()
         self.cacheDbURL = try URL.cacheDbURL()
         self.pendingDbURL = try URL.pendingDbURL()
@@ -46,7 +51,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         
         self.state = Self.getInitialState()
         
-        self.initializer = Initializer(
+        let initializer = Initializer(
             cacheDbURL: self.cacheDbURL,
             dataDbURL: self.dataDbURL,
             pendingDbURL: self.pendingDbURL,
@@ -104,7 +109,7 @@ final class ZECCWalletEnvironment: ObservableObject {
             SeedManager.default.nukeWallet()
         try FileManager.default.removeItem(at: self.dataDbURL)
         try FileManager.default.removeItem(at: self.cacheDbURL)
-        
+        try FileManager.default.removeItem(at: self.pendingDbURL)
         } catch {
             print("could not nuke wallet: \(error)")
         }
@@ -119,8 +124,3 @@ final class ZECCWalletEnvironment: ObservableObject {
     
 }
 
-extension ZECCWalletEnvironment {
-    static var shared: ZECCWalletEnvironment? {
-        SceneDelegate.shared.environment
-    }
-}

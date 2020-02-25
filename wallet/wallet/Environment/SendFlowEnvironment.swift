@@ -39,10 +39,11 @@ final class SendFlowEnvironment: ObservableObject {
         
         guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
               self.address.isValidZaddress,
-              let environment = SceneDelegate.shared.environment,
               let spendingKey = SeedManager.default.getKeys()?.first else {
                   return Future<PendingTransactionEntity,Error>() { $0(.failure(FlowError.invalidEnvironment))}
+        
         }
+        let environment = ZECCWalletEnvironment.shared
         
         return environment.synchronizer.send(
                 with: spendingKey,

@@ -10,33 +10,56 @@ import SwiftUI
 import Combine
 class WalletDetailsViewModel: ObservableObject {
 
-    @Published var items: [DetailModel] = []
+    var items: [DetailModel] = []
+    var showError = false
+    var balance: Double = 0
     private var cancellables = Set<AnyCancellable>()
-    func load() {
-        SceneDelegate.shared.environment?.synchronizer.walletDetails
-        .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { (completion) in
-                
+    init(){
+        ZECCWalletEnvironment.shared.synchronizer.walletDetails
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { [weak self] (completion) in
+                guard let self = self else { return }
                 switch completion {
-                case .failure(let error):
-                    print("error: \(error)")
-                default:
+                case .failure(_):
+                    self.showError = true
+                case .finished:
                     break
                 }
-            }, receiveValue: { self.items = $0 })
-        .store(in: &self.cancellables)
+            }) { (models) in
+                self.items = [DetailModel](models)
+            }
+            
+        .store(in: &cancellables)
+        
+        ZECCWalletEnvironment.shared.synchronizer.balance
+            .receive(on: RunLoop.main)
+            .assign(to: \.balance, on: self)
+        .store(in: &cancellables)
+    
+    }
+    deinit {
+        cancellables.forEach { (c) in
+            c.cancel()
+        }
     }
     
+    var balanceStatus: BalanceStatus {
+        ZECCWalletEnvironment.shared.balanceStatus
+    }
+    
+    var zAddress: String {
+        ZECCWalletEnvironment.shared.initializer.getAddress() ?? ""
+    }
 }
 
 struct WalletDetails: View {
-    @State var balance: Double
-    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @ObservedObject var viewModel = WalletDetailsViewModel()
+    @EnvironmentObject var viewModel: WalletDetailsViewModel
     
-    var zAddress: String
+    var zAddress: String {
+        viewModel.zAddress
+    }
     var status: BalanceStatus {
-        appEnvironment.balanceStatus
+        viewModel.balanceStatus
     }
     
     var body: some View {
@@ -76,12 +99,6 @@ struct WalletDetails: View {
             UITableView.appearance().separatorStyle = .none
             UITableView.appearance().backgroundColor = UIColor.clear
             
-            guard self.viewModel.items.isEmpty else {
-                return
-            }
-            
-            self.viewModel.load()
-            
         }
         .onDisappear() {
             UITableView.appearance().separatorStyle = .singleLine
@@ -90,10 +107,13 @@ struct WalletDetails: View {
         .edgesIgnoringSafeArea([.bottom])
         .navigationBarItems(trailing:
             HStack {
-                BalanceDetail(availableZec: balance, status: status)
+                BalanceDetail(availableZec: viewModel.balance, status: status)
                 Spacer().frame(width: 80)
             }
         )
+            .alert(isPresented: self.$viewModel.showError) {
+                Alert(title: Text("Error"), message: Text("an error ocurred"), dismissButton: .default(Text("ok")))
+        }
     }
 }
 
@@ -101,11 +121,7 @@ struct WalletDetails_Previews: PreviewProvider {
     static var previews: some View {
         
        
-        return WalletDetails(
-            balance: 1.2345,
-            viewModel: MockWalletDetailViewModel(),
-            zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-        ).environmentObject(try! ZECCWalletEnvironment())
+        return WalletDetails().environmentObject(ZECCWalletEnvironment.shared)
     }
 }
 

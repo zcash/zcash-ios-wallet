@@ -12,6 +12,8 @@ import SwiftUI
 struct ProfileScreen: View {
     @Binding var zAddress: String
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    static let buttonHeight = CGFloat(48)
+    static let horizontalPadding = CGFloat(48)
     var body: some View {
         NavigationView {
             ZStack {
@@ -25,35 +27,35 @@ struct ProfileScreen: View {
                     
                     Spacer()
                     ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
-                        .frame(height: 68)
-                        .padding(.horizontal, 48)
+                        .frame(height: Self.buttonHeight)
+                        .padding(.horizontal, Self.horizontalPadding)
                     ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
-                        .frame(height: 68)
-                        .padding(.horizontal, 48)
+                        .frame(height: Self.buttonHeight)
+                        .padding(.horizontal, Self.horizontalPadding)
                     Text("See Application Log")
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
                         .opacity(0.6)
-                        .frame(height: 68)
-                        .padding(.horizontal, 48)
+                        .frame(height: Self.buttonHeight)
+                        .padding(.horizontal, Self.horizontalPadding)
                     
                     
-                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 6", action: {}) // TODO: get real build number
+                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 10", action: {}) // TODO: get real build number
                         .disabled(true)
-                        .padding(.horizontal, 48)
+                        .padding(.horizontal, Self.horizontalPadding)
                     Button(action: {
                         self.appEnvironment.nuke()
                     }) {
                         ZcashButton.nukeButton()
-                            .frame(height: 48)
-                            .padding([.leading, .trailing], 48)
+                            .frame(height: Self.buttonHeight)
+                            .padding([.leading, .trailing], Self.horizontalPadding)
                     }
                     Spacer()
-                    
-                    
+
                 }
-                
             }
+            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarHidden(true)
         }
     }
 }

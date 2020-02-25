@@ -21,6 +21,10 @@ final class SendingViewModel: ObservableObject {
         self.flow = flow
     }
     
+    var disableClose: Bool {
+        !self.flow.isDone || !self.showError
+    }
+    
     var errorMessage: String {
         guard let e = error else {
             return "thing is that we really don't know what just went down, sorry!"
@@ -33,16 +37,22 @@ final class SendingViewModel: ObservableObject {
         self.flow.send()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] (completion) in
+                guard let self = self else {
+                    return
+                }
                 switch completion {
                 case .finished:
-                    self?.flow.isDone = true
+                    self.flow.isDone = true
                 case .failure(let error):
                     print("error: \(error)")
-                    self?.error = error
-                    self?.showError = true
+                    self.error = error
+                    self.showError = true
                 }
             }) { [weak self] (transaction) in
-                self?.pendingTx = transaction
+                guard let self = self else {
+                                   return
+                               }
+                self.pendingTx = transaction
         }.store(in: &diposables)
     }
 }
@@ -70,7 +80,7 @@ struct Sending: View {
     }
     
     var includesMemoView: AnyView {
-        guard flow.includesMemo else { return AnyView(Divider()) }
+        guard flow.includesMemo else { return AnyView(EmptyView()) }
         return  AnyView(
             HStack {
                 ZcashCheckCircle(isChecked: .constant(flow.includesMemo),externalRingColor: .clear, backgroundColor: .black)
@@ -128,27 +138,28 @@ struct Sending: View {
                     doneButton
                 }
                 card
-                
+                Spacer()
             }.padding([.horizontal], 40)
-                .alert(isPresented: self.$viewModel.showError) {
-                    Alert(
-                        title: Text("Something happened!"),
-                        message: Text(self.viewModel.errorMessage),
-                        dismissButton: .default(Text("dismiss"),
-                                                action: {
-                                                    self.flow.isActive = false
-                        })
-                    )
-            }
+            
         }.navigationBarItems(trailing: Button(action: {
             self.flow.isActive = false
         }) {
             Image("close")
                 .renderingMode(.original)
         }.disabled(self.viewModel.error != nil || !self.flow.isDone))
-            .onAppear() {
+        .onAppear() {
                 self.viewModel.flow = self.flow
                 self.viewModel.send()
+        } .alert(isPresented: self.$viewModel.showError) {
+            Alert(
+                title: Text("Something happened!"),
+                message: Text(self.viewModel.errorMessage),
+                dismissButton: .default(Text("dismiss"),
+                                    action: {
+                                        self.flow.isActive = false
+                                    }
+                                )
+            )
         }
     }
 }

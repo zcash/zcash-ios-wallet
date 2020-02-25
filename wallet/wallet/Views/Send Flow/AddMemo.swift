@@ -50,7 +50,7 @@ struct AddMemo: View {
                 Button(action: {
                     self.flow.includesMemo = true
                     
-                    guard let address = SceneDelegate.shared.environment?.initializer.getAddress() else { return }
+                    guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else { return }
                     self.flow.memo = SendFlowEnvironment.includeReplyTo(address: address, in: self.flow.memo)
                     
                     self.isShown = true

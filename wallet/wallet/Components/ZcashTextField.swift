@@ -18,6 +18,9 @@ struct ZcashTextField: View {
     var autocorrect = false
     var autocapitalize = false
     var subtitleView: AnyView
+    var onCommit: () -> Void
+    var onEditingChanged: (Bool) -> Void
+    
     
     
     @Binding var text: String
@@ -66,7 +69,8 @@ struct ZcashTextField: View {
                 .foregroundColor(.white)
             
             HStack {
-                TextField(placeholder, text: $text)
+                TextField(placeholder, text: $text, onEditingChanged: self.onEditingChanged, onCommit: self.onCommit)
+                
                     .accentColor(.white)
                     .foregroundColor(Color.white)
                     .textContentType(contentType)
@@ -86,7 +90,14 @@ struct ZcashTextField: View {
         }
     }
     
-    init(title: String, subtitleView: AnyView? = nil, contentType: UITextContentType? = nil, keyboardType: UIKeyboardType  = .default, binding: Binding<String>, action: (() -> Void)? = nil, accessoryIcon: Image? = nil) {
+    init(title: String,
+         subtitleView: AnyView? = nil,
+         contentType: UITextContentType? = nil,
+         keyboardType: UIKeyboardType  = .default,
+         binding: Binding<String>, action: (() -> Void)? = nil,
+         accessoryIcon: Image? = nil,
+         onEditingChanged: @escaping (Bool) -> Void,
+         onCommit: @escaping () -> Void) {
         self.title = title
         self.accessoryIcon = accessoryIcon
         self.action = action
@@ -98,6 +109,8 @@ struct ZcashTextField: View {
         self.contentType = contentType
         self.keyboardType = keyboardType
         self._text = binding
+        self.onCommit = onCommit
+        self.onEditingChanged = onEditingChanged
     }
     
 }
@@ -117,7 +130,10 @@ struct ZcashTextField_Previews: PreviewProvider {
                            binding: $text,
                            action: {},
                            accessoryIcon: Image("QRCodeIcon")
-                                                .renderingMode(.original)
+                                                .renderingMode(.original),
+                           onEditingChanged: { editing in },
+                           onCommit: {}
+                
             )
             .padding()
             
