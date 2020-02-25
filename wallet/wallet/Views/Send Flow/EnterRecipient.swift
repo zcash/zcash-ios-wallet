@@ -25,8 +25,8 @@ struct EnterRecipient: View {
     }
     
     var addressSubtitle: String {
-    
-        guard !flow.address.isEmpty, let environment = ZECCWalletEnvironment.shared else {
+        let environment = ZECCWalletEnvironment.shared
+        guard !flow.address.isEmpty else {
            return "Enter a shielded Zcash address"
         }
         
@@ -82,14 +82,16 @@ struct EnterRecipient: View {
                         self.viewModel.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
-                        .renderingMode(.original)
+                        .renderingMode(.original),
+                    onEditingChanged: { _ in },
+                    onCommit: { }
                 ).sheet(isPresented: $viewModel.showScanView) {
                     ScanAddress(
                         viewModel: ScanAddressViewModel(
                             address: self.$flow.address,
                             shouldShow: self.$viewModel.showScanView
                         )
-                    ).environmentObject(SceneDelegate.shared.environment!)
+                    ).environmentObject(ZECCWalletEnvironment.shared)
                 }
                 
                 ZcashTextField(
@@ -98,7 +100,9 @@ struct EnterRecipient: View {
                         Text.subtitle(text: "You have \(flow.verifiedBalance) sendable ZEC")
                     ),
                     keyboardType: UIKeyboardType.decimalPad,
-                    binding: $flow.amount
+                    binding: $flow.amount,
+                    onEditingChanged: { _ in },
+                    onCommit: {}
                 )
                 
                 

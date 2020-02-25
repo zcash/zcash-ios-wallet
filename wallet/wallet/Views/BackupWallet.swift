@@ -61,7 +61,7 @@ struct BackupWallet: View {
 
 struct BackupWallet_Previews: PreviewProvider {
     static var previews: some View {
-        BackupWallet().environmentObject(try! ZECCWalletEnvironment())
+        BackupWallet().environmentObject(ZECCWalletEnvironment.shared)
     }
 }
 

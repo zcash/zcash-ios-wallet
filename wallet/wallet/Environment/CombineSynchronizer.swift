@@ -11,7 +11,9 @@ import Combine
 import ZcashLightClientKit
 class CombineSynchronizer {
     
-    var initializer: Initializer
+    var initializer: Initializer {
+        synchronizer.initializer
+    }
     private var synchronizer: SDKSynchronizer
     
     var status: CurrentValueSubject<Status, Never>
@@ -67,38 +69,39 @@ class CombineSynchronizer {
     
     
     init(initializer: Initializer) throws {
-        self.initializer = initializer
+        
         self.synchronizer = try SDKSynchronizer(initializer: initializer)
         self.status = CurrentValueSubject(.disconnected)
         self.progress = CurrentValueSubject(0)
         self.balance = CurrentValueSubject(0)
         self.verifiedBalance = CurrentValueSubject(0)
         
-        cancellables.append(
-            NotificationCenter.default.publisher(for: .synchronizerSynced).sink(receiveValue: { _ in
-                self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
-                self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
-            })
-        )
-        cancellables.append( NotificationCenter.default.publisher(for: .synchronizerStarted).sink { _ in
+        
+        NotificationCenter.default.publisher(for: .synchronizerSynced).sink(receiveValue: { _ in
+            self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
+            self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
+        }).store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .synchronizerStarted).sink { _ in
             self.status.send(.syncing)
-            }
-        )
-        cancellables.append(
-            NotificationCenter.default.publisher(for: .synchronizerProgressUpdated).receive(on: DispatchQueue.main).sink(receiveValue: { (progressNotification) in
-                guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
-                self.progress.send(newProgress)
-            })
-        )
-        cancellables.append(
-            NotificationCenter.default.publisher(for: .synchronizerMinedTransaction).sink(receiveValue: {minedNotification in
-                guard let minedTx = minedNotification.userInfo?[SDKSynchronizer.NotificationKeys.minedTransaction] as? PendingTransactionEntity else { return }
-                self.minedTransaction.send(minedTx)
-            })
-        )
+        }.store(in: &cancellables)
+        
+        
+        NotificationCenter.default.publisher(for: .synchronizerProgressUpdated).receive(on: DispatchQueue.main).sink(receiveValue: { (progressNotification) in
+            guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
+            self.progress.send(newProgress)
+        }).store(in: &cancellables)
+        
+        
+        NotificationCenter.default.publisher(for: .synchronizerMinedTransaction).sink(receiveValue: {minedNotification in
+            guard let minedTx = minedNotification.userInfo?[SDKSynchronizer.NotificationKeys.minedTransaction] as? PendingTransactionEntity else { return }
+            self.minedTransaction.send(minedTx)
+        }).store(in: &cancellables)
+        
     }
     
     func start(){
+        
         do {
             try synchronizer.start()
         } catch {
@@ -150,13 +153,13 @@ extension CombineSynchronizer {
                 
                 do {
                     
-                
-                let r =  Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allReceivedTransactions().map {  DetailModel(confirmedTransaction: $0) })
-                
+                    
+                    let r =  Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allReceivedTransactions().map {  DetailModel(confirmedTransaction: $0) })
+                    
                     let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0) })
-                
-                let s = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allSentTransactions().map {  DetailModel(confirmedTransaction: $0) })
-                
+                    
+                    let s = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allSentTransactions().map {  DetailModel(confirmedTransaction: $0) })
+                    
                     Publishers.Merge3(r, p, s).collect().sink {
                         promise(.success($0))
                     }
