@@ -27,14 +27,14 @@ PODS:
     - SwiftProtobuf (~> 1.7.0)
   - SwiftProtobuf (1.7.0)
   - TinyQRScanner (1.0.0)
-  - ZcashLightClientKit (0.1.0):
+  - ZcashLightClientKit (0.1.2):
     - SQLite.swift (~> 0.12.2)
     - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
   - TinyQRScanner
-  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
+  - ZcashLightClientKit
 
 SPEC REPOS:
   trunk:
@@ -46,10 +46,7 @@ SPEC REPOS:
     - SwiftGRPC
     - SwiftProtobuf
     - TinyQRScanner
-
-EXTERNAL SOURCES:
-  ZcashLightClientKit:
-    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
+    - ZcashLightClientKit
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -60,8 +57,8 @@ SPEC CHECKSUMS:
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
-  ZcashLightClientKit: 6157bc35562e2fe09f97f0739b80013f4224298c
+  ZcashLightClientKit: ed0f2b0a98ef35477084c7fcb1875ae4239b3685
 
-PODFILE CHECKSUM: a3e0106bc4b1fceed4e4c003812aff0967829b5d
+PODFILE CHECKSUM: 22280b7bcb26238a949f0b99b25616e180844bc4
 
 COCOAPODS: 1.8.4
