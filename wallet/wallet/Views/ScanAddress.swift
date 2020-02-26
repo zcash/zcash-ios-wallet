@@ -163,6 +163,6 @@ struct ScanAddress: View {
 struct ScanAddress_Previews: PreviewProvider {
     static var previews: some View {
         ScanAddress(cameraAccess: .unavailable)
-        .environmentObject(try! ZECCWalletEnvironment())
+        .environmentObject(ZECCWalletEnvironment.shared)
     }
 }

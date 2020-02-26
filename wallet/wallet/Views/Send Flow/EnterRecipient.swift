@@ -24,6 +24,19 @@ struct EnterRecipient: View {
         flow.verifiedBalance > 0
     }
     
+    var addressSubtitle: String {
+        let environment = ZECCWalletEnvironment.shared
+        guard !flow.address.isEmpty else {
+           return "Enter a shielded Zcash address"
+        }
+        
+        if environment.initializer.isValidShieldedAddress(flow.address) {
+            return "This is a valid shielded address!"
+        } else {
+            return "Invalid shielded address!"
+        }
+    }
+    
     var amountSubtitle: String {
         if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: flow.verifiedBalance)) {
             return "You Have \(balance) sendable ZEC"
@@ -60,28 +73,36 @@ struct EnterRecipient: View {
                 Spacer().frame(height: 96)
                 ZcashTextField(
                     title: "To",
-                    subtitle: "Enter a shielded Zcash address",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: addressSubtitle)
+                        ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
                         self.viewModel.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
-                        .renderingMode(.original)
+                        .renderingMode(.original),
+                    onEditingChanged: { _ in },
+                    onCommit: { }
                 ).sheet(isPresented: $viewModel.showScanView) {
                     ScanAddress(
                         viewModel: ScanAddressViewModel(
                             address: self.$flow.address,
                             shouldShow: self.$viewModel.showScanView
                         )
-                    ).environmentObject(SceneDelegate.shared.environment!)
+                    ).environmentObject(ZECCWalletEnvironment.shared)
                 }
                 
                 ZcashTextField(
                     title: "Amount",
-                    subtitle: "You have \(flow.verifiedBalance) sendable ZEC",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: "You have \(flow.verifiedBalance) sendable ZEC")
+                    ),
                     keyboardType: UIKeyboardType.decimalPad,
-                    binding: $flow.amount
+                    binding: $flow.amount,
+                    onEditingChanged: { _ in },
+                    onCommit: {}
                 )
                 
                 
@@ -92,8 +113,9 @@ struct EnterRecipient: View {
                         .frame(height: 58)
                         .padding([.leading, .trailing], 40)
                 }
-                    .opacity(validForm ? 1.0 : 0.3 ) // validate this
-                    .disabled(!validForm)
+                .isDetailLink(false)
+                .opacity(validForm ? 1.0 : 0.3 ) // validate this
+                .disabled(!validForm)
                 Spacer()
                 
             }.padding([.horizontal], 24)
@@ -113,6 +135,6 @@ struct EnterRecipient: View {
 
 struct EnterRecipient_Previews: PreviewProvider {
     static var previews: some View {
-        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456))
+        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true)))
     }
 }

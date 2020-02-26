@@ -59,13 +59,10 @@ class KeyPadViewModel: ObservableObject {
     
     @Published var value: Double
     
-    var text: String
+    @Published var text: String
     
-    var formatter: NumberFormatter {
-        if value <= 0 {
-            return NumberFormatter.zeroBalanceFormatter
-        }
-        return NumberFormatter.zecAmountFormatter
+    static var formatter: NumberFormatter {
+       NumberFormatter.zecAmountFormatter
     }
     
     var visibleValues: [[String]] {
@@ -73,28 +70,27 @@ class KeyPadViewModel: ObservableObject {
             ["1", "2", "3"],
             ["4", "5", "6"],
             ["7", "8", "9"],
-            [".", "0", "<"]
+            [Self.formatter.currencyDecimalSeparator, "0", "<"]
         ]
     }
     
-    var validValues: Set<String> = ["1", "2", "3","4", "5", "6","7", "8", "9","0",".","<"]
+    var validValues: Set<String> = ["1", "2", "3","4", "5", "6","7", "8", "9","0",KeyPadViewModel.formatter.currencyDecimalSeparator,"<"]
     
     init(initialValue: Double = 0) {
         
         guard initialValue > 0 else {
-            text = ""
+            text = "0"
             value = 0
             return
         }
         
         let number = NSNumber(value: initialValue)
-        let formatter = initialValue <= 0 ? NumberFormatter.zeroBalanceFormatter : NumberFormatter.zecAmountFormatter
         
-        if let textValue = formatter.string(from: number) {
+        if let textValue = Self.formatter.string(from: number) {
             text = textValue
             value = initialValue
         } else {
-            text = ""
+            text = "0"
             value = 0
         }
     }
@@ -110,8 +106,29 @@ class KeyPadViewModel: ObservableObject {
             numberTapped(text)
         }
     }
+    // this function assumes the given string contains a valid decimal number.
+    func hasEightOrMoreDecimals(_ number: String) -> Bool {
+        guard   Self.formatter.number(from: number) != nil, 
+                let separatorString = Self.formatter.currencyDecimalSeparator,
+                let separatorChar =  separatorString.first,
+                let separatorIndex = number.firstIndex(of: separatorChar) else { return false }
+        
+        let lastIndex = number.endIndex
+        
+        return number.distance(from: number.index(separatorIndex, offsetBy: 1), to: lastIndex) >= 8
+        
+    }
     
     func numberTapped(_ number: String) {
+        //catch leading zeros
+        if text == "0" && number == "0" {
+            return
+        }
+        
+        guard !hasEightOrMoreDecimals(text) else {
+            return
+        }
+        
         let newText = text + number
         
         guard let newValue = doubleFromText(newText) else {
@@ -123,7 +140,7 @@ class KeyPadViewModel: ObservableObject {
     
     
     func clear() {
-        text = ""
+        text = "0"
         value = 0
     }
     
@@ -161,7 +178,7 @@ class KeyPadViewModel: ObservableObject {
     }
     
     func doubleFromText(_ textValue: String) -> Double? {
-        formatter.number(from: textValue)?.doubleValue
+        Self.formatter.number(from: textValue)?.doubleValue
     }
     
 }

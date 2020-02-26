@@ -19,7 +19,24 @@ final class SeedManager {
     static var `default`: SeedManager = SeedManager()
     private static let zECCWalletKeys = "zECCWalletKeys"
     private static let zECCWalletSeedKey = "zEECWalletSeedKey"
+    private static let zECCWalletBirthday = "zECCWalletBirthday"
+    
     private let keychain = KeychainSwift()
+    
+    func importBirthday(_ height: BlockHeight) throws {
+        guard keychain.get(Self.zECCWalletBirthday) == nil else {
+            throw SeedManagerError.alreadyImported
+        }
+        keychain.set(String(height), forKey: Self.zECCWalletBirthday)
+    }
+    
+    func exportBirthday() throws -> BlockHeight {
+        guard let birthday = keychain.get(Self.zECCWalletBirthday),
+            let value = BlockHeight(birthday) else {
+                throw SeedManagerError.uninitializedWallet
+        }
+        return value
+    }
     
     func importSeed(_ seed: String) throws {
         guard keychain.get(Self.zECCWalletSeedKey) == nil else { throw SeedManagerError.alreadyImported }
@@ -49,9 +66,26 @@ final class SeedManager {
     /**
        Use carefully: Deletes the seed from the keychain.
      */
-    func nukeSeed() throws {
-        guard keychain.get(Self.zECCWalletSeedKey) != nil else { throw SeedManagerError.uninitializedWallet }
+    func nukeSeed() {
         keychain.delete(Self.zECCWalletSeedKey)
+    }
+    
+    /**
+     Use carefully: deletes the wallet birthday from the keychain
+     */
+    
+    func nukeBirthday() {
+        keychain.delete(Self.zECCWalletBirthday)
+    }
+    
+    
+    /**
+    There's no fate but what we make for ourselves - Sarah Connor
+    */
+    func nukeWallet() {
+        nukeKeys()
+        nukeSeed()
+        nukeBirthday()
     }
 }
 

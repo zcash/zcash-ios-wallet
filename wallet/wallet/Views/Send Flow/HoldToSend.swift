@@ -46,11 +46,12 @@ struct HoldToSend: View {
                 Spacer()
                 ZcashSendButton(longPressCancelled: {}, longPressSucceded: {
                     self.holdOk = true
+                    
                 })
                 
                 NavigationLink(destination:
                     
-                    Sending().environmentObject(flow)
+                    Sending(viewModel: SendingViewModel(flow: flow)).environmentObject(flow)
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarBackButtonHidden(true)
                     ,
@@ -58,7 +59,7 @@ struct HoldToSend: View {
                         isActive: $holdOk
                     ) {
                         EmptyView()
-                    }
+                    }.isDetailLink(false)
                 
                 Spacer()
                 
@@ -81,7 +82,7 @@ struct HoldToSend: View {
 struct HoldToSend_Previews: PreviewProvider {
     
     static var previews: some View {
-        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456)
+        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true))
         
         flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         return HoldToSend().environmentObject(flow)

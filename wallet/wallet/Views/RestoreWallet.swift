@@ -8,22 +8,51 @@
 
 import SwiftUI
 import Combine
-final class RestoreWalletViewModel: ObservableObject {
-    @Published var seedPhrase: String = ""
-   
-    
-    var isValidSeed: Bool {
-        seedPhrase.count > 0 /// TODO: improve validation
-    }
-    
-    func importSeed() {
-        try? SeedManager.default.importSeed(seedPhrase)
-    }
-}
+import ZcashLightClientKit
 
 struct RestoreWallet: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @ObservedObject var viewModel = RestoreWalletViewModel()
+    @State var seedPhrase: String = ""
+    @State var walletBirthDay: String = ""
+    var isValidBirthday: Bool {
+        validateBirthday(walletBirthDay)
+    }
+    
+    var isValidSeed: Bool {
+        validateSeed(seedPhrase)
+    }
+    
+    func validateBirthday(_ birthday: String) -> Bool {
+        
+        guard !birthday.isEmpty else {
+            return true
+        }
+        
+        guard let b = BlockHeight(birthday) else {
+            return false
+        }
+        
+        return b >= ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+    }
+    
+    
+    
+    
+    func validateSeed(_ seed: String) -> Bool {
+        seed.lengthOfBytes(using: .utf8) >= 32
+    }
+    
+    func importBirthday() throws {
+        let b = BlockHeight(self.walletBirthDay) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+        try SeedManager.default.importBirthday(b)
+    }
+    func importSeed() throws {
+        try SeedManager.default.importSeed(seedPhrase)
+    }
+    
+    var disableProceed: Bool {
+        !isValidSeed || !isValidBirthday
+    }
     @State var proceed: Bool = false
     var body: some View {
         ZStack {
@@ -35,11 +64,32 @@ struct RestoreWallet: View {
             
             VStack {
                 Spacer()
-                ZcashTextField(title: "Enter your Seed Phrase", subtitle: "Make sure nobody is watching you!", binding: $viewModel.seedPhrase)
+                ZcashTextField(
+                    title: "Enter your Seed Phrase",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: "Make sure nobody is watching you!")
+                    ),
+                    keyboardType: UIKeyboardType.alphabet,
+                    binding: $seedPhrase,
+                    onEditingChanged: { _ in },
+                    onCommit: {}
+                )
+                Spacer()
+                ZcashTextField(
+                    title: "Wallet Birthday height",
+                    subtitleView: AnyView(
+                        Text.subtitle(text: "If you don't know it, leave it blank. First Sync will take longer.")
+                    ),
+                    keyboardType: UIKeyboardType.decimalPad,
+                    binding: $walletBirthDay,
+                    onEditingChanged: { _ in },
+                    onCommit: {}
+                )
                 Spacer()
                 Button(action: {
-                    self.viewModel.importSeed()
                     do {
+                        try self.importSeed()
+                        try self.importBirthday()
                         try self.appEnvironment.initialize()
                     } catch {
                         print("Error \(error)")
@@ -50,17 +100,20 @@ struct RestoreWallet: View {
                 }) {
                     ZcashButton(color: .black, fill: .zAmberGradient1, text: "Proceed")
                 }
-                .disabled(!viewModel.isValidSeed)
+                .disabled(disableProceed)
+                .opacity(disableProceed ? 0.4 : 1.0)
                 .frame(height: 58)
                 
                 Spacer()
             }.padding()
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
     }
 }
 
 struct RestoreWallet_Previews: PreviewProvider {
     static var previews: some View {
-        RestoreWallet().environmentObject(try! ZECCWalletEnvironment())
+        RestoreWallet().environmentObject(ZECCWalletEnvironment.shared)
     }
 }

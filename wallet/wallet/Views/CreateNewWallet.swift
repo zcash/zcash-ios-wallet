@@ -28,11 +28,8 @@ struct CreateNewWallet: View {
                     .scaleEffect(0.5)
                 
                 Spacer()
-                Text("12% Synced")
-                    .foregroundColor(.white)
-                Spacer()
                 NavigationLink(destination:
-                    BackupWallet()
+                    BackupWallet().environmentObject(appEnvironment)
                         .navigationBarHidden(true)
                     
                 ) {
@@ -42,16 +39,26 @@ struct CreateNewWallet: View {
                     
                 }
                 
+                #if DEBUG
+                Button(action: {
+                    self.appEnvironment.nuke()
+                }) {
+                    ZcashButton.nukeButton()
+                    .frame(height: self.buttonHeight)
+                    .padding([.leading, .trailing], self.buttonPadding)
+                }
+                #endif
                 NavigationLink(
                     destination: RestoreWallet()
                     .environmentObject(appEnvironment)
                         .navigationBarTitle("", displayMode: .inline)
-                        .navigationBarHidden(true)
+                        .navigationBarHidden(false)
                 ) {
                     ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
                 }
+                
                 
                 Spacer()
             }
