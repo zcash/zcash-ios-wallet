@@ -29,14 +29,23 @@ final class HomeViewModel: ObservableObject {
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
-        cancellable.append(
-            environment.synchronizer.verifiedBalance.subscribe(on: DispatchQueue.main)
-                .sink(receiveValue: { self.verifiedBalance = $0 })
-        )
-        cancellable.append(environment.synchronizer.balance.subscribe(on: DispatchQueue.main)
-            .sink(receiveValue: { self.balance = $0 }))
-        cancellable.append(environment.synchronizer.progress.subscribe(on: DispatchQueue.main)
-            .sink(receiveValue: { self.progress = $0 }))
+        
+        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
+                .sink(receiveValue: {
+                    self.verifiedBalance = $0
+                })
+            .store(in: &cancellable)
+        
+        environment.synchronizer.balance.receive(on: DispatchQueue.main)
+            .sink(receiveValue: {
+                self.balance = $0
+            })
+            .store(in: &cancellable)
+        environment.synchronizer.progress.receive(on: DispatchQueue.main)
+            .sink(receiveValue: {
+                self.progress = $0
+            })
+            .store(in: &cancellable)
         zAddress = ""
         
         NotificationCenter.default.publisher(for: .qrZaddressScanned)
@@ -60,6 +69,7 @@ final class HomeViewModel: ObservableObject {
                 }
         }
         .store(in: &cancellable)
+        
         environment.synchronizer.pendingTransactions.sink(receiveCompletion: { (completion) in
             
         }) { [weak self] (pendingTransactions) in
@@ -90,11 +100,10 @@ struct Home: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
     var isSendingEnabled: Bool {
         $viewModel.verifiedBalance.wrappedValue > 0
     }
+    
     var disposables: Set<AnyCancellable> = []
     
     init(amount: Double, verifiedBalance: Double) {

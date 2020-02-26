@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case .initalized,
              .synced:
             try! environment.initialize()
-            environment.synchronizer.start()
+//            environment.synchronizer.start()
         default:
             break
         }

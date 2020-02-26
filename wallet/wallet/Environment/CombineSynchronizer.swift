@@ -18,6 +18,7 @@ class CombineSynchronizer {
     
     var status: CurrentValueSubject<Status, Never>
     var progress: CurrentValueSubject<Float,Never>
+    var syncBlockHeight: CurrentValueSubject<BlockHeight,Never>
     var minedTransaction = PassthroughSubject<PendingTransactionEntity,Never>()
     var balance: CurrentValueSubject<Double,Never>
     var verifiedBalance: CurrentValueSubject<Double,Never>
@@ -75,7 +76,7 @@ class CombineSynchronizer {
         self.progress = CurrentValueSubject(0)
         self.balance = CurrentValueSubject(0)
         self.verifiedBalance = CurrentValueSubject(0)
-        
+        self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
         NotificationCenter.default.publisher(for: .synchronizerSynced).sink(receiveValue: { _ in
             self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
@@ -90,6 +91,9 @@ class CombineSynchronizer {
         NotificationCenter.default.publisher(for: .synchronizerProgressUpdated).receive(on: DispatchQueue.main).sink(receiveValue: { (progressNotification) in
             guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
             self.progress.send(newProgress)
+            
+            guard let blockHeight = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.blockHeight] as? BlockHeight else { return }
+            self.syncBlockHeight.send(blockHeight)
         }).store(in: &cancellables)
         
         
@@ -154,13 +158,11 @@ extension CombineSynchronizer {
                 do {
                     
                     
-                    let r =  Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allReceivedTransactions().map {  DetailModel(confirmedTransaction: $0) })
+                    let c =  Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allClearedTransactions().map {  DetailModel(confirmedTransaction: $0, sent: $0.toAddress != nil) })
                     
-                    let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0) })
+                    let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
                     
-                    let s = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allSentTransactions().map {  DetailModel(confirmedTransaction: $0) })
-                    
-                    Publishers.Merge3(r, p, s).collect().sink {
+                    Publishers.Merge(c, p).collect().sink {
                         promise(.success($0))
                     }
                     .store(in: &collectables)
@@ -191,12 +193,16 @@ extension DetailModel {
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = Int64(confirmedTransaction.value).asHumanReadableZecBalance()
     }
-    init(pendingTransaction: PendingTransactionEntity) {
+    init(pendingTransaction: PendingTransactionEntity, latestBlockHeight: BlockHeight? = nil) {
         self.date = Date(timeIntervalSince1970: pendingTransaction.createTime)
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.starts(with: "z") // FIXME: find a better way to do thies
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
-        self.subtitle = "Sent \(self.date.transactionDetail)"
+        if let latest = latestBlockHeight {
+            self.subtitle = "\(abs(latest - pendingTransaction.expiryHeight - ZcashSDK.EXPIRY_OFFSET)) of 10 Confirmations"
+        } else {
+            self.subtitle = "Sent \(self.date.transactionDetail)"
+        }
         self.zAddress = pendingTransaction.toAddress
         self.zecAmount = Int64(pendingTransaction.value).asHumanReadableZecBalance()
         
