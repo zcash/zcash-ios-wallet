@@ -27,15 +27,15 @@ struct ZcashLogo: View {
         ZStack {
             
             Ring()
-            .stroke(lineWidth: 20)
+            .stroke(lineWidth: 14)
                 .fill(fillGradient)
-                .frame(width: 280, height: 280, alignment: .center)
+                .frame(width: 167, height: 167, alignment: .center)
                 .padding(20)
             VStack (alignment: .center) {
                 ZcashSymbol()
                     .fill(fillGradient)
-                    .frame(width: 200, height: 200, alignment: .center)
-                .padding(20)
+                    .frame(width: 100, height: 105, alignment: .center)
+                
                 
             }
             

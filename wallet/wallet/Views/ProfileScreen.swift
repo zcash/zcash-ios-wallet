@@ -29,9 +29,11 @@ struct ProfileScreen: View {
                     ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
                         .frame(height: Self.buttonHeight)
                         .padding(.horizontal, Self.horizontalPadding)
-                    ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
-                        .frame(height: Self.buttonHeight)
-                        .padding(.horizontal, Self.horizontalPadding)
+                    NavigationLink(destination: SeedBackup().environmentObject(appEnvironment)) {
+                        ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
+                                               .frame(height: Self.buttonHeight)
+                                               .padding(.horizontal, Self.horizontalPadding)
+                    }
                     Text("See Application Log")
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
