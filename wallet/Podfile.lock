@@ -34,7 +34,7 @@ PODS:
 DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
   - TinyQRScanner
-  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
+  - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `feature/note-spending-v7`)"
 
 SPEC REPOS:
   trunk:
@@ -49,7 +49,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   ZcashLightClientKit:
-    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
+    :branch: feature/note-spending-v7
+    :git: "git@github.com:zcash/ZcashLightClientKit.git"
+
+CHECKOUT OPTIONS:
+  ZcashLightClientKit:
+    :commit: 981498fc6d627c9043b4363c1678cdf02c8dbfe8
+    :git: "git@github.com:zcash/ZcashLightClientKit.git"
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -62,6 +68,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
   ZcashLightClientKit: 40f36d6fec9102ec2c5ab75a8f0a412b499e0775
 
-PODFILE CHECKSUM: a3e0106bc4b1fceed4e4c003812aff0967829b5d
+PODFILE CHECKSUM: ae1b14f6872f571636f9b9325998b72788d77963
 
 COCOAPODS: 1.8.4
