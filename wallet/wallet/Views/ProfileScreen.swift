@@ -42,7 +42,7 @@ struct ProfileScreen: View {
                         .padding(.horizontal, Self.horizontalPadding)
                     
                     
-                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 10", action: {}) // TODO: get real build number
+                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 12", action: {}) // TODO: get real build number
                         .disabled(true)
                         .padding(.horizontal, Self.horizontalPadding)
                     Button(action: {
