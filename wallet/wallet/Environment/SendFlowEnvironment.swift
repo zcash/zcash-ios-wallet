@@ -26,7 +26,10 @@ final class SendFlowEnvironment: ObservableObject {
     @Published var memo: String = ""
     @Published var includesMemo = false
     @Published var isDone = false
-
+    var error: Error?
+    var showError = false
+    var pendingTx: PendingTransactionEntity?
+    var diposables = Set<AnyCancellable>()
     
     init(amount: Double, verifiedBalance: Double, address: String = "", isActive: Binding<Bool>) {
         self.amount = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
@@ -35,23 +38,44 @@ final class SendFlowEnvironment: ObservableObject {
         self._isActive = isActive
     }
     
-    func send() -> Future<PendingTransactionEntity,Error> {
+    func send() {
         
         guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
               self.address.isValidZaddress,
               let spendingKey = SeedManager.default.getKeys()?.first else {
-                  return Future<PendingTransactionEntity,Error>() { $0(.failure(FlowError.invalidEnvironment))}
-        
+                self.error = FlowError.invalidEnvironment
+                self.showError = true
+                return
         }
+        
         let environment = ZECCWalletEnvironment.shared
         
-        return environment.synchronizer.send(
+        environment.synchronizer.send(
                 with: spendingKey,
                 zatoshi: zatoshi,
                 to: self.address,
                 memo: self.memo.isEmpty ? nil : self.memo,
                 from: 0
-            )
+        )
+        .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] (completion) in
+                guard let self = self else {
+                    return
+                }
+                switch completion {
+                case .finished:
+                    self.isDone = true
+                case .failure(let error):
+                    print("error: \(error)")
+                    self.error = error
+                    self.showError = true
+                }
+            }) { [weak self] (transaction) in
+                guard let self = self else {
+                                   return
+                               }
+                self.pendingTx = transaction
+        }.store(in: &diposables)
     }
     
     static func includeReplyTo(address: String, in memo: String) -> String {

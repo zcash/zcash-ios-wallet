@@ -11,50 +11,16 @@ import Combine
 import ZcashLightClientKit
 final class SendingViewModel: ObservableObject {
     
-    var diposables = Set<AnyCancellable>()
+    
     var flow: SendFlowEnvironment
-    var showError = false
-    var pendingTx: PendingTransactionEntity?
-    var error: Error?
+
     
     init(flow: SendFlowEnvironment) {
         self.flow = flow
     }
     
-    var disableClose: Bool {
-        !self.flow.isDone || !self.showError
-    }
     
-    var errorMessage: String {
-        guard let e = error else {
-            return "thing is that we really don't know what just went down, sorry!"
-        }
-        
-        return "\(e)"
-    }
     
-    func send() {
-        self.flow.send()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] (completion) in
-                guard let self = self else {
-                    return
-                }
-                switch completion {
-                case .finished:
-                    self.flow.isDone = true
-                case .failure(let error):
-                    print("error: \(error)")
-                    self.error = error
-                    self.showError = true
-                }
-            }) { [weak self] (transaction) in
-                guard let self = self else {
-                                   return
-                               }
-                self.pendingTx = transaction
-        }.store(in: &diposables)
-    }
 }
 struct Sending: View {
     
@@ -62,7 +28,17 @@ struct Sending: View {
     
     @ObservedObject var viewModel: SendingViewModel
     
+    var disableClose: Bool {
+        !self.flow.isDone && self.flow.error == nil
+    }
     
+    var errorMessage: String {
+        guard let e = flow.error else {
+            return "thing is that we really don't know what just went down, sorry!"
+        }
+        
+        return "\(e)"
+    }
     var sendGerund: String {
         "Sending"
     }
@@ -72,7 +48,7 @@ struct Sending: View {
     }
     
     var sendText: String {
-        guard viewModel.error == nil  else {
+        guard flow.error == nil else {
             return "Unable to send"
         }
         
@@ -108,11 +84,13 @@ struct Sending: View {
     
     
     var card: AnyView {
-        guard let pendingTx = viewModel.pendingTx else {
+        guard let pendingTx = flow.pendingTx else {
             return AnyView(EmptyView())
         }
         return AnyView(
             DetailCard(model: DetailModel(pendingTransaction: pendingTx))
+            .padding()
+            .frame(height: 69)
         )
     }
     
@@ -146,14 +124,13 @@ struct Sending: View {
         }) {
             Image("close")
                 .renderingMode(.original)
-        }.disabled(self.viewModel.error != nil || !self.flow.isDone))
+        }.disabled(self.flow.error != nil || !self.flow.isDone))
         .onAppear() {
-                self.viewModel.flow = self.flow
-                self.viewModel.send()
-        } .alert(isPresented: self.$viewModel.showError) {
+                self.flow.send()
+        } .alert(isPresented: self.$flow.showError) {
             Alert(
                 title: Text("Something happened!"),
-                message: Text(self.viewModel.errorMessage),
+                message: Text(errorMessage),
                 dismissButton: .default(Text("dismiss"),
                                     action: {
                                         self.flow.isActive = false
