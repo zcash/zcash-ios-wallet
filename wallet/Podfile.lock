@@ -14,6 +14,7 @@ PODS:
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.23.1)
   - KeychainSwift (19.0.0)
+  - MnemonicKit (2.0.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -33,6 +34,7 @@ PODS:
 
 DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
+  - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, branch `CriptoKit`)"
   - TinyQRScanner
   - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `feature/note-spending-v7`)"
 
@@ -48,11 +50,17 @@ SPEC REPOS:
     - TinyQRScanner
 
 EXTERNAL SOURCES:
+  MnemonicKit:
+    :branch: CriptoKit
+    :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
     :branch: feature/note-spending-v7
     :git: "git@github.com:zcash/ZcashLightClientKit.git"
 
 CHECKOUT OPTIONS:
+  MnemonicKit:
+    :commit: a01d4975ed814498f7ba6b9f4ce85053905daedc
+    :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
     :commit: 981498fc6d627c9043b4363c1678cdf02c8dbfe8
     :git: "git@github.com:zcash/ZcashLightClientKit.git"
@@ -61,6 +69,7 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   gRPC-Core: 4b1148eb8596225178e5a154e40e35141a3cdf0f
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
+  MnemonicKit: dfbb4b7e2ccb3a67a56e519158501b27c519e2c8
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
@@ -68,6 +77,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
   ZcashLightClientKit: 40f36d6fec9102ec2c5ab75a8f0a412b499e0775
 
-PODFILE CHECKSUM: ae1b14f6872f571636f9b9325998b72788d77963
+PODFILE CHECKSUM: 2d3a6af890172ca9a08aec2ddff232302ac7107c
 
 COCOAPODS: 1.8.4
