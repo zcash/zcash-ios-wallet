@@ -9,46 +9,89 @@
 import SwiftUI
 
 struct SeedBackup: View {
-    var words: [String]
+    let buttonPadding: CGFloat = 40
+    let buttonHeight: CGFloat = 58
     
-    let wordsPerRow = 4
+    @State var proceedsToHome = false
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    
+    var seed: String {
+        do {
+            return try SeedManager.default.exportSeed()
+        } catch {
+            return "there was an error retrieving your seed: \(error)"
+        }
+    }
+    
+    var birthday: String {
+        do {
+            return  String(try SeedManager.default.exportBirthday())
+        } catch {
+            return "There was an error retrieving your wallet birthday: \(error)"
+        }
+    }
+    var copyText: String {
+        """
+        Seed:
+        \(seed)
+        
+        Wallet Birthday:
+        \(birthday)
+        """
+    }
+    
     
     var body: some View {
         ZStack {
             ZcashBackground()
-            VStack(alignment: .leading, spacing: 24) {
-                Text("Your Seed Backup")
+            VStack(alignment: .center, spacing: 24) {
+                Spacer()
+                Text("Your Backup Seed")
+                    .foregroundColor(.white)
                     .font(.title)
-                    .foregroundColor(Color.zYellow)
+                
+                Text(seed)
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
+                Spacer()
+                Text("Your Wallet Birthday")
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .opacity(0.8)
                 
                 
-                VStack(alignment: .center, spacing: 8) {
-                    
-                    ForEach(words.chunked(into: wordsPerRow), id: \.self) { row in
-                        
-                        HStack(alignment: .firstTextBaseline, spacing: 20) {
-                            ForEach(row, id:\.self) { word in
-                                Text(word)
-                                    .foregroundColor(Color.zYellow)
-                                    .font(.headline)
-                                    .lineLimit(1)
-                                    .padding(8)
-                                    .background(Color.zGray)
-                                
-                            }
-                        }
-                    }
+                Text(birthday)
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
+                    .opacity(0.8)
+
+                Spacer()
+                Button(action: {
+                    UIPasteboard.general.string = self.copyText
+                }) {
+                    Text("Copy to clipboard")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                        .opacity(0.4)
                 }
+                if proceedsToHome {
+                    NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
+                        ZcashButton(color: Color.black, fill: Color.zYellow, text: "I'm all set!")
+                            .frame(height: buttonHeight)
+                    }
+                    .padding([.leading, .trailing], buttonPadding)
+                }
+                Spacer()
             }
-        }
-        .navigationBarTitle("Your Seed Backup")
+        }.navigationBarTitle("",displayMode: .inline)
+        .navigationBarHidden(false)
+        
     }
 }
 
 struct SeedBackup_Previews: PreviewProvider {
     static var previews: some View {
-        
-        return SeedBackup(words: FakeProvider().seedWords(limit: 16))
+        SeedBackup().environmentObject( ZECCWalletEnvironment.shared)
     }
 }
 

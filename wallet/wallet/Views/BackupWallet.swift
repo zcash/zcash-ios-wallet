@@ -24,12 +24,14 @@ struct BackupWallet: View {
             VStack(alignment: .center, spacing: itemSpacing) {
                 Spacer()
                 ZcashLogo()
-                    .scaleEffect(0.5)
-
+                
+                Text("Your Wallet needs\nto be Backed up")
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .font(.system(size: 18))
+                    .padding(.horizontal, 48)
                 Spacer()
-                Button(action: {
-                    self.showModal = true
-                }) {
+                NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
                     ZcashButton(color: Color.black, fill: Color.zYellow, text: "Backup Wallet")
                         .frame(height: buttonHeight)
                 }
@@ -53,9 +55,7 @@ struct BackupWallet: View {
                 print("could not create new wallet: \(error)")
             }
         }
-        .sheet(isPresented: self.$showModal) {
-            SeedBackup(words: FakeProvider().seedWords(limit: 16))
-            }
+       
     }
 }
 

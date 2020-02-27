@@ -29,9 +29,11 @@ struct ProfileScreen: View {
                     ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
                         .frame(height: Self.buttonHeight)
                         .padding(.horizontal, Self.horizontalPadding)
-                    ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
-                        .frame(height: Self.buttonHeight)
-                        .padding(.horizontal, Self.horizontalPadding)
+                    NavigationLink(destination: SeedBackup().environmentObject(appEnvironment)) {
+                        ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
+                                               .frame(height: Self.buttonHeight)
+                                               .padding(.horizontal, Self.horizontalPadding)
+                    }
                     Text("See Application Log")
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
@@ -40,7 +42,7 @@ struct ProfileScreen: View {
                         .padding(.horizontal, Self.horizontalPadding)
                     
                     
-                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 10", action: {}) // TODO: get real build number
+                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 12", action: {}) // TODO: get real build number
                         .disabled(true)
                         .padding(.horizontal, Self.horizontalPadding)
                     Button(action: {

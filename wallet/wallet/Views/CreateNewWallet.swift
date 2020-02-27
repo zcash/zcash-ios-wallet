@@ -25,7 +25,6 @@ struct CreateNewWallet: View {
                 Spacer()
                 
                 ZcashLogo()
-                    .scaleEffect(0.5)
                 
                 Spacer()
                 NavigationLink(destination:
