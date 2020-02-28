@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import zECC_Wallet
-
+import MnemonicKit
 class walletTests: XCTestCase {
 
     override func setUp() {
@@ -64,6 +64,28 @@ class walletTests: XCTestCase {
         XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.000000000"))
         XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.0000000000"))
         
+    }
+    
+    func testMnemonics() {
         
+        guard let phrase = Mnemonic.generateMnemonic(strength: 256) else {
+            XCTFail()
+            return
+        }
+        
+        
+        XCTAssertTrue(phrase.split(separator: " ").count == 24)
+        
+        XCTAssertNotNil(Mnemonic.deterministicSeedString(from: phrase),"could not generate seed from phrase: \(phrase)")
+        
+    }
+    
+    
+    func testRestore() {
+        let expectedSeed =    "715b4b7950c2153e818f88122f8e54a00e36c42e47ba9589dc82fcecfc5b7ec7d06f4e3a3363a0221e06f14f52e03294290139d05d293059a55076b7f37d6726"
+           
+        let phrase = "abuse fee wage robot october tongue utility gloom dizzy best victory armor second share pilot help cotton mango music decorate scheme mix tell never"
+        
+        XCTAssertEqual(Mnemonic.deterministicSeedString(from: phrase),expectedSeed)
     }
 }

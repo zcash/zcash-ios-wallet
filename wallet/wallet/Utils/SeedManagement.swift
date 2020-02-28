@@ -20,6 +20,7 @@ final class SeedManager {
     private static let zECCWalletKeys = "zECCWalletKeys"
     private static let zECCWalletSeedKey = "zEECWalletSeedKey"
     private static let zECCWalletBirthday = "zECCWalletBirthday"
+    private static let zECCWalletPhrase = "zECCWalletPhrase"
     
     private let keychain = KeychainSwift()
     
@@ -38,13 +39,24 @@ final class SeedManager {
         return value
     }
     
-    func importSeed(_ seed: String) throws {
+    func importSeed(_ seed: [UInt8]) throws {
         guard keychain.get(Self.zECCWalletSeedKey) == nil else { throw SeedManagerError.alreadyImported }
-        keychain.set(seed, forKey: Self.zECCWalletSeedKey)
+        keychain.set(Data(seed), forKey: Self.zECCWalletSeedKey)
+        
     }
     
-    func exportSeed() throws -> String {
-        guard let seed = keychain.get(Self.zECCWalletSeedKey) else { throw SeedManagerError.uninitializedWallet }
+    func exportSeed() throws -> [UInt8] {
+        guard let seedData = keychain.getData(Self.zECCWalletSeedKey) else { throw SeedManagerError.uninitializedWallet }
+        return [UInt8](seedData)
+    }
+    
+    func importPhrase(bip39 phrase: String) throws {
+        guard keychain.get(Self.zECCWalletPhrase) == nil else { throw SeedManagerError.alreadyImported }
+        keychain.set(phrase, forKey: Self.zECCWalletPhrase)
+    }
+    
+    func exportPhrase() throws -> String {
+        guard let seed = keychain.get(Self.zECCWalletPhrase) else { throw SeedManagerError.uninitializedWallet }
         return seed
     }
     
@@ -56,6 +68,12 @@ final class SeedManager {
         keychain.get(Self.zECCWalletKeys)?.split(separator: ";").map{String($0)}
     }
     
+    /**
+     
+     */
+    func nukePhrase() {
+        keychain.delete(Self.zECCWalletPhrase)
+    }
     /**
         Use carefully: Deletes the keys from the keychain
      */
@@ -85,13 +103,13 @@ final class SeedManager {
     func nukeWallet() {
         nukeKeys()
         nukeSeed()
+        nukePhrase()
         nukeBirthday()
     }
 }
 
 extension SeedManager: SeedProvider {
     func seed() -> [UInt8] {
-        guard let s = try? exportSeed() else { return [] }
-        return Array(s.utf8)
+        (try? exportSeed()) ?? []
     }
 }

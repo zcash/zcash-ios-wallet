@@ -17,7 +17,7 @@ struct SeedBackup: View {
     
     var seed: String {
         do {
-            return try SeedManager.default.exportSeed()
+            return try SeedManager.default.exportPhrase()
         } catch {
             return "there was an error retrieving your seed: \(error)"
         }

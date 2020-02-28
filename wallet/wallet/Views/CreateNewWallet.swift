@@ -72,16 +72,3 @@ struct CreateNewWallet_Previews: PreviewProvider {
             .colorScheme(.dark)
     }
 }
-
-
-/**
- .background(NavigationConfigurator { nc in
- nc.navigationBar.barTintColor = UIColor.zDarkGray
- nc.navigationBar.isTranslucent = true
- nc.navigationBar.isHidden = true
- nc.navigationBar.tintColor = UIColor.zLightGray
- nc.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.white,
- .font : UIFont.systemFont(ofSize: 20, weight: .light)
- ]
- })
- */
