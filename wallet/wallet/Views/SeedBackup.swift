@@ -17,7 +17,7 @@ struct SeedBackup: View {
     
     var seed: String {
         do {
-            return try SeedManager.default.exportSeed()
+            return try SeedManager.default.exportPhrase()
         } catch {
             return "there was an error retrieving your seed: \(error)"
         }
@@ -40,31 +40,49 @@ struct SeedBackup: View {
         """
     }
     
+    var gridView: AnyView {
+        do {
+            
+            let seedPhrase = try SeedManager.default.exportPhrase()
+            
+            guard MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase),
+                let words = MnemonicSeedProvider.default.asWords(mnemonic: seedPhrase) else {
+                    throw MnemonicError.invalidSeed
+            }
+            
+            return AnyView(
+                ZcashSeedPhraseGrid(words: words)
+            )
+            
+        } catch {
+            print("error retrieving seed: \(error)")
+            
+        }
+        return AnyView(EmptyView())
+    }
     
     var body: some View {
         ZStack {
             ZcashBackground()
-            VStack(alignment: .center, spacing: 24) {
-                Spacer()
+            VStack(alignment: .center, spacing: 16) {
+                
                 Text("Your Backup Seed")
                     .foregroundColor(.white)
                     .font(.title)
-                
-                Text(seed)
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-                Spacer()
-                Text("Your Wallet Birthday")
-                    .foregroundColor(.white)
-                    .font(.title)
-                    .opacity(0.8)
+                    .frame(alignment: .leading)
+                Text("Please back them up wisely!\nWe recommend a paper backup and a password vault")
+                    .font(.footnote)
+                    .foregroundColor(Color.zLightGray)
+                    .multilineTextAlignment(.leading)
+                    .frame(alignment: .leading)
+                    .padding()
                 
                 
-                Text(birthday)
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-                    .opacity(0.8)
-
+                gridView
+                Text("Wallet birthday: \(birthday)")
+                    .foregroundColor(Color.zLightGray)
+                    .font(.footnote)
+                    .frame(alignment: .leading)
                 Spacer()
                 Button(action: {
                     UIPasteboard.general.string = self.copyText
@@ -82,9 +100,8 @@ struct SeedBackup: View {
                     .padding([.leading, .trailing], buttonPadding)
                 }
                 Spacer()
-            }
-        }.navigationBarTitle("",displayMode: .inline)
-        .navigationBarHidden(false)
+            }.padding(24)
+        }
         
     }
 }

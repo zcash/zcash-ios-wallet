@@ -8,7 +8,8 @@
 
 import XCTest
 @testable import zECC_Wallet
-
+import MnemonicKit
+@testable import ZcashLightClientKit
 class walletTests: XCTestCase {
 
     override func setUp() {
@@ -64,6 +65,70 @@ class walletTests: XCTestCase {
         XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.000000000"))
         XCTAssertTrue(keyPadViewModel.hasEightOrMoreDecimals("0.0000000000"))
         
+    }
+    
+    func testMnemonics() {
         
+        guard let phrase = Mnemonic.generateMnemonic(strength: 256) else {
+            XCTFail()
+            return
+        }
+        
+        
+        XCTAssertTrue(phrase.split(separator: " ").count == 24)
+        
+        XCTAssertNotNil(Mnemonic.deterministicSeedString(from: phrase),"could not generate seed from phrase: \(phrase)")
+        
+    }
+    
+    
+    func testRestore() {
+        let expectedSeed =    "715b4b7950c2153e818f88122f8e54a00e36c42e47ba9589dc82fcecfc5b7ec7d06f4e3a3363a0221e06f14f52e03294290139d05d293059a55076b7f37d6726"
+           
+        let phrase = "abuse fee wage robot october tongue utility gloom dizzy best victory armor second share pilot help cotton mango music decorate scheme mix tell never"
+        
+        XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: phrase)?.hexString,expectedSeed)
+    }
+    
+    func testRestoreZaddress() {
+        ZECCWalletEnvironment.shared.nuke()
+        let phrase = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
+        
+        let expectedAddress = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
+        let seed = MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
+        
+        let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
+               
+        XCTAssertEqual(seed?.hexString, hex)
+        
+        try! SeedManager.default.importSeed(seed!)
+        try! SeedManager.default.importPhrase(bip39: phrase)
+        let accounts = try! ZECCWalletEnvironment.shared.initializer.initialize(seedProvider: SeedManager.default, walletBirthdayHeight: 692345)
+        
+        XCTAssertEqual(SeedManager.default.seed(), seed)
+        XCTAssertNotNil(accounts)
+        guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(address, expectedAddress)
+        
+        
+    }
+    
+    func testCompatibility() {
+        let words = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
+        let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
+        
+        XCTAssertTrue(MnemonicSeedProvider.default.isValid(mnemonic: words))
+        XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: words)?.hexString, hex)
+    }
+    
+}
+
+extension Array where Element == UInt8 {
+    var hexString: String {
+        self.map { String(format: "%02x", $0) }.joined()
     }
 }

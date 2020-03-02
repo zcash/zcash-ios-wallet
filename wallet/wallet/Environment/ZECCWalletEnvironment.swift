@@ -18,6 +18,9 @@ enum WalletState {
 }
 
 final class ZECCWalletEnvironment: ObservableObject {
+    enum WalletError: Error {
+        case createFailed
+    }
     
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
     
@@ -42,7 +45,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         return .initalized
     }
     
-   private init() throws {
+    private init() throws {
         self.dataDbURL = try URL.dataDbURL()
         self.cacheDbURL = try URL.cacheDbURL()
         self.pendingDbURL = try URL.pendingDbURL()
@@ -78,14 +81,16 @@ final class ZECCWalletEnvironment: ObservableObject {
         
     }
     
-    
-    
-    
     func createNewWallet() throws {
-        let randomSeed = "testreferencealicetestreferencealice-random-\(Int.random(in: Int.min ... Int.max))"
+        
+        guard let randomPhrase = MnemonicSeedProvider.default.randomMnemonic(),
+            let randomSeed = MnemonicSeedProvider.default.toSeed(mnemonic: randomPhrase) else {
+                throw WalletError.createFailed
+        }
         let birthday = WalletBirthday.birthday(with: BlockHeight.max)
         try SeedManager.default.importSeed(randomSeed)
         try SeedManager.default.importBirthday(birthday.height)
+        try SeedManager.default.importPhrase(bip39: randomPhrase)
         try self.initialize()
     }
     
@@ -101,15 +106,25 @@ final class ZECCWalletEnvironment: ObservableObject {
     }
     
     /**
-        only for internal use
+     only for internal use
      */
     func nuke() {
-        do {
         self.synchronizer.stop()
-            SeedManager.default.nukeWallet()
-        try FileManager.default.removeItem(at: self.dataDbURL)
-        try FileManager.default.removeItem(at: self.cacheDbURL)
-        try FileManager.default.removeItem(at: self.pendingDbURL)
+      
+        SeedManager.default.nukeWallet()
+
+        do {
+            try FileManager.default.removeItem(at: self.dataDbURL)
+        } catch {
+            print("could not nuke wallet: \(error)")
+        }
+        do {
+            try FileManager.default.removeItem(at: self.cacheDbURL)
+        } catch {
+            print("could not nuke wallet: \(error)")
+        }
+        do {
+            try FileManager.default.removeItem(at: self.pendingDbURL)
         } catch {
             print("could not nuke wallet: \(error)")
         }

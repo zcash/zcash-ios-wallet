@@ -2,13 +2,14 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'wallet' do 
- pod 'ZcashLightClientKit', :git => 'git@github.com:zcash/ZcashLightClientKit.git', :branch => 'feature/note-spending-v7'
+ pod 'ZcashLightClientKit',  :path => '/Users/pacu/Repos/ECC/ZcashLightClientKit'
  pod 'KeychainSwift', '~> 19.0.0'
+ pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :branch => 'CriptoKit'
  pod 'TinyQRScanner'
  target 'walletTests' do 
   inherit! :search_paths
  end
-
+ 
  target 'walletUITests' do 
    inherit! :search_paths
  end
