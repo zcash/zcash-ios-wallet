@@ -31,7 +31,7 @@ struct ZcashSeedWordPill: View {
                     
                     Text(self.word)
                         .foregroundColor(.white)
-                        .font(.system(size: 14))
+                        .font(.system(size: 16))
                         
                         
                    

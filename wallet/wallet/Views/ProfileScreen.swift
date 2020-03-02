@@ -29,7 +29,8 @@ struct ProfileScreen: View {
                     ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
                         .frame(height: Self.buttonHeight)
                         .padding(.horizontal, Self.horizontalPadding)
-                    NavigationLink(destination: SeedBackup().environmentObject(appEnvironment)) {
+                    NavigationLink(destination: SeedBackup().environmentObject(appEnvironment)
+                        .navigationBarHidden(false)) {
                         ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
                                                .frame(height: Self.buttonHeight)
                                                .padding(.horizontal, Self.horizontalPadding)
@@ -57,7 +58,7 @@ struct ProfileScreen: View {
                 }
             }
             .navigationBarTitle("", displayMode: .inline)
-            .navigationBarHidden(true)
+            .navigationBarHidden(false)
         }
     }
 }

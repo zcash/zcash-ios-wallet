@@ -7,6 +7,9 @@
 //
 
 import Foundation
+enum MnemonicError: Error {
+    case invalidSeed
+}
 
 protocol MnemonicSeedPhraseHandling {
     /**
