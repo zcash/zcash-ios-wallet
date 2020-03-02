@@ -79,6 +79,10 @@ struct SeedBackup: View {
                 
                 
                 gridView
+                Text("Wallet birthday: \(birthday)")
+                    .foregroundColor(Color.zLightGray)
+                    .font(.footnote)
+                    .frame(alignment: .leading)
                 Spacer()
                 Button(action: {
                     UIPasteboard.general.string = self.copyText
