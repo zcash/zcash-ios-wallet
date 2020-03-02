@@ -50,8 +50,9 @@ struct CreateNewWallet: View {
                 NavigationLink(
                     destination: RestoreWallet()
                     .environmentObject(appEnvironment)
-                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
                         .navigationBarHidden(false)
+                        .navigationBarBackButtonHidden(false)
                 ) {
                     ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
                     .frame(height: self.buttonHeight)

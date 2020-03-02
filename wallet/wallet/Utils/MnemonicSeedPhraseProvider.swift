@@ -23,7 +23,7 @@ class MnemonicSeedProvider: MnemonicSeedPhraseHandling {
     }
     
     func toSeed(mnemonic: String) -> [UInt8]? {
-        guard let data = Mnemonic.deterministicSeedString(from: mnemonic)?.mnemonicData() else { return nil }
+        guard let data = Mnemonic.deterministicSeedBytes(from: mnemonic) else { return nil }
         return [UInt8](data)
     }
     
