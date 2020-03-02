@@ -26,16 +26,17 @@ struct ZcashSeedWordPill: View {
                         .baselineOffset(geometry.size.height/8)
                         .font(.system(size: 10))
                         .foregroundColor(Color.zYellow)
+                        .frame(minWidth: geometry.size.width*0.18, alignment: .trailing)
                         
                     
                     Text(self.word)
                         .foregroundColor(.white)
                         .font(.system(size: 14))
-                        .multilineTextAlignment(.leading)
+                        
                         
                    
                 }
-                .padding(.horizontal, 8)
+                .padding(.trailing, 4)
                 .frame(width: geometry.size.width, height: geometry.size.height, alignment: .leading)
                 
                 
