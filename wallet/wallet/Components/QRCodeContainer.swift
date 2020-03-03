@@ -12,7 +12,7 @@ struct QRCodeContainer: View {
     var qrImage: Image
     var body: some View {
         ZStack {
-            ZcashButtonBackground(cornerTrim: 15)
+            ZcashChamferedButtonBackground(cornerTrim: 15)
                 .fill(Color.zDarkGray1)
             qrImage.scaledToFit()
             Image("QR-zcashlogo")

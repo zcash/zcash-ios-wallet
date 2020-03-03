@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    /// \#FFBC00 Color(red: 1, green: 185.0/255.0, blue: 0)
+    /// \#FFB900 Color(red: 1, green: 185.0/255.0, blue: 0)
     static let zYellow = Color(red: 1, green: 185.0/255.0, blue: 0)
     
     /// \#FFD000 Color(red: 1, red: 0.82, blue: 0)
@@ -24,7 +24,7 @@ extension Color {
     ///  \#FFB300 Color(red: 1.0, green:0.70, blue:0.0)
     static let zAmberGradient3 = Color(red: 1.0, green:0.70, blue:0.0)
     
-    /// \#FF9400 Color(red: 1.0, green: 0.58, blue: 0.0)
+    /// \#FF9300 Color(red: 1.0, green: 0.58, blue: 0.0)
     static let zAmberGradient4 = Color(red: 1.0, green: 0.58, blue: 0.0)
     
     static let zBlackGradient1 = Color(red:0.16, green:0.16, blue:0.17)

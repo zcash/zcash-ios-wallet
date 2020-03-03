@@ -121,7 +121,7 @@ struct ScanAddress: View {
         
        Button(action: {}) {
            ZStack {
-               ZcashButtonBackground(cornerTrim: 10)
+               ZcashChamferedButtonBackground(cornerTrim: 10)
                    .fill(Color.white)
                
                VStack {
