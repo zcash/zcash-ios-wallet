@@ -190,10 +190,11 @@ struct Home: View {
                 Spacer()
                 
                 self.keypad
+                    .frame(minWidth: 0, maxWidth: 250, alignment: .center)
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .disabled(!self.isSendingEnabled)
                     .padding()
-                    .frame(minWidth: 0, maxWidth: 250, alignment: .center)
+                    
                 
                 Spacer()
                 
