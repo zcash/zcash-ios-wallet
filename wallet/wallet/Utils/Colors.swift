@@ -46,6 +46,9 @@ extension Color {
     /// \#171717 Color(red: 0.09, green: 0.09, blue: 0.09)
     static let zDarkGray2 = Color(red: 0.09, green: 0.09, blue: 0.09)
     
+    /// \#A7A7A7 Color(red: 0.65, green: 0.65, blue: 0.65)
+    static let zDarkGray3 = Color(red: 0.65, green: 0.65, blue: 0.65)
+    
     /// \#656565 Color(red: 0.4, green: 0.4, blue: 0.4)
     static let zGray2 = Color(red: 0.4, green: 0.4, blue: 0.4)
     

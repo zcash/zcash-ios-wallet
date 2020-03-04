@@ -13,7 +13,7 @@ struct CreateNewWallet: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
-    let buttonHeight: CGFloat = 58
+    let buttonHeight: CGFloat = 50
     var body: some View {
         
         
@@ -32,7 +32,11 @@ struct CreateNewWallet: View {
                         .navigationBarHidden(true)
                     
                 ) {
-                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Create New Wallet")
+                     Text("Create New")
+                                   .font(.system(size: 17))
+                                   .foregroundColor(Color.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
+                                   
                         .frame(height: self.buttonHeight)
                         .padding([.leading, .trailing], self.buttonPadding)
                     
@@ -54,9 +58,10 @@ struct CreateNewWallet: View {
                         .navigationBarHidden(false)
                         .navigationBarBackButtonHidden(false)
                 ) {
-                    ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Restore")
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
+                    Text("Restore")
+                        .foregroundColor(Color.zDarkGray3)
+                        .font(.system(size: 18))
+                    
                 }
                 
                 
