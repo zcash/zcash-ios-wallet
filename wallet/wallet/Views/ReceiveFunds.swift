@@ -61,7 +61,9 @@ struct ReceiveFunds: View {
                     
                     Spacer()
                     NavigationLink(destination: ScanAddress()) {
-                        ZcashButton(color: Color.black, fill: Color.zYellow, text: "Scan Recipient Addresss")
+                       Text("Scan Recipient Address")
+                        .foregroundColor(Color.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: 58)
                             .padding([.leading, .trailing], 30)
                         
