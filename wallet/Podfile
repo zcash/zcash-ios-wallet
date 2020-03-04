@@ -6,6 +6,7 @@ target 'wallet' do
  pod 'KeychainSwift', '~> 19.0.0'
  pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :branch => 'CriptoKit'
  pod 'TinyQRScanner'
+ pod 'lottie-ios'
  target 'walletTests' do 
   inherit! :search_paths
  end

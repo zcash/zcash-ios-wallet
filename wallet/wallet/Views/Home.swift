@@ -20,7 +20,7 @@ final class HomeViewModel: ObservableObject {
     var sendingPushed: Bool = false
     @Published var zAddress = ""
     @Published var balance: Double = 0
-    @Published var progress: Float = 0
+    var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
     init(amount: Double = 0, balance: Double = 0) {
@@ -42,8 +42,12 @@ final class HomeViewModel: ObservableObject {
             })
             .store(in: &cancellable)
         environment.synchronizer.progress.receive(on: DispatchQueue.main)
-            .sink(receiveValue: {
-                self.progress = $0
+            .sink(receiveCompletion: { _ in
+                self.isSyncing = false
+                self.progress.send(0)
+            }, receiveValue: {
+                self.isSyncing = $0 < 1.0 && $0 > 0
+                self.progress.send($0)
             })
             .store(in: &cancellable)
         zAddress = ""
@@ -94,42 +98,31 @@ final class HomeViewModel: ObservableObject {
 }
 
 struct Home: View {
-    
+    let buttonHeight: CGFloat = 64
+    let buttonPadding: CGFloat = 40
     var keypad: KeyPad
     @State var sendingPushed = false
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
-    var isSendingEnabled: Bool {
-        $viewModel.verifiedBalance.wrappedValue > 0
-    }
-    
+    var syncingButton: SyncingButton
     var disposables: Set<AnyCancellable> = []
     
     init(amount: Double, verifiedBalance: Double) {
         self.viewModel = HomeViewModel(amount: amount, balance: verifiedBalance)
         self.keypad = KeyPad()
-        
+        self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
         self.keypad.viewModel.$value.receive(on: DispatchQueue.main)
             .assign(to: \.sendZecAmount, on: viewModel)
             .store(in: &disposables)
         self.keypad.viewModel.$text.receive(on: DispatchQueue.main)
             .assign(to: \.sendZecAmountText, on: viewModel)
             .store(in: &disposables)
+       
     }
     
-    var syncingButton: some View {
-        Button(action: {}) {
-            Text("Syncing")
-                
-                .font(.headline)
-                .foregroundColor(.white)
-                .frame(height: 50)
-                .overlay(
-                    Capsule(style: .continuous)
-                        .stroke(Color.zAmberGradient2, lineWidth: 4)
-            )
-        }
+    var isSendingEnabled: Bool {
+        $viewModel.verifiedBalance.wrappedValue > 0
     }
     
     var enterAddressButton: some View {
@@ -137,9 +130,11 @@ struct Home: View {
             self.sendingPushed = true
             
         }) {
-            ZcashButton(color: Color.black, fill: Color.zYellow, text: "Enter Address")
-                .frame(height: 58)
-                .padding([.leading, .trailing], 40)
+            Text("Send")
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: Color.zYellow)))
+                .frame(height: buttonHeight)
+                .padding([.leading, .trailing], buttonPadding)
                 .opacity(isAmountValid ? 1.0 : 0.3 ) // validate this
             
         }    .disabled(!isAmountValid)
@@ -204,11 +199,12 @@ struct Home: View {
                 
                 if self.$viewModel.isSyncing.wrappedValue {
                     self.syncingButton
+                        .frame(height: buttonHeight)
+                        .padding(.horizontal, buttonPadding)
                 } else {
                     
                     self.enterAddressButton
-                    
-                    
+                
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
                             SendFlowEnvironment(
@@ -231,12 +227,10 @@ struct Home: View {
                         .environmentObject(WalletDetailsViewModel())
                         .navigationBarTitle(Text(""), displayMode: .inline)
                 ) {
-                    HStack(alignment: .center, spacing: 10) {
-                        Image("wallet_details_icon")
-                        Text("Wallet Details")
-                            .font(.headline)
-                            .frame(height: 48)
-                    }.accentColor(Color.zLightGray)
+                    Text("Wallet Details")
+                        .foregroundColor(.white)
+                        .font(.body)
+                        .frame(height: 48)
                 }.isDetailLink(false)
                 Spacer()
                 

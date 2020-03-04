@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */; };
+		0D0AAE0F2410237A009CD8F9 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE0E24102379009CD8F9 /* LottieView.swift */; };
+		0D0AAE1124102380009CD8F9 /* SyncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1024102380009CD8F9 /* SyncingButton.swift */; };
+		0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1224102747009CD8F9 /* sendbutton.json */; };
 		0D0B8E7523E0DCB0002FF669 /* Transactions+zECCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */; };
 		0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */; };
 		0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED623BA78990089DB22 /* ZcashSymbol.swift */; };
@@ -98,6 +101,9 @@
 
 /* Begin PBXFileReference section */
 		0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPadViewModelTests.swift; sourceTree = "<group>"; };
+		0D0AAE0E24102379009CD8F9 /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		0D0AAE1024102380009CD8F9 /* SyncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncingButton.swift; sourceTree = "<group>"; };
+		0D0AAE1224102747009CD8F9 /* sendbutton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sendbutton.json; sourceTree = "<group>"; };
 		0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transactions+zECCWallet.swift"; sourceTree = "<group>"; };
 		0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashLogo.swift; sourceTree = "<group>"; };
 		0D100ED623BA78990089DB22 /* ZcashSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSymbol.swift; sourceTree = "<group>"; };
@@ -284,6 +290,7 @@
 				0D12510423B557E40014EE3A /* SceneDelegate.swift */,
 				0D12510823B557E60014EE3A /* Assets.xcassets */,
 				0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */,
+				0D0AAE1224102747009CD8F9 /* sendbutton.json */,
 				0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */,
 				0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */,
 				0D12511023B557E60014EE3A /* Info.plist */,
@@ -371,6 +378,8 @@
 		0DEC5DFA23BD63AA002EFD0D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0D0AAE1024102380009CD8F9 /* SyncingButton.swift */,
+				0D0AAE0E24102379009CD8F9 /* LottieView.swift */,
 				0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */,
 				0D100EDA23BA91F70089DB22 /* ZcashButton.swift */,
 				0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */,
@@ -534,6 +543,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
 				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
@@ -668,6 +678,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D27C4A723C4C3AE0044B48E /* EnterRecipient.swift in Sources */,
+				0D0AAE1124102380009CD8F9 /* SyncingButton.swift in Sources */,
 				0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */,
 				0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */,
 				0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */,
@@ -696,6 +707,7 @@
 				0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */,
 				0DFC0CF123C7787F0009DD7E /* ZcashSendButton.swift in Sources */,
 				0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */,
+				0D0AAE0F2410237A009CD8F9 /* LottieView.swift in Sources */,
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */,
 				0D1C2F27240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift in Sources */,
