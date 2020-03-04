@@ -21,23 +21,26 @@ struct KeyPad: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: vSpacing) {
-            ForEach(self.viewModel.visibleValues, id: \.self) {
-                row in
-                HStack(alignment: .center, spacing: self.hSpacing) {
-                    ForEach(row, id: \.self) { pad in
-                        
-                        Button(action: {
-                            self.viewModel.valuePressed(pad)
-                        }) {
-                            Text(pad)
-                        }.buttonStyle(KeyPadButtonStyle(size: self.keySize))
-                            .frame(width: self.keySize, height: self.keySize)
-                            .cornerRadius(self.keySize/2)
+        GeometryReader { geometry in
+            VStack(alignment: .center, spacing: self.vSpacing) {
+                ForEach(self.viewModel.visibleValues, id: \.self) {
+                    row in
+                    HStack(alignment: .center, spacing: self.hSpacing) {
+                        ForEach(row, id: \.self) { pad in
+                            
+                            Button(action: {
+                                self.viewModel.valuePressed(pad)
+                            }) {
+                                Text(pad)
+                            }.buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                .frame(width: self.keySize, height: self.keySize)
+                                .cornerRadius(self.keySize/2)
+                        }
                     }
                 }
             }
         }
+        
     }
 }
 

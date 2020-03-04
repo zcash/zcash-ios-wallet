@@ -9,28 +9,70 @@
 import SwiftUI
 
 struct ZcashButton: View {
+    
+    enum BackgroundShape {
+        case chamfered
+        case rounded
+        case roundedCorners
+    }
+    var buttonShape: BackgroundShape = .chamfered
     var color = Color.zYellow
     var fill = Color.black
     var text: String
+    
+    func backgroundWith(geometry: GeometryProxy, backgroundShape: BackgroundShape) -> AnyView {
+        
+        switch backgroundShape {
+        case .chamfered:
+            
+            return AnyView (
+                Group {
+                ZcashChamferedButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
+                    .fill(self.fill)
+                
+                ZcashChamferedButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
+                    .stroke(self.color, lineWidth: 1.0)
+                }
+            )
+        case .rounded:
+            return AnyView(
+                EmptyView()
+            )
+        case .roundedCorners:
+            return AnyView(
+                EmptyView()
+            )
+        }
+    }
     var body: some View {
         
         ZStack {
             GeometryReader { geometry in
-                ZcashButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
-                .fill(self.fill)
-                
-                ZcashButtonBackground(cornerTrim: min(geometry.size.height, geometry.size.width) / 4.0)
-                .stroke(self.color, lineWidth: 1.0)
+                self.backgroundWith(geometry: geometry, backgroundShape: self.buttonShape)
             }
-                Text(self.text)
-                    .foregroundColor(self.color)
+            Text(self.text)
+                .foregroundColor(self.color)
                 .font(.body)
             
         }
     }
 }
 
-struct ZcashButtonBackground: Shape {
+
+struct ZcashRoundCorneredButtonBackground: Shape {
+    var cornerRadius: CGFloat = 12
+    func path(in rect: CGRect) -> Path {
+        RoundedRectangle(cornerRadius: cornerRadius).path(in: rect)
+    }
+}
+
+struct ZcashRoundedButtonBackground: Shape {
+    func path(in rect: CGRect) -> Path {
+        RoundedRectangle(cornerRadius: rect.height).path(in: rect)
+    }
+}
+
+struct ZcashChamferedButtonBackground: Shape {
     var cornerTrim: CGFloat
     func path(in rect: CGRect) -> Path {
         
@@ -119,8 +161,13 @@ struct ZcashButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.black
+            VStack {
             ZcashButton(color: Color.zYellow, fill: Color.clear, text: "Create New Wallet")
                 .frame(width: 300, height: 60)
+            
+                ZcashButton(color: .black, fill: Color.clear, text: "Create New Wallet")
+                .frame(width: 300, height: 60)
+            }
         }
     }
 }

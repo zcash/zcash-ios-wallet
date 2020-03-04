@@ -109,20 +109,23 @@ struct EnterRecipient: View {
                 addressInBuffer
                 Spacer()
                 NavigationLink(destination: AddMemo().environmentObject(flow)){
-                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Next")
+                    Text("Next")
+                        .foregroundColor(.black)
+                        .font(.body)
+                        .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: Color.zYellow)))
                         .frame(height: 58)
-                        .padding([.leading, .trailing], 40)
+                        
                 }
                 .isDetailLink(false)
                 .opacity(validForm ? 1.0 : 0.3 ) // validate this
                 .disabled(!validForm)
-                Spacer()
                 
-            }.padding([.horizontal], 24)
+            }.padding([.horizontal,.bottom], 24)
             
         }.onTapGesture {
             UIApplication.shared.endEditing()
-        }.navigationBarItems(trailing: Image("infobutton"))
+        }
+//        .navigationBarItems(trailing: Image("infobutton"))
         .onAppear() {
            
         }

@@ -12,7 +12,7 @@ struct BackupWallet: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
-    let buttonHeight: CGFloat = 58
+    let buttonHeight: CGFloat = 50
     
     @State private var showModal: Bool = false
     
@@ -32,16 +32,21 @@ struct BackupWallet: View {
                     .padding(.horizontal, 48)
                 Spacer()
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
-                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Backup Wallet")
-                        .frame(height: buttonHeight)
+                    Text("Backup Wallet")
+                               .font(.system(size: 17))
+                               .foregroundColor(Color.black)
+                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
+                               
+                    .frame(height: self.buttonHeight)
+                    .padding([.leading, .trailing], self.buttonPadding)
                 }
                 .padding([.leading, .trailing], buttonPadding)
                 
                 
                 NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
                     Text("Skip")
-                        .foregroundColor(Color.zYellow)
-                        .font(.body)
+                        .foregroundColor(Color.zDarkGray3)
+                        .font(.system(size: 17))
                         .frame(height: buttonHeight)
                 }
                 .padding([.leading, .trailing], buttonPadding)
@@ -62,17 +67,5 @@ struct BackupWallet: View {
 struct BackupWallet_Previews: PreviewProvider {
     static var previews: some View {
         BackupWallet().environmentObject(ZECCWalletEnvironment.shared)
-    }
-}
-
-
-protocol SeedWordsProvider {
-    func seedWords(limit: Int) -> [String]
-}
-
-struct FakeProvider: SeedWordsProvider {}
-extension SeedWordsProvider {
-    func seedWords(limit: Int) -> [String] {
-        ["volume", "burst", "illegal", "swap", "neck", "brother", "foil", "gain", "thought", "glass", "unfold", "mercy", "kangaroo", "faculty", "divorce"]
     }
 }

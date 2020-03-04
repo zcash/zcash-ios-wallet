@@ -14,6 +14,7 @@ PODS:
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.23.1)
   - KeychainSwift (19.0.0)
+  - lottie-ios (3.1.6)
   - MnemonicKit (2.0.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
@@ -28,12 +29,13 @@ PODS:
     - SwiftProtobuf (~> 1.7.0)
   - SwiftProtobuf (1.7.0)
   - TinyQRScanner (1.0.0)
-  - ZcashLightClientKit (0.2.0):
+  - ZcashLightClientKit (0.2.1):
     - SQLite.swift (~> 0.12.2)
     - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
+  - lottie-ios
   - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, branch `CriptoKit`)"
   - TinyQRScanner
   - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
@@ -43,6 +45,7 @@ SPEC REPOS:
     - BoringSSL-GRPC
     - gRPC-Core
     - KeychainSwift
+    - lottie-ios
     - nanopb
     - SQLite.swift
     - SwiftGRPC
@@ -65,14 +68,15 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   gRPC-Core: 4b1148eb8596225178e5a154e40e35141a3cdf0f
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
+  lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MnemonicKit: dfbb4b7e2ccb3a67a56e519158501b27c519e2c8
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
-  ZcashLightClientKit: 3c41d8d99d601efdd22cbae7c0561d3b28b97d8c
+  ZcashLightClientKit: 8f195725d2ec3d579c78b228a0d3a384e21f56b9
 
-PODFILE CHECKSUM: 311b8d616eef8c2595cb3a712220c24ef4083d76
+PODFILE CHECKSUM: 78e0a1149d1fa0fd6a2a9d30a4f6d40eadb04736
 
 COCOAPODS: 1.8.4
