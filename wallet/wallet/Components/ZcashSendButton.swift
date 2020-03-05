@@ -19,12 +19,12 @@ struct ZcashSendButton: View {
     var completionStrokeWidth: CGFloat = 16.0
     @State var startAngle: Double = 270
     @State var endAngle: Double = 270
-
+    
     var body: some View {
         
         ZStack (alignment: .center) {
             GeometryReader { geometry in
-
+                
                 Circle()
                     .size(geometry.size)
                     .fill(Color.black)
@@ -38,39 +38,35 @@ struct ZcashSendButton: View {
                     startAngle: self.startAngle,
                     endAngle: self.endAngle,
                     clockwise: false
-                    )
+                )
                     
                     .stroke(Color.zAmberGradient2, lineWidth: self.completionStrokeWidth)
                     .animation(.easeIn(duration: 5))
-                   
-                    
-           
+                
+                
+                Text("Press and hold\nto send ZEC")
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .frame(minWidth: geometry.size.width, idealWidth: geometry.size.width, maxWidth: geometry.size.width, minHeight: geometry.size.height, idealHeight: geometry.size.height, maxHeight: geometry.size.height, alignment: .center)
+                    .onLongPressGesture(minimumDuration: 5, maximumDistance: 10, pressing: { (isPressing) in
+                        if isPressing {
+                            print("is pressing")
+                            self.longPressStarted?()
+                        } else {
+                            print("not pressing anymore")
+                            self.cancelAnimation()
+                            self.longPressCancelled()
+                        }
+                    }, perform: {
+                        self.longPressSucceded()
+                    })
             }
-            
-            
-            Text("Press and hold\nto send ZEC")
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            
         }
         .frame(
             width: 167,
             height: 167,
             alignment: .center
         )
-        .onLongPressGesture(minimumDuration: 5, maximumDistance: 10, pressing: { (isPressing) in
-            if isPressing {
-                print("is pressing")
-                self.longPressStarted?()
-            } else {
-                print("not pressing anymore")
-                self.cancelAnimation()
-                self.longPressCancelled()
-            }
-        }, perform: {
-            self.longPressSucceded()
-        })
-        
     }
     
     func startAnimation() {
