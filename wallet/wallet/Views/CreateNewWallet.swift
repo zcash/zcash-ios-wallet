@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct CreateNewWallet: View {
-   
+    
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     let itemSpacing: CGFloat = 24
-    let buttonPadding: CGFloat = 40
+    let buttonPadding: CGFloat = 24
     let buttonHeight: CGFloat = 50
     var body: some View {
         
@@ -32,41 +32,41 @@ struct CreateNewWallet: View {
                         .navigationBarHidden(true)
                     
                 ) {
-                     Text("Create New")
-                                   .font(.system(size: 17))
-                                   .foregroundColor(Color.black)
+                    Text("Create New")
+                        .font(.system(size: 20))
+                        .foregroundColor(Color.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
-                                   
+                        
                         .frame(height: self.buttonHeight)
-                        .padding([.leading, .trailing], self.buttonPadding)
-                    
+  
                 }
                 
                 #if DEBUG
                 Button(action: {
                     self.appEnvironment.nuke()
                 }) {
-                    ZcashButton.nukeButton()
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
+                    Text("NUKE WALLET")
+                        .foregroundColor(.red)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
+                        .frame(height: self.buttonHeight)
+                    
                 }
                 #endif
                 NavigationLink(
                     destination: RestoreWallet()
-                    .environmentObject(appEnvironment)
+                        .environmentObject(appEnvironment)
                         .navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
                         .navigationBarHidden(false)
                         .navigationBarBackButtonHidden(false)
                 ) {
                     Text("Restore")
                         .foregroundColor(Color.zDarkGray3)
-                        .font(.system(size: 18))
+                        .font(.system(size: 20))
+                        .frame(height: self.buttonHeight)
                     
                 }
                 
-                
-                Spacer()
-            }
+            } .padding([.horizontal, .bottom], self.buttonPadding)
         }
     }
     

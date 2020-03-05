@@ -258,7 +258,7 @@ struct Home: View {
                         .accessibility(label: Text("Your Profile"))
                         .padding()
             })
-            .navigationBarTitle("", displayMode:  .inline)
+            .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
                     .environmentObject(self.appEnvironment)

@@ -76,33 +76,35 @@ struct SeedBackup: View {
                     .multilineTextAlignment(.leading)
                     .frame(alignment: .leading)
                     .padding()
-                
-                
+
                 gridView
                 Text("Wallet birthday: \(birthday)")
                     .foregroundColor(Color.zLightGray)
                     .font(.footnote)
                     .frame(alignment: .leading)
-                Spacer()
+             
                 Button(action: {
                     UIPasteboard.general.string = self.copyText
                 }) {
                     Text("Copy to clipboard")
                         .font(.system(size: 20))
                         .foregroundColor(.white)
+                        .frame(height: buttonHeight)
                         .opacity(0.4)
                 }
                 if proceedsToHome {
                     NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
-                        ZcashButton(color: Color.black, fill: Color.zYellow, text: "I'm all set!")
+                        Text("I'm all set!")
+                            .foregroundColor(.black)
+                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: buttonHeight)
                     }
-                    .padding([.leading, .trailing], buttonPadding)
+                    
                 }
-                Spacer()
-            }.padding(24)
-        }
-        
+                
+            }.padding([.horizontal, .bottom], 24)
+        }   .navigationBarTitle("",displayMode: .inline)
+            .navigationBarHidden(true)
     }
 }
 

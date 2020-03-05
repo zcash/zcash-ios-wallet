@@ -11,6 +11,7 @@
 		0D0AAE0F2410237A009CD8F9 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE0E24102379009CD8F9 /* LottieView.swift */; };
 		0D0AAE1124102380009CD8F9 /* SyncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1024102380009CD8F9 /* SyncingButton.swift */; };
 		0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1224102747009CD8F9 /* sendbutton.json */; };
+		0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */; };
 		0D0B8E7523E0DCB0002FF669 /* Transactions+zECCWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */; };
 		0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */; };
 		0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED623BA78990089DB22 /* ZcashSymbol.swift */; };
@@ -104,6 +105,7 @@
 		0D0AAE0E24102379009CD8F9 /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		0D0AAE1024102380009CD8F9 /* SyncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncingButton.swift; sourceTree = "<group>"; };
 		0D0AAE1224102747009CD8F9 /* sendbutton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sendbutton.json; sourceTree = "<group>"; };
+		0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundsAtRisk.swift; sourceTree = "<group>"; };
 		0D0B8E7423E0DCB0002FF669 /* Transactions+zECCWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transactions+zECCWallet.swift"; sourceTree = "<group>"; };
 		0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashLogo.swift; sourceTree = "<group>"; };
 		0D100ED623BA78990089DB22 /* ZcashSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSymbol.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				0D11C23023BF966C001CF6F7 /* ScanAddress.swift */,
 				0D11C23623BFB666001CF6F7 /* ShareScreen.swift */,
 				0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */,
+				0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -691,6 +694,7 @@
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
 				0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */,
 				0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */,
+				0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */,
 				0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */,
 				0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */,
 				0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */,
