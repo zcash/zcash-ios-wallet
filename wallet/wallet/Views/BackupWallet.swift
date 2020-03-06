@@ -7,14 +7,33 @@
 //
 
 import SwiftUI
-
+import Combine
 struct BackupWallet: View {
+    
+    class BackupWalletViewModel: ObservableObject {
+        var showModal: Bool = false
+        var progress: Int = 0
+        
+        var disposables = [AnyCancellable]()
+        init() {}
+        
+        func bindSync() {
+            ZECCWalletEnvironment.shared.synchronizer.progress
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { self.progress =  Int($0 * 100)})
+            .store(in: &disposables)
+        }
+        deinit {
+            disposables.forEach({ $0.cancel() })
+        }
+    }
+    
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @ObservedObject var viewModel =  BackupWalletViewModel()
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 50
     
-    @State private var showModal: Bool = false
     
     var body: some View {
         
@@ -30,37 +49,42 @@ struct BackupWallet: View {
                     .foregroundColor(.white)
                     .font(.system(size: 18))
                     .padding(.horizontal, 48)
+                
+                Text("Syncing \($viewModel.progress.wrappedValue)%")
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 48)
+                    .opacity(0) //TODO: fix this
+                
                 Spacer()
+                
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
                     Text("Backup Wallet")
-                               .font(.system(size: 17))
-                               .foregroundColor(Color.black)
-                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
-                               
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
-                }
-                .padding([.leading, .trailing], buttonPadding)
+                        .font(.system(size: 20, weight: .regular, design: .default))
+                        .foregroundColor(.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
+                        .frame(height: self.buttonHeight)
+                }.isDetailLink(false)
                 
-                
-                NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
+                NavigationLink(destination:  FundsAtRisk().environmentObject(appEnvironment)) {
                     Text("Skip")
                         .foregroundColor(Color.zDarkGray3)
-                        .font(.system(size: 17))
+                        .font(.system(size: 20))
                         .frame(height: buttonHeight)
-                }
-                .padding([.leading, .trailing], buttonPadding)
-                Spacer()
-            }
+                }.isDetailLink(false)
+                
+            }.padding([.horizontal, .bottom], 24)
+            
         }
         .onAppear() {
             do {
                 try self.appEnvironment.createNewWallet()
+                self.viewModel.bindSync()
             } catch {
                 print("could not create new wallet: \(error)")
             }
         }
-       
+        
     }
 }
 

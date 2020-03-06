@@ -198,7 +198,7 @@ extension DetailModel {
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.starts(with: "z") // FIXME: find a better way to do thies
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
-        if let latest = latestBlockHeight {
+        if pendingTransaction.expiryHeight > 0, let latest = latestBlockHeight {
             self.subtitle = "\(abs(latest - pendingTransaction.expiryHeight - ZcashSDK.EXPIRY_OFFSET)) of 10 Confirmations"
         } else {
             self.subtitle = "Sent \(self.date.transactionDetail)"

@@ -12,8 +12,6 @@ struct QRCodeContainer: View {
     var qrImage: Image
     var body: some View {
         ZStack {
-            ZcashChamferedButtonBackground(cornerTrim: 15)
-                .fill(Color.zDarkGray1)
             qrImage.scaledToFit()
             Image("QR-zcashlogo")
             .resizable()
