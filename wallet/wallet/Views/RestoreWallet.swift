@@ -96,7 +96,7 @@ struct RestoreWallet: View {
                         try self.importBirthday()
                         try self.appEnvironment.initialize()
                     } catch {
-                        print("Error \(error)")
+                        logger.error("\(error)")
                         return
                     }
                     

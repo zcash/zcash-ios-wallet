@@ -8,6 +8,11 @@
 
 import UIKit
 
+#if targetEnvironment(simulator)
+var logger = SimpleLogger(logLevel: .debug, type: SimpleLogger.LoggerType.printerLog)
+#else
+var logger = SimpleLogger(logLevel: .debug)
+#endif
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {  
     
@@ -19,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case .initalized,
              .synced:
             try! environment.initialize()
-//            environment.synchronizer.start()
         default:
             break
         }
@@ -40,7 +44,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-    
-    
+  
 }
-

@@ -66,7 +66,7 @@ final class SendFlowEnvironment: ObservableObject {
                 case .finished:
                     self.isDone = true
                 case .failure(let error):
-                    print("error: \(error)")
+                    logger.error("\(error)")
                     self.error = error
                     self.showError = true
                 }

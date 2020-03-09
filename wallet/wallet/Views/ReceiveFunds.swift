@@ -37,7 +37,7 @@ struct ReceiveFunds: View {
                     
                     Button(action: {
                         UIPasteboard.general.string = self.address
-                        print("address copied to clipboard")
+                        logger.debug("address copied to clipboard")
                         self.isCopyAlertShown = true
                     }) {
                         VStack(alignment: .center, spacing: 0) {

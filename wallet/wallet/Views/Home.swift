@@ -57,16 +57,16 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let error):
-                    print("error scanning: \(error)")
+                    logger.error("error scanning: \(error)")
                 case .finished:
-                    print("finished scanning")
+                    logger.debug("finished scanning")
                 }
             }) { (notification) in
                 guard let address = notification.userInfo?["zAddress"] as? String else {
                     return
                 }
                 self.showReceiveFunds = false
-                print("got address \(address)")
+                logger.debug("got address \(address)")
                 self.zAddress = address
                 DispatchQueue.main.async {
                     self.sendingPushed = true

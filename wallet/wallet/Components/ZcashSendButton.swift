@@ -50,10 +50,10 @@ struct ZcashSendButton: View {
                     .frame(minWidth: geometry.size.width, idealWidth: geometry.size.width, maxWidth: geometry.size.width, minHeight: geometry.size.height, idealHeight: geometry.size.height, maxHeight: geometry.size.height, alignment: .center)
                     .onLongPressGesture(minimumDuration: 5, maximumDistance: 10, pressing: { (isPressing) in
                         if isPressing {
-                            print("is pressing")
+                            logger.event("is pressing")
                             self.longPressStarted?()
                         } else {
-                            print("not pressing anymore")
+                            logger.event("not pressing anymore")
                             self.cancelAnimation()
                             self.longPressCancelled()
                         }

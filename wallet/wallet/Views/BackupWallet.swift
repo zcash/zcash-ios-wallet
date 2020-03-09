@@ -81,7 +81,7 @@ struct BackupWallet: View {
                 try self.appEnvironment.createNewWallet()
                 self.viewModel.bindSync()
             } catch {
-                print("could not create new wallet: \(error)")
+                logger.error("could not create new wallet: \(error)")
             }
         }
         

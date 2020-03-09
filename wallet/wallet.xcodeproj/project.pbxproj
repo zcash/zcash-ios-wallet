@@ -54,6 +54,7 @@
 		0D60F2ED23BE1BC9006F5FAD /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
 		0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */; };
 		0D72330823E9CFE40004B6D1 /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */; };
+		0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D75ECD82416D13800244CE4 /* SimpleLogger.swift */; };
 		0D87E2CC240ECEC500648C09 /* ZcashButtonBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D87E2CB240ECEC500648C09 /* ZcashButtonBackground.swift */; };
 		0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */; };
 		0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */; };
@@ -154,6 +155,7 @@
 		0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashBackground.swift; sourceTree = "<group>"; };
 		0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessHelper.swift; sourceTree = "<group>"; };
 		0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
+		0D75ECD82416D13800244CE4 /* SimpleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		0D87E2CB240ECEC500648C09 /* ZcashButtonBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashButtonBackground.swift; sourceTree = "<group>"; };
 		0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Zcash.swift"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */,
 				0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */,
 				0DDAF3A824098D1000EA9427 /* MnemonicSeedPhraseProvider.swift */,
+				0D75ECD82416D13800244CE4 /* SimpleLogger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 				0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */,
 				0D11C23523BFB33B001CF6F7 /* NavigationConfigurator.swift in Sources */,
 				0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */,
+				0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */,
 				0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */,
 				0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */,
 				0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */,

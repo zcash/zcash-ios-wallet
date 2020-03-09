@@ -17,6 +17,7 @@ enum WalletState {
     case synced
 }
 
+
 final class ZECCWalletEnvironment: ObservableObject {
     enum WalletError: Error {
         case createFailed
@@ -60,7 +61,8 @@ final class ZECCWalletEnvironment: ObservableObject {
             pendingDbURL: self.pendingDbURL,
             endpoint: endpoint,
             spendParamsURL: self.spendParamsURL,
-            outputParamsURL: self.outputParamsURL)
+            outputParamsURL: self.outputParamsURL,
+            loggerProxy: logger)
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
         cancellables.append(
             self.synchronizer.status.map({
@@ -116,17 +118,17 @@ final class ZECCWalletEnvironment: ObservableObject {
         do {
             try FileManager.default.removeItem(at: self.dataDbURL)
         } catch {
-            print("could not nuke wallet: \(error)")
+            logger.error("could not nuke wallet: \(error)")
         }
         do {
             try FileManager.default.removeItem(at: self.cacheDbURL)
         } catch {
-            print("could not nuke wallet: \(error)")
+            logger.error("could not nuke wallet: \(error)")
         }
         do {
             try FileManager.default.removeItem(at: self.pendingDbURL)
         } catch {
-            print("could not nuke wallet: \(error)")
+            logger.error("could not nuke wallet: \(error)")
         }
     }
     

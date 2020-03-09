@@ -109,7 +109,7 @@ class CombineSynchronizer {
         do {
             try synchronizer.start()
         } catch {
-            print("error starting \(error)")
+            logger.error("error starting \(error)")
         }
     }
     
@@ -117,7 +117,7 @@ class CombineSynchronizer {
         do {
             try synchronizer.stop()
         } catch {
-            print("error stopping \(error)")
+            logger.error("error stopping \(error)")
         }  
     }
     

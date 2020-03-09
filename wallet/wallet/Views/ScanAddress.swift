@@ -22,9 +22,9 @@ class ScanAddressViewModel: ObservableObject {
         delegate.publisher.sink(receiveCompletion: { (completion) in
             switch completion {
             case .failure(let error):
-                print("error: \(error)")
+                logger.error("\(error)")
             case .finished:
-                print("finished")
+                logger.debug("finished")
             }
         }) { (address) in
             NotificationCenter.default.post(Notification(name: .qrZaddressScanned, object: self, userInfo: ["zAddress" : address]))
@@ -63,7 +63,7 @@ struct ScanAddress: View {
             }
             .navigationBarItems(
                 trailing: Button(action: {
-                    print("toggle flashlight")
+                    logger.debug("toggle flashlight")
                 }) {
                     Image("bolt")
                         .renderingMode(.template)

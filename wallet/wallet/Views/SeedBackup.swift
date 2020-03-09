@@ -55,8 +55,7 @@ struct SeedBackup: View {
             )
             
         } catch {
-            print("error retrieving seed: \(error)")
-            
+            logger.error("error retrieving seed: \(error)")
         }
         return AnyView(EmptyView())
     }
