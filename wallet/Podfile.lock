@@ -38,7 +38,7 @@ DEPENDENCIES:
   - lottie-ios
   - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, branch `CriptoKit`)"
   - TinyQRScanner
-  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
+  - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `master`)"
 
 SPEC REPOS:
   trunk:
@@ -57,12 +57,16 @@ EXTERNAL SOURCES:
     :branch: CriptoKit
     :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
-    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
+    :branch: master
+    :git: "git@github.com:zcash/ZcashLightClientKit.git"
 
 CHECKOUT OPTIONS:
   MnemonicKit:
     :commit: a01d4975ed814498f7ba6b9f4ce85053905daedc
     :git: "git@github.com:pacu/MnemonicKit.git"
+  ZcashLightClientKit:
+    :commit: fc8689f89492cf432cedb35e7ceea0af4fff5a82
+    :git: "git@github.com:zcash/ZcashLightClientKit.git"
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -77,6 +81,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
   ZcashLightClientKit: 8f195725d2ec3d579c78b228a0d3a384e21f56b9
 
-PODFILE CHECKSUM: 78e0a1149d1fa0fd6a2a9d30a4f6d40eadb04736
+PODFILE CHECKSUM: 3e57cb70ee2ba92f0299a01944ff4e4d618b5cf0
 
 COCOAPODS: 1.8.4

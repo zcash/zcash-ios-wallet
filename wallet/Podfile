@@ -2,7 +2,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'wallet' do 
- pod 'ZcashLightClientKit',  :path => '/Users/pacu/Repos/ECC/ZcashLightClientKit'
+ pod 'ZcashLightClientKit',  :git => 'git@github.com:zcash/ZcashLightClientKit.git', :branch => 'master'
  pod 'KeychainSwift', '~> 19.0.0'
  pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :branch => 'CriptoKit'
  pod 'TinyQRScanner'
