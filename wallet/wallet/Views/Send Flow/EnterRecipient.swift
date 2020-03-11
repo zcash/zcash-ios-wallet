@@ -125,9 +125,6 @@ struct EnterRecipient: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .onAppear() {
-           
-        }
        
     }
     

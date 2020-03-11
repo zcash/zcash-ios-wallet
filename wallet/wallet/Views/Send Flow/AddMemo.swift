@@ -55,10 +55,13 @@ struct AddMemo: View {
                     
                     self.isShown = true
                 }) {
-                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
-                    .opacity( isMemoEmpty ? 0.3 : 1 )
+                    Text("Add Memo")
+                        .foregroundColor(.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: ZcashFillStyle.solid(color: Color.zYellow)))
+                        .frame(height: self.buttonHeight)
+                        .padding([.leading, .trailing], self.buttonPadding)
+                        .opacity( isMemoEmpty ? 0.3 : 1 )
+                    
                 }.disabled(isMemoEmpty)
                 
                 NavigationLink(
@@ -76,7 +79,9 @@ struct AddMemo: View {
                     self.flow.includesMemo = false
                     self.isShown = true
                 }) {
-                    ZcashButton(color: .white, fill: .clear, text: sendText)
+                    Text(sendText)
+                        .foregroundColor(.white)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 2)))
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
                 }
@@ -84,9 +89,10 @@ struct AddMemo: View {
                 Spacer()
                 
             }
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
         .navigationBarTitle("Add Memo (optional)", displayMode: .inline)
-        .navigationBarItems(trailing: Image("infobutton"))
     }
 }
 
