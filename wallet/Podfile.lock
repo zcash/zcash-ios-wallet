@@ -5,6 +5,42 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - Firebase/CoreOnly (6.19.0):
+    - FirebaseCore (= 6.6.4)
+  - Firebase/Crashlytics (6.19.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 4.0.0-beta.5)
+  - FirebaseAnalyticsInterop (1.5.0)
+  - FirebaseCore (6.6.4):
+    - FirebaseCoreDiagnostics (~> 1.2)
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+  - FirebaseCoreDiagnostics (1.2.2):
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleDataTransportCCTSupport (~> 2.0)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+    - nanopb (~> 0.3.901)
+  - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseCrashlytics (4.0.0-beta.5):
+    - FirebaseAnalyticsInterop (~> 1.2)
+    - FirebaseCore (~> 6.6)
+    - FirebaseInstallations (~> 1.1)
+    - PromisesObjC (~> 1.2)
+  - FirebaseInstallations (1.1.0):
+    - FirebaseCore (~> 6.6)
+    - GoogleUtilities/UserDefaults (~> 6.5)
+    - PromisesObjC (~> 1.2)
+  - GoogleDataTransport (5.0.0)
+  - GoogleDataTransportCCTSupport (2.0.0):
+    - GoogleDataTransport (~> 5.0)
+    - nanopb (~> 0.3.901)
+  - GoogleUtilities/Environment (6.5.1)
+  - GoogleUtilities/Logger (6.5.1):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/UserDefaults (6.5.1):
+    - GoogleUtilities/Logger
   - gRPC-Core (1.23.1):
     - gRPC-Core/Implementation (= 1.23.1)
     - gRPC-Core/Interface (= 1.23.1)
@@ -21,6 +57,7 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - PromisesObjC (1.2.8)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
@@ -34,19 +71,31 @@ PODS:
     - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
+  - Firebase/Crashlytics
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
-  - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, branch `CriptoKit`)"
+  - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, commit `49ab6726fe8a15e1e615942b0b42a0cd83308090`)"
   - TinyQRScanner
   - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `master`)"
 
 SPEC REPOS:
   trunk:
     - BoringSSL-GRPC
+    - Firebase
+    - FirebaseAnalyticsInterop
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreDiagnosticsInterop
+    - FirebaseCrashlytics
+    - FirebaseInstallations
+    - GoogleDataTransport
+    - GoogleDataTransportCCTSupport
+    - GoogleUtilities
     - gRPC-Core
     - KeychainSwift
     - lottie-ios
     - nanopb
+    - PromisesObjC
     - SQLite.swift
     - SwiftGRPC
     - SwiftProtobuf
@@ -54,7 +103,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MnemonicKit:
-    :branch: CriptoKit
+    :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
     :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
     :branch: master
@@ -62,7 +111,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MnemonicKit:
-    :commit: a01d4975ed814498f7ba6b9f4ce85053905daedc
+    :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
     :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
     :commit: fc8689f89492cf432cedb35e7ceea0af4fff5a82
@@ -70,17 +119,28 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  Firebase: d55ddb0e0bb3207166cddc028647833d8a1b5b6f
+  FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
+  FirebaseCore: ed0a24c758a57c2b88c5efa8e6a8195e868af589
+  FirebaseCoreDiagnostics: e9b4cd8ba60dee0f2d13347332e4b7898cca5b61
+  FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseCrashlytics: 7c95218730d1debf493e987233c7b41dd7ba1329
+  FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
+  GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
+  GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
+  GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   gRPC-Core: 4b1148eb8596225178e5a154e40e35141a3cdf0f
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MnemonicKit: dfbb4b7e2ccb3a67a56e519158501b27c519e2c8
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
   ZcashLightClientKit: 8f195725d2ec3d579c78b228a0d3a384e21f56b9
 
-PODFILE CHECKSUM: 3e57cb70ee2ba92f0299a01944ff4e4d618b5cf0
+PODFILE CHECKSUM: 01ddf8b0cbb8b3da780806e878acb13967ecfefe
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
