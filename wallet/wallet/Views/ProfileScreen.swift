@@ -12,6 +12,7 @@ import SwiftUI
 struct ProfileScreen: View {
     @Binding var zAddress: String
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @State var nukePressed = false
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(48)
     var body: some View {
@@ -46,13 +47,19 @@ struct ProfileScreen: View {
                     ActionableMessage(message: "zECC SecureWallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                         .padding(.horizontal, Self.horizontalPadding)
+                    
+                    NavigationLink(destination: NukeWarning().environmentObject(appEnvironment), isActive: self.$nukePressed) {
+                        EmptyView()
+                    }.isDetailLink(false)
+                    
                     Button(action: {
-                        self.appEnvironment.nuke()
+                        self.nukePressed = true
                     }) {
                         ZcashButton.nukeButton()
                             .frame(height: Self.buttonHeight)
                             .padding([.leading, .trailing], Self.horizontalPadding)
                     }
+                    
                     Spacer()
 
                 }

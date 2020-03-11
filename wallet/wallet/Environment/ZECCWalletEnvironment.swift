@@ -111,7 +111,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     /**
      only for internal use
      */
-    func nuke() {
+    func nuke(abortApplication: Bool = false) {
         self.synchronizer.stop()
       
         SeedManager.default.nukeWallet()
@@ -130,6 +130,10 @@ final class ZECCWalletEnvironment: ObservableObject {
             try FileManager.default.removeItem(at: self.pendingDbURL)
         } catch {
             logger.error("could not nuke wallet: \(error)")
+        }
+        
+        if abortApplication {
+            abort()
         }
     }
     
