@@ -244,7 +244,7 @@ struct Home: View {
                     Image("QRCodeIcon")
                         .accessibility(label: Text("Receive Funds"))
                         .scaleEffect(0.5)
-                }.disabled(viewModel.isSyncing)
+                }
                     .sheet(isPresented: $viewModel.showReceiveFunds){
                         ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
                 }
