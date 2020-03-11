@@ -42,7 +42,17 @@ struct ScanAddress: View {
     
     @State var cameraAccess: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus
     
-    @ObservedObject var viewModel = ScanAddressViewModel()
+    @ObservedObject var viewModel: ScanAddressViewModel
+    
+    @Binding var isScanAddressShown: Bool
+    
+    init(scanViewModel: ScanAddressViewModel = ScanAddressViewModel(),
+         cameraStatus: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus,
+         fromReceiveFunds: Binding<Bool> = .constant(false)) {
+        viewModel = scanViewModel
+        _isScanAddressShown = fromReceiveFunds
+        cameraAccess = cameraStatus
+    }
     
     var scanFrame: some View {
         Image("QRCodeScanFrame")
@@ -53,7 +63,7 @@ struct ScanAddress: View {
         Group {
             QRCodeScannerView(delegate: viewModel.scannerDelegate)
                 .edgesIgnoringSafeArea(.all)
-                
+            
             VStack {
                 Spacer()
                 scanFrame
@@ -93,7 +103,7 @@ struct ScanAddress: View {
                 }
                 .padding()
                 
-               switchButton
+                switchButton
                 
             }
             
@@ -117,26 +127,30 @@ struct ScanAddress: View {
         }
     }
     
-    var switchButton: some View {
-        
-       Button(action: {}) {
-           ZStack {
-               ZcashChamferedButtonBackground(cornerTrim: 10)
-                   .fill(Color.white)
-               
-               VStack {
-                   
-                   Image("zcash_icon_black")
-                    .renderingMode(.original)
-                       .frame(width: 50, height: 50)
-                   Text("Switch to your Zcash address")
-                       .foregroundColor(.black)
-               }
-               .scaledToFit()
-           }
-       }
-       .frame(height: 158)
-       .padding()
+    var switchButton:  AnyView {
+        guard isScanAddressShown else { return AnyView (EmptyView()) }
+        return AnyView(
+            Button(action: {
+                self.isScanAddressShown = false
+            }) {
+                ZStack {
+                    ZcashChamferedButtonBackground(cornerTrim: 10)
+                        .fill(Color.white)
+                    
+                    VStack {
+                        
+                        Image("zcash_icon_black")
+                            .renderingMode(.original)
+                            .frame(width: 50, height: 50)
+                        Text("Switch to your Zcash address")
+                            .foregroundColor(.black)
+                    }
+                    .scaledToFit()
+                }
+            }
+            .frame(height: 158)
+            .padding()
+        )
     }
     
     func viewFor(state: CameraAccessHelper.Status) -> some View {
@@ -162,7 +176,7 @@ struct ScanAddress: View {
 
 struct ScanAddress_Previews: PreviewProvider {
     static var previews: some View {
-        ScanAddress(cameraAccess: .unavailable)
-        .environmentObject(ZECCWalletEnvironment.shared)
+        ScanAddress()
+            .environmentObject(ZECCWalletEnvironment.shared)
     }
 }

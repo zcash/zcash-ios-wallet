@@ -16,7 +16,7 @@ struct ReceiveFunds: View {
     
     @State var isCopyAlertShown = false
     @State var isShareModalDisplayed = false
-    
+    @State var isScanAddressShown = false
     var qrImage: Image {
         if let img = QRCodeGenerator.generate(from: self.address) {
             return Image(img, scale: 1, label: Text("QR Code for \(self.address)"))
@@ -60,13 +60,17 @@ struct ReceiveFunds: View {
                     }
                     
                     Spacer()
-                    NavigationLink(destination: ScanAddress()) {
-                       Text("Scan Recipient Address")
+                    NavigationLink(destination: ScanAddress(fromReceiveFunds: self.$isScanAddressShown) ,isActive: self.$isScanAddressShown ) {
+                        EmptyView()
+                    }
+                    Button(action: {
+                        self.isScanAddressShown = true
+                    }) {
+                        Text("Scan Recipient Address")
                         .foregroundColor(Color.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: 58)
                             .padding([.leading, .trailing], 30)
-                        
                     }
                     Spacer()
                 }

@@ -87,10 +87,10 @@ struct EnterRecipient: View {
                     onCommit: { }
                 ).sheet(isPresented: $viewModel.showScanView) {
                     ScanAddress(
-                        viewModel: ScanAddressViewModel(
+                        scanViewModel: ScanAddressViewModel(
                             address: self.$flow.address,
                             shouldShow: self.$viewModel.showScanView
-                        )
+                        )   
                     ).environmentObject(ZECCWalletEnvironment.shared)
                 }
                 
@@ -125,7 +125,6 @@ struct EnterRecipient: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-//        .navigationBarItems(trailing: Image("infobutton"))
         .onAppear() {
            
         }
