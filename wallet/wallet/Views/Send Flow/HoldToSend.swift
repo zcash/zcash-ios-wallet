@@ -12,7 +12,7 @@ struct HoldToSend: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var networkFee: Double = 0.0001
-    var pressAndHoldSeconds: TimeInterval = 5
+    var pressAndHoldSeconds: TimeInterval = 1
     @State var holdOk = false
     
     var includesMemoView: AnyView {
