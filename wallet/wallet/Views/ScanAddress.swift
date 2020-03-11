@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import TinyQRScanner
+import AVFoundation
 extension Notification.Name {
     static let qrZaddressScanned = Notification.Name(rawValue: "qrZaddressScanned")
 }
@@ -46,6 +47,8 @@ struct ScanAddress: View {
     
     @Binding var isScanAddressShown: Bool
     
+    @State private var torchEnabled = false
+    
     init(scanViewModel: ScanAddressViewModel = ScanAddressViewModel(),
          cameraStatus: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus,
          fromReceiveFunds: Binding<Bool> = .constant(false)) {
@@ -59,6 +62,18 @@ struct ScanAddress: View {
             .padding()
     }
     
+    var torchButton: AnyView {
+        guard torchAvailable else { return AnyView(EmptyView()) }
+        return AnyView(
+            Button(action: {
+                self.toggleTorch(on: !self.torchEnabled)
+                self.torchEnabled.toggle()
+            }) {
+                Image("bolt")
+                    .renderingMode(.template)
+            }
+        )
+    }
     var authorized: some View {
         Group {
             QRCodeScannerView(delegate: viewModel.scannerDelegate)
@@ -72,12 +87,7 @@ struct ScanAddress: View {
                 
             }
             .navigationBarItems(
-                trailing: Button(action: {
-                    logger.debug("toggle flashlight")
-                }) {
-                    Image("bolt")
-                        .renderingMode(.template)
-                }
+                trailing: torchButton
             )
             
         }
@@ -170,6 +180,29 @@ struct ScanAddress: View {
                 viewFor(state: cameraAccess)
             }
             .navigationBarTitle("Scan Recipient Address", displayMode: .inline)
+            .onDisappear() {
+                self.toggleTorch(on: false)
+            }
+        }
+    }
+    
+    private var torchAvailable: Bool {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return false}
+        return device.hasTorch
+    }
+    
+    private func toggleTorch(on: Bool) {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
+        guard device.hasTorch else { logger.info("Torch isn't available"); return }
+
+        do {
+            try device.lockForConfiguration()
+            device.torchMode = on ? .on : .off
+            // Optional thing you may want when the torch it's on, is to manipulate the level of the torch
+            if on { try device.setTorchModeOn(level: AVCaptureDevice.maxAvailableTorchLevel) }
+            device.unlockForConfiguration()
+        } catch {
+            logger.info("Torch can't be used")
         }
     }
 }
