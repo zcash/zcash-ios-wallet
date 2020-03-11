@@ -70,19 +70,6 @@
             ReferencedContainer = "container:wallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = " -UIViewLayoutFeedbackLoopDebuggingThreshold 100"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "ZCASH_NETWORKING_ENVIRONMENT"
-            value = "TESTNET"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

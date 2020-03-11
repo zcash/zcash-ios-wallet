@@ -141,3 +141,12 @@ final class ZECCWalletEnvironment: ObservableObject {
     
 }
 
+extension ZECCWalletEnvironment {
+    static var appBuild: String? {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+    }
+    
+    static var appVersion: String? {
+         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+}

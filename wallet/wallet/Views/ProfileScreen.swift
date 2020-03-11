@@ -43,7 +43,7 @@ struct ProfileScreen: View {
                         .padding(.horizontal, Self.horizontalPadding)
                     
                     
-                    ActionableMessage(message: "zECC SecureWallet v1.0", actionText: "Build 17", action: {}) // TODO: get real build number
+                    ActionableMessage(message: "zECC SecureWallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                         .padding(.horizontal, Self.horizontalPadding)
                     Button(action: {

@@ -4,9 +4,10 @@ use_frameworks!
 target 'wallet' do 
  pod 'ZcashLightClientKit',  :git => 'git@github.com:zcash/ZcashLightClientKit.git', :branch => 'master'
  pod 'KeychainSwift', '~> 19.0.0'
- pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :branch => 'CriptoKit'
+ pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :commit => '49ab6726fe8a15e1e615942b0b42a0cd83308090'
  pod 'TinyQRScanner'
  pod 'lottie-ios'
+ pod 'Firebase/Crashlytics'
  target 'walletTests' do 
   inherit! :search_paths
  end
