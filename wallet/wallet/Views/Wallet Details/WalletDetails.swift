@@ -44,7 +44,13 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     var balanceStatus: BalanceStatus {
-        ZECCWalletEnvironment.shared.balanceStatus
+        let status = ZECCWalletEnvironment.shared.balanceStatus
+        switch status {
+        case .available(_):
+            return .available(showCaption: false)
+        default:
+            return status
+        }
     }
     
     var zAddress: String {

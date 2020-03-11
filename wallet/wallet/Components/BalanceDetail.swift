@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum BalanceStatus {
-    case available
+    case available(showCaption: Bool)
     case expecting(zec: Double)
     case waiting(change: Double)
 }
@@ -32,10 +32,11 @@ struct BalanceDetail: View {
     
     var caption: some View {
         switch status {
-        case .available:
-            return Text("(tap in an amount to send)")
+        case .available(let showCaption):
+            return Text(showCaption ? "(tap in an amount to send)" : "")
                 .font(.body)
                 .foregroundColor(Color.zLightGray)
+                
             
         case .expecting(let zec):
             return  Text("(expecting ")
@@ -73,7 +74,7 @@ struct BalanceDetail_Previews: PreviewProvider {
         ZStack {
             ZcashBackground()
             VStack(alignment: .center, spacing: 50) {
-                BalanceDetail(availableZec: 2.0011,status: .available)
+                BalanceDetail(availableZec: 2.0011,status: .available(showCaption: true))
                 BalanceDetail(availableZec: 0.0011,status: .expecting(zec: 2))
                 BalanceDetail(availableZec: 12.2,status: .waiting(change: 5.3111112))
             }
@@ -89,7 +90,7 @@ extension ZECCWalletEnvironment {
         
         let difference = verifiedBalance - balance
         if difference.isZero {
-            return BalanceStatus.available
+            return BalanceStatus.available(showCaption: true)
         } else if difference > 0 {
             return BalanceStatus.expecting(zec: abs(difference))
         } else {
