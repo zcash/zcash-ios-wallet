@@ -46,7 +46,7 @@ struct EnterRecipient: View {
     }
     
     var validAddress: Bool {
-        flow.address.count > 0
+        ZECCWalletEnvironment.shared.initializer.isValidShieldedAddress(flow.address)
     }
     
     var validForm: Bool {
@@ -55,6 +55,7 @@ struct EnterRecipient: View {
     
     var addressInBuffer: AnyView {
         guard let clipboard = UIPasteboard.general.string,
+            ZECCWalletEnvironment.shared.initializer.isValidShieldedAddress(clipboard),
             clipboard.shortZaddress != nil else {
                 return AnyView(EmptyView())
         }

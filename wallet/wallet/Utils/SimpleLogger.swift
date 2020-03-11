@@ -33,7 +33,7 @@ class SimpleLogger: Logger {
     }
     
     private static let subsystem = Bundle.main.bundleIdentifier!
-    static let oslog = OSLog(subsystem: subsystem, category: "sample-logs")
+    static let oslog = OSLog(subsystem: subsystem, category: "logs")
     
     func debug(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         guard level.rawValue == LogLevel.debug.rawValue else { return }
@@ -66,7 +66,8 @@ class SimpleLogger: Logger {
         case .printerLog:
             print("[\(level)] \(fileName) - \(function) - line: \(line) -> \(message)")
         default:
-            os_log("[%@] %@ - %@ - Line: %d -> %@", log: Self.oslog, type: .default, level, fileName, function, line, message)
+//            os_log("[%@] %@ - %@ - Line: %d -> %@", log: Self.oslog, type: .debug, level, fileName, function, line, message)
+            os_log("[%@] %@ - %@ - Line: %d -> %@", level, fileName, function, line, message)
         }
     }
     

@@ -21,6 +21,7 @@ enum WalletState {
 final class ZECCWalletEnvironment: ObservableObject {
     enum WalletError: Error {
         case createFailed
+        case genericError(message: String)
     }
     
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.

@@ -23,7 +23,7 @@ class CombineSynchronizer {
     var balance: CurrentValueSubject<Double,Never>
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
-    
+    var error = PassthroughSubject<Error, Never>()
     var receivedTransactions: Future<[ConfirmedTransactionEntity],Never> {
         Future<[ConfirmedTransactionEntity], Never>() {
             promise in
@@ -101,6 +101,15 @@ class CombineSynchronizer {
             guard let minedTx = minedNotification.userInfo?[SDKSynchronizer.NotificationKeys.minedTransaction] as? PendingTransactionEntity else { return }
             self.minedTransaction.send(minedTx)
         }).store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .synchronizerFailed).sink { (notification) in
+            guard let error = notification.userInfo?[SDKSynchronizer.NotificationKeys.error] as? Error else {
+                self.error.send(ZECCWalletEnvironment.WalletError.genericError(message: "An error ocurred, but we can't figure out what it is. Please check device logs for more details")
+)
+                return
+            }
+            self.error.send(error)
+        }.store(in: &cancellables)
         
     }
     

@@ -11,6 +11,7 @@ import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
     var isFirstAppear = true
+    let genericErrorMessage = "An error ocurred, please check your device logs"
     @Published var sendZecAmount: Double
     @Published var sendZecAmountText: String = "0"
     @Published var showReceiveFunds: Bool
@@ -18,6 +19,8 @@ final class HomeViewModel: ObservableObject {
     @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     var sendingPushed: Bool = false
+    @Published var showError: Bool = false
+    var lastError:  ZECCWalletEnvironment.WalletError?
     @Published var zAddress = ""
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
@@ -31,9 +34,9 @@ final class HomeViewModel: ObservableObject {
         let environment = ZECCWalletEnvironment.shared
         
         environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-                .sink(receiveValue: {
-                    self.verifiedBalance = $0
-                })
+            .sink(receiveValue: {
+                self.verifiedBalance = $0
+            })
             .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
@@ -42,14 +45,39 @@ final class HomeViewModel: ObservableObject {
             })
             .store(in: &cancellable)
         environment.synchronizer.progress.receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
+            .sink(receiveCompletion: { [weak self] _ in
+                guard let self = self else { return }
                 self.isSyncing = false
                 self.progress.send(0)
-            }, receiveValue: {
+            }, receiveValue: { [weak self] in
+                guard let self = self else { return }
                 self.isSyncing = $0 < 1.0 && $0 > 0
                 self.progress.send($0)
             })
             .store(in: &cancellable)
+        
+        environment.synchronizer.error.receive(on: DispatchQueue.main)
+            .map({ (error) -> ZECCWalletEnvironment.WalletError in
+                if let rustError = error as? RustWeldingError {
+                    switch rustError {
+                    case .genericError(let message):
+                        return ZECCWalletEnvironment.WalletError.genericError(message: message)
+                    case .dataDbInitFailed(let message):
+                        return ZECCWalletEnvironment.WalletError.genericError(message: message)
+                    case .dataDbNotEmpty:
+                        return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
+                    case .saplingSpendParametersNotFound:
+                        return ZECCWalletEnvironment.WalletError.createFailed
+                    }
+                }
+                return ZECCWalletEnvironment.WalletError.genericError(message: self.genericErrorMessage)
+            })
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                self.show(error: error)
+        }
+        .store(in: &cancellable)
+        
         zAddress = ""
         
         NotificationCenter.default.publisher(for: .qrZaddressScanned)
@@ -95,6 +123,35 @@ final class HomeViewModel: ObservableObject {
     deinit {
         cancellable.forEach{ $0.cancel() }
     }
+    
+    func show(error: ZECCWalletEnvironment.WalletError) {
+        self.lastError = error
+        self.showError = true
+    }
+
+    func clearError() {
+        self.lastError = nil
+        self.showError = false
+    }
+    
+    var errorAlert: Alert {
+        let errorAction = {
+            self.clearError()
+        }
+        
+        guard let error = lastError else {
+            return Alert(title: Text("Error"), message: Text(genericErrorMessage), dismissButton: .default(Text("dismiss"),action: errorAction))
+        }
+        
+        var message = genericErrorMessage
+        switch error {
+        case .createFailed:
+            message = "There was an error creating your wallet. Please back it up and try again"
+        case .genericError(let genericMessage):
+            message = genericMessage
+        }
+        return Alert(title: Text("Error"), message: Text(message), dismissButton: .default(Text("dismiss"),action: errorAction))
+    }
 }
 
 struct Home: View {
@@ -102,6 +159,7 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     var keypad: KeyPad
     @State var sendingPushed = false
+
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -118,7 +176,7 @@ struct Home: View {
         self.keypad.viewModel.$text.receive(on: DispatchQueue.main)
             .assign(to: \.sendZecAmountText, on: viewModel)
             .store(in: &disposables)
-       
+        
     }
     
     var isSendingEnabled: Bool {
@@ -162,6 +220,13 @@ struct Home: View {
             )
         }
     }
+    
+    var walletDetails: some View {
+        Text("Wallet Details")
+        .foregroundColor(.white)
+        .font(.body)
+        .frame(height: 48)
+    }
     var body: some View {
         ZStack {
             
@@ -194,7 +259,10 @@ struct Home: View {
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .disabled(!self.isSendingEnabled)
                     .padding()
-                    
+                .alert(isPresented: self.$viewModel.showError) {
+                           self.viewModel.errorAlert
+                           }
+                
                 
                 Spacer()
                 
@@ -205,7 +273,7 @@ struct Home: View {
                 } else {
                     
                     self.enterAddressButton
-                
+                    
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
                             SendFlowEnvironment(
@@ -223,16 +291,18 @@ struct Home: View {
                 
                 Spacer()
                 
-                NavigationLink(
-                    destination: WalletDetails()
-                        .environmentObject(WalletDetailsViewModel())
-                        .navigationBarTitle(Text(""), displayMode: .inline)
-                ) {
-                    Text("Wallet Details")
-                        .foregroundColor(.white)
-                        .font(.body)
-                        .frame(height: 48)
-                }.isDetailLink(false)
+                if viewModel.isSyncing {
+                    walletDetails
+                        .opacity(0.4)
+                } else {
+                    NavigationLink(
+                        destination: WalletDetails()
+                            .environmentObject(WalletDetailsViewModel())
+                            .navigationBarTitle(Text(""), displayMode: .inline)
+                    ) {
+                       walletDetails
+                    }.isDetailLink(false)
+                }
                 Spacer()
                 
             }
@@ -245,8 +315,8 @@ struct Home: View {
                         .accessibility(label: Text("Receive Funds"))
                         .scaleEffect(0.5)
                 }
-                    .sheet(isPresented: $viewModel.showReceiveFunds){
-                        ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
+                .sheet(isPresented: $viewModel.showReceiveFunds){
+                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
                 }
                 , trailing:
                 Button(action: {
@@ -258,11 +328,14 @@ struct Home: View {
                         .accessibility(label: Text("Your Profile"))
                         .padding()
             })
+           
             .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
                     .environmentObject(self.appEnvironment)
-        }
+            
+            }
+        
     }
 }
 
