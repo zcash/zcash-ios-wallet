@@ -116,7 +116,11 @@ struct EnterRecipient: View {
                 
             }.padding([.horizontal,.bottom], 24)
             
-        }.onTapGesture {
+        }
+        .onAppear() {
+            self.flow.clearMemo()
+        }
+        .onTapGesture {
             UIApplication.shared.endEditing()
         }
     }

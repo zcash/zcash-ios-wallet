@@ -43,6 +43,11 @@ final class SendFlowEnvironment: ObservableObject {
             d.cancel()
         }
     }
+    func clearMemo() {
+        self.memo = ""
+        self.includeSendingAddress = false
+        self.includesMemo = false
+    }
     
     func send() {
         let environment = ZECCWalletEnvironment.shared
