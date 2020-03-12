@@ -18,7 +18,7 @@ final class SendFlowEnvironment: ObservableObject {
     enum FlowError: Error {
         case invalidEnvironment
     }
-    
+    @Published var showScanView = false
     @Published var amount: String
     @Binding var isActive: Bool
     @Published var address: String
@@ -36,6 +36,12 @@ final class SendFlowEnvironment: ObservableObject {
         self.verifiedBalance = verifiedBalance
         self.address = address
         self._isActive = isActive
+    }
+    
+    deinit {
+        diposables.forEach { d in
+            d.cancel()
+        }
     }
     
     func send() {
@@ -76,6 +82,27 @@ final class SendFlowEnvironment: ObservableObject {
                                }
                 self.pendingTx = transaction
         }.store(in: &diposables)
+        
+        NotificationCenter.default.publisher(for: .qrZaddressScanned)
+            .receive(on: DispatchQueue.main)
+            .debounce(for: 1, scheduler: RunLoop.main)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let error):
+                    logger.error("error scanning: \(error)")
+                case .finished:
+                    logger.debug("finished scanning")
+                }
+            }) { (notification) in
+                guard let address = notification.userInfo?["zAddress"] as? String else {
+                    return
+                }
+                self.showScanView = false
+                logger.debug("got address \(address)")
+                self.address = address
+              
+        }
+        .store(in: &diposables)
     }
     
     static func includeReplyTo(address: String, in memo: String) -> String {

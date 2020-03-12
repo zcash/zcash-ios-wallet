@@ -8,18 +8,11 @@
 
 import SwiftUI
 import Combine
-class EnterRecipientViewModel: ObservableObject {
-    
-    @Published var showScanView = false
-    
-    var dispose = Set<AnyCancellable>()
-    
-}
+
 struct EnterRecipient: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     
-    @ObservedObject var viewModel = EnterRecipientViewModel()
     var availableBalance: Bool {
         flow.verifiedBalance > 0
     }
@@ -80,17 +73,17 @@ struct EnterRecipient: View {
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
-                        self.viewModel.showScanView = true
+                        self.flow.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
                         .renderingMode(.original),
                     onEditingChanged: { _ in },
                     onCommit: { }
-                ).sheet(isPresented: $viewModel.showScanView) {
+                ).sheet(isPresented: self.$flow.showScanView) {
                     ScanAddress(
                         scanViewModel: ScanAddressViewModel(
                             address: self.$flow.address,
-                            shouldShow: self.$viewModel.showScanView
+                            shouldShow: self.$flow.showScanView
                         )   
                     ).environmentObject(ZECCWalletEnvironment.shared)
                 }
@@ -126,9 +119,7 @@ struct EnterRecipient: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-       
     }
-    
 }
 
 
