@@ -24,6 +24,7 @@ final class SendFlowEnvironment: ObservableObject {
     @Published var verifiedBalance: Double
     @Published var memo: String = ""
     @Published var includesMemo = false
+    @Published var includeSendingAddress: Bool = false
     @Published var isDone = false
     var error: Error?
     var showError = false
@@ -44,25 +45,30 @@ final class SendFlowEnvironment: ObservableObject {
     }
     
     func send() {
-        
+        let environment = ZECCWalletEnvironment.shared
         guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
-              self.address.isValidZaddress,
-              let spendingKey = SeedManager.default.getKeys()?.first else {
+            self.address.isValidZaddress,
+            let spendingKey = SeedManager.default.getKeys()?.first,
+            let replyToAddress = environment.initializer.getAddress() else {
                 self.error = FlowError.invalidEnvironment
                 self.showError = true
                 return
         }
         
-        let environment = ZECCWalletEnvironment.shared
+        
         
         environment.synchronizer.send(
-                with: spendingKey,
-                zatoshi: zatoshi,
-                to: self.address,
-                memo: self.memo.isEmpty ? nil : self.memo,
-                from: 0
+            with: spendingKey,
+            zatoshi: zatoshi,
+            to: self.address,
+            memo: Self.buildMemo(
+                memo: self.memo,
+                includesMemo: self.includesMemo,
+                replyToAddress: self.includeSendingAddress ? replyToAddress : nil
+            ),
+            from: 0
         )
-        .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] (completion) in
                 guard let self = self else {
                     return
@@ -77,8 +83,8 @@ final class SendFlowEnvironment: ObservableObject {
                 }
             }) { [weak self] (transaction) in
                 guard let self = self else {
-                                   return
-                               }
+                    return
+                }
                 self.pendingTx = transaction
         }.store(in: &diposables)
         
@@ -99,14 +105,14 @@ final class SendFlowEnvironment: ObservableObject {
                 self.showScanView = false
                 logger.debug("got address \(address)")
                 self.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-              
+                
         }
         .store(in: &diposables)
     }
     
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
         
-        let replyTo = "...\nReply to:\n\(address)"
+        let replyTo = "\nReply to:\n\(address)"
         
         if (memo.count + replyTo.count) >= charLimit {
             let truncatedMemo = String(memo[memo.startIndex ..< memo.index(memo.startIndex, offsetBy: (memo.count - replyTo.count))])
@@ -115,6 +121,18 @@ final class SendFlowEnvironment: ObservableObject {
         }
         return memo + replyTo
         
+    }
+    
+    static func buildMemo(memo: String, includesMemo: Bool, replyToAddress: String?) -> String? {
+        guard !memo.isEmpty else { return nil }
+        
+        guard includesMemo else { return nil }
+        
+        if let addr = replyToAddress {
+            return includeReplyTo(address: addr, in: memo)
+        }
+        
+        return memo
     }
 }
 

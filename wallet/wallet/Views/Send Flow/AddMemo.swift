@@ -12,14 +12,14 @@ struct AddMemo: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     @State var isShown = false
-    @State var includeSendingAddress: Bool = false
+    
     let buttonHeight: CGFloat = 58
     let buttonPadding: CGFloat = 30
     var legend: String {
-        includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
+        flow.includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
     }
     var isMemoEmpty: Bool {
-        flow.memo.count == 0 && !includeSendingAddress
+        flow.memo.count == 0 && !flow.includeSendingAddress
     }
     
     var sendText: String {
@@ -33,7 +33,7 @@ struct AddMemo: View {
                 Spacer()
                 ZcashMemoTextView(text: $flow.memo, charLimit: SendFlowEnvironment.maxMemoLength )
                 HStack {
-                    ZcashCheckCircle(isChecked: $includeSendingAddress)
+                    ZcashCheckCircle(isChecked: $flow.includeSendingAddress)
                     Text("Include your sending address in a memo")
                         .foregroundColor(Color.zLightGray2)
                 }
@@ -49,10 +49,6 @@ struct AddMemo: View {
                 Spacer()
                 Button(action: {
                     self.flow.includesMemo = true
-                    
-                    guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else { return }
-                    self.flow.memo = SendFlowEnvironment.includeReplyTo(address: address, in: self.flow.memo)
-                    
                     self.isShown = true
                 }) {
                     Text("Add Memo")
