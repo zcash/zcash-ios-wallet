@@ -96,7 +96,7 @@ final class HomeViewModel: ObservableObject {
                 }
                 self.showReceiveFunds = false
                 logger.debug("got address \(address)")
-                self.zAddress = address
+                self.zAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
                 DispatchQueue.main.async {
                     self.sendingPushed = true
                 }

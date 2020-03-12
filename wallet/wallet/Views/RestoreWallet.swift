@@ -40,17 +40,18 @@ struct RestoreWallet: View {
     }
     
     func importBirthday() throws {
-        let b = BlockHeight(self.walletBirthDay) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+        let b = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
         try SeedManager.default.importBirthday(b)
     }
     
     func importSeed() throws {
-        guard !seedPhrase.isEmpty, let seedBytes =
-            MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase) else { throw ZECCWalletEnvironment.WalletError.createFailed
+        let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedSeedPhrase.isEmpty, let seedBytes =
+            MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase) else { throw ZECCWalletEnvironment.WalletError.createFailed
         }
         
         try SeedManager.default.importSeed(seedBytes)
-        try SeedManager.default.importPhrase(bip39: seedPhrase)
+        try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
     }
     
     var disableProceed: Bool {

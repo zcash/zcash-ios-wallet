@@ -99,7 +99,7 @@ final class SendFlowEnvironment: ObservableObject {
                 }
                 self.showScanView = false
                 logger.debug("got address \(address)")
-                self.address = address
+                self.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
               
         }
         .store(in: &diposables)
