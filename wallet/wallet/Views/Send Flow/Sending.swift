@@ -97,6 +97,17 @@ struct Sending: View {
     var body: some View {
         ZStack {
             ZcashBackground.amberGradient
+            .alert(isPresented: self.$flow.showError) {
+                Alert(
+                    title: Text("Something happened!"),
+                    message: Text(errorMessage),
+                    dismissButton: .default(Text("dismiss"),
+                                        action: {
+                                            self.flow.isActive = false
+                                        }
+                                    )
+                )
+            }
             
             VStack(alignment: .center) {
                 Spacer()
@@ -127,16 +138,6 @@ struct Sending: View {
         }.disabled(self.flow.error != nil || !self.flow.isDone))
         .onAppear() {
                 self.flow.send()
-        } .alert(isPresented: self.$flow.showError) {
-            Alert(
-                title: Text("Something happened!"),
-                message: Text(errorMessage),
-                dismissButton: .default(Text("dismiss"),
-                                    action: {
-                                        self.flow.isActive = false
-                                    }
-                                )
-            )
         }
     }
 }

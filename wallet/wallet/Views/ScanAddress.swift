@@ -149,7 +149,7 @@ struct ScanAddress: View {
                     
                     VStack {
                         
-                        Image("zcash_icon_black")
+                        Image("zcash_icon_black_small")
                             .renderingMode(.original)
                             .frame(width: 50, height: 50)
                         Text("Switch to your Zcash address")

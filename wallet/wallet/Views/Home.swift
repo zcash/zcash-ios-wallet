@@ -82,6 +82,7 @@ final class HomeViewModel: ObservableObject {
         
         NotificationCenter.default.publisher(for: .qrZaddressScanned)
             .receive(on: DispatchQueue.main)
+            .debounce(for: 1, scheduler: RunLoop.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let error):
