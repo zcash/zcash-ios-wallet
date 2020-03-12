@@ -18,7 +18,11 @@ struct ZcashMemoTextView: View {
     var body: some View {
         ZStack{
             VStack(alignment: .trailing, spacing: 0) {
-                TextView(placeholder: "Add Memo Here", text: $text, minHeight: self.textHeight, calculatedHeight: $textHeight)
+                TextView(placeholder: "Add Memo Here",
+                         text: $text,
+                         minHeight: self.textHeight,
+                         limit: charLimit,
+                         calculatedHeight: $textHeight)
                     .foregroundColor(.white)
                     .frame(height: 174)
                     .padding(4)

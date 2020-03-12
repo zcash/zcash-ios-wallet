@@ -11,10 +11,9 @@ import ZcashLightClientKit
 import Combine
 import SwiftUI
 
-
 final class SendFlowEnvironment: ObservableObject {
     
-    let maxMemoLength: Int = 512
+    static let maxMemoLength: Int = 255
     enum FlowError: Error {
         case invalidEnvironment
     }
@@ -105,11 +104,11 @@ final class SendFlowEnvironment: ObservableObject {
         .store(in: &diposables)
     }
     
-    static func includeReplyTo(address: String, in memo: String) -> String {
+    static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
         
         let replyTo = "...\nReply to:\n\(address)"
         
-        if (memo.count + replyTo.count) >= 512 {
+        if (memo.count + replyTo.count) >= charLimit {
             let truncatedMemo = String(memo[memo.startIndex ..< memo.index(memo.startIndex, offsetBy: (memo.count - replyTo.count))])
             
             return truncatedMemo + replyTo

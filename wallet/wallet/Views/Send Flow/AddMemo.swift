@@ -31,7 +31,7 @@ struct AddMemo: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 15) {
                 Spacer()
-                ZcashMemoTextView(text: $flow.memo)
+                ZcashMemoTextView(text: $flow.memo, charLimit: SendFlowEnvironment.maxMemoLength )
                 HStack {
                     ZcashCheckCircle(isChecked: $includeSendingAddress)
                     Text("Include your sending address in a memo")

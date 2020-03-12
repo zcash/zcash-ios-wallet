@@ -12,14 +12,15 @@ import UIKit
 struct TextView: UIViewRepresentable {
     var placeholder: String
     @Binding var text: String
-
+    var limit: Int
     var minHeight: CGFloat
     @Binding var calculatedHeight: CGFloat
 
-    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>) {
+    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, limit: Int = Int.max, calculatedHeight: Binding<CGFloat>) {
         self.placeholder = placeholder
         self._text = text
         self.minHeight = minHeight
+        self.limit = limit
         self._calculatedHeight = calculatedHeight
     }
 
@@ -39,7 +40,6 @@ struct TextView: UIViewRepresentable {
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor(white: 0.0, alpha: 0.05)
         textView.font = UIFont.systemFont(ofSize: 16)
-
         // Set the placeholder
         textView.text = placeholder
         textView.textColor = UIColor.lightGray
@@ -96,6 +96,11 @@ struct TextView: UIViewRepresentable {
                 textView.text = parent.placeholder
                 textView.textColor = UIColor.lightGray
             }
+        }
+        
+        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            let userPressedDelete = text.isEmpty && range.length > 0
+            return  textView.text.count < parent.limit || userPressedDelete
         }
     }
 }
