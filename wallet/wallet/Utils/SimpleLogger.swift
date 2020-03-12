@@ -67,7 +67,7 @@ class SimpleLogger: Logger {
             print("[\(level)] \(fileName) - \(function) - line: \(line) -> \(message)")
         default:
 //            os_log("[%@] %@ - %@ - Line: %d -> %@", log: Self.oslog, type: .debug, level, fileName, function, line, message)
-            os_log("[%@] %@ - %@ - Line: %d -> %@", level, fileName, function, line, message)
+            os_log("[%{public}@] %{public}@ - %{public}@ - Line: %{public}d -> %{public}@", level, fileName, function, line, message)
         }
     }
     
