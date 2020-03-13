@@ -56,7 +56,7 @@ struct BalanceDetail: View {
                        Text("+" + format(zec: change))
                                       .font(.body)
                            .foregroundColor(.white)
-                       + Text(" ZEC in change)")
+                       + Text(" ZEC)")
                            .font(.body)
                            .foregroundColor(Color.zLightGray)
         }
