@@ -130,6 +130,10 @@ class CombineSynchronizer {
         }  
     }
     
+    func cancel(pendingTransaction: PendingTransactionEntity) -> Bool {
+        synchronizer.cancelSpend(transaction: pendingTransaction)
+    }
+    
     deinit {
         for c in cancellables {
             c.cancel()
