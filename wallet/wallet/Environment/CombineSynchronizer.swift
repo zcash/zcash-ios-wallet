@@ -113,10 +113,13 @@ class CombineSynchronizer {
         
     }
     
-    func start(){
+    func start(retry: Bool = false){
         
         do {
-            try synchronizer.start()
+            if retry {
+                stop()
+            }
+            try synchronizer.start(retry: retry)
         } catch {
             logger.error("error starting \(error)")
         }

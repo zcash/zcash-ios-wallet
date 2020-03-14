@@ -57,21 +57,7 @@ final class HomeViewModel: ObservableObject {
             .store(in: &cancellable)
         
         environment.synchronizer.error.receive(on: DispatchQueue.main)
-            .map({ (error) -> ZECCWalletEnvironment.WalletError in
-                if let rustError = error as? RustWeldingError {
-                    switch rustError {
-                    case .genericError(let message):
-                        return ZECCWalletEnvironment.WalletError.genericError(message: message)
-                    case .dataDbInitFailed(let message):
-                        return ZECCWalletEnvironment.WalletError.genericError(message: message)
-                    case .dataDbNotEmpty:
-                        return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
-                    case .saplingSpendParametersNotFound:
-                        return ZECCWalletEnvironment.WalletError.createFailed
-                    }
-                }
-                return ZECCWalletEnvironment.WalletError.genericError(message: self.genericErrorMessage)
-            })
+            .map( ZECCWalletEnvironment.mapError )
             .sink { [weak self] error in
                 guard let self = self else { return }
                 self.show(error: error)
@@ -150,8 +136,23 @@ final class HomeViewModel: ObservableObject {
             message = "There was an error creating your wallet. Please back it up and try again"
         case .genericError(let genericMessage):
             message = genericMessage
+        case .initializationFailed(let errMsg):
+            message = errMsg
+        case .connectionFailed(let connMsg):
+            message = connMsg
+        case .maxRetriesReached(attempts: let attempts):
+            return Alert(
+                title: Text("Error"),
+                message: Text("Max Retry attempts (\(attempts)) have been reached"),
+                primaryButton: .default(Text("dismiss"),action: errorAction),
+                secondaryButton: .default(Text("Retry"),
+                                          action: { ZECCWalletEnvironment.shared.synchronizer.start(retry: true )}
+                )
+            )
         }
-        return Alert(title: Text("Error"), message: Text(message), dismissButton: .default(Text("dismiss"),action: errorAction))
+        return Alert(
+            title: Text("Error"),
+            message: Text(message), dismissButton: .default(Text("dismiss"),action: errorAction))
     }
 }
 
@@ -160,7 +161,7 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     var keypad: KeyPad
     @State var sendingPushed = false
-
+    @State var showPending = true
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -209,12 +210,6 @@ struct Home: View {
             return AnyView (
                 BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
             )
-        } else if viewModel.pendingTransactions.count > 0 {
-            guard let model = self.viewModel.pendingTransactions.first else { return AnyView(EmptyView()) }
-            
-            return AnyView (
-                DetailCard(model: model)
-            )
         } else {
             return AnyView(
                 ActionableMessage(message: "No Balance", actionText: "Fund Now", action: { self.viewModel.showReceiveFunds = true })
@@ -228,6 +223,20 @@ struct Home: View {
         .font(.body)
         .frame(height: 48)
     }
+    
+    var detailCard: AnyView {
+        guard self.showPending, let model = self.viewModel.pendingTransactions.first else { return AnyView(EmptyView()) }
+        
+        return AnyView (
+            DetailCard(model: model)
+                .frame(height: 50)
+                .padding(.horizontal, buttonPadding)
+                .onTapGesture() {
+                    self.showPending = false
+                }
+        )
+    }
+    
     var body: some View {
         ZStack {
             
@@ -304,8 +313,10 @@ struct Home: View {
                        walletDetails
                     }.isDetailLink(false)
                 }
-                Spacer()
-                
+                /// FIXME: fix pending transactions stuck
+//                if viewModel.pendingTransactions.count > 0 {
+//                    detailCard
+//                }
             }
         }.navigationBarBackButtonHidden(true)
             .navigationBarItems(leading:

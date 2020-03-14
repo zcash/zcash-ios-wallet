@@ -16,7 +16,9 @@ final class SendFlowEnvironment: ObservableObject {
     static let maxMemoLength: Int = 255
     enum FlowError: Error {
         case invalidEnvironment
+        case duplicateSent
     }
+    
     @Published var showScanView = false
     @Published var amount: String
     @Binding var isActive: Bool
@@ -26,6 +28,8 @@ final class SendFlowEnvironment: ObservableObject {
     @Published var includesMemo = false
     @Published var includeSendingAddress: Bool = false
     @Published var isDone = false
+    var txSent = false
+
     var error: Error?
     var showError = false
     var pendingTx: PendingTransactionEntity?
@@ -36,6 +40,28 @@ final class SendFlowEnvironment: ObservableObject {
         self.verifiedBalance = verifiedBalance
         self.address = address
         self._isActive = isActive
+        
+        NotificationCenter.default.publisher(for: .qrZaddressScanned)
+                   .receive(on: DispatchQueue.main)
+                   .debounce(for: 1, scheduler: RunLoop.main)
+                   .sink(receiveCompletion: { (completion) in
+                       switch completion {
+                       case .failure(let error):
+                           logger.error("error scanning: \(error)")
+                       case .finished:
+                           logger.debug("finished scanning")
+                       }
+                   }) { (notification) in
+                       guard let address = notification.userInfo?["zAddress"] as? String else {
+                           return
+                       }
+                       self.showScanView = false
+                       logger.debug("got address \(address)")
+                       self.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
+                       
+               }
+               .store(in: &diposables)
+        
     }
     
     deinit {
@@ -43,13 +69,19 @@ final class SendFlowEnvironment: ObservableObject {
             d.cancel()
         }
     }
+
     func clearMemo() {
         self.memo = ""
         self.includeSendingAddress = false
         self.includesMemo = false
     }
-    
+
+
     func send() {
+        guard !txSent else {
+            logger.error("attempt to send tx twice")
+            return
+        }
         let environment = ZECCWalletEnvironment.shared
         guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
             self.address.isValidZaddress,
@@ -59,9 +91,7 @@ final class SendFlowEnvironment: ObservableObject {
                 self.showError = true
                 return
         }
-        
-        
-        
+
         environment.synchronizer.send(
             with: spendingKey,
             zatoshi: zatoshi,
@@ -85,34 +115,28 @@ final class SendFlowEnvironment: ObservableObject {
                     logger.error("\(error)")
                     self.error = error
                     self.showError = true
+                    self.isDone = true
                 }
             }) { [weak self] (transaction) in
                 guard let self = self else {
                     return
                 }
                 self.pendingTx = transaction
-        }.store(in: &diposables)
+            }.store(in: &diposables)
         
-        NotificationCenter.default.publisher(for: .qrZaddressScanned)
-            .receive(on: DispatchQueue.main)
-            .debounce(for: 1, scheduler: RunLoop.main)
-            .sink(receiveCompletion: { (completion) in
-                switch completion {
-                case .failure(let error):
-                    logger.error("error scanning: \(error)")
-                case .finished:
-                    logger.debug("finished scanning")
-                }
-            }) { (notification) in
-                guard let address = notification.userInfo?["zAddress"] as? String else {
-                    return
-                }
-                self.showScanView = false
-                logger.debug("got address \(address)")
-                self.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-                
-        }
-        .store(in: &diposables)
+        self.txSent = true
+
+    }
+    
+    var hasErrors: Bool {
+        self.error != nil || self.showError
+    }
+    var hasFailed: Bool {
+        isDone && hasErrors
+    }
+    
+    var hasSucceded: Bool {
+        isDone && !hasErrors
     }
     
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
