@@ -40,9 +40,7 @@ struct ZcashCheckCircle: View {
             
             }
         }.frame(width: 30, height: 30, alignment: .center)
-            .onTapGesture {
-                self.isChecked.toggle()
-        }
+            
     }
     
     func ringPath(size: CGSize) -> Path {

@@ -34,6 +34,9 @@ struct AddMemo: View {
                 ZcashMemoTextView(text: $flow.memo, charLimit: SendFlowEnvironment.maxMemoLength )
                 HStack {
                     ZcashCheckCircle(isChecked: $flow.includeSendingAddress)
+                    .onTapGesture {
+                        self.flow.includeSendingAddress.toggle()
+                    }
                     Text("Include your sending address in a memo")
                         .foregroundColor(Color.zLightGray2)
                 }
