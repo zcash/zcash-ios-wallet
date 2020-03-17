@@ -33,7 +33,7 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = memo + "\nReply to:\n\(replyTo)"
+        let expected = memo + "\nfrom \(replyTo)"
         XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         
@@ -44,7 +44,7 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "\nReply to:\n\(replyTo)"
+        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "\nfrom \(replyTo)"
         XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         
@@ -128,7 +128,7 @@ class walletTests: XCTestCase {
     func testBuildMemo() {
         let memo = "this is a test memo"
         let addr = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
-        let expected = "\(memo)\nReply to:\n\(addr)"
+        let expected = "\(memo)\nfrom \(addr)"
         
         XCTAssertEqual(expected, SendFlowEnvironment.buildMemo(memo: memo, includesMemo: true, replyToAddress: addr))
         

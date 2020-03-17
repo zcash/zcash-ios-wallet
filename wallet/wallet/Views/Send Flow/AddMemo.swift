@@ -31,7 +31,9 @@ struct AddMemo: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 15) {
                 Spacer()
-                ZcashMemoTextView(text: $flow.memo, charLimit: SendFlowEnvironment.maxMemoLength )
+                ZcashMemoTextView(text: $flow.memo, showSendingAddress: $flow.includeSendingAddress,
+                                  fromAddress: ZECCWalletEnvironment.shared.initializer.getAddress() ?? "",
+                    charLimit: SendFlowEnvironment.maxMemoLength )
                 HStack {
                     ZcashCheckCircle(isChecked: $flow.includeSendingAddress)
                     .onTapGesture {
