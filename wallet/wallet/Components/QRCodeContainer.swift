@@ -12,7 +12,9 @@ struct QRCodeContainer: View {
     var qrImage: Image
     var body: some View {
         ZStack {
-            qrImage.scaledToFit()
+            qrImage
+                .resizable()
+                .aspectRatio(contentMode: .fit)
             Image("QR-zcashlogo")
             .resizable()
             .frame(width: 64, height: 64)

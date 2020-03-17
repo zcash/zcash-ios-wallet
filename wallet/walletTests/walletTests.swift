@@ -113,10 +113,16 @@ class walletTests: XCTestCase {
         }
         
         XCTAssertEqual(address, expectedAddress)
-        
-        
+
     }
     
+    func testAddressSlicing() {
+        let address = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
+                
+        let split = address.slice(into: 8)
+        
+        XCTAssert(split.count == 8)
+    }
     func testCompatibility() {
         let words = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
         let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"

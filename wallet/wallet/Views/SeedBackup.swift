@@ -120,3 +120,18 @@ extension Array {
         }
     }
 }
+
+extension String {
+    func slice(into pieces: Int) -> [String] {
+        guard pieces > 0 else { return [] }
+        let chunkSize = Int(ceilf(Float(self.count) / Float(pieces)))
+        return chunked(intoAtMost: chunkSize)
+    }
+    func chunked(intoAtMost size: Int) -> [String] {
+        return stride(from: 0, to: self.count, by: size).map {
+            let start = self.index(self.startIndex, offsetBy: $0)
+            let end = self.index(start, offsetBy: size, limitedBy: self.endIndex) ?? self.endIndex
+            return String(self[start ..< end])
+        }
+    }
+}
