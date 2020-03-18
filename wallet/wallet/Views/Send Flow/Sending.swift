@@ -71,13 +71,10 @@ struct Sending: View {
     var doneButton: AnyView {
         guard flow.isDone else { return AnyView(EmptyView()) }
         return AnyView(
-            ZcashButton(
-                color: Color.black,
-                fill: Color.zYellow,
-                text: "All Done!"
-            )
+            Text("Done")
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .chamfered(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                 .frame(height: 58)
-                .padding([.leading, .trailing], 30)
         )
     }
     
@@ -115,8 +112,8 @@ struct Sending: View {
                     doneButton
                 }
                 card
-                Spacer()
-            }.padding([.horizontal], 40)
+                
+            }.padding([.horizontal, .bottom], 40)
             
         }.navigationBarItems(trailing: Button(action: {
             self.flow.isActive = false
