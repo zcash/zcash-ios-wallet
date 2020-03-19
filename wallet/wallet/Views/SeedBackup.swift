@@ -11,7 +11,7 @@ import SwiftUI
 struct SeedBackup: View {
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
-    
+    var hideNavBar = true
     @State var proceedsToHome = false
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -103,7 +103,7 @@ struct SeedBackup: View {
                 
             }.padding([.horizontal, .bottom], 24)
         }   .navigationBarTitle("",displayMode: .inline)
-            .navigationBarHidden(true)
+            .navigationBarHidden(hideNavBar)
     }
 }
 
