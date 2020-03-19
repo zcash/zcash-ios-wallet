@@ -14,7 +14,7 @@ struct ProfileScreen: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var nukePressed = false
     static let buttonHeight = CGFloat(48)
-    static let horizontalPadding = CGFloat(48)
+    static let horizontalPadding = CGFloat(30)
     var body: some View {
         NavigationView {
             ZStack {
@@ -27,26 +27,32 @@ struct ProfileScreen: View {
                         .foregroundColor(.white)
                     
                     Spacer()
-                    ZcashButton(color: .black, fill: Color.zAmberGradient1, text: "Send Feedback")
+                    
+                    Text("Send Feedback")
+                        .foregroundColor(.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                         .frame(height: Self.buttonHeight)
-                        .padding(.horizontal, Self.horizontalPadding)
-                    NavigationLink(destination: SeedBackup().environmentObject(appEnvironment)
-                        .navigationBarHidden(false)) {
-                        ZcashButton(color: .white, fill: .clear, text: "Backup Wallet")
+                       
+                    
+                    NavigationLink(destination: SeedBackup(hideNavBar: false).environmentObject(appEnvironment)
+                        ) {
+                        Text("Backup Wallet")
+                            .foregroundColor(.white)
+                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                                                .frame(height: Self.buttonHeight)
-                                               .padding(.horizontal, Self.horizontalPadding)
+                                               
                     }
                     Text("See Application Log")
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
                         .opacity(0.6)
                         .frame(height: Self.buttonHeight)
-                        .padding(.horizontal, Self.horizontalPadding)
+                      
                     
                     
                     ActionableMessage(message: "zECC SecureWallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
-                        .padding(.horizontal, Self.horizontalPadding)
+                      
                     
                     NavigationLink(destination: NukeWarning().environmentObject(appEnvironment), isActive: self.$nukePressed) {
                         EmptyView()
@@ -55,14 +61,15 @@ struct ProfileScreen: View {
                     Button(action: {
                         self.nukePressed = true
                     }) {
-                        ZcashButton.nukeButton()
+                         Text("NUKE WALLET")
+                           .foregroundColor(.red)
+                           .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
                             .frame(height: Self.buttonHeight)
-                            .padding([.leading, .trailing], Self.horizontalPadding)
                     }
                     
                     Spacer()
 
-                }
+                }.padding(.horizontal, Self.horizontalPadding)
             }
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(false)
