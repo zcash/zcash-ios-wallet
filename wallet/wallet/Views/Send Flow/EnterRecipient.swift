@@ -23,10 +23,10 @@ struct EnterRecipient: View {
            return "Enter a shielded Zcash address"
         }
         
-        if environment.initializer.isValidShieldedAddress(flow.address) {
-            return "This is a valid shielded address!"
+        if environment.isValidAddress(flow.address) {
+            return "This is a valid Zcash address!"
         } else {
-            return "Invalid shielded address!"
+            return "Invalid Zcash address!"
         }
     }
     
@@ -39,7 +39,7 @@ struct EnterRecipient: View {
     }
     
     var validAddress: Bool {
-        ZECCWalletEnvironment.shared.initializer.isValidShieldedAddress(flow.address)
+        ZECCWalletEnvironment.shared.isValidAddress(flow.address)
     }
     
     var validForm: Bool {
@@ -47,8 +47,9 @@ struct EnterRecipient: View {
     }
     
     var addressInBuffer: AnyView {
+        
         guard let clipboard = UIPasteboard.general.string,
-            ZECCWalletEnvironment.shared.initializer.isValidShieldedAddress(clipboard),
+            ZECCWalletEnvironment.shared.isValidAddress(clipboard),
             clipboard.shortZaddress != nil else {
                 return AnyView(EmptyView())
         }

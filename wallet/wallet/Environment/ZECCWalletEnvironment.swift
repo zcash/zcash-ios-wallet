@@ -187,4 +187,8 @@ extension ZECCWalletEnvironment {
     static var appVersion: String? {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
+    
+    func isValidAddress(_ address: String) -> Bool {
+        self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
+    }
 }
