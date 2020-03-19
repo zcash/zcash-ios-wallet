@@ -16,7 +16,6 @@ final class HomeViewModel: ObservableObject {
     @Published var sendZecAmountText: String = "0"
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
-    @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     var sendingPushed: Bool = false
     @Published var showError: Bool = false
@@ -39,17 +38,17 @@ final class HomeViewModel: ObservableObject {
         }
     }
     init(amount: Double = 0, balance: Double = 0) {
-        verifiedBalance = balance
+//        verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
         
-        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-            .sink(receiveValue: {
-                self.verifiedBalance = $0
-            })
-            .store(in: &cancellable)
+//        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
+//            .sink(receiveValue: {
+//                self.verifiedBalance = $0
+//            })
+//            .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
             .sink(receiveValue: {
@@ -193,7 +192,7 @@ struct Home: View {
     }
     
     var isSendingEnabled: Bool {
-        $viewModel.verifiedBalance.wrappedValue > 0
+        appEnvironment.synchronizer.verifiedBalance.value > 0
     }
     
     var enterAddressButton: some View {
@@ -212,14 +211,14 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < self.$viewModel.verifiedBalance.wrappedValue
+        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
     var balanceView: AnyView {
         if appEnvironment.initializer.getBalance() > 0 {
             return AnyView (
-                BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
+                BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
             )
         } else {
             return AnyView(
@@ -266,7 +265,7 @@ struct Home: View {
                 
                 if self.isSendingEnabled {
                     Spacer()
-                    BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
+                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
                 } else {
                     Spacer()
                     balanceView
@@ -299,7 +298,7 @@ struct Home: View {
                         destination: EnterRecipient().environmentObject(
                             SendFlowEnvironment(
                                 amount: viewModel.sendZecAmount,
-                                verifiedBalance: viewModel.verifiedBalance,
+                                verifiedBalance: appEnvironment.synchronizer.verifiedBalance.value,
                                 address: viewModel.zAddress,
                                 isActive: $sendingPushed
                                 
