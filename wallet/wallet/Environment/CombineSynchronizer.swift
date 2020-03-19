@@ -178,8 +178,11 @@ extension CombineSynchronizer {
                     
                     let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
                     
-                    Publishers.Merge(c, p).collect().sink {
-                        promise(.success($0))
+                    Publishers.Merge(c, p).collect().sink { details in
+                        
+                        promise(.success(details.sorted(by: { (a,b) in
+                            a.date > b.date
+                        })))
                     }
                     .store(in: &collectables)
                 } catch {
