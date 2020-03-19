@@ -40,7 +40,7 @@ struct Sending: View {
               dismissButton: .default(
                 Text("close"),
                 action: {
-                    self.flow.isActive = false
+                    self.flow.close()
                     
               }
             )
@@ -107,7 +107,7 @@ struct Sending: View {
                 includesMemoView
                 Spacer()
                 Button(action: {
-                    self.flow.isActive = false
+                    self.flow.close()
                 }) {
                     doneButton
                 }
@@ -116,7 +116,7 @@ struct Sending: View {
             }.padding([.horizontal, .bottom], 40)
             
         }.navigationBarItems(trailing: Button(action: {
-            self.flow.isActive = false
+            self.flow.close()
         }) {
             Image("close")
                 .renderingMode(.original)

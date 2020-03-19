@@ -76,7 +76,7 @@ struct HoldToSend: View {
         }
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: ZcashCloseButton(action: {
-            self.flow.isActive = false
+            self.flow.close()
         }))
     }
 }

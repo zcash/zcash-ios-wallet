@@ -26,6 +26,18 @@ final class HomeViewModel: ObservableObject {
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
+    var view: Home? {
+        didSet {
+            guard let home = view else { return }
+            home.keypad.viewModel.$value.receive(on: DispatchQueue.main)
+                .assign(to: \.sendZecAmount, on: self)
+                       .store(in: &cancellable)
+            home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
+                    .assign(to: \.sendZecAmountText, on: self)
+                       .store(in: &cancellable)
+            
+        }
+    }
     init(amount: Double = 0, balance: Double = 0) {
         verifiedBalance = balance
         sendZecAmount = amount
@@ -105,6 +117,11 @@ final class HomeViewModel: ObservableObject {
                 self.isSyncing = false
             }
         }).store(in: &cancellable)
+        
+        NotificationCenter.default.publisher(for: .sendFlowClosed).sink(receiveValue: { _ in
+            self.view?.keypad.viewModel.clear()
+            }
+        ).store(in: &cancellable)
     }
     
     deinit {
@@ -172,13 +189,7 @@ struct Home: View {
         self.viewModel = HomeViewModel(amount: amount, balance: verifiedBalance)
         self.keypad = KeyPad()
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
-        self.keypad.viewModel.$value.receive(on: DispatchQueue.main)
-            .assign(to: \.sendZecAmount, on: viewModel)
-            .store(in: &disposables)
-        self.keypad.viewModel.$text.receive(on: DispatchQueue.main)
-            .assign(to: \.sendZecAmountText, on: viewModel)
-            .store(in: &disposables)
-        
+        viewModel.view = self
     }
     
     var isSendingEnabled: Bool {
@@ -347,7 +358,6 @@ struct Home: View {
                     .environmentObject(self.appEnvironment)
             
             }
-        
     }
 }
 

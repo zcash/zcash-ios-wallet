@@ -108,6 +108,7 @@ final class SendFlowEnvironment: ObservableObject {
                 guard let self = self else {
                     return
                 }
+                
                 switch completion {
                 case .finished:
                     self.isDone = true
@@ -137,6 +138,11 @@ final class SendFlowEnvironment: ObservableObject {
     
     var hasSucceded: Bool {
         isDone && !hasErrors
+    }
+    
+    func close() {
+        NotificationCenter.default.post(name: .sendFlowClosed, object: nil)
+        self.isActive = false
     }
     
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
