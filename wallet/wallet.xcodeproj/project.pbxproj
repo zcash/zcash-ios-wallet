@@ -33,6 +33,7 @@
 		0D12511A23B557E60014EE3A /* walletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12511923B557E60014EE3A /* walletTests.swift */; };
 		0D12512523B557E60014EE3A /* walletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12512423B557E60014EE3A /* walletUITests.swift */; };
 		0D1B6D7824241C20004C75DB /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1B6D7724241C20004C75DB /* LazyView.swift */; };
+		0D1B6D7A24243F46004C75DB /* NumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1B6D7924243F46004C75DB /* NumberTests.swift */; };
 		0D1C2F25240D8655001AA427 /* ZcashSeedWordPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */; };
 		0D1C2F27240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */; };
 		0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F28240DB948001AA427 /* UILogicTests.swift */; };
@@ -136,6 +137,7 @@
 		0D12512423B557E60014EE3A /* walletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletUITests.swift; sourceTree = "<group>"; };
 		0D12512623B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D1B6D7724241C20004C75DB /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
+		0D1B6D7924243F46004C75DB /* NumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberTests.swift; sourceTree = "<group>"; };
 		0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedWordPill.swift; sourceTree = "<group>"; };
 		0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedPhraseGrid.swift; sourceTree = "<group>"; };
 		0D1C2F28240DB948001AA427 /* UILogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogicTests.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				0D12511B23B557E60014EE3A /* Info.plist */,
 				0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */,
 				0D1C2F28240DB948001AA427 /* UILogicTests.swift */,
+				0D1B6D7924243F46004C75DB /* NumberTests.swift */,
 			);
 			path = walletTests;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D1B6D7A24243F46004C75DB /* NumberTests.swift in Sources */,
 				0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */,
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
 				0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */,
@@ -924,7 +928,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -948,7 +952,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;

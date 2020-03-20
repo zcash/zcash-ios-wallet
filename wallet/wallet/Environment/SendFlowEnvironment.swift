@@ -123,7 +123,7 @@ final class SendFlowEnvironment: ObservableObject {
                 guard let self = self else {
                     return
                 }
-                self.pendingTx = transaction
+                    self.pendingTx = transaction
             }.store(in: &diposables)
         
         self.txSent = true
