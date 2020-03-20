@@ -14,7 +14,7 @@ struct EnterRecipient: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var availableBalance: Bool {
-        flow.verifiedBalance > 0
+        ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value > 0
     }
     
     var addressSubtitle: String {
@@ -30,9 +30,15 @@ struct EnterRecipient: View {
         }
     }
     
-    var amountSubtitle: String {
-        if availableBalance, let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: flow.verifiedBalance)) {
-            return "You Have \(balance) sendable ZEC"
+    func amountSubtitle(amount: String) ->  String {
+        if availableBalance,
+            let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value)),
+            let amountToSend = NumberFormatter.zecAmountFormatter.number(from: flow.amount)?.doubleValue {
+            if ZECCWalletEnvironment.shared.sufficientFundsToSend(amount: amountToSend) {
+                return "You Have \(balance) sendable ZEC"
+            } else {
+                return "\(balance) sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of \(ZECCWalletEnvironment.minerFee) ZEC"
+            }
         } else {
             return "You don't have any sendable ZEC yet"
         }
@@ -92,7 +98,7 @@ struct EnterRecipient: View {
                 ZcashTextField(
                     title: "Amount",
                     subtitleView: AnyView(
-                        Text.subtitle(text: "You have \(flow.verifiedBalance) sendable ZEC")
+                        Text.subtitle(text: self.amountSubtitle(amount: flow.amount))
                     ),
                     keyboardType: UIKeyboardType.decimalPad,
                     binding: $flow.amount,
@@ -100,8 +106,8 @@ struct EnterRecipient: View {
                     onCommit: {}
                 )
                 
-                
                 addressInBuffer
+                
                 Spacer()
                 NavigationLink(destination: AddMemo().environmentObject(flow)){
                     Text("Next")

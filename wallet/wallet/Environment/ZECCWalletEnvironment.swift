@@ -191,4 +191,13 @@ extension ZECCWalletEnvironment {
     func isValidAddress(_ address: String) -> Bool {
         self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
     }
+    func sufficientFundsToSend(amount: Double) -> Bool {
+        return sufficientFunds(availableBalance: self.initializer.getVerifiedBalance(), zatoshiToSend: amount.toZatoshi())
+    }
+    private func sufficientFunds(availableBalance: Int64, zatoshiToSend: Int64) -> Bool {
+        availableBalance - zatoshiToSend  - Int64(ZcashSDK.MINERS_FEE_ZATOSHI) >= 0
+    }
+    static var minerFee: Double {
+        Int64(ZcashSDK.MINERS_FEE_ZATOSHI).asHumanReadableZecBalance()
+    }
 }
