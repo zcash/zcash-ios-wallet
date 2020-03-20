@@ -55,9 +55,7 @@ struct CreateNewWallet: View {
                 NavigationLink(
                     destination: RestoreWallet()
                         .environmentObject(appEnvironment)
-                        .navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
-                        .navigationBarHidden(false)
-                        .navigationBarBackButtonHidden(false)
+                        
                 ) {
                     Text("Restore")
                         .foregroundColor(Color.zDarkGray3)
@@ -67,7 +65,7 @@ struct CreateNewWallet: View {
                 }
                 
             } .padding([.horizontal, .bottom], self.buttonPadding)
-        }
+        } 
     }
     
 }

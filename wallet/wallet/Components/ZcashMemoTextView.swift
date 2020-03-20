@@ -12,42 +12,58 @@ import SwiftUI
 
 struct ZcashMemoTextView: View {
     @Binding var text: String
-    
+    @Binding var showSendingAddress: Bool
+    var fromAddress: String = ""
     @State var textHeight: CGFloat = 174
     var charLimit: Int = 255
     var body: some View {
         ZStack{
-            VStack(alignment: .trailing, spacing: 0) {
-                TextView(placeholder: "Add Memo Here", text: $text, minHeight: self.textHeight, calculatedHeight: $textHeight)
-                    .foregroundColor(.white)
-                    .frame(height: 174)
-                    .padding(4)
-                    .multilineTextAlignment(.leading)
-                Text("\($text.wrappedValue.count)/\(charLimit) chars")
-                    .font(.footnote)
-                    .foregroundColor(Color.zLightGray2)
-                    .opacity(0.4)
-                    .padding(4)
-            }
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Text("Add a memo here")
-                    .foregroundColor(Color.zLightGray2)
-                        .opacity(self.text.isEmpty ? 0.6 : 0)
-                        
-                    Spacer()
+            ZStack(alignment: .bottom){
+                VStack(alignment: .trailing, spacing: 0) {
+                    TextView(placeholder: "Add Memo Here",
+                             text: $text,
+                             minHeight: self.textHeight,
+                             limit: charLimit,
+                             calculatedHeight: $textHeight)
+                        .foregroundColor(.white)
+                        .frame(height: textHeight)
+                        .padding(4)
+                        .multilineTextAlignment(.leading)
+                    Text("\($text.wrappedValue.count)/\(charLimit) chars")
+                        .font(.footnote)
+                        .foregroundColor(Color.zLightGray2)
+                        .opacity(0.4)
+                        .padding(4)
                 }
-                .padding([.leading], 8)
-                Spacer()
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text("Add a memo here")
+                            .foregroundColor(Color.zLightGray2)
+                            .opacity(self.text.isEmpty ? 0.6 : 0)
+                        
+                        Spacer()
+                        }.offset(x: 0, y: -20)
+                    .padding([.leading], 8)
+                        .layoutPriority(1)
+                    Spacer()
+                     if $showSendingAddress.wrappedValue {
+                        Text("from \(fromAddress)")
+                            .foregroundColor(Color.zLightGray2)
+                            .font(.caption)
+                            .opacity(0.6)
+                            .padding([.horizontal, .bottom], 10)
+                     }
+                }
+                .frame(height: textHeight)
+                .edgesIgnoringSafeArea(.all)
             }
-            .frame(height: 174)
         }
         .background(Color.zDarkGray2)
         .overlay(
-                RoundedRectangle(cornerRadius: 5)
+            RoundedRectangle(cornerRadius: 5)
                 .stroke(Color.zGray, lineWidth: 1)
-                )
-        .padding()
+        )
+            .padding()
         
         
     }
@@ -58,7 +74,7 @@ struct ZcasMemoTextField_Previews: PreviewProvider {
         ZStack {
             ZcashBackground()
             VStack(alignment: .center) {
-                ZcashMemoTextView(text: .constant(""))
+                ZcashMemoTextView(text: .constant(""), showSendingAddress: .constant(false),fromAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
                     
                     .padding([.leading, .trailing], 24)
             }

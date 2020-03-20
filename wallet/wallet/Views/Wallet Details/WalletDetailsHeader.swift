@@ -22,14 +22,13 @@ struct WalletDetailsHeader: View {
                     Text("Shielded address:")
                         .lineLimit(1)
                         .font(.subheadline)
-                        .foregroundColor(Color.zLightGray)
-                        .opacity(0.5)
+                        .foregroundColor(.white)
+
                     Text(zAddress)
                         .font(.subheadline)
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .foregroundColor(Color.zYellow)
-                        .opacity(0.5)
                 }
                 
             }

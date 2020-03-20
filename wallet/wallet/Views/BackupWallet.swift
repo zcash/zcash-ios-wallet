@@ -75,7 +75,7 @@ struct BackupWallet: View {
                 
             }.padding([.horizontal, .bottom], 24)
             
-        }
+            }.navigationBarBackButtonHidden(true)
         .onAppear() {
             do {
                 try self.appEnvironment.createNewWallet()

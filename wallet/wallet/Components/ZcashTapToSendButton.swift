@@ -1,19 +1,15 @@
 //
-//  ZcashSendButton.swift
+//  ZcashTapToSendButton.swift
 //  wallet
 //
-//  Created by Francisco Gindre on 1/9/20.
+//  Created by Francisco Gindre on 3/18/20.
 //  Copyright © 2020 Francisco Gindre. All rights reserved.
 //
 
+
 import SwiftUI
 
-struct ZcashHoldToSendButton: View {
-    
-    var minimumDuration: TimeInterval = 5
-    var longPressCancelled: () -> Void
-    var longPressSucceded: () -> Void
-    var longPressStarted: (() -> Void)?
+struct ZcashTapToSendButton: View {
     
     let innerCircleScale: CGFloat = 0.8
     var completionStrokeWidth: CGFloat = 16.0
@@ -44,7 +40,7 @@ struct ZcashHoldToSendButton: View {
                     .animation(.easeIn(duration: 5))
                 
                 
-                Text("Press and hold\nto send ZEC")
+                Text("Tap\nto send ZEC")
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .frame(minWidth: geometry.size.width, idealWidth: geometry.size.width, maxWidth: geometry.size.width, minHeight: geometry.size.height, idealHeight: geometry.size.height, maxHeight: geometry.size.height, alignment: .center)
@@ -56,18 +52,6 @@ struct ZcashHoldToSendButton: View {
             height: 167,
             alignment: .center
         )
-        .onLongPressGesture(minimumDuration: minimumDuration, maximumDistance: 167, pressing: { (isPressing) in
-            if isPressing {
-                logger.event("is pressing")
-                self.longPressStarted?()
-            } else {
-                logger.event("not pressing anymore")
-                self.cancelAnimation()
-                self.longPressCancelled()
-            }
-        }, perform: {
-            self.longPressSucceded()
-        })
     }
     
     func startAnimation() {
@@ -82,11 +66,11 @@ struct ZcashHoldToSendButton: View {
     }
 }
 
-struct ZcashSendButton_Previews: PreviewProvider {
+struct ZcashTapToSendButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            ZcashHoldToSendButton(longPressCancelled: {}, longPressSucceded: {})
+            ZcashTapToSendButton()
             
         }
     }

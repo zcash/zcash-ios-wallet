@@ -8,18 +8,11 @@
 
 import SwiftUI
 import Combine
-class EnterRecipientViewModel: ObservableObject {
-    
-    @Published var showScanView = false
-    
-    var dispose = Set<AnyCancellable>()
-    
-}
+
 struct EnterRecipient: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     
-    @ObservedObject var viewModel = EnterRecipientViewModel()
     var availableBalance: Bool {
         flow.verifiedBalance > 0
     }
@@ -30,10 +23,10 @@ struct EnterRecipient: View {
            return "Enter a shielded Zcash address"
         }
         
-        if environment.initializer.isValidShieldedAddress(flow.address) {
-            return "This is a valid shielded address!"
+        if environment.isValidAddress(flow.address) {
+            return "This is a valid Zcash address!"
         } else {
-            return "Invalid shielded address!"
+            return "Invalid Zcash address!"
         }
     }
     
@@ -46,7 +39,7 @@ struct EnterRecipient: View {
     }
     
     var validAddress: Bool {
-        flow.address.count > 0
+        ZECCWalletEnvironment.shared.isValidAddress(flow.address)
     }
     
     var validForm: Bool {
@@ -54,7 +47,9 @@ struct EnterRecipient: View {
     }
     
     var addressInBuffer: AnyView {
+        
         guard let clipboard = UIPasteboard.general.string,
+            ZECCWalletEnvironment.shared.isValidAddress(clipboard),
             clipboard.shortZaddress != nil else {
                 return AnyView(EmptyView())
         }
@@ -79,18 +74,18 @@ struct EnterRecipient: View {
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
-                        self.viewModel.showScanView = true
+                        self.flow.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
                         .renderingMode(.original),
                     onEditingChanged: { _ in },
                     onCommit: { }
-                ).sheet(isPresented: $viewModel.showScanView) {
+                ).sheet(isPresented: self.$flow.showScanView) {
                     ScanAddress(
-                        viewModel: ScanAddressViewModel(
+                        scanViewModel: ScanAddressViewModel(
                             address: self.$flow.address,
-                            shouldShow: self.$viewModel.showScanView
-                        )
+                            shouldShow: self.$flow.showScanView
+                        )   
                     ).environmentObject(ZECCWalletEnvironment.shared)
                 }
                 
@@ -122,16 +117,14 @@ struct EnterRecipient: View {
                 
             }.padding([.horizontal,.bottom], 24)
             
-        }.onTapGesture {
+        }
+        .onAppear() {
+            self.flow.clearMemo()
+        }
+        .onTapGesture {
             UIApplication.shared.endEditing()
         }
-//        .navigationBarItems(trailing: Image("infobutton"))
-        .onAppear() {
-           
-        }
-       
     }
-    
 }
 
 

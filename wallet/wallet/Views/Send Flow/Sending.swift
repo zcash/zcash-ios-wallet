@@ -9,28 +9,10 @@
 import SwiftUI
 import Combine
 import ZcashLightClientKit
-final class SendingViewModel: ObservableObject {
-    
-    
-    var flow: SendFlowEnvironment
 
-    
-    init(flow: SendFlowEnvironment) {
-        self.flow = flow
-    }
-    
-    
-    
-}
 struct Sending: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
-    
-    @ObservedObject var viewModel: SendingViewModel
-    
-    var disableClose: Bool {
-        !self.flow.isDone && self.flow.error == nil
-    }
     
     var errorMessage: String {
         guard let e = flow.error else {
@@ -45,6 +27,24 @@ struct Sending: View {
     
     var sendPastTense: String {
         "Sent"
+    }
+    
+    var showErrorAlert: Alert {
+        var errorMessage = "an error ocurred while submitting your transaction"
+        
+        if let error = self.flow.error {
+            errorMessage = "\(ZECCWalletEnvironment.mapError(error: error) )"
+        }
+        return Alert(title: Text("Error"),
+              message: Text(errorMessage),
+              dismissButton: .default(
+                Text("close"),
+                action: {
+                    self.flow.close()
+                    
+              }
+            )
+        )
     }
     
     var sendText: String {
@@ -71,13 +71,10 @@ struct Sending: View {
     var doneButton: AnyView {
         guard flow.isDone else { return AnyView(EmptyView()) }
         return AnyView(
-            ZcashButton(
-                color: Color.black,
-                fill: Color.zYellow,
-                text: "All Done!"
-            )
+            Text("Done")
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .chamfered(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                 .frame(height: 58)
-                .padding([.leading, .trailing], 30)
         )
     }
     
@@ -97,7 +94,6 @@ struct Sending: View {
     var body: some View {
         ZStack {
             ZcashBackground.amberGradient
-            
             VStack(alignment: .center) {
                 Spacer()
                 Text("\(sendText) \(flow.amount) ZEC to")
@@ -111,32 +107,27 @@ struct Sending: View {
                 includesMemoView
                 Spacer()
                 Button(action: {
-                    self.flow.isActive = false
+                    self.flow.close()
                 }) {
                     doneButton
                 }
                 card
-                Spacer()
-            }.padding([.horizontal], 40)
+                
+            }.padding([.horizontal, .bottom], 40)
             
         }.navigationBarItems(trailing: Button(action: {
-            self.flow.isActive = false
+            self.flow.close()
         }) {
             Image("close")
                 .renderingMode(.original)
-        }.disabled(self.flow.error != nil || !self.flow.isDone))
+        }.disabled(self.flow.isDone)
+            .opacity(self.flow.isDone ? 1.0 : 0.0)
+        )
+        .alert(isPresented: self.$flow.showError) {
+                showErrorAlert
+        }
         .onAppear() {
                 self.flow.send()
-        } .alert(isPresented: self.$flow.showError) {
-            Alert(
-                title: Text("Something happened!"),
-                message: Text(errorMessage),
-                dismissButton: .default(Text("dismiss"),
-                                    action: {
-                                        self.flow.isActive = false
-                                    }
-                                )
-            )
         }
     }
 }
@@ -148,6 +139,6 @@ struct Sending_Previews: PreviewProvider {
         flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         flow.includesMemo = true
         flow.isDone = false
-        return Sending(viewModel: SendingViewModel(flow: flow))
+        return Sending().environmentObject(flow)
     }
 }

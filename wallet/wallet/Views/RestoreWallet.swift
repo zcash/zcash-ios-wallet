@@ -40,17 +40,18 @@ struct RestoreWallet: View {
     }
     
     func importBirthday() throws {
-        let b = BlockHeight(self.walletBirthDay) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+        let b = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
         try SeedManager.default.importBirthday(b)
     }
     
     func importSeed() throws {
-        guard !seedPhrase.isEmpty, let seedBytes =
-            MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase) else { throw ZECCWalletEnvironment.WalletError.createFailed
+        let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedSeedPhrase.isEmpty, let seedBytes =
+            MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase) else { throw ZECCWalletEnvironment.WalletError.createFailed
         }
         
         try SeedManager.default.importSeed(seedBytes)
-        try SeedManager.default.importPhrase(bip39: seedPhrase)
+        try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
     }
     
     var disableProceed: Bool {
@@ -60,7 +61,7 @@ struct RestoreWallet: View {
     @State var proceed: Bool = false
     var body: some View {
         ZStack {
-            NavigationLink(destination: Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment), isActive: $proceed) {
+            NavigationLink(destination: LazyView(Home(amount: 0, verifiedBalance: self.appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(self.appEnvironment)), isActive: $proceed) {
                 EmptyView()
             }
             
@@ -102,17 +103,20 @@ struct RestoreWallet: View {
                     
                     self.proceed = true
                 }) {
-                    ZcashButton(color: .black, fill: .zAmberGradient1, text: "Proceed")
+                    Text("Proceed")
+                        .foregroundColor(.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                 }
                 .disabled(disableProceed)
                 .opacity(disableProceed ? 0.4 : 1.0)
                 .frame(height: 58)
                 
-                Spacer()
-            }.padding()
+                
+            }.padding([.horizontal,.bottom], 30)
         }.onTapGesture {
             UIApplication.shared.endEditing()
-        }
+        }.navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
+        .navigationBarHidden(false)
     }
 }
 

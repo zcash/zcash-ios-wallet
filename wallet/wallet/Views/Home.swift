@@ -11,30 +11,44 @@ import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
     var isFirstAppear = true
+    let genericErrorMessage = "An error ocurred, please check your device logs"
     @Published var sendZecAmount: Double
     @Published var sendZecAmountText: String = "0"
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
-    @Published var verifiedBalance: Double
     @Published var isSyncing: Bool = false
     var sendingPushed: Bool = false
+    @Published var showError: Bool = false
+    var lastError:  ZECCWalletEnvironment.WalletError?
     @Published var zAddress = ""
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
+    var view: Home? {
+        didSet {
+            guard let home = view else { return }
+            home.keypad.viewModel.$value.receive(on: DispatchQueue.main)
+                .assign(to: \.sendZecAmount, on: self)
+                       .store(in: &cancellable)
+            home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
+                    .assign(to: \.sendZecAmountText, on: self)
+                       .store(in: &cancellable)
+            
+        }
+    }
     init(amount: Double = 0, balance: Double = 0) {
-        verifiedBalance = balance
+//        verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
         
-        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-                .sink(receiveValue: {
-                    self.verifiedBalance = $0
-                })
-            .store(in: &cancellable)
+//        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
+//            .sink(receiveValue: {
+//                self.verifiedBalance = $0
+//            })
+//            .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
             .sink(receiveValue: {
@@ -42,18 +56,30 @@ final class HomeViewModel: ObservableObject {
             })
             .store(in: &cancellable)
         environment.synchronizer.progress.receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
+            .sink(receiveCompletion: { [weak self] _ in
+                guard let self = self else { return }
                 self.isSyncing = false
                 self.progress.send(0)
-            }, receiveValue: {
+            }, receiveValue: { [weak self] in
+                guard let self = self else { return }
                 self.isSyncing = $0 < 1.0 && $0 > 0
                 self.progress.send($0)
             })
             .store(in: &cancellable)
+        
+        environment.synchronizer.error.receive(on: DispatchQueue.main)
+            .map( ZECCWalletEnvironment.mapError )
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                self.show(error: error)
+        }
+        .store(in: &cancellable)
+        
         zAddress = ""
         
         NotificationCenter.default.publisher(for: .qrZaddressScanned)
             .receive(on: DispatchQueue.main)
+            .debounce(for: 1, scheduler: RunLoop.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let error):
@@ -67,7 +93,7 @@ final class HomeViewModel: ObservableObject {
                 }
                 self.showReceiveFunds = false
                 logger.debug("got address \(address)")
-                self.zAddress = address
+                self.zAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
                 DispatchQueue.main.async {
                     self.sendingPushed = true
                 }
@@ -90,10 +116,59 @@ final class HomeViewModel: ObservableObject {
                 self.isSyncing = false
             }
         }).store(in: &cancellable)
+        
+        NotificationCenter.default.publisher(for: .sendFlowClosed).sink(receiveValue: { _ in
+            self.view?.keypad.viewModel.clear()
+            }
+        ).store(in: &cancellable)
     }
     
     deinit {
         cancellable.forEach{ $0.cancel() }
+    }
+    
+    func show(error: ZECCWalletEnvironment.WalletError) {
+        self.lastError = error
+        self.showError = true
+    }
+
+    func clearError() {
+        self.lastError = nil
+        self.showError = false
+    }
+    
+    var errorAlert: Alert {
+        let errorAction = {
+            self.clearError()
+        }
+        
+        guard let error = lastError else {
+            return Alert(title: Text("Error"), message: Text(genericErrorMessage), dismissButton: .default(Text("dismiss"),action: errorAction))
+        }
+        
+        var message = genericErrorMessage
+        switch error {
+        case .createFailed:
+            message = "There was an error creating your wallet. Please back it up and try again"
+        case .genericError(let genericMessage):
+            message = genericMessage
+        case .initializationFailed(let errMsg):
+            message = errMsg
+        case .connectionFailed(let connMsg):
+            message = connMsg
+        case .maxRetriesReached(attempts: let attempts):
+            return Alert(
+                title: Text("Error"),
+                message: Text("Max Retry attempts (\(attempts)) have been reached"),
+                primaryButton: .default(Text("dismiss"),action: errorAction),
+                secondaryButton: .default(Text("Retry"),
+                                          action: { ZECCWalletEnvironment.shared.synchronizer.start(retry: true )}
+                )
+            )
+        }
+        return Alert(
+            title: Text("Error"),
+            message: Text(message), dismissButton: .default(Text("dismiss"),action: errorAction))
     }
 }
 
@@ -102,6 +177,7 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     var keypad: KeyPad
     @State var sendingPushed = false
+    @State var showPending = true
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -112,17 +188,11 @@ struct Home: View {
         self.viewModel = HomeViewModel(amount: amount, balance: verifiedBalance)
         self.keypad = KeyPad()
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
-        self.keypad.viewModel.$value.receive(on: DispatchQueue.main)
-            .assign(to: \.sendZecAmount, on: viewModel)
-            .store(in: &disposables)
-        self.keypad.viewModel.$text.receive(on: DispatchQueue.main)
-            .assign(to: \.sendZecAmountText, on: viewModel)
-            .store(in: &disposables)
-       
+        viewModel.view = self
     }
     
     var isSendingEnabled: Bool {
-        $viewModel.verifiedBalance.wrappedValue > 0
+        appEnvironment.synchronizer.verifiedBalance.value > 0
     }
     
     var enterAddressButton: some View {
@@ -141,20 +211,14 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < self.$viewModel.verifiedBalance.wrappedValue
+        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
     var balanceView: AnyView {
         if appEnvironment.initializer.getBalance() > 0 {
             return AnyView (
-                BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
-            )
-        } else if viewModel.pendingTransactions.count > 0 {
-            guard let model = self.viewModel.pendingTransactions.first else { return AnyView(EmptyView()) }
-            
-            return AnyView (
-                DetailCard(model: model)
+                BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
             )
         } else {
             return AnyView(
@@ -162,6 +226,27 @@ struct Home: View {
             )
         }
     }
+    
+    var walletDetails: some View {
+        Text("Wallet Details")
+        .foregroundColor(.white)
+        .font(.body)
+        .frame(height: 48)
+    }
+    
+    var detailCard: AnyView {
+        guard self.showPending, let model = self.viewModel.pendingTransactions.first else { return AnyView(EmptyView()) }
+        
+        return AnyView (
+            DetailCard(model: model)
+                .frame(height: 50)
+                .padding(.horizontal, buttonPadding)
+                .onTapGesture() {
+                    self.showPending = false
+                }
+        )
+    }
+    
     var body: some View {
         ZStack {
             
@@ -180,7 +265,7 @@ struct Home: View {
                 
                 if self.isSendingEnabled {
                     Spacer()
-                    BalanceDetail(availableZec: self.$viewModel.verifiedBalance.wrappedValue, status: appEnvironment.balanceStatus)
+                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
                 } else {
                     Spacer()
                     balanceView
@@ -194,7 +279,10 @@ struct Home: View {
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .disabled(!self.isSendingEnabled)
                     .padding()
-                    
+                .alert(isPresented: self.$viewModel.showError) {
+                           self.viewModel.errorAlert
+                           }
+                
                 
                 Spacer()
                 
@@ -205,12 +293,12 @@ struct Home: View {
                 } else {
                     
                     self.enterAddressButton
-                
+                    
                     NavigationLink(
                         destination: EnterRecipient().environmentObject(
                             SendFlowEnvironment(
                                 amount: viewModel.sendZecAmount,
-                                verifiedBalance: viewModel.verifiedBalance,
+                                verifiedBalance: appEnvironment.synchronizer.verifiedBalance.value,
                                 address: viewModel.zAddress,
                                 isActive: $sendingPushed
                                 
@@ -223,18 +311,22 @@ struct Home: View {
                 
                 Spacer()
                 
-                NavigationLink(
-                    destination: WalletDetails()
-                        .environmentObject(WalletDetailsViewModel())
-                        .navigationBarTitle(Text(""), displayMode: .inline)
-                ) {
-                    Text("Wallet Details")
-                        .foregroundColor(.white)
-                        .font(.body)
-                        .frame(height: 48)
-                }.isDetailLink(false)
-                Spacer()
-                
+                if viewModel.isSyncing {
+                    walletDetails
+                        .opacity(0.4)
+                } else {
+                    NavigationLink(
+                        destination: WalletDetails()
+                            .environmentObject(WalletDetailsViewModel())
+                            .navigationBarTitle(Text(""), displayMode: .inline)
+                    ) {
+                       walletDetails
+                    }.isDetailLink(false)
+                }
+                /// FIXME: fix pending transactions stuck
+//                if viewModel.pendingTransactions.count > 0 {
+//                    detailCard
+//                }
             }
         }.navigationBarBackButtonHidden(true)
             .navigationBarItems(leading:
@@ -244,9 +336,9 @@ struct Home: View {
                     Image("QRCodeIcon")
                         .accessibility(label: Text("Receive Funds"))
                         .scaleEffect(0.5)
-                }.disabled(viewModel.isSyncing)
-                    .sheet(isPresented: $viewModel.showReceiveFunds){
-                        ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
+                }
+                .sheet(isPresented: $viewModel.showReceiveFunds){
+                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
                 }
                 , trailing:
                 Button(action: {
@@ -258,11 +350,13 @@ struct Home: View {
                         .accessibility(label: Text("Your Profile"))
                         .padding()
             })
+           
             .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
                     .environmentObject(self.appEnvironment)
-        }
+            
+            }
     }
 }
 

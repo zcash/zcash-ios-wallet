@@ -23,7 +23,7 @@ class CombineSynchronizer {
     var balance: CurrentValueSubject<Double,Never>
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
-    
+    var error = PassthroughSubject<Error, Never>()
     var receivedTransactions: Future<[ConfirmedTransactionEntity],Never> {
         Future<[ConfirmedTransactionEntity], Never>() {
             promise in
@@ -102,12 +102,24 @@ class CombineSynchronizer {
             self.minedTransaction.send(minedTx)
         }).store(in: &cancellables)
         
+        NotificationCenter.default.publisher(for: .synchronizerFailed).sink { (notification) in
+            guard let error = notification.userInfo?[SDKSynchronizer.NotificationKeys.error] as? Error else {
+                self.error.send(ZECCWalletEnvironment.WalletError.genericError(message: "An error ocurred, but we can't figure out what it is. Please check device logs for more details")
+)
+                return
+            }
+            self.error.send(error)
+        }.store(in: &cancellables)
+        
     }
     
-    func start(){
+    func start(retry: Bool = false){
         
         do {
-            try synchronizer.start()
+            if retry {
+                stop()
+            }
+            try synchronizer.start(retry: retry)
         } catch {
             logger.error("error starting \(error)")
         }
@@ -119,6 +131,10 @@ class CombineSynchronizer {
         } catch {
             logger.error("error stopping \(error)")
         }  
+    }
+    
+    func cancel(pendingTransaction: PendingTransactionEntity) -> Bool {
+        synchronizer.cancelSpend(transaction: pendingTransaction)
     }
     
     deinit {
@@ -162,8 +178,11 @@ extension CombineSynchronizer {
                     
                     let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
                     
-                    Publishers.Merge(c, p).collect().sink {
-                        promise(.success($0))
+                    Publishers.Merge(c, p).collect().sink { details in
+                        
+                        promise(.success(details.sorted(by: { (a,b) in
+                            a.date > b.date
+                        })))
                     }
                     .store(in: &collectables)
                 } catch {

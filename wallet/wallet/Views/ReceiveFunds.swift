@@ -12,11 +12,12 @@ struct ReceiveFunds: View {
     
     init(address: String) {
         self.address = address
+        self.chips = address.slice(into: 8)
     }
     
     @State var isCopyAlertShown = false
     @State var isShareModalDisplayed = false
-    
+    @State var isScanAddressShown = false
     var qrImage: Image {
         if let img = QRCodeGenerator.generate(from: self.address) {
             return Image(img, scale: 1, label: Text("QR Code for \(self.address)"))
@@ -25,32 +26,35 @@ struct ReceiveFunds: View {
         }
     }
     var address: String
+    var chips: [String]
     let qrSize: CGFloat = 285
     var body: some View {
         NavigationView {
+            
             ZStack {
                 ZcashBackground()
-                VStack(alignment: .center, spacing: 40) {
+                VStack(alignment: .center) {
                     Spacer()
                     QRCodeContainer(qrImage: qrImage)
-                        .frame(width: qrSize, height: qrSize)
-                    
+                        .frame(width: qrSize, height: qrSize, alignment: .center)
+                        .layoutPriority(1)
+
+                    Spacer()
                     Button(action: {
                         UIPasteboard.general.string = self.address
                         logger.debug("address copied to clipboard")
                         self.isCopyAlertShown = true
                     }) {
-                        VStack(alignment: .center, spacing: 0) {
-                            Text("Your Address")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20, weight: .regular, design: .default))
-                            Text(address)
-                                .foregroundColor(.white)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                                .frame(width: qrSize)
-                                .padding([.leading, .trailing], 16)
+                        VStack {
                             
+                            ForEach(stride(from: 0, through: chips.count - 1, by: 2).map({ i in i}), id: \.self) { i in
+                                HStack {
+                                    ZcashSeedWordPill(number: i + 1, word: self.chips[i])
+                                        .frame(height: 24)
+                                    ZcashSeedWordPill(number: i + 2, word: self.chips[i+1])
+                                    .frame(height: 24)
+                                }
+                            }
                         }
                     }.alert(isPresented: self.$isCopyAlertShown) {
                         Alert(title: Text(""),
@@ -60,16 +64,20 @@ struct ReceiveFunds: View {
                     }
                     
                     Spacer()
-                    NavigationLink(destination: ScanAddress()) {
-                       Text("Scan Recipient Address")
+                    NavigationLink(destination: ScanAddress(fromReceiveFunds: self.$isScanAddressShown) ,isActive: self.$isScanAddressShown ) {
+                        EmptyView()
+                    }
+                    Button(action: {
+                        self.isScanAddressShown = true
+                    }) {
+                        Text("Scan Recipient Address")
                         .foregroundColor(Color.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: 58)
-                            .padding([.leading, .trailing], 30)
-                        
+                            
                     }
                     Spacer()
-                }
+                }.padding(30)
                 
             }.navigationBarTitle(Text(""), displayMode: .inline)
                 .navigationBarHidden(true)

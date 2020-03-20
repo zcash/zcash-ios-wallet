@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import TinyQRScanner
+import AVFoundation
 extension Notification.Name {
     static let qrZaddressScanned = Notification.Name(rawValue: "qrZaddressScanned")
 }
@@ -42,18 +43,42 @@ struct ScanAddress: View {
     
     @State var cameraAccess: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus
     
-    @ObservedObject var viewModel = ScanAddressViewModel()
+    @ObservedObject var viewModel: ScanAddressViewModel
+    
+    @Binding var isScanAddressShown: Bool
+    
+    @State private var torchEnabled = false
+    
+    init(scanViewModel: ScanAddressViewModel = ScanAddressViewModel(),
+         cameraStatus: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus,
+         fromReceiveFunds: Binding<Bool> = .constant(false)) {
+        viewModel = scanViewModel
+        _isScanAddressShown = fromReceiveFunds
+        cameraAccess = cameraStatus
+    }
     
     var scanFrame: some View {
         Image("QRCodeScanFrame")
             .padding()
     }
     
+    var torchButton: AnyView {
+        guard torchAvailable else { return AnyView(EmptyView()) }
+        return AnyView(
+            Button(action: {
+                self.toggleTorch(on: !self.torchEnabled)
+                self.torchEnabled.toggle()
+            }) {
+                Image("bolt")
+                    .renderingMode(.template)
+            }
+        )
+    }
     var authorized: some View {
         Group {
             QRCodeScannerView(delegate: viewModel.scannerDelegate)
                 .edgesIgnoringSafeArea(.all)
-                
+            
             VStack {
                 Spacer()
                 scanFrame
@@ -62,12 +87,7 @@ struct ScanAddress: View {
                 
             }
             .navigationBarItems(
-                trailing: Button(action: {
-                    logger.debug("toggle flashlight")
-                }) {
-                    Image("bolt")
-                        .renderingMode(.template)
-                }
+                trailing: torchButton
             )
             
         }
@@ -93,7 +113,7 @@ struct ScanAddress: View {
                 }
                 .padding()
                 
-               switchButton
+                switchButton
                 
             }
             
@@ -117,26 +137,30 @@ struct ScanAddress: View {
         }
     }
     
-    var switchButton: some View {
-        
-       Button(action: {}) {
-           ZStack {
-               ZcashChamferedButtonBackground(cornerTrim: 10)
-                   .fill(Color.white)
-               
-               VStack {
-                   
-                   Image("zcash_icon_black")
-                    .renderingMode(.original)
-                       .frame(width: 50, height: 50)
-                   Text("Switch to your Zcash address")
-                       .foregroundColor(.black)
-               }
-               .scaledToFit()
-           }
-       }
-       .frame(height: 158)
-       .padding()
+    var switchButton:  AnyView {
+        guard isScanAddressShown else { return AnyView (EmptyView()) }
+        return AnyView(
+            Button(action: {
+                self.isScanAddressShown = false
+            }) {
+                ZStack {
+                    ZcashChamferedButtonBackground(cornerTrim: 10)
+                        .fill(Color.white)
+                    
+                    VStack {
+                        
+                        Image("zcash_icon_black_small")
+                            .renderingMode(.original)
+                            .frame(width: 50, height: 50)
+                        Text("Switch to your Zcash address")
+                            .foregroundColor(.black)
+                    }
+                    .scaledToFit()
+                }
+            }
+            .frame(height: 158)
+            .padding()
+        )
     }
     
     func viewFor(state: CameraAccessHelper.Status) -> some View {
@@ -156,13 +180,36 @@ struct ScanAddress: View {
                 viewFor(state: cameraAccess)
             }
             .navigationBarTitle("Scan Recipient Address", displayMode: .inline)
+            .onDisappear() {
+                self.toggleTorch(on: false)
+            }
+        }
+    }
+    
+    private var torchAvailable: Bool {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return false}
+        return device.hasTorch
+    }
+    
+    private func toggleTorch(on: Bool) {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
+        guard device.hasTorch else { logger.info("Torch isn't available"); return }
+
+        do {
+            try device.lockForConfiguration()
+            device.torchMode = on ? .on : .off
+            // Optional thing you may want when the torch it's on, is to manipulate the level of the torch
+            if on { try device.setTorchModeOn(level: AVCaptureDevice.maxAvailableTorchLevel) }
+            device.unlockForConfiguration()
+        } catch {
+            logger.info("Torch can't be used")
         }
     }
 }
 
 struct ScanAddress_Previews: PreviewProvider {
     static var previews: some View {
-        ScanAddress(cameraAccess: .unavailable)
-        .environmentObject(ZECCWalletEnvironment.shared)
+        ScanAddress()
+            .environmentObject(ZECCWalletEnvironment.shared)
     }
 }

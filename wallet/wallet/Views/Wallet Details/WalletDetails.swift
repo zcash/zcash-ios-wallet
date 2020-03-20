@@ -44,7 +44,13 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     var balanceStatus: BalanceStatus {
-        ZECCWalletEnvironment.shared.balanceStatus
+        let status = ZECCWalletEnvironment.shared.balanceStatus
+        switch status {
+        case .available(_):
+            return .available(showCaption: false)
+        default:
+            return status
+        }
     }
     
     var zAddress: String {
@@ -107,7 +113,7 @@ struct WalletDetails: View {
         .edgesIgnoringSafeArea([.bottom])
         .navigationBarItems(trailing:
             HStack {
-                BalanceDetail(availableZec: viewModel.balance, status: status)
+                BalanceDetail(availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value, status: status)
                 Spacer().frame(width: 80)
             }
         )

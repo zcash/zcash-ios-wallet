@@ -21,8 +21,12 @@ enum WalletState {
 final class ZECCWalletEnvironment: ObservableObject {
     enum WalletError: Error {
         case createFailed
+        case initializationFailed(message: String)
+        case genericError(message: String)
+        case connectionFailed(message: String)
+        case maxRetriesReached(attempts: Int)
     }
-    
+    static let genericErrorMessage = "An error ocurred, please check your device logs"
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
     
     @Published var state: WalletState
@@ -110,11 +114,11 @@ final class ZECCWalletEnvironment: ObservableObject {
     /**
      only for internal use
      */
-    func nuke() {
+    func nuke(abortApplication: Bool = false) {
         self.synchronizer.stop()
-      
+        
         SeedManager.default.nukeWallet()
-
+        
         do {
             try FileManager.default.removeItem(at: self.dataDbURL)
         } catch {
@@ -130,8 +134,42 @@ final class ZECCWalletEnvironment: ObservableObject {
         } catch {
             logger.error("could not nuke wallet: \(error)")
         }
+        
+        if abortApplication {
+            abort()
+        }
     }
     
+    static func mapError(error: Error) -> ZECCWalletEnvironment.WalletError {
+        
+        if let rustError = error as? RustWeldingError {
+            switch rustError {
+            case .genericError(let message):
+                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+            case .dataDbInitFailed(let message):
+                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+            case .dataDbNotEmpty:
+                return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
+            case .saplingSpendParametersNotFound:
+                return ZECCWalletEnvironment.WalletError.createFailed
+            }
+        } else if let synchronizerError = error as? SynchronizerError {
+            switch synchronizerError {
+            case .generalError(let message):
+                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+            case .initFailed(let message):
+                return WalletError.initializationFailed(message: "Synchronizer failed to initialize: \(message)")
+            case .syncFailed:
+                return WalletError.genericError(message: "Synchronizing failed")
+            case .connectionFailed(let message):
+                return WalletError.connectionFailed(message: message)
+            case .maxRetryAttemptsReached(attempts: let attempts):
+                return WalletError.maxRetriesReached(attempts: attempts)
+            }
+        }
+        
+        return ZECCWalletEnvironment.WalletError.genericError(message: Self.genericErrorMessage)
+    }
     deinit {
         cancellables.forEach {
             c in
@@ -147,6 +185,10 @@ extension ZECCWalletEnvironment {
     }
     
     static var appVersion: String? {
-         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    
+    func isValidAddress(_ address: String) -> Bool {
+        self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
     }
 }

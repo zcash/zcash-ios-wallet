@@ -12,14 +12,14 @@ struct AddMemo: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     @State var isShown = false
-    @State var includeSendingAddress: Bool = false
+    
     let buttonHeight: CGFloat = 58
     let buttonPadding: CGFloat = 30
     var legend: String {
-        includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
+        flow.includeSendingAddress ? "Your address is shielded from the public,\n but will be available to the receipient via the memo field." : "Your transaction is shielded and your address is unavailable to receipent."
     }
     var isMemoEmpty: Bool {
-        flow.memo.count == 0 && !includeSendingAddress
+        flow.memo.count == 0 && !flow.includeSendingAddress
     }
     
     var sendText: String {
@@ -31,9 +31,14 @@ struct AddMemo: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 15) {
                 Spacer()
-                ZcashMemoTextView(text: $flow.memo)
+                ZcashMemoTextView(text: $flow.memo, showSendingAddress: $flow.includeSendingAddress,
+                                  fromAddress: ZECCWalletEnvironment.shared.initializer.getAddress() ?? "",
+                    charLimit: SendFlowEnvironment.maxMemoLength )
                 HStack {
-                    ZcashCheckCircle(isChecked: $includeSendingAddress)
+                    ZcashCheckCircle(isChecked: $flow.includeSendingAddress)
+                    .onTapGesture {
+                        self.flow.includeSendingAddress.toggle()
+                    }
                     Text("Include your sending address in a memo")
                         .foregroundColor(Color.zLightGray2)
                 }
@@ -49,16 +54,15 @@ struct AddMemo: View {
                 Spacer()
                 Button(action: {
                     self.flow.includesMemo = true
-                    
-                    guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else { return }
-                    self.flow.memo = SendFlowEnvironment.includeReplyTo(address: address, in: self.flow.memo)
-                    
                     self.isShown = true
                 }) {
-                    ZcashButton(color: Color.black, fill: Color.zYellow, text: "Add Memo")
-                    .frame(height: self.buttonHeight)
-                    .padding([.leading, .trailing], self.buttonPadding)
-                    .opacity( isMemoEmpty ? 0.3 : 1 )
+                    Text("Add Memo")
+                        .foregroundColor(.black)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: ZcashFillStyle.solid(color: Color.zYellow)))
+                        .frame(height: self.buttonHeight)
+                        .padding([.leading, .trailing], self.buttonPadding)
+                        .opacity( isMemoEmpty ? 0.3 : 1 )
+                    
                 }.disabled(isMemoEmpty)
                 
                 NavigationLink(
@@ -76,7 +80,9 @@ struct AddMemo: View {
                     self.flow.includesMemo = false
                     self.isShown = true
                 }) {
-                    ZcashButton(color: .white, fill: .clear, text: sendText)
+                    Text(sendText)
+                        .foregroundColor(.white)
+                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 2)))
                     .frame(height: self.buttonHeight)
                     .padding([.leading, .trailing], self.buttonPadding)
                 }
@@ -84,9 +90,10 @@ struct AddMemo: View {
                 Spacer()
                 
             }
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
         .navigationBarTitle("Add Memo (optional)", displayMode: .inline)
-        .navigationBarItems(trailing: Image("infobutton"))
     }
 }
 

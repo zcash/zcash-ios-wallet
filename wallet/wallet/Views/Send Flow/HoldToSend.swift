@@ -12,7 +12,7 @@ struct HoldToSend: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var networkFee: Double = 0.0001
-    var pressAndHoldSeconds: TimeInterval = 5
+    var pressAndHoldSeconds: TimeInterval = 2
     @State var holdOk = false
     
     var includesMemoView: AnyView {
@@ -44,14 +44,16 @@ struct HoldToSend: View {
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                ZcashSendButton(longPressCancelled: {}, longPressSucceded: {
-                    self.holdOk = true
+                Button(action: {
+                     self.holdOk = true
+                }) {
+                    ZcashTapToSendButton()
+                }
                     
-                })
                 
                 NavigationLink(destination:
                     
-                    Sending(viewModel: SendingViewModel(flow: flow)).environmentObject(flow)
+                    Sending().environmentObject(flow)
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarBackButtonHidden(true)
                     ,
@@ -74,7 +76,7 @@ struct HoldToSend: View {
         }
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: ZcashCloseButton(action: {
-            self.flow.isActive = false
+            self.flow.close()
         }))
     }
 }

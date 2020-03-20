@@ -11,7 +11,7 @@ import SwiftUI
 struct SeedBackup: View {
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
-    
+    var hideNavBar = true
     @State var proceedsToHome = false
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -103,7 +103,7 @@ struct SeedBackup: View {
                 
             }.padding([.horizontal, .bottom], 24)
         }   .navigationBarTitle("",displayMode: .inline)
-            .navigationBarHidden(true)
+            .navigationBarHidden(hideNavBar)
     }
 }
 
@@ -117,6 +117,21 @@ extension Array {
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
+    }
+}
+
+extension String {
+    func slice(into pieces: Int) -> [String] {
+        guard pieces > 0 else { return [] }
+        let chunkSize = Int(ceilf(Float(self.count) / Float(pieces)))
+        return chunked(intoAtMost: chunkSize)
+    }
+    func chunked(intoAtMost size: Int) -> [String] {
+        return stride(from: 0, to: self.count, by: size).map {
+            let start = self.index(self.startIndex, offsetBy: $0)
+            let end = self.index(start, offsetBy: size, limitedBy: self.endIndex) ?? self.endIndex
+            return String(self[start ..< end])
         }
     }
 }

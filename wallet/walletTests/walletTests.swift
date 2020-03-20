@@ -33,8 +33,8 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = memo + "\nReply to:\n\(replyTo)"
-        XCTAssertTrue(replyToMemo.count <= 512)
+        let expected = memo + "\nfrom \(replyTo)"
+        XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         
     }
@@ -44,8 +44,8 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "...\nReply to:\n\(replyTo)"
-        XCTAssertTrue(replyToMemo.count <= 512)
+        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "\nfrom \(replyTo)"
+        XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         
     }
@@ -113,10 +113,16 @@ class walletTests: XCTestCase {
         }
         
         XCTAssertEqual(address, expectedAddress)
-        
-        
+
     }
     
+    func testAddressSlicing() {
+        let address = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
+                
+        let split = address.slice(into: 8)
+        
+        XCTAssert(split.count == 8)
+    }
     func testCompatibility() {
         let words = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
         let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
@@ -125,6 +131,16 @@ class walletTests: XCTestCase {
         XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: words)?.hexString, hex)
     }
     
+    func testBuildMemo() {
+        let memo = "this is a test memo"
+        let addr = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
+        let expected = "\(memo)\nfrom \(addr)"
+        
+        XCTAssertEqual(expected, SendFlowEnvironment.buildMemo(memo: memo, includesMemo: true, replyToAddress: addr))
+        
+        XCTAssertEqual(nil, SendFlowEnvironment.buildMemo(memo: "", includesMemo: true, replyToAddress: nil))
+        XCTAssertEqual(nil, SendFlowEnvironment.buildMemo(memo: memo, includesMemo: false, replyToAddress: addr))
+    }
 }
 
 extension Array where Element == UInt8 {

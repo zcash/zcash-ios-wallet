@@ -70,8 +70,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var createNewWallet: some View {
         CreateNewWallet()
-        .navigationBarTitle("", displayMode: .inline)
-        .navigationBarHidden(true)
+       
     }
     
     func firstView() -> AnyView {
