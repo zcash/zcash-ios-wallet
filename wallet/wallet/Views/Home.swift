@@ -231,6 +231,7 @@ struct Home: View {
         Text("Wallet Details")
         .foregroundColor(.white)
         .font(.body)
+        .opacity(0.7)
         .frame(height: 48)
     }
     
