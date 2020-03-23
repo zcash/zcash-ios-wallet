@@ -16,21 +16,23 @@ struct SendZecView: View {
         
         HStack(alignment: .center, spacing: 0) {
             
-            ZcashSymbol()
-                .fill(Color.zLightGray)
-                .frame(width: 25, height: 25)
-                .offset(x: 0, y: -10)
-            
+//            ZcashSymbol()
+//                .fill(Color.zLightGray)
+//                .frame(width: 25, height: 25)
+//                .offset(x: 0, y: -10)
+//
+            Text("$")
+            .lineLimit(1)
+            .foregroundColor(.white)
+            .font(
+                .custom("Zboto", size: 72)
+            )
             Text(self.$zatoshi.wrappedValue)
                 .lineLimit(1)
                 .foregroundColor(.white)
                 .font(
-                    Font.system(
-                        size: 48,
-                        weight: .medium,
-                        design: .default
-                    )
-            )
+                    .custom("Zboto", size: 72)
+                )
         }
     }
 }
