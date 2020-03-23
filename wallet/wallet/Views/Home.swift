@@ -30,25 +30,25 @@ final class HomeViewModel: ObservableObject {
             guard let home = view else { return }
             home.keypad.viewModel.$value.receive(on: DispatchQueue.main)
                 .assign(to: \.sendZecAmount, on: self)
-                       .store(in: &cancellable)
+                .store(in: &cancellable)
             home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
-                    .assign(to: \.sendZecAmountText, on: self)
-                       .store(in: &cancellable)
+                .assign(to: \.sendZecAmountText, on: self)
+                .store(in: &cancellable)
             
         }
     }
     init(amount: Double = 0, balance: Double = 0) {
-//        verifiedBalance = balance
+        //        verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
         
-//        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-//            .sink(receiveValue: {
-//                self.verifiedBalance = $0
-//            })
-//            .store(in: &cancellable)
+        //        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
+        //            .sink(receiveValue: {
+        //                self.verifiedBalance = $0
+        //            })
+        //            .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
             .sink(receiveValue: {
@@ -60,10 +60,10 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.isSyncing = false
                 self.progress.send(0)
-            }, receiveValue: { [weak self] in
-                guard let self = self else { return }
-                self.isSyncing = $0 < 1.0 && $0 > 0
-                self.progress.send($0)
+                }, receiveValue: { [weak self] in
+                    guard let self = self else { return }
+                    self.isSyncing = $0 < 1.0 && $0 > 0
+                    self.progress.send($0)
             })
             .store(in: &cancellable)
         
@@ -119,7 +119,7 @@ final class HomeViewModel: ObservableObject {
         
         NotificationCenter.default.publisher(for: .sendFlowClosed).sink(receiveValue: { _ in
             self.view?.keypad.viewModel.clear()
-            }
+        }
         ).store(in: &cancellable)
     }
     
@@ -131,7 +131,7 @@ final class HomeViewModel: ObservableObject {
         self.lastError = error
         self.showError = true
     }
-
+    
     func clearError() {
         self.lastError = nil
         self.showError = false
@@ -229,10 +229,10 @@ struct Home: View {
     
     var walletDetails: some View {
         Text("Wallet Details")
-        .foregroundColor(.white)
-        .font(.body)
-        .opacity(0.7)
-        .frame(height: 48)
+            .foregroundColor(.white)
+            .font(.body)
+            .opacity(0.6)
+            .frame(height: 48)
     }
     
     var detailCard: AnyView {
@@ -244,7 +244,7 @@ struct Home: View {
                 .padding(.horizontal, buttonPadding)
                 .onTapGesture() {
                     self.showPending = false
-                }
+            }
         )
     }
     
@@ -261,15 +261,16 @@ struct Home: View {
             VStack(alignment: .center) {
                 Spacer()
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
-                    .opacity(self.isSendingEnabled ? 1.0 : 1.0)
+                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .scaledToFit()
                 
                 if self.isSendingEnabled {
                     Spacer()
                     BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                } else {
+                } else if appEnvironment.initializer.getBalance() > 0 {
                     Spacer()
-                    balanceView
+                    
+                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
                         .padding()
                 }
                 
@@ -280,9 +281,9 @@ struct Home: View {
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .disabled(!self.isSendingEnabled)
                     .padding()
-                .alert(isPresented: self.$viewModel.showError) {
-                           self.viewModel.errorAlert
-                           }
+                    .alert(isPresented: self.$viewModel.showError) {
+                        self.viewModel.errorAlert
+                }
                 
                 
                 Spacer()
@@ -321,13 +322,13 @@ struct Home: View {
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle(Text(""), displayMode: .inline)
                     ) {
-                       walletDetails
+                        walletDetails
                     }.isDetailLink(false)
                 }
                 /// FIXME: fix pending transactions stuck
-//                if viewModel.pendingTransactions.count > 0 {
-//                    detailCard
-//                }
+                //                if viewModel.pendingTransactions.count > 0 {
+                //                    detailCard
+                //                }
             }
         }.navigationBarBackButtonHidden(true)
             .navigationBarItems(leading:
@@ -351,13 +352,13 @@ struct Home: View {
                         .accessibility(label: Text("Your Profile"))
                         .padding()
             })
-           
+            
             .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
                 ProfileScreen(zAddress: self.$viewModel.zAddress)
                     .environmentObject(self.appEnvironment)
-            
-            }
+                
+        }
     }
 }
 

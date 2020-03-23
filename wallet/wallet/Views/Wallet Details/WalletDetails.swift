@@ -114,8 +114,9 @@ struct WalletDetails: View {
         .navigationBarItems(trailing:
             HStack {
                 BalanceDetail(availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value, status: status)
-                Spacer().frame(width: 80)
-            }
+                Spacer().frame(width: 110)
+            }.offset(x: 0, y: 5)
+            
         )
             .alert(isPresented: self.$viewModel.showError) {
                 Alert(title: Text("Error"), message: Text("an error ocurred"), dismissButton: .default(Text("ok")))
