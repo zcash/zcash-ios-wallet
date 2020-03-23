@@ -222,7 +222,7 @@ struct Home: View {
             )
         } else {
             return AnyView(
-                ActionableMessage(message: "No Balance", actionText: "Fund Now", action: { self.viewModel.showReceiveFunds = true })
+                ActionableMessage(message: "No Balance")
             )
         }
     }
@@ -259,6 +259,7 @@ struct Home: View {
             }
             
             VStack(alignment: .center) {
+                
                 Spacer()
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
@@ -267,11 +268,9 @@ struct Home: View {
                 if self.isSendingEnabled {
                     Spacer()
                     BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                } else if appEnvironment.initializer.getBalance() > 0 {
+                } else {
                     Spacer()
-                    
-                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                        .padding()
+                    self.balanceView.padding([.horizontal], self.buttonPadding)
                 }
                 
                 Spacer()

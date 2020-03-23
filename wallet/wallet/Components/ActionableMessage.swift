@@ -10,19 +10,31 @@ import SwiftUI
 
 struct ActionableMessage: View {
     var message: String
-    var actionText: String
-    var action: () -> Void
+    var actionText: String? = nil
+    var action: (() -> Void)? = nil
     let cornerRadius: CGFloat =  5
+    
+    var actionView: some View {
+        if let action = self.action, let text = actionText {
+            return AnyView(
+                Button(action: action) {
+                    Text(text)
+                        .foregroundColor(Color.zAmberGradient2)
+                }
+            )
+        } else {
+            return AnyView (
+                EmptyView()
+            )
+        }
+    }
     var body: some View {
         
         HStack {
             Text(message)
             .foregroundColor(.white)
             Spacer()
-            Button(action: action) {
-                Text(actionText)
-                    .foregroundColor(Color.zAmberGradient2)
-            }
+            actionView
             
         }
         .padding()
@@ -32,9 +44,6 @@ struct ActionableMessage: View {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(Color.zGray, lineWidth: 1)
         )
-        
-    
-            
     }
 }
 
