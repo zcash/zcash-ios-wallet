@@ -14,11 +14,11 @@ struct ZcashHoldToSendButton: View {
     var longPressCancelled: () -> Void
     var longPressSucceded: () -> Void
     var longPressStarted: (() -> Void)?
-    
     let innerCircleScale: CGFloat = 0.8
     var completionStrokeWidth: CGFloat = 16.0
-    @State var startAngle: Double = 270
-    @State var endAngle: Double = 270
+    @State var isPressing: Bool = false
+    @State var startAngle: CGFloat = -90
+    @State var endAngle: CGFloat = -90
     
     var body: some View {
         
@@ -39,10 +39,12 @@ struct ZcashHoldToSendButton: View {
                     endAngle: self.endAngle,
                     clockwise: false
                 )
-                    
-                    .stroke(Color.zAmberGradient2, lineWidth: self.completionStrokeWidth)
-                    .animation(.easeIn(duration: 5))
-                
+                .stroke(Color.zAmberGradient2, lineWidth: self.completionStrokeWidth)
+                    .frame(width: geometry.size.width - self.completionStrokeWidth,
+                           height: geometry.size.height - self.completionStrokeWidth)
+                    .offset(
+                        x: self.completionStrokeWidth/2,
+                        y: self.completionStrokeWidth/2)
                 
                 Text("Press and hold\nto send ZEC")
                     .foregroundColor(.white)
@@ -56,29 +58,45 @@ struct ZcashHoldToSendButton: View {
             height: 167,
             alignment: .center
         )
+           
         .onLongPressGesture(minimumDuration: minimumDuration, maximumDistance: 167, pressing: { (isPressing) in
-            if isPressing {
+            if !self.isPressing && isPressing {
+                self.isPressing = isPressing
                 logger.event("is pressing")
+                withAnimation(.linear(duration: self.minimumDuration)) {
+                    self.startAnimation()
+                }
                 self.longPressStarted?()
-            } else {
+            } else if self.isPressing && !isPressing {
                 logger.event("not pressing anymore")
-                self.cancelAnimation()
+                self.isPressing = isPressing
+                withAnimation(.easeOut(duration: 0.3)) {
+                    self.cancelAnimation()
+                }
+                
                 self.longPressCancelled()
             }
         }, perform: {
+            self.endAnimation()
+            self.isPressing = false
             self.longPressSucceded()
         })
     }
     
     func startAnimation() {
-        self.startAngle = 270
-        self.endAngle = 180
-        
+        self.startAngle = -90
+
+        self.endAngle = 270
+    }
+    
+    func endAnimation() {
+        self.startAngle = -90
+        self.endAngle = 270
     }
     
     func cancelAnimation() {
-        self.startAngle = 270
-        self.endAngle = 270
+        self.startAngle = -90
+        self.endAngle = -90
     }
 }
 

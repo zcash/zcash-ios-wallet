@@ -44,11 +44,14 @@ struct HoldToSend: View {
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                Button(action: {
-                     self.holdOk = true
-                }) {
-                    ZcashTapToSendButton()
-                }
+                ZcashHoldToSendButton(minimumDuration: 10, longPressCancelled: {
+                    logger.debug("long press cancelled")
+                }, longPressSucceded: {
+                    logger.debug("long press succeded")
+                    self.holdOk = true
+                }, longPressStarted: {
+                    logger.debug("long press started")
+                })
                     
                 
                 NavigationLink(destination:

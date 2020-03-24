@@ -13,8 +13,8 @@ struct ZcashTapToSendButton: View {
     
     let innerCircleScale: CGFloat = 0.8
     var completionStrokeWidth: CGFloat = 16.0
-    @State var startAngle: Double = 270
-    @State var endAngle: Double = 270
+    @State var startAngle: CGFloat = 270
+    @State var endAngle: CGFloat = 270
     
     var body: some View {
         
