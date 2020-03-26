@@ -15,6 +15,7 @@ struct ProfileScreen: View {
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(30)
     @State var isCopyAlertShown = false
+    @Binding var isShown: Bool
     var body: some View {
         NavigationView {
             ZStack {
@@ -83,12 +84,16 @@ struct ProfileScreen: View {
             }
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(false)
+            .navigationBarItems(trailing: ZcashCloseButton(action: {
+                self.isShown = false
+            }))
+        
         }
     }
 }
 
 struct ProfileScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileScreen().environmentObject(ZECCWalletEnvironment.shared)
+        ProfileScreen(isShown: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
     }
 }

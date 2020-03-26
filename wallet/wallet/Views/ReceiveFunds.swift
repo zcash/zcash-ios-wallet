@@ -10,14 +10,16 @@ import SwiftUI
 
 struct ReceiveFunds: View {
     
-    init(address: String) {
+    init(address: String, isShown: Binding<Bool>) {
         self.address = address
         self.chips = address.slice(into: 8)
+        self._isShown = isShown
     }
     
     @State var isCopyAlertShown = false
     @State var isShareModalDisplayed = false
     @State var isScanAddressShown = false
+    @Binding var isShown: Bool
     var qrImage: Image {
         if let img = QRCodeGenerator.generate(from: self.address) {
             return Image(img, scale: 1, label: Text("QR Code for \(self.address)"))
@@ -80,7 +82,10 @@ struct ReceiveFunds: View {
                 }.padding(30)
                 
             }.navigationBarTitle(Text(""), displayMode: .inline)
-                .navigationBarHidden(true)
+            .navigationBarHidden(false)
+            .navigationBarItems(trailing: ZcashCloseButton(action: {
+                self.isShown = false
+            }))
         }
     }
 }
@@ -88,11 +93,11 @@ struct ReceiveFunds: View {
 struct ReceiveFunds_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
+            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
                 .previewDisplayName("iPhone 8")
             
-            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6")
+            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
                 .previewDisplayName("iPhone 11 Pro Max")
         }
