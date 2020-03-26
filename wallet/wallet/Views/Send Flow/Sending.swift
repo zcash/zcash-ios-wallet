@@ -73,7 +73,7 @@ struct Sending: View {
         return AnyView(
             Text("Done")
                 .foregroundColor(.black)
-                .zcashButtonBackground(shape: .chamfered(fillStyle: .outline(color: Color.black, lineWidth: 2)))
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                 .frame(height: 58)
         )
     }
@@ -93,7 +93,7 @@ struct Sending: View {
     var body: some View {
         ZStack {
             ZcashBackground.amberGradient
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 40) {
                 Spacer()
                 Text("\(sendText) \(flow.amount) ZEC to")
                     .foregroundColor(.black)
@@ -119,7 +119,7 @@ struct Sending: View {
         }) {
             Image("close")
                 .renderingMode(.original)
-        }.disabled(self.flow.isDone)
+        }.disabled(!self.flow.isDone)
             .opacity(self.flow.isDone ? 1.0 : 0.0)
         )
         .alert(isPresented: self.$flow.showError) {
