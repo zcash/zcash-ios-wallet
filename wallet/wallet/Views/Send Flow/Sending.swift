@@ -86,7 +86,6 @@ struct Sending: View {
         }
         return AnyView(
             DetailCard(model: DetailModel(pendingTransaction: pendingTx))
-            .padding()
             .frame(height: 69)
         )
     }
