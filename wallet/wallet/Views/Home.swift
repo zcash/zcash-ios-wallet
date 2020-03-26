@@ -228,7 +228,7 @@ struct Home: View {
     }
     
     var walletDetails: some View {
-        Text("Wallet Details")
+        Text("Wallet History")
             .foregroundColor(.white)
             .font(.body)
             .opacity(0.6)
