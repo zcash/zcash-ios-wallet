@@ -354,7 +354,7 @@ struct Home: View {
             
             .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
-                ProfileScreen(zAddress: self.$viewModel.zAddress)
+                ProfileScreen()
                     .environmentObject(self.appEnvironment)
                 
         }
