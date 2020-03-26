@@ -228,7 +228,7 @@ struct Home: View {
     }
     
     var walletDetails: some View {
-        Text("Wallet Details")
+        Text("Wallet History")
             .foregroundColor(.white)
             .font(.body)
             .opacity(0.6)
@@ -339,7 +339,8 @@ struct Home: View {
                         .scaleEffect(0.5)
                 }
                 .sheet(isPresented: $viewModel.showReceiveFunds){
-                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "")
+                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
+                                 isShown:  self.$viewModel.showReceiveFunds)
                 }
                 , trailing:
                 Button(action: {
@@ -354,7 +355,7 @@ struct Home: View {
             
             .navigationBarTitle("", displayMode: .inline)
             .sheet(isPresented: $viewModel.showProfile){
-                ProfileScreen(zAddress: self.$viewModel.zAddress)
+                ProfileScreen(isShown: self.$viewModel.showProfile)
                     .environmentObject(self.appEnvironment)
                 
         }

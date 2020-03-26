@@ -10,21 +10,26 @@ import SwiftUI
 
 
 struct ProfileScreen: View {
-    @Binding var zAddress: String
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var nukePressed = false
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(30)
+    @State var isCopyAlertShown = false
+    @Binding var isShown: Bool
     var body: some View {
         NavigationView {
             ZStack {
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
                     Image("zebra_profile")
-                    Text("Shielded Zcash User\n" + (zAddress.shortZaddress ?? ""))
+                    Button(action: {
+                        self.isCopyAlertShown = true
+                    }) {
+                        Text("Shielded User\n" + (appEnvironment.initializer.getAddress()?.shortZaddress ?? ""))
                         .multilineTextAlignment(.center)
                         .font(.system(size: 18))
                         .foregroundColor(.white)
+                    }
                     
                     Spacer()
                     
@@ -70,15 +75,25 @@ struct ProfileScreen: View {
                     Spacer()
 
                 }.padding(.horizontal, Self.horizontalPadding)
+                .alert(isPresented: self.$isCopyAlertShown) {
+                    Alert(title: Text(""),
+                          message: Text("Address Copied to clipboard!"),
+                          dismissButton: .default(Text("OK"))
+                    )
+                }
             }
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(false)
+            .navigationBarItems(trailing: ZcashCloseButton(action: {
+                self.isShown = false
+            }))
+        
         }
     }
 }
 
 struct ProfileScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileScreen(zAddress: .constant("Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"))
+        ProfileScreen(isShown: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
     }
 }
