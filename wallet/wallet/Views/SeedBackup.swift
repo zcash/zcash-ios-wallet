@@ -12,6 +12,7 @@ struct SeedBackup: View {
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
     var hideNavBar = true
+    @State var isCopyAlertShown = false
     @State var proceedsToHome = false
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -84,6 +85,7 @@ struct SeedBackup: View {
              
                 Button(action: {
                     UIPasteboard.general.string = self.copyText
+                    self.isCopyAlertShown = true
                 }) {
                     Text("Copy to clipboard")
                         .font(.system(size: 20))
@@ -102,6 +104,12 @@ struct SeedBackup: View {
                 }
                 
             }.padding([.horizontal, .bottom], 24)
+            .alert(isPresented: self.$isCopyAlertShown) {
+                Alert(title: Text(""),
+                      message: Text("Address Copied to clipboard!"),
+                      dismissButton: .default(Text("OK"))
+                )
+            }
         }   .navigationBarTitle("",displayMode: .inline)
             .navigationBarHidden(hideNavBar)
     }
