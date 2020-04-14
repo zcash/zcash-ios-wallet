@@ -31,7 +31,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     
     @Published var state: WalletState
     
-    let endpoint = LightWalletEndpoint(address: ZcashSDK.isMainnet ? "lightwalletd.z.cash" : "lightwalletd.testnet.z.cash", port: "9067", secure: true)
+    let endpoint = LightWalletEndpoint(address: ZcashSDK.isMainnet ? "lightwalletd.z.cash" : "lightwalletd.testnet.z.cash", port: 9067, secure: true)
     var dataDbURL: URL
     var cacheDbURL: URL
     var pendingDbURL: URL
@@ -165,6 +165,8 @@ final class ZECCWalletEnvironment: ObservableObject {
                 return WalletError.connectionFailed(message: message)
             case .maxRetryAttemptsReached(attempts: let attempts):
                 return WalletError.maxRetriesReached(attempts: attempts)
+            case .connectionError(_, let message):
+              return WalletError.connectionFailed(message: message)
             }
         }
         

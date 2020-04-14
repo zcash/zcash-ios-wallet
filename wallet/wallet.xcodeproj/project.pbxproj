@@ -249,9 +249,9 @@
 			isa = PBXGroup;
 			children = (
 				0D100EDD23BA92A50089DB22 /* Colors.swift */,
-				0DC167B023BE37B300332890 /* BalanceUtils.swift */,
 				0DE51DAD23BEB0E500709636 /* Fonts.swift */,
 				0D11C23223BFA810001CF6F7 /* HostingController.swift */,
+				0DC167B023BE37B300332890 /* BalanceUtils.swift */,
 				0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */,
 				0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */,
 				0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */,
