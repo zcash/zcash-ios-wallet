@@ -31,4 +31,9 @@ func _zECCWalletNavigationBarLookTweaks() {
     UINavigationBar.appearance().scrollEdgeAppearance = appearance
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().tintColor = .white
+    
+    let clearView = UIView()
+    clearView.backgroundColor = UIColor.clear
+    UITableViewCell.appearance().selectedBackgroundView = clearView
+    UITableView.appearance().backgroundColor = UIColor.clear
 }

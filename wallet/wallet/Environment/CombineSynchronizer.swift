@@ -174,11 +174,12 @@ extension CombineSynchronizer {
                 do {
                     
                     
-                    let c =  Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allClearedTransactions().map {  DetailModel(confirmedTransaction: $0, sent: $0.toAddress != nil) })
+                    let sent =  Publishers.Sequence<[DetailModel], Never>(sequence:  self.synchronizer.sentTransactions.map {  DetailModel(confirmedTransaction: $0, sent: true) })
+                    let received = Publishers.Sequence<[DetailModel], Never>(sequence:  self.synchronizer.receivedTransactions.map { DetailModel(confirmedTransaction: $0, sent: false) })
                     
-                    let p = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
+                    let pending = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
                     
-                    Publishers.Merge(c, p).collect().sink { details in
+                    Publishers.Merge3(sent, received, pending).collect().sink { details in
                         
                         promise(.success(details.sorted(by: { (a,b) in
                             a.date > b.date
@@ -211,6 +212,9 @@ extension DetailModel {
         self.subtitle = sent ? "Sent" : "Received" + " \(self.date.transactionDetail)"
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = Int64(confirmedTransaction.value).asHumanReadableZecBalance()
+        if let memo =  confirmedTransaction.memo {
+            self.memo = String(bytes: memo, encoding: .utf8)
+        }
     }
     init(pendingTransaction: PendingTransactionEntity, latestBlockHeight: BlockHeight? = nil) {
         self.date = Date(timeIntervalSince1970: pendingTransaction.createTime)
@@ -224,6 +228,8 @@ extension DetailModel {
         }
         self.zAddress = pendingTransaction.toAddress
         self.zecAmount = Int64(pendingTransaction.value).asHumanReadableZecBalance()
-        
+        if let memo =  pendingTransaction.memo {
+            self.memo = String(bytes: memo, encoding: .utf8)
+        }
     }
 }

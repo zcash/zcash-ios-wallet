@@ -20,7 +20,7 @@ struct DetailModel: Identifiable {
     var zecAmount: Double
     var status: Status
     var shielded: Bool = true
-    
+    var memo: String? = nil
     var title: String {
 
         switch status {
