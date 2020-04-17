@@ -205,13 +205,14 @@ struct Home: View {
                 .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: Color.zYellow)))
                 .frame(height: buttonHeight)
                 .padding([.leading, .trailing], buttonPadding)
-                .opacity(isAmountValid ? 1.0 : 0.3 ) // validate this
+                .opacity(isSendingEnabled ? 1.0 : 0.3 ) // validate this
             
-        }    .disabled(!isAmountValid)
+        }    .disabled(!isSendingEnabled)
     }
     
     var isAmountValid: Bool {
-        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
+        true // FIX: user should be able to proceed to next screen with no amount
+//        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
