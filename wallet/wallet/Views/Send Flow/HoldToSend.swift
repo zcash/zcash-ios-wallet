@@ -12,7 +12,7 @@ struct HoldToSend: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var networkFee: Double = 0.0001
-    var pressAndHoldSeconds: TimeInterval = 2
+    var pressAndHoldSeconds: TimeInterval = 3
     @State var holdOk = false
     
     var includesMemoView: AnyView {
@@ -44,7 +44,7 @@ struct HoldToSend: View {
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                ZcashHoldToSendButton(minimumDuration: 10, longPressCancelled: {
+                ZcashHoldToSendButton(minimumDuration: pressAndHoldSeconds, longPressCancelled: {
                     logger.debug("long press cancelled")
                 }, longPressSucceded: {
                     logger.debug("long press succeded")
