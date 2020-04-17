@@ -90,7 +90,7 @@ struct DetailCard: View {
     
     var zecAmount: AnyView {
         let amount = model.zecAmount.toZecAmount()
-        var text = ((model.zecAmount > 0) ? "+ " : "") +  amount + " ZEC"
+        var text = ((model.zecAmount > 0 && model.zecAmount >= 0.001) ? "+ " : "") + ((model.zecAmount < 0.001 && model.zecAmount > 0) ? "< 0.001" : amount)
         var color = Color.zPositiveZecAmount
         var opacity = Double(1)
         switch model.status {
