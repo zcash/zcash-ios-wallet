@@ -105,7 +105,7 @@ class CombineSynchronizer {
         NotificationCenter.default.publisher(for: .synchronizerFailed).sink { (notification) in
             guard let error = notification.userInfo?[SDKSynchronizer.NotificationKeys.error] as? Error else {
                 self.error.send(ZECCWalletEnvironment.WalletError.genericError(message: "An error ocurred, but we can't figure out what it is. Please check device logs for more details")
-)
+                )
                 return
             }
             self.error.send(error)
@@ -174,16 +174,23 @@ extension CombineSynchronizer {
                 do {
                     
                     
-                    let sent =  Publishers.Sequence<[DetailModel], Never>(sequence:  self.synchronizer.sentTransactions.map {  DetailModel(confirmedTransaction: $0, sent: true) })
-                    let received = Publishers.Sequence<[DetailModel], Never>(sequence:  self.synchronizer.receivedTransactions.map { DetailModel(confirmedTransaction: $0, sent: false) })
+                    let pending = try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) }
                     
-                    let pending = Publishers.Sequence<[DetailModel], Never>(sequence: try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) })
-                    
-                    Publishers.Merge3(sent, received, pending).collect().sink { details in
+                    let txs = try self.synchronizer.allClearedTransactions().map {  DetailModel(confirmedTransaction: $0, sent: ($0.toAddress != nil)) }.filter({ s in
+                        pending.first { (p) -> Bool in
+                            p.id == s.id
+                            } == nil })
+      
+                    Publishers.Merge( Publishers.Sequence<[DetailModel],Never>(sequence: txs),
+                                      Publishers.Sequence<[DetailModel],Never>(sequence: pending)
+                    ).collect().sink { details in
                         
-                        promise(.success(details.sorted(by: { (a,b) in
-                            a.date > b.date
-                        })))
+                        promise(.success(
+                            details.sorted(by: { (a,b) in
+                                a.date > b.date
+                            })
+                            )
+                        )
                     }
                     .store(in: &collectables)
                 } catch {
@@ -207,11 +214,11 @@ extension DetailModel {
     init(confirmedTransaction: ConfirmedTransactionEntity, sent: Bool = false) {
         self.date = Date(timeIntervalSince1970: confirmedTransaction.blockTimeInSeconds)
         self.id = confirmedTransaction.transactionEntity.transactionId.toHexStringTxId()
-        self.shielded = confirmedTransaction.toAddress?.starts(with: "z") ?? true // FIXME: find a better way to do thies
+        self.shielded = confirmedTransaction.toAddress?.isValidShieldedAddress ?? true
         self.status = sent ? .paid(success: confirmedTransaction.minedHeight > 0) : .received
         self.subtitle = sent ? "Sent" : "Received" + " \(self.date.transactionDetail)"
         self.zAddress = confirmedTransaction.toAddress
-        self.zecAmount = Int64(confirmedTransaction.value).asHumanReadableZecBalance()
+        self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
         if let memo =  confirmedTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
@@ -219,7 +226,7 @@ extension DetailModel {
     init(pendingTransaction: PendingTransactionEntity, latestBlockHeight: BlockHeight? = nil) {
         self.date = Date(timeIntervalSince1970: pendingTransaction.createTime)
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
-        self.shielded = pendingTransaction.toAddress.starts(with: "z") // FIXME: find a better way to do thies
+        self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
         if pendingTransaction.expiryHeight > 0, let latest = latestBlockHeight {
             self.subtitle = "\(abs(latest - pendingTransaction.expiryHeight - ZcashSDK.EXPIRY_OFFSET)) of 10 Confirmations"
@@ -227,7 +234,7 @@ extension DetailModel {
             self.subtitle = "Sent \(self.date.transactionDetail)"
         }
         self.zAddress = pendingTransaction.toAddress
-        self.zecAmount = Int64(pendingTransaction.value).asHumanReadableZecBalance()
+        self.zecAmount = -Int64(pendingTransaction.value).asHumanReadableZecBalance()
         if let memo =  pendingTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
