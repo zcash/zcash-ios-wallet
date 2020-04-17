@@ -124,7 +124,7 @@ struct DetailCard: View {
                     HStack {
                         shieldImage
                         Text(model.title)
-                            .truncationMode(.middle)
+                            .truncationMode(.tail)
                             .lineLimit(1)
                             .foregroundColor(.white)
                             .layoutPriority(0.5)
