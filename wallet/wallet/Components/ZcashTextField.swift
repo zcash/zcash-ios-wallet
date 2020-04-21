@@ -69,7 +69,10 @@ struct ZcashTextField: View {
                 .foregroundColor(.white)
             
             HStack {
-                TextField(placeholder, text: $text, onEditingChanged: self.onEditingChanged, onCommit: self.onCommit)
+                TextField(placeholder,
+                          text: $text,
+                          onEditingChanged: self.onEditingChanged,
+                          onCommit: self.onCommit)
                 
                     .accentColor(.white)
                     .foregroundColor(Color.white)
@@ -94,7 +97,8 @@ struct ZcashTextField: View {
          subtitleView: AnyView? = nil,
          contentType: UITextContentType? = nil,
          keyboardType: UIKeyboardType  = .default,
-         binding: Binding<String>, action: (() -> Void)? = nil,
+         binding: Binding<String>,
+         action: (() -> Void)? = nil,
          accessoryIcon: Image? = nil,
          onEditingChanged: @escaping (Bool) -> Void,
          onCommit: @escaping () -> Void) {

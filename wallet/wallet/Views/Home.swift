@@ -17,10 +17,10 @@ final class HomeViewModel: ObservableObject {
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
     @Published var isSyncing: Bool = false
-    var sendingPushed: Bool = false
+    @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
     var lastError:  ZECCWalletEnvironment.WalletError?
-    @Published var zAddress = ""
+    var zAddress = ""
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
@@ -89,12 +89,17 @@ final class HomeViewModel: ObservableObject {
                 }
             }) { (notification) in
                 guard let address = notification.userInfo?["zAddress"] as? String else {
+                    logger.error("empty notification after scanning qr code")
+                    return
+                }
+                guard ZECCWalletEnvironment.shared.isValidAddress(address) else {
+                    logger.error("scanned qr but address is invalid")
                     return
                 }
                 self.showReceiveFunds = false
                 logger.debug("got address \(address)")
                 self.zAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     self.sendingPushed = true
                 }
         }
@@ -195,10 +200,22 @@ struct Home: View {
         appEnvironment.synchronizer.verifiedBalance.value > 0
     }
     
+    func startSendFlow() {
+        SendFlow.start(appEnviroment: appEnvironment,
+                       isActive: self.$sendingPushed,
+                       amount: viewModel.sendZecAmount,
+                       sendTo: viewModel.zAddress)
+        self.sendingPushed = true
+    }
+    
+    func endSendFlow() {
+        SendFlow.end()
+    }
+    
     var enterAddressButton: some View {
         Button(action: {
-            self.sendingPushed = true
-            
+            self.startSendFlow()
+
         }) {
             Text("Send")
                 .foregroundColor(.black)
@@ -212,7 +229,7 @@ struct Home: View {
     
     var isAmountValid: Bool {
         true // FIX: user should be able to proceed to next screen with no amount
-//        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
+        //        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
@@ -285,7 +302,6 @@ struct Home: View {
                         self.viewModel.errorAlert
                 }
                 
-                
                 Spacer()
                 
                 if self.$viewModel.isSyncing.wrappedValue {
@@ -294,25 +310,23 @@ struct Home: View {
                         .padding(.horizontal, buttonPadding)
                 } else {
                     
-                    self.enterAddressButton
+                    self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
+                        if pushed {
+                            self.startSendFlow()
+                        } else {
+                            self.endSendFlow()
+                        }
+                    }
                     
                     NavigationLink(
-                        destination: EnterRecipient().environmentObject(
-                            SendFlowEnvironment(
-                                amount: viewModel.sendZecAmount,
-                                verifiedBalance: appEnvironment.synchronizer.verifiedBalance.value,
-                                address: viewModel.zAddress,
-                                isActive: $sendingPushed
-                                
-                            )
-                        ), isActive: self.$sendingPushed
+                        destination: LazyView(EnterRecipient().environmentObject(
+                            SendFlow.current! //fixme
+                        )), isActive: self.$sendingPushed
                     ) {
                         EmptyView()
                     }.isDetailLink(false)
                 }
-                
-                Spacer()
-                
+
                 if viewModel.isSyncing {
                     walletDetails
                         .opacity(0.4)
@@ -330,35 +344,35 @@ struct Home: View {
                 //                    detailCard
                 //                }
             }
-        }.navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading:
-                Button(action: {
-                    self.viewModel.showReceiveFunds = true
-                }) {
-                    Image("QRCodeIcon")
-                        .accessibility(label: Text("Receive Funds"))
-                        .scaleEffect(0.5)
-                }
-                .sheet(isPresented: $viewModel.showReceiveFunds){
-                    ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
-                                 isShown:  self.$viewModel.showReceiveFunds)
-                }
-                , trailing:
-                Button(action: {
-                    self.viewModel.showProfile = true
-                }) {
-                    Image(systemName: "person.crop.circle")
-                        .imageScale(.large)
-                        .opacity(0.6)
-                        .accessibility(label: Text("Your Profile"))
-                        .padding()
-            })
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading:
+            Button(action: {
+                self.viewModel.showReceiveFunds = true
+            }) {
+                Image("QRCodeIcon")
+                    .accessibility(label: Text("Receive Funds"))
+                    .scaleEffect(0.5)
+            }
+            .sheet(isPresented: $viewModel.showReceiveFunds){
+                ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
+                             isShown:  self.$viewModel.showReceiveFunds)
+            }
+            , trailing:
+            Button(action: {
+                self.viewModel.showProfile = true
+            }) {
+                Image(systemName: "person.crop.circle")
+                    .imageScale(.large)
+                    .opacity(0.6)
+                    .accessibility(label: Text("Your Profile"))
+                    .padding()
+        })
             
-            .navigationBarTitle("", displayMode: .inline)
-            .sheet(isPresented: $viewModel.showProfile){
-                ProfileScreen(isShown: self.$viewModel.showProfile)
-                    .environmentObject(self.appEnvironment)
-                
+        .navigationBarTitle("", displayMode: .inline)
+        .sheet(isPresented: $viewModel.showProfile){
+            ProfileScreen(isShown: self.$viewModel.showProfile)
+                .environmentObject(self.appEnvironment)
         }
     }
 }

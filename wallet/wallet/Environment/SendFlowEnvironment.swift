@@ -11,6 +11,34 @@ import ZcashLightClientKit
 import Combine
 import SwiftUI
 
+class SendFlow {
+    
+    static var current: SendFlowEnvironment?
+    
+    static func end() {
+        guard let current = self.current else {
+            return
+        }
+        
+        current.isActive = false
+        
+        Self.current = nil
+    }
+    
+    @discardableResult static func start(appEnviroment: ZECCWalletEnvironment,
+                      isActive: Binding<Bool>,
+                      amount: Double,
+                      sendTo: String?) -> SendFlowEnvironment {
+
+        let flow = SendFlowEnvironment(amount: amount,
+                                       verifiedBalance: appEnviroment.initializer.getVerifiedBalance().asHumanReadableZecBalance(),
+                                       address: sendTo ?? "",
+                                       isActive: isActive)
+        Self.current = flow
+        return flow
+    }
+}
+
 final class SendFlowEnvironment: ObservableObject {
     
     static let maxMemoLength: Int = 255
@@ -35,7 +63,7 @@ final class SendFlowEnvironment: ObservableObject {
     var pendingTx: PendingTransactionEntity?
     var diposables = Set<AnyCancellable>()
     
-    init(amount: Double, verifiedBalance: Double, address: String = "", isActive: Binding<Bool>) {
+    fileprivate init(amount: Double, verifiedBalance: Double, address: String = "", isActive: Binding<Bool>) {
         self.amount = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: amount)) ?? ""
         self.verifiedBalance = verifiedBalance
         self.address = address
@@ -83,7 +111,7 @@ final class SendFlowEnvironment: ObservableObject {
             return
         }
         let environment = ZECCWalletEnvironment.shared
-        guard let zatoshi = NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue.toZatoshi(),
+        guard let zatoshi = doubleAmount?.toZatoshi(),
             environment.isValidAddress(self.address),
             let spendingKey = SeedManager.default.getKeys()?.first,
             let replyToAddress = environment.initializer.getAddress() else {
@@ -112,13 +140,16 @@ final class SendFlowEnvironment: ObservableObject {
                 
                 switch completion {
                 case .finished:
-                    self.isDone = true
+                    logger.debug("send flow finished")
                 case .failure(let error):
                     logger.error("\(error)")
                     self.error = error
                     self.showError = true
-                    self.isDone = true
+                    
                 }
+                // fix me:                
+                self.isDone = true
+                SendFlow.end()
             }) { [weak self] (transaction) in
                 guard let self = self else {
                     return
@@ -140,7 +171,9 @@ final class SendFlowEnvironment: ObservableObject {
     var hasSucceded: Bool {
         isDone && !hasErrors
     }
-    
+    var doubleAmount: Double? {
+        NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue
+    }
     func close() {
         NotificationCenter.default.post(name: .sendFlowClosed, object: nil)
         self.isActive = false

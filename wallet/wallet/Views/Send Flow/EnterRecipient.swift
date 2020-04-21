@@ -48,9 +48,15 @@ struct EnterRecipient: View {
         ZECCWalletEnvironment.shared.isValidAddress(flow.address)
     }
     
-    var validForm: Bool {
-        availableBalance && validAddress
+    var sufficientAmount: Bool {
+        let amount = (flow.doubleAmount ??  0 )
+         return amount > 0 && amount <= ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value
     }
+    
+    var validForm: Bool {
+        availableBalance && validAddress && sufficientAmount
+    }
+    
     
     var addressInBuffer: AnyView {
         
@@ -87,12 +93,17 @@ struct EnterRecipient: View {
                     onEditingChanged: { _ in },
                     onCommit: { }
                 ).sheet(isPresented: self.$flow.showScanView) {
-                    ScanAddress(
-                        scanViewModel: ScanAddressViewModel(
-                            address: self.$flow.address,
-                            shouldShow: self.$flow.showScanView
-                        )   
-                    ).environmentObject(ZECCWalletEnvironment.shared)
+                    NavigationView {
+                        LazyView(ScanAddress(
+                            scanViewModel: ScanAddressViewModel(
+                                address: self.$flow.address,
+                                shouldShow: self.$flow.showScanView
+                            ),
+                            isShown: self.$flow.showScanView,
+                            showCloseButton: true
+                            
+                        ).environmentObject(ZECCWalletEnvironment.shared))
+                    }
                 }
                 
                 ZcashTextField(
@@ -134,9 +145,9 @@ struct EnterRecipient: View {
 }
 
 
-
-struct EnterRecipient_Previews: PreviewProvider {
-    static var previews: some View {
-        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true)))
-    }
-}
+//
+//struct EnterRecipient_Previews: PreviewProvider {
+//    static var previews: some View {
+//        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true)))
+//    }
+//}

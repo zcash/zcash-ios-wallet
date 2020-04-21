@@ -47,14 +47,17 @@ struct ScanAddress: View {
     
     @Binding var isScanAddressShown: Bool
     
+    @State var showCloseButton = false
     @State private var torchEnabled = false
     
     init(scanViewModel: ScanAddressViewModel = ScanAddressViewModel(),
          cameraStatus: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus,
-         fromReceiveFunds: Binding<Bool> = .constant(false)) {
-        viewModel = scanViewModel
-        _isScanAddressShown = fromReceiveFunds
-        cameraAccess = cameraStatus
+         isShown: Binding<Bool>,
+         showCloseButton: Bool) {
+        self._isScanAddressShown = isShown
+        self.viewModel = scanViewModel
+        self.cameraAccess = cameraStatus
+        self.showCloseButton = showCloseButton
     }
     
     var scanFrame: some View {
@@ -74,8 +77,9 @@ struct ScanAddress: View {
             }
         )
     }
+    
     var authorized: some View {
-        Group {
+          ZStack {
             QRCodeScannerView(delegate: viewModel.scannerDelegate)
                 .edgesIgnoringSafeArea(.all)
             
@@ -86,15 +90,11 @@ struct ScanAddress: View {
                 switchButton
                 
             }
-            .navigationBarItems(
-                trailing: torchButton
-            )
-            
         }
     }
     
     var unauthorized: some View {
-        Group {
+         ZStack {
             ZcashBackground()
             VStack {
                 Spacer()
@@ -121,7 +121,7 @@ struct ScanAddress: View {
     }
     
     var restricted: some View {
-        Group {
+          ZStack {
             ZcashBackground()
             VStack {
                 Spacer()
@@ -131,14 +131,13 @@ struct ScanAddress: View {
                         .foregroundColor(.white)
                 }
                 Spacer()
-                switchButton
-                
+                switchButton 
             }
         }
     }
     
     var switchButton:  AnyView {
-        guard isScanAddressShown else { return AnyView (EmptyView()) }
+        guard !showCloseButton else { return AnyView (EmptyView()) }
         return AnyView(
             Button(action: {
                 self.isScanAddressShown = false
@@ -166,7 +165,23 @@ struct ScanAddress: View {
     func viewFor(state: CameraAccessHelper.Status) -> some View {
         switch state {
         case .authorized, .undetermined:
-            return AnyView(authorized)
+            let auth = authorized.navigationBarTitle("Scan Recipient Address", displayMode: .inline)
+            
+            if showCloseButton {
+                return AnyView(
+                    auth.navigationBarItems(
+                        leading: torchButton
+                    )
+                    .navigationBarItems(
+                        trailing: ZcashCloseButton(action: { self.isScanAddressShown = false })
+                    )
+                )
+            }
+            return AnyView(
+                auth.navigationBarItems(
+                    trailing: torchButton
+                )
+            )
         case .unauthorized:
             return AnyView(unauthorized)
         case .unavailable:
@@ -175,15 +190,14 @@ struct ScanAddress: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
+    
+          
                 viewFor(state: cameraAccess)
-            }
-            .navigationBarTitle("Scan Recipient Address", displayMode: .inline)
+         
+            
             .onDisappear() {
                 self.toggleTorch(on: false)
             }
-        }
     }
     
     private var torchAvailable: Bool {
@@ -209,7 +223,7 @@ struct ScanAddress: View {
 
 struct ScanAddress_Previews: PreviewProvider {
     static var previews: some View {
-        ScanAddress()
+        ScanAddress(isShown: .constant(false), showCloseButton: false)
             .environmentObject(ZECCWalletEnvironment.shared)
     }
 }

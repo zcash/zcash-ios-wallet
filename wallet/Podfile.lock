@@ -1,10 +1,13 @@
 PODS:
-  - BoringSSL-GRPC (0.0.3):
-    - BoringSSL-GRPC/Implementation (= 0.0.3)
-    - BoringSSL-GRPC/Interface (= 0.0.3)
-  - BoringSSL-GRPC/Implementation (0.0.3):
-    - BoringSSL-GRPC/Interface (= 0.0.3)
-  - BoringSSL-GRPC/Interface (0.0.3)
+  - CGRPCZlib (1.0.0-alpha.11)
+  - CNIOAtomics (2.15.0)
+  - CNIOBoringSSL (2.7.1)
+  - CNIOBoringSSLShims (2.7.1):
+    - CNIOBoringSSL (= 2.7.1)
+  - CNIODarwin (2.15.0)
+  - CNIOHTTPParser (2.15.0)
+  - CNIOLinux (2.15.0)
+  - CNIOSHA1 (2.15.0)
   - Firebase/CoreOnly (6.19.0):
     - FirebaseCore (= 6.6.4)
   - Firebase/Crashlytics (6.19.0):
@@ -41,15 +44,16 @@ PODS:
     - GoogleUtilities/Environment
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
-  - gRPC-Core (1.23.1):
-    - gRPC-Core/Implementation (= 1.23.1)
-    - gRPC-Core/Interface (= 1.23.1)
-  - gRPC-Core/Implementation (1.23.1):
-    - BoringSSL-GRPC (= 0.0.3)
-    - gRPC-Core/Interface (= 1.23.1)
-    - nanopb (~> 0.3)
-  - gRPC-Core/Interface (1.23.1)
+  - gRPC-Swift (1.0.0-alpha.11):
+    - CGRPCZlib (= 1.0.0-alpha.11)
+    - Logging (= 1.2.0)
+    - SwiftNIO (= 2.15.0)
+    - SwiftNIOHTTP2 (= 1.11.0)
+    - SwiftNIOSSL (= 2.7.1)
+    - SwiftNIOTransportServices (= 1.3.0)
+    - SwiftProtobuf (= 1.8.0)
   - KeychainSwift (19.0.0)
+  - Logging (1.2.0)
   - lottie-ios (3.1.6)
   - MnemonicKit (2.0.0)
   - nanopb (0.3.9011):
@@ -61,14 +65,48 @@ PODS:
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
-  - SwiftGRPC (0.10.0):
-    - gRPC-Core (~> 1.23.0)
-    - SwiftProtobuf (~> 1.7.0)
-  - SwiftProtobuf (1.7.0)
+  - SwiftNIO (2.15.0):
+    - CNIOAtomics (= 2.15.0)
+    - CNIODarwin (= 2.15.0)
+    - CNIOLinux (= 2.15.0)
+    - CNIOSHA1 (= 2.15.0)
+    - SwiftNIOConcurrencyHelpers (= 2.15.0)
+  - SwiftNIOConcurrencyHelpers (2.15.0):
+    - CNIOAtomics (= 2.15.0)
+  - SwiftNIOFoundationCompat (2.15.0):
+    - SwiftNIO (= 2.15.0)
+  - SwiftNIOHPACK (1.11.0):
+    - SwiftNIO (= 2.15.0)
+    - SwiftNIOConcurrencyHelpers (= 2.15.0)
+    - SwiftNIOHTTP1 (= 2.15.0)
+  - SwiftNIOHTTP1 (2.15.0):
+    - CNIOHTTPParser (= 2.15.0)
+    - SwiftNIO (= 2.15.0)
+    - SwiftNIOConcurrencyHelpers (= 2.15.0)
+  - SwiftNIOHTTP2 (1.11.0):
+    - SwiftNIO (= 2.15.0)
+    - SwiftNIOConcurrencyHelpers (= 2.15.0)
+    - SwiftNIOHPACK (= 1.11.0)
+    - SwiftNIOHTTP1 (= 2.15.0)
+    - SwiftNIOTLS (= 2.15.0)
+  - SwiftNIOSSL (2.7.1):
+    - CNIOBoringSSL (= 2.7.1)
+    - CNIOBoringSSLShims (= 2.7.1)
+    - SwiftNIO (= 2.15.0)
+    - SwiftNIOConcurrencyHelpers (= 2.15.0)
+    - SwiftNIOTLS (= 2.15.0)
+  - SwiftNIOTLS (2.15.0):
+    - SwiftNIO (= 2.15.0)
+  - SwiftNIOTransportServices (1.3.0):
+    - SwiftNIO (~> 2.0)
+    - SwiftNIOConcurrencyHelpers (~> 2.0)
+    - SwiftNIOFoundationCompat (~> 2.0)
+    - SwiftNIOTLS (~> 2.0)
+  - SwiftProtobuf (1.8.0)
   - TinyQRScanner (1.0.0)
-  - ZcashLightClientKit (0.2.1):
+  - ZcashLightClientKit (0.4.0):
+    - gRPC-Swift (~> 1.0.0-alpha.11)
     - SQLite.swift (~> 0.12.2)
-    - SwiftGRPC (~> 0.10.0)
 
 DEPENDENCIES:
   - Firebase/Crashlytics
@@ -76,11 +114,18 @@ DEPENDENCIES:
   - lottie-ios
   - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, commit `49ab6726fe8a15e1e615942b0b42a0cd83308090`)"
   - TinyQRScanner
-  - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `master`)"
+  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
 
 SPEC REPOS:
   trunk:
-    - BoringSSL-GRPC
+    - CGRPCZlib
+    - CNIOAtomics
+    - CNIOBoringSSL
+    - CNIOBoringSSLShims
+    - CNIODarwin
+    - CNIOHTTPParser
+    - CNIOLinux
+    - CNIOSHA1
     - Firebase
     - FirebaseAnalyticsInterop
     - FirebaseCore
@@ -91,13 +136,22 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - gRPC-Core
+    - gRPC-Swift
     - KeychainSwift
+    - Logging
     - lottie-ios
     - nanopb
     - PromisesObjC
     - SQLite.swift
-    - SwiftGRPC
+    - SwiftNIO
+    - SwiftNIOConcurrencyHelpers
+    - SwiftNIOFoundationCompat
+    - SwiftNIOHPACK
+    - SwiftNIOHTTP1
+    - SwiftNIOHTTP2
+    - SwiftNIOSSL
+    - SwiftNIOTLS
+    - SwiftNIOTransportServices
     - SwiftProtobuf
     - TinyQRScanner
 
@@ -106,19 +160,22 @@ EXTERNAL SOURCES:
     :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
     :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
-    :branch: master
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
+    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
 
 CHECKOUT OPTIONS:
   MnemonicKit:
     :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
     :git: "git@github.com:pacu/MnemonicKit.git"
-  ZcashLightClientKit:
-    :commit: fc8689f89492cf432cedb35e7ceea0af4fff5a82
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
 
 SPEC CHECKSUMS:
-  BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  CGRPCZlib: e595387378d0601be796e858dd30c505458c4b1f
+  CNIOAtomics: ba49b1c86f281e1ecfd84c9205fbc27a81826847
+  CNIOBoringSSL: e4766830ab6d7c7fcd3618331f05fcb11638314d
+  CNIOBoringSSLShims: c3f3c6f05b7ce9b576521328a5b1b566d8f4665b
+  CNIODarwin: 2e341dd283fa3972706568b12925366145a8e2cd
+  CNIOHTTPParser: 25e1d1bc84c0612cbbbd6baedc4be05d77a17e01
+  CNIOLinux: 61598a8e49510207acb74c87f8fc11f762f76b5a
+  CNIOSHA1: 7b1dcceef9682aef4c6578b9fc67f87a03f0c48e
   Firebase: d55ddb0e0bb3207166cddc028647833d8a1b5b6f
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
   FirebaseCore: ed0a24c758a57c2b88c5efa8e6a8195e868af589
@@ -129,18 +186,27 @@ SPEC CHECKSUMS:
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
-  gRPC-Core: 4b1148eb8596225178e5a154e40e35141a3cdf0f
+  gRPC-Swift: 79f04da038f9a62005271d5b638611ce1bb31304
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
+  Logging: 7838d379d234d7e5ae1265fa02804a9084caf04c
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MnemonicKit: dfbb4b7e2ccb3a67a56e519158501b27c519e2c8
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
-  SwiftGRPC: f8fcfecb547c96cc6913de619f95fa3cd09838ee
-  SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
+  SwiftNIO: c9889dcd8aed2655af9163b42fc11ebd4ce94252
+  SwiftNIOConcurrencyHelpers: 2357037a16e9c51880c01b896a5ac3cd41066044
+  SwiftNIOFoundationCompat: f09ee499a8a9c636ec9007f73c5a1cedc23dcad3
+  SwiftNIOHPACK: 906596511ff9d1e095b7a72a0011351591bcae03
+  SwiftNIOHTTP1: b05f4061ba18482006a264a5aa087bbcd35d153c
+  SwiftNIOHTTP2: 3a52499594c6ec073af2a2801cf3c5d3d1c8700f
+  SwiftNIOSSL: 7c82b8393a6b69a3ef9b12fe74240e92c2bd7add
+  SwiftNIOTLS: 51580e51240d1a4d51efb2d317e92cf243181042
+  SwiftNIOTransportServices: 26d40c589fc8fe667af51b06ef0aa49fbc9ae7f2
+  SwiftProtobuf: 2cbd9409689b7df170d82a92a33443c8e3e14a70
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
-  ZcashLightClientKit: 8f195725d2ec3d579c78b228a0d3a384e21f56b9
+  ZcashLightClientKit: 47e707be6657391d5d4fd7db1544b0d98ce45e42
 
-PODFILE CHECKSUM: 01ddf8b0cbb8b3da780806e878acb13967ecfefe
+PODFILE CHECKSUM: 09dee600c8df894dbfba3fe4c600bef5d3752501
 
 COCOAPODS: 1.9.1

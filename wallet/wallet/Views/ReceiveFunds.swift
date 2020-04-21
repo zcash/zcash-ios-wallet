@@ -66,7 +66,7 @@ struct ReceiveFunds: View {
                     }
                     
                     Spacer()
-                    NavigationLink(destination: ScanAddress(fromReceiveFunds: self.$isScanAddressShown) ,isActive: self.$isScanAddressShown ) {
+                    NavigationLink(destination: ScanAddress(isShown: self.$isScanAddressShown, showCloseButton: false) ,isActive: self.$isScanAddressShown ) {
                         EmptyView()
                     }
                     Button(action: {

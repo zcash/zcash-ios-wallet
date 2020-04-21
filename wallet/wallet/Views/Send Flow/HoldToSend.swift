@@ -83,13 +83,13 @@ struct HoldToSend: View {
         }))
     }
 }
-
-struct HoldToSend_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true))
-        
-        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-        return HoldToSend().environmentObject(flow)
-    }
-}
+//
+//struct HoldToSend_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true))
+//        
+//        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+//        return HoldToSend().environmentObject(flow)
+//    }
+//}
