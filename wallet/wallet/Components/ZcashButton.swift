@@ -54,7 +54,7 @@ struct ZcashButton: View {
                 .foregroundColor(self.color)
                 .font(.body)
             
-        }
+        }.frame(minWidth: 30, idealWidth: 30, minHeight: 30, idealHeight: 30)
     }
 }
 

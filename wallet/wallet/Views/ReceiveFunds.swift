@@ -15,10 +15,12 @@ struct ReceiveFunds: View {
         self.chips = address.slice(into: 8)
         self._isShown = isShown
     }
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
     @State var isCopyAlertShown = false
     @State var isShareModalDisplayed = false
     @State var isScanAddressShown = false
+    @State var isScanning = false
     @Binding var isShown: Bool
     var qrImage: Image {
         if let img = QRCodeGenerator.generate(from: self.address) {
@@ -66,26 +68,47 @@ struct ReceiveFunds: View {
                     }
                     
                     Spacer()
-                    NavigationLink(destination: ScanAddress(isShown: self.$isScanAddressShown, showCloseButton: false) ,isActive: self.$isScanAddressShown ) {
-                        EmptyView()
+                    if !isScanning {
+                        
+                            NavigationLink(destination:
+                                ScanAddress(
+                                    viewModel: ScanAddressViewModel(shouldShowSwitchButton: true, showCloseButton: false),
+                                cameraAccess: CameraAccessHelper.authorizationStatus,
+                                isScanAddressShown: self.$isScanAddressShown
+                                 ).environmentObject(self.appEnvironment),
+                                           isActive: self.$isScanAddressShown
+                            ) {
+                                EmptyView()
+                            }
+                            Button(action: {
+                                self.isScanAddressShown = true
+                            }) {
+                                Text("Scan Recipient Address")
+                                .foregroundColor(Color.black)
+                                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
+                                    .frame(height: 58)
+                                    
+                            }
+                        
+                            Spacer()
+                        
                     }
-                    Button(action: {
-                        self.isScanAddressShown = true
-                    }) {
-                        Text("Scan Recipient Address")
-                        .foregroundColor(Color.black)
-                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
-                            .frame(height: 58)
-                            
-                    }
-                    Spacer()
                 }.padding(30)
+                    .onReceive(appEnvironment.synchronizer.status, perform: { status in
+                        // Note: don't show the scan qr button when syncing.
+                        switch status {
+                        case .syncing:
+                            self.isScanning = true
+                        default:
+                            self.isScanning = false
+                        }
+                    })
                 
             }.navigationBarTitle(Text(""), displayMode: .inline)
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 self.isShown = false
-            }))
+                }).frame(width: 30, height: 30))
         }
     }
 }

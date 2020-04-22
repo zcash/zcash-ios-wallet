@@ -94,15 +94,19 @@ struct EnterRecipient: View {
                     onCommit: { }
                 ).sheet(isPresented: self.$flow.showScanView) {
                     NavigationView {
-                        LazyView(ScanAddress(
-                            scanViewModel: ScanAddressViewModel(
-                                address: self.$flow.address,
-                                shouldShow: self.$flow.showScanView
-                            ),
-                            isShown: self.$flow.showScanView,
-                            showCloseButton: true
+                        LazyView(
                             
-                        ).environmentObject(ZECCWalletEnvironment.shared))
+                            ScanAddress(
+                                  viewModel: ScanAddressViewModel(
+                                    shouldShowSwitchButton: false,
+                                    showCloseButton: true,
+                                    address: self.$flow.address,
+                                    shouldShow: self.$flow.showScanView),
+                                  cameraAccess: CameraAccessHelper.authorizationStatus,
+                                  isScanAddressShown: self.$flow.showScanView
+                            ).environmentObject(ZECCWalletEnvironment.shared)
+                           
+                        )
                     }
                 }
                 

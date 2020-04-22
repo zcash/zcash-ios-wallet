@@ -17,8 +17,11 @@ extension Notification.Name {
 class ScanAddressViewModel: ObservableObject {
     var scannerDelegate: QRScannerViewDelegate
     var dispose = Set<AnyCancellable>()
-    
-    init(delegate: CombineAdapter = CombineAdapter()) {
+    var shouldShowSwitchButton: Bool = true
+    var showCloseButton: Bool = false
+    init(shouldShowSwitchButton: Bool, showCloseButton: Bool, delegate: CombineAdapter = CombineAdapter()) {
+        self.shouldShowSwitchButton = shouldShowSwitchButton
+        self.showCloseButton = showCloseButton
         self.scannerDelegate = delegate
         delegate.publisher.sink(receiveCompletion: { (completion) in
             switch completion {
@@ -32,8 +35,9 @@ class ScanAddressViewModel: ObservableObject {
         }.store(in: &dispose)
     }
     
-    init(address: Binding<String>, shouldShow: Binding<Bool>) {
-        
+    init(shouldShowSwitchButton: Bool, showCloseButton: Bool, address: Binding<String>, shouldShow: Binding<Bool>) {
+        self.shouldShowSwitchButton = shouldShowSwitchButton
+        self.showCloseButton = showCloseButton
         self.scannerDelegate = BindingAdapter(address: address, shouldShow: shouldShow)
     }
 }
@@ -41,25 +45,24 @@ class ScanAddressViewModel: ObservableObject {
 struct ScanAddress: View {
     @EnvironmentObject var environment: ZECCWalletEnvironment
     
-    @State var cameraAccess: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus
-    
     @ObservedObject var viewModel: ScanAddressViewModel
-    
+    @State var cameraAccess: CameraAccessHelper.Status
     @Binding var isScanAddressShown: Bool
     
-    @State var showCloseButton = false
-    @State private var torchEnabled = false
+    @State var torchEnabled: Bool = false
     
-    init(scanViewModel: ScanAddressViewModel = ScanAddressViewModel(),
-         cameraStatus: CameraAccessHelper.Status = CameraAccessHelper.authorizationStatus,
-         isShown: Binding<Bool>,
-         showCloseButton: Bool) {
-        self._isScanAddressShown = isShown
-        self.viewModel = scanViewModel
-        self.cameraAccess = cameraStatus
-        self.showCloseButton = showCloseButton
-    }
-    
+//    init(scanViewModel: ScanAddressViewModel,
+//         cameraStatus: CameraAccessHelper.Status,
+//         isShown: Binding<Bool>,
+//         showCloseButton: Bool,
+//         showSwitchButton: Bool) {
+//        self.viewModel = scanViewModel
+//        self.cameraAccess = cameraStatus
+//        self._isScanAddressShown = isShown
+//        self.showCloseButton = showCloseButton
+//        self.shouldShowSwitchButton = showSwitchButton
+//    }
+//
     var scanFrame: some View {
         Image("QRCodeScanFrame")
             .padding()
@@ -137,7 +140,7 @@ struct ScanAddress: View {
     }
     
     var switchButton:  AnyView {
-        guard !showCloseButton else { return AnyView (EmptyView()) }
+        guard viewModel.shouldShowSwitchButton else { return AnyView (EmptyView()) }
         return AnyView(
             Button(action: {
                 self.isScanAddressShown = false
@@ -167,14 +170,9 @@ struct ScanAddress: View {
         case .authorized, .undetermined:
             let auth = authorized.navigationBarTitle("Scan Recipient Address", displayMode: .inline)
             
-            if showCloseButton {
+            if viewModel.showCloseButton {
                 return AnyView(
-                    auth.navigationBarItems(
-                        leading: torchButton
-                    )
-                    .navigationBarItems(
-                        trailing: ZcashCloseButton(action: { self.isScanAddressShown = false })
-                    )
+                    auth.navigationBarItems(leading: torchButton, trailing:  ZcashCloseButton(action: { self.isScanAddressShown = false }).frame(width: 30, height: 30))
                 )
             }
             return AnyView(
@@ -190,14 +188,10 @@ struct ScanAddress: View {
     }
     
     var body: some View {
-    
-          
-                viewFor(state: cameraAccess)
-         
-            
-            .onDisappear() {
-                self.toggleTorch(on: false)
-            }
+        viewFor(state: cameraAccess)
+        .onDisappear() {
+            self.toggleTorch(on: false)
+        }
     }
     
     private var torchAvailable: Bool {
@@ -220,10 +214,10 @@ struct ScanAddress: View {
         }
     }
 }
-
-struct ScanAddress_Previews: PreviewProvider {
-    static var previews: some View {
-        ScanAddress(isShown: .constant(false), showCloseButton: false)
-            .environmentObject(ZECCWalletEnvironment.shared)
-    }
-}
+//
+//struct ScanAddress_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ScanAddress(isShown: .constant(false), showCloseButton: false, showSwitchButton: <#Bool#>)
+//            .environmentObject(ZECCWalletEnvironment.shared)
+//    }
+//}

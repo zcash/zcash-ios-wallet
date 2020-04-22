@@ -80,7 +80,7 @@ struct HoldToSend: View {
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: ZcashCloseButton(action: {
             self.flow.close()
-        }))
+            }).frame(width: 30, height: 30))
     }
 }
 //

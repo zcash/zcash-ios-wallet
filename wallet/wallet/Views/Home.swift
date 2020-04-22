@@ -276,7 +276,7 @@ struct Home: View {
                     .edgesIgnoringSafeArea(.all)
             }
             
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 5) {
                 
                 Spacer()
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
@@ -344,6 +344,7 @@ struct Home: View {
                 //                    detailCard
                 //                }
             }
+            .padding([.bottom], 20)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
@@ -357,6 +358,7 @@ struct Home: View {
             .sheet(isPresented: $viewModel.showReceiveFunds){
                 ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
                              isShown:  self.$viewModel.showReceiveFunds)
+                    .environmentObject(self.appEnvironment)
             }
             , trailing:
             Button(action: {

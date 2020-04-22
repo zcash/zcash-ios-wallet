@@ -86,7 +86,7 @@ struct ProfileScreen: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 self.isShown = false
-            }))
+            }).frame(width: 30, height: 30))
         
         }
     }
