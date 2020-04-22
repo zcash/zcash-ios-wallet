@@ -12,7 +12,7 @@ struct HoldToSend: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var networkFee: Double = 0.0001
-    var pressAndHoldSeconds: TimeInterval = 2
+    var pressAndHoldSeconds: TimeInterval = 3
     @State var holdOk = false
     
     var includesMemoView: AnyView {
@@ -44,7 +44,7 @@ struct HoldToSend: View {
                     .lineLimit(1)
                 includesMemoView
                 Spacer()
-                ZcashHoldToSendButton(minimumDuration: 10, longPressCancelled: {
+                ZcashHoldToSendButton(minimumDuration: pressAndHoldSeconds, longPressCancelled: {
                     logger.debug("long press cancelled")
                 }, longPressSucceded: {
                     logger.debug("long press succeded")
@@ -80,16 +80,16 @@ struct HoldToSend: View {
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: ZcashCloseButton(action: {
             self.flow.close()
-        }))
+            }).frame(width: 30, height: 30))
     }
 }
-
-struct HoldToSend_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true))
-        
-        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-        return HoldToSend().environmentObject(flow)
-    }
-}
+//
+//struct HoldToSend_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        let flow: SendFlowEnvironment = SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true))
+//        
+//        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+//        return HoldToSend().environmentObject(flow)
+//    }
+//}

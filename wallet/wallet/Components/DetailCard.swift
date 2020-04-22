@@ -20,7 +20,7 @@ struct DetailModel: Identifiable {
     var zecAmount: Double
     var status: Status
     var shielded: Bool = true
-    
+    var memo: String? = nil
     var title: String {
 
         switch status {
@@ -90,7 +90,7 @@ struct DetailCard: View {
     
     var zecAmount: AnyView {
         let amount = model.zecAmount.toZecAmount()
-        var text = ((model.zecAmount > 0) ? "+ " : "") +  amount + " ZEC"
+        var text = ((model.zecAmount > 0 && model.zecAmount >= 0.001) ? "+ " : "") + ((model.zecAmount < 0.001 && model.zecAmount > 0) ? "< 0.001" : amount)
         var color = Color.zPositiveZecAmount
         var opacity = Double(1)
         switch model.status {
@@ -124,7 +124,7 @@ struct DetailCard: View {
                     HStack {
                         shieldImage
                         Text(model.title)
-                            .truncationMode(.middle)
+                            .truncationMode(.tail)
                             .lineLimit(1)
                             .foregroundColor(.white)
                             .layoutPriority(0.5)

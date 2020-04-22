@@ -130,14 +130,14 @@ struct Sending: View {
         }
     }
 }
-
-struct Sending_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456, isActive: .constant(true))
-        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-        flow.includesMemo = true
-        flow.isDone = false
-        return Sending().environmentObject(flow)
-    }
-}
+//
+//struct Sending_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456, isActive: .constant(true))
+//        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+//        flow.includesMemo = true
+//        flow.isDone = false
+//        return Sending().environmentObject(flow)
+//    }
+//}
