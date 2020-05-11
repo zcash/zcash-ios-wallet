@@ -32,6 +32,9 @@ final class HomeViewModel: ObservableObject {
                 .assign(to: \.sendZecAmount, on: self)
                 .store(in: &cancellable)
             home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
+                .map({ (amount) -> String in
+                    amount.isEmpty ? "0" : amount
+                })
                 .assign(to: \.sendZecAmountText, on: self)
                 .store(in: &cancellable)
             

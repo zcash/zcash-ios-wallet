@@ -82,7 +82,7 @@ class KeyPadViewModel: ObservableObject {
     init(initialValue: Double = 0) {
         
         guard initialValue > 0 else {
-            text = "0"
+            text = ""
             value = 0
             return
         }
@@ -93,7 +93,7 @@ class KeyPadViewModel: ObservableObject {
             text = textValue
             value = initialValue
         } else {
-            text = "0"
+            text = ""
             value = 0
         }
     }
@@ -124,8 +124,12 @@ class KeyPadViewModel: ObservableObject {
     
     func numberTapped(_ number: String) {
         //catch leading zeros
-        if text == "0" && number == "0" {
-            return
+        if text == "0" {
+            if number == "0" {
+                return
+            } else {
+                text = ""
+            }
         }
         
         guard !hasEightOrMoreDecimals(text) else {
@@ -143,7 +147,7 @@ class KeyPadViewModel: ObservableObject {
     
     
     func clear() {
-        text = "0"
+        text = ""
         value = 0
     }
     
