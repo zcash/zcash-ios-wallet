@@ -2,6 +2,11 @@
 
 iOS wallet using the Zcash iOS SDK that is maintained by core developers.
 
+Please see the [wallet app threat
+model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
+for important information about the security and privacy limitations of the
++wallet.
+
 ## Prerequisites
 * make sure you can build ZcashLightClientKit Demo Apps successfully
 * you must have a project in Firebase Crashlytics to build this app.
