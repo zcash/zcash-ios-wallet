@@ -42,6 +42,30 @@ When reporting issues, please include the following:
 
 This information will help us review and fix your issue faster.
 
+## Pull Requests
+
+We **love** pull requests! 
+
+*TODO: Brad* All contributions _will_ be licensed under the MIT license.
+
+Code/comments should adhere to the following rules:
+
+* Every Pull request must have an Issue associated to it. PRs with not 
+associated with an Issue will be closed
+* Code build and Code Lint must pass.
+* Names should be descriptive and concise.
+* Although they are not mandatory, PRs that include significant testing will be
+prioritized.
+* All enhancements and bug fixes need to be documented in the CHANGELOG.
+* When writing comments, use properly constructed sentences, including
+  punctuation.
+* When documenting APIs and/or source code, don't make assumptions or make
+  implications about race, gender, religion, political orientation or anything
+  else that isn't relevant to the project.
+* Remember that source code usually gets written once and read often: ensure
+  the reader doesn't have to make guesses. Make sure that the purpose and inner
+  logic are either obvious to a reasonably skilled professional, or add a
+  comment that explains it.
 
 ## Developer's Certificate of Origin 1.1
 
