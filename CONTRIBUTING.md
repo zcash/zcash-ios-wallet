@@ -1,2 +1,74 @@
-# Contribution Guide
-TODO: link to read the docs
+# Contributing Guidelines
+
+This document contains information and guidelines about contributing to this project.
+Please read it before you start participating.
+
+**Topics**
+
+* [Asking Questions](#asking-questions)
+* [Reporting Security Issues](#reporting-security-issues)
+* [Reporting Non Security Issues](#reporting-other-issues)
+* [Developers Certificate of Origin](#developers-certificate-of-origin)
+
+## Asking Questions
+
+Questions are welcome! We encourage you to ask questions through GitHub issues.
+Before doing so, please check that the project issues database doesn't already
+include an answer to your question. Then open a new Issue and use the "Question"
+label.
+
+## Reporting Security Issues
+
+TODO: Brad
+
+## Reporting Non Security Issues
+
+A great way to contribute to the project
+is to send a detailed issue when you encounter a problem.
+We always appreciate a well-written, thorough bug report.
+
+Check that the project issues database
+doesn't already include that problem or suggestion before submitting an issue.
+If you find a match, add a quick "+1" or "I have this problem too."
+Doing this helps prioritize the most common problems and requests.
+
+When reporting issues, please include the following:
+
+* The version of Xcode you're using
+* The version of iOS or macOS you're targeting
+* The full output of any stack trace or compiler error
+* A code snippet that reproduces the described behavior, if applicable
+* Any other details that would be useful in understanding the problem
+
+This information will help us review and fix your issue faster.
+
+
+## Developer's Certificate of Origin 1.1
+
+By making a contribution to this project, I certify that:
+
+- (a) The contribution was created in whole or in part by me and I
+      have the right to submit it under the open source license
+      indicated in the file; or
+
+- (b) The contribution is based upon previous work that, to the best
+      of my knowledge, is covered under an appropriate open source
+      license and I have the right under that license to submit that
+      work with modifications, whether created in whole or in part
+      by me, under the same open source license (unless I am
+      permitted to submit under a different license), as indicated
+      in the file; or
+
+- (c) The contribution was provided directly to me by some other
+      person who certified (a), (b) or (c) and I have not modified
+      it.
+
+- (d) I understand and agree that this project and the contribution
+      are public and that a record of the contribution (including all
+      personal information I submit with it, including my sign-off) is
+      maintained indefinitely and may be redistributed consistent with
+      this project or the open source license(s) involved.
+
+
+
+This contribution guide is inspired on great projects like [AlamoFire](https://github.com/Alamofire/Foundation/blob/master/CONTRIBUTING.md) and [CocoaPods](https://github.com/CocoaPods/CocoaPods/blob/master/CONTRIBUTING.md)
