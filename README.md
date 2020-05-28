@@ -2,10 +2,16 @@
 
 iOS wallet using the Zcash iOS SDK that is maintained by core developers.
 
-Please see the [wallet app threat
-model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
-for important information about the security and privacy limitations of the
-+wallet.
+There are some known areas for improvement:
+
+- Traffic analysis, like in other cryptocurrency wallets, can leak some privacy
+  of the user.
+- The wallet might display inaccurate transaction information if it is connected
+  to an untrustworthy server.
+
+See the [Wallet App Threat
+Model](https://zcash.readthedocs.io/en/latest/rtd_pages/wallet_threat_model.html)
+for more information about the security and privacy limitations of the wallet.
 
 ## Prerequisites
 * make sure you can build ZcashLightClientKit Demo Apps successfully
