@@ -27,14 +27,17 @@ struct KeyPad: View {
                     row in
                     HStack(alignment: .center, spacing: self.hSpacing) {
                         ForEach(row, id: \.self) { pad in
-                            
+                            HStack {
                             Button(action: {
                                 self.viewModel.valuePressed(pad)
                             }) {
-                                Text(pad)
-                            }.buttonStyle(KeyPadButtonStyle(size: self.keySize))
-                                .frame(width: self.keySize, height: self.keySize)
+                                    Text(pad)
+                                    .font(.title)
+
+                            }
+                            .buttonStyle(KeyPadButtonStyle(size: self.keySize))
                                 .cornerRadius(self.keySize/2)
+                            }
                         }
                     }
                 }
@@ -48,9 +51,13 @@ struct KeyPadButtonStyle: ButtonStyle {
     let size: CGFloat
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .frame(minWidth: size, maxWidth: size)
-            .padding()
-            .font(.title)
+            .frame(
+                minWidth: size,
+                maxWidth:  .infinity,
+                minHeight:  size,
+                maxHeight:  .infinity,
+                alignment: .center
+            )
             .animation(nil)
             .foregroundColor(configuration.isPressed ? Color.black : .white)
             .background(configuration.isPressed ? Color.white : .clear)
