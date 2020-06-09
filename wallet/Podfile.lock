@@ -1,5 +1,5 @@
 PODS:
-  - CGRPCZlib (1.0.0-alpha.11)
+  - CGRPCZlib (1.0.0-alpha.12)
   - CNIOAtomics (2.15.0)
   - CNIOBoringSSL (2.7.1)
   - CNIOBoringSSLShims (2.7.1):
@@ -44,8 +44,8 @@ PODS:
     - GoogleUtilities/Environment
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
-  - gRPC-Swift (1.0.0-alpha.11):
-    - CGRPCZlib (= 1.0.0-alpha.11)
+  - gRPC-Swift (1.0.0-alpha.12):
+    - CGRPCZlib (= 1.0.0-alpha.12)
     - Logging (= 1.2.0)
     - SwiftNIO (= 2.15.0)
     - SwiftNIOHTTP2 (= 1.11.0)
@@ -55,7 +55,7 @@ PODS:
   - KeychainSwift (19.0.0)
   - Logging (1.2.0)
   - lottie-ios (3.1.6)
-  - MnemonicKit (2.0.0)
+  - MnemonicSwift (1.0.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -112,9 +112,9 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
-  - "MnemonicKit (from `git@github.com:pacu/MnemonicKit.git`, commit `49ab6726fe8a15e1e615942b0b42a0cd83308090`)"
+  - MnemonicSwift
   - TinyQRScanner
-  - ZcashLightClientKit (from `/Users/pacu/Repos/ECC/ZcashLightClientKit`)
+  - ZcashLightClientKit (from `../../ZcashLightClientKit`)
 
 SPEC REPOS:
   trunk:
@@ -140,6 +140,7 @@ SPEC REPOS:
     - KeychainSwift
     - Logging
     - lottie-ios
+    - MnemonicSwift
     - nanopb
     - PromisesObjC
     - SQLite.swift
@@ -156,19 +157,11 @@ SPEC REPOS:
     - TinyQRScanner
 
 EXTERNAL SOURCES:
-  MnemonicKit:
-    :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
-    :git: "git@github.com:pacu/MnemonicKit.git"
   ZcashLightClientKit:
-    :path: "/Users/pacu/Repos/ECC/ZcashLightClientKit"
-
-CHECKOUT OPTIONS:
-  MnemonicKit:
-    :commit: 49ab6726fe8a15e1e615942b0b42a0cd83308090
-    :git: "git@github.com:pacu/MnemonicKit.git"
+    :path: "../../ZcashLightClientKit"
 
 SPEC CHECKSUMS:
-  CGRPCZlib: e595387378d0601be796e858dd30c505458c4b1f
+  CGRPCZlib: a53e43fb0567e720e753dd172911b96baa3910d7
   CNIOAtomics: ba49b1c86f281e1ecfd84c9205fbc27a81826847
   CNIOBoringSSL: e4766830ab6d7c7fcd3618331f05fcb11638314d
   CNIOBoringSSLShims: c3f3c6f05b7ce9b576521328a5b1b566d8f4665b
@@ -186,11 +179,11 @@ SPEC CHECKSUMS:
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
-  gRPC-Swift: 79f04da038f9a62005271d5b638611ce1bb31304
+  gRPC-Swift: d4432e8659f1d075b9d07963c18e6791c8b159c3
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   Logging: 7838d379d234d7e5ae1265fa02804a9084caf04c
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
-  MnemonicKit: dfbb4b7e2ccb3a67a56e519158501b27c519e2c8
+  MnemonicSwift: d743ec3dcc1cdce706a1876dba0b6250ad1ef90d
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
@@ -205,8 +198,8 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: 26d40c589fc8fe667af51b06ef0aa49fbc9ae7f2
   SwiftProtobuf: 2cbd9409689b7df170d82a92a33443c8e3e14a70
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
-  ZcashLightClientKit: 47e707be6657391d5d4fd7db1544b0d98ce45e42
+  ZcashLightClientKit: 3a123d6e947680a66b466d884ca8cf5b23502a73
 
-PODFILE CHECKSUM: 09dee600c8df894dbfba3fe4c600bef5d3752501
+PODFILE CHECKSUM: 4b86eecbff213b62ce30144234032b4cf1e7df05
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
