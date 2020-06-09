@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import zECC_Wallet
-import MnemonicKit
+import MnemonicSwift
 @testable import ZcashLightClientKit
 class walletTests: XCTestCase {
 

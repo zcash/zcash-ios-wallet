@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MnemonicKit
+import MnemonicSwift
 class MnemonicSeedProvider: MnemonicSeedPhraseHandling {
     
     static let `default` = MnemonicSeedProvider()

@@ -3,9 +3,9 @@ use_frameworks!
 
 inhibit_all_warnings!
 target 'wallet' do 
- pod 'ZcashLightClientKit', :path => '/Users/pacu/Repos/ECC/ZcashLightClientKit' 
+ pod 'ZcashLightClientKit', :path => '../../ZcashLightClientKit'
  pod 'KeychainSwift', '~> 19.0.0'
- pod 'MnemonicKit', :git => 'git@github.com:pacu/MnemonicKit.git', :commit => '49ab6726fe8a15e1e615942b0b42a0cd83308090'
+ pod 'MnemonicSwift'
  pod 'TinyQRScanner'
  pod 'lottie-ios'
  pod 'Firebase/Crashlytics'
