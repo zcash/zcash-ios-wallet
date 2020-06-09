@@ -152,6 +152,8 @@ final class ZECCWalletEnvironment: ObservableObject {
                 return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
             case .saplingSpendParametersNotFound:
                 return ZECCWalletEnvironment.WalletError.createFailed
+            default:
+                return WalletError.genericError(message: "\(rustError)")
             }
         } else if let synchronizerError = error as? SynchronizerError {
             switch synchronizerError {

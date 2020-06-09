@@ -8,42 +8,6 @@ PODS:
   - CNIOHTTPParser (2.15.0)
   - CNIOLinux (2.15.0)
   - CNIOSHA1 (2.15.0)
-  - Firebase/CoreOnly (6.19.0):
-    - FirebaseCore (= 6.6.4)
-  - Firebase/Crashlytics (6.19.0):
-    - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 4.0.0-beta.5)
-  - FirebaseAnalyticsInterop (1.5.0)
-  - FirebaseCore (6.6.4):
-    - FirebaseCoreDiagnostics (~> 1.2)
-    - FirebaseCoreDiagnosticsInterop (~> 1.2)
-    - GoogleUtilities/Environment (~> 6.5)
-    - GoogleUtilities/Logger (~> 6.5)
-  - FirebaseCoreDiagnostics (1.2.2):
-    - FirebaseCoreDiagnosticsInterop (~> 1.2)
-    - GoogleDataTransportCCTSupport (~> 2.0)
-    - GoogleUtilities/Environment (~> 6.5)
-    - GoogleUtilities/Logger (~> 6.5)
-    - nanopb (~> 0.3.901)
-  - FirebaseCoreDiagnosticsInterop (1.2.0)
-  - FirebaseCrashlytics (4.0.0-beta.5):
-    - FirebaseAnalyticsInterop (~> 1.2)
-    - FirebaseCore (~> 6.6)
-    - FirebaseInstallations (~> 1.1)
-    - PromisesObjC (~> 1.2)
-  - FirebaseInstallations (1.1.0):
-    - FirebaseCore (~> 6.6)
-    - GoogleUtilities/UserDefaults (~> 6.5)
-    - PromisesObjC (~> 1.2)
-  - GoogleDataTransport (5.0.0)
-  - GoogleDataTransportCCTSupport (2.0.0):
-    - GoogleDataTransport (~> 5.0)
-    - nanopb (~> 0.3.901)
-  - GoogleUtilities/Environment (6.5.1)
-  - GoogleUtilities/Logger (6.5.1):
-    - GoogleUtilities/Environment
-  - GoogleUtilities/UserDefaults (6.5.1):
-    - GoogleUtilities/Logger
   - gRPC-Swift (1.0.0-alpha.12):
     - CGRPCZlib (= 1.0.0-alpha.12)
     - Logging (= 1.2.0)
@@ -56,12 +20,6 @@ PODS:
   - Logging (1.2.0)
   - lottie-ios (3.1.6)
   - MnemonicSwift (1.0.0)
-  - nanopb (0.3.9011):
-    - nanopb/decode (= 0.3.9011)
-    - nanopb/encode (= 0.3.9011)
-  - nanopb/decode (0.3.9011)
-  - nanopb/encode (0.3.9011)
-  - PromisesObjC (1.2.8)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
@@ -109,7 +67,6 @@ PODS:
     - SQLite.swift (~> 0.12.2)
 
 DEPENDENCIES:
-  - Firebase/Crashlytics
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
   - MnemonicSwift
@@ -126,23 +83,11 @@ SPEC REPOS:
     - CNIOHTTPParser
     - CNIOLinux
     - CNIOSHA1
-    - Firebase
-    - FirebaseAnalyticsInterop
-    - FirebaseCore
-    - FirebaseCoreDiagnostics
-    - FirebaseCoreDiagnosticsInterop
-    - FirebaseCrashlytics
-    - FirebaseInstallations
-    - GoogleDataTransport
-    - GoogleDataTransportCCTSupport
-    - GoogleUtilities
     - gRPC-Swift
     - KeychainSwift
     - Logging
     - lottie-ios
     - MnemonicSwift
-    - nanopb
-    - PromisesObjC
     - SQLite.swift
     - SwiftNIO
     - SwiftNIOConcurrencyHelpers
@@ -169,23 +114,11 @@ SPEC CHECKSUMS:
   CNIOHTTPParser: 25e1d1bc84c0612cbbbd6baedc4be05d77a17e01
   CNIOLinux: 61598a8e49510207acb74c87f8fc11f762f76b5a
   CNIOSHA1: 7b1dcceef9682aef4c6578b9fc67f87a03f0c48e
-  Firebase: d55ddb0e0bb3207166cddc028647833d8a1b5b6f
-  FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
-  FirebaseCore: ed0a24c758a57c2b88c5efa8e6a8195e868af589
-  FirebaseCoreDiagnostics: e9b4cd8ba60dee0f2d13347332e4b7898cca5b61
-  FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
-  FirebaseCrashlytics: 7c95218730d1debf493e987233c7b41dd7ba1329
-  FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
-  GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
-  GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
-  GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   gRPC-Swift: d4432e8659f1d075b9d07963c18e6791c8b159c3
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   Logging: 7838d379d234d7e5ae1265fa02804a9084caf04c
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MnemonicSwift: d743ec3dcc1cdce706a1876dba0b6250ad1ef90d
-  nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftNIO: c9889dcd8aed2655af9163b42fc11ebd4ce94252
   SwiftNIOConcurrencyHelpers: 2357037a16e9c51880c01b896a5ac3cd41066044
@@ -200,6 +133,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
   ZcashLightClientKit: 3a123d6e947680a66b466d884ca8cf5b23502a73
 
-PODFILE CHECKSUM: 4b86eecbff213b62ce30144234032b4cf1e7df05
+PODFILE CHECKSUM: f81e83a1c48570c6b0dfff52ef7abfcaefa65a0c
 
 COCOAPODS: 1.9.3
