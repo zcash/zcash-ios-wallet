@@ -40,7 +40,6 @@
 		0D27C4A723C4C3AE0044B48E /* EnterRecipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */; };
 		0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
 		0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */; };
-		0D3A18B22417E4640029758F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D3A18B12417E4640029758F /* GoogleService-Info.plist */; };
 		0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3AAB44244652700010EA3C /* TransactionDetail.swift */; };
 		0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */; };
 		0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF723C65B8F00E5E55E /* HoldToSend.swift */; };
@@ -145,7 +144,6 @@
 		0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterRecipient.swift; sourceTree = "<group>"; };
 		0D27C4A823C4C4640044B48E /* ZcashTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTextField.swift; sourceTree = "<group>"; };
 		0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
-		0D3A18B12417E4640029758F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0D3AAB44244652700010EA3C /* TransactionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetail.swift; sourceTree = "<group>"; };
 		0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0D421AF723C65B8F00E5E55E /* HoldToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldToSend.swift; sourceTree = "<group>"; };
@@ -294,7 +292,6 @@
 		0D12510123B557E40014EE3A /* wallet */ = {
 			isa = PBXGroup;
 			children = (
-				0D3A18B12417E4640029758F /* GoogleService-Info.plist */,
 				0D4364C523CCF49E008B7DAC /* Environment */,
 				0DEC5DFA23BD63AA002EFD0D /* Components */,
 				0DEC5DF723BD60B0002EFD0D /* Shapes */,
@@ -449,7 +446,6 @@
 				0D1250FC23B557E40014EE3A /* Frameworks */,
 				0D1250FD23B557E40014EE3A /* Resources */,
 				D3E1A021CA3B68FF53F37671 /* [CP] Embed Pods Frameworks */,
-				0D3A18B32417E5D80029758F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -547,7 +543,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */,
-				0D3A18B22417E4640029758F /* GoogleService-Info.plist in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
 				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
@@ -612,25 +607,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "source ${SRCROOT}/env-vars.sh\n";
-		};
-		0D3A18B32417E5D80029758F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		8C3EAD89BAA309B5FC123070 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

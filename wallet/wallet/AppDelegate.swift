@@ -14,13 +14,11 @@ var logger = SimpleLogger(logLevel: .debug, type: SimpleLogger.LoggerType.printe
 var logger = SimpleLogger(logLevel: .debug)
 #endif
 
-import Firebase
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {  
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        FirebaseApp.configure()
         let environment = ZECCWalletEnvironment.shared
         switch environment.state {
         case .initalized,
