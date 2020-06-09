@@ -15,7 +15,6 @@ for more information about the security and privacy limitations of the wallet.
 
 ## Prerequisites
 * make sure you can build ZcashLightClientKit Demo Apps successfully
-* you must have a project in Firebase Crashlytics to build this app.
 
 # Building the App
 1. Clone the project, make sure you have the latest Xcode Version
@@ -26,6 +25,4 @@ for more information about the security and privacy limitations of the wallet.
 
 4. locate the `.params` files that are missing in the project and include them at the specified locations
 
-5. add the `GoogleService-Info.plist` from your Firebase Project into the XCWorkspace at the missing missing file location
-
-6. build and run on simulator.
+5. build and run on simulator.
