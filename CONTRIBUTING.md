@@ -46,7 +46,7 @@ This information will help us review and fix your issue faster.
 
 We **love** pull requests! 
 
-*TODO: Brad* All contributions _will_ be licensed under the MIT license.
+All contributions _will_ be licensed under the MIT license.
 
 Code/comments should adhere to the following rules:
 
