@@ -19,7 +19,7 @@ label.
 
 ## Reporting Security Issues
 
-TODO: Brad
+If you have discovered an issue with this code that could present a security hazard or wish to discuss a sensitive issue with our security team, please contact security@z.cash [security.asc](https://z.cash/gpg-pubkeys/security.asc). Key fingerprint = AF85 0445 546C 18B7 86F9 2C62 88FB 8B86 D8B5 A68C
 
 ## Reporting Non Security Issues
 
