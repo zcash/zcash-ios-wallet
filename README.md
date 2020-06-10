@@ -1,5 +1,12 @@
 # zcash-ios-wallet
 
+## Motivation
+Dogfooding - _transitive verb_ - is the practice of an organization using its own product. This app was created to help us learn.
+
+Please take note: the wallet is not an official product by ECC, but rather a tool for learning about our libraries that it is built on. This means that we do not have robust infrasturcture or user support for this application. We open sourced it as a resource to make wallet development easier for the Zcash ecosystem.
+
+## Description
+
 iOS wallet using the Zcash iOS SDK that is maintained by core developers.
 
 There are some known areas for improvement:
