@@ -921,7 +921,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "zECC Wallet";
+				PRODUCT_NAME = "ECC Wallet";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -945,7 +945,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "zECC Wallet";
+				PRODUCT_NAME = "ECC Wallet";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -970,7 +970,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zECC Wallet.app/zECC Wallet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC Wallet.app/ECC Wallet";
 			};
 			name = Debug;
 		};
@@ -993,7 +993,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zECC Wallet.app/zECC Wallet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC Wallet.app/ECC Wallet";
 			};
 			name = Release;
 		};
