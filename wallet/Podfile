@@ -3,7 +3,7 @@ use_frameworks!
 
 inhibit_all_warnings!
 target 'wallet' do 
- pod 'ZcashLightClientKit', :path => '../../ZcashLightClientKit'
+ pod 'ZcashLightClientKit'
  pod 'KeychainSwift', '~> 19.0.0'
  pod 'MnemonicSwift'
  pod 'TinyQRScanner'
