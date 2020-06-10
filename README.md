@@ -19,13 +19,17 @@ for more information about the security and privacy limitations of the wallet.
 # Building the App
 1. Clone the project, make sure you have the latest Xcode Version
 
-2. Navigate to the wallet directory where the `Podfile` file is located and run `pod install`
+2. Create `env-vars.sh file` at `${SRCROOT}` [See Instructions](https://github.com/zcash/ZcashLightClientKit#setting-env-varsh-file-to-run-locally)
 
-3. open the `wallet.xcworkspace` file
+3. make sure that your environment has the variable `ZCASH_NETWORK_ENVIRONMENT` set to`MAINNET`or `TESTNET`.
 
-4. locate the `.params` files that are missing in the project and include them at the specified locations
+4. Navigate to the wallet directory where the `Podfile` file is located and run `pod install`
 
-5. build and run on simulator.
+5. open the `wallet.xcworkspace` file
+
+6. locate the `.params` files that are missing in the project and include them at the specified locations
+
+7. build and run on simulator.
 
 
 ## Troubleshooting
