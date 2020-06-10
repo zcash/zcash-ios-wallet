@@ -55,7 +55,7 @@ struct ProfileScreen: View {
                       
                     
                     
-                    ActionableMessage(message: "zECC SecureWallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                    ActionableMessage(message: "ECC Wallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                       
                     
