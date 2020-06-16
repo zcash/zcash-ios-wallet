@@ -21,7 +21,10 @@ struct ProfileScreen: View {
             ZStack {
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
-                    Image("zebra_profile")
+                    Image("nighthawk_profile")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(Circle())
                     Button(action: {
                         self.isCopyAlertShown = true
                     }) {
@@ -55,7 +58,7 @@ struct ProfileScreen: View {
                       
                     
                     
-                    ActionableMessage(message: "ECC Wallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                    ActionableMessage(message: "Nighthawk Wallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                       
                     
