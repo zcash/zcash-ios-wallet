@@ -8,6 +8,9 @@ addons:
   homebrew:
     packages:
     - sourcery
+env:
+  global:
+  - ZCASH_NETWORK_ENVIRONMENT: TESTNET
 install:
   - cd ${TRAVIS_BUILD_DIR}/wallet
   - pod install
