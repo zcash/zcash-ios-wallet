@@ -1,0 +1,6 @@
+language: swift
+os: osx
+osx_image: xcode11.5
+xcode_workspace: ./wallet/wallet.xcworkspace
+xcode_scheme: wallet
+xcode_destination: platform=iOS Simulator,OS=13.1,name=iPhone 8
