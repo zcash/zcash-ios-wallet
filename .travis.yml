@@ -5,6 +5,7 @@ xcode_workspace: ./wallet/wallet.xcworkspace
 xcode_scheme: wallet
 xcode_destination: platform=iOS Simulator,OS=13.2.2,name=iPhone 8
 install:
-  - cd ./wallet && pod install
+  - cd ${TRAVIS_BUILD_DIR}/wallet
+  - pod install
 script:
   - xcodebuild -workspace ./wallet/wallet.xcworkspace -scheme wallet -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build test
