@@ -15,6 +15,7 @@ env:
 install:
   - ${TRAVIS_BUILD_DIR}/Scripts/travis/rust_setup.sh
   - WALLET_DIR=${TRAVIS_BUILD_DIR}/wallet
+  - WALLET_WALLET_DIR=${WALLET_DIR}/wallet
   - cp ${WALLET_DIR}/env-vars.sh.example ${WALLET_DIR}/env-vars.sh
   - cd ${WALLET_DIR} ; pod install ; cd ${TRAVIS_BUILD_DIR}
 script:
