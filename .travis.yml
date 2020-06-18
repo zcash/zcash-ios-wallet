@@ -15,6 +15,7 @@ env:
 install:
   - ${TRAVIS_BUILD_DIR}/Scripts/travis/rust_setup.sh
   - cd ${TRAVIS_BUILD_DIR}/wallet
+  - cp ./env-vars.sh.example env-vars.sh
   - pod install
 script:
   - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/wallet.xcworkspace -scheme wallet -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build test
