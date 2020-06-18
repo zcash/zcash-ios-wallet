@@ -1,5 +1,7 @@
 # zcash-ios-wallet
 
+[![Build Status](https://travis-ci.org/zcash/zcash-ios-wallet.svg?branch=master)](https://travis-ci.org/zcash/zcash-ios-wallet)
+
 ## Motivation
 Dogfooding - _transitive verb_ - is the practice of an organization using its own product. This app was created to help us learn.
 
