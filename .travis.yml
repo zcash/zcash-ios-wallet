@@ -17,4 +17,4 @@ install:
   - cd ${TRAVIS_BUILD_DIR}/wallet
   - pod install
 script:
-  - xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/wallet.xcworkspace -scheme wallet -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build test
+  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/wallet.xcworkspace -scheme wallet -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build test
