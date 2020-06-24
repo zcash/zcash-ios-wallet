@@ -95,7 +95,7 @@ struct Sending: View {
             ZcashBackground.amberGradient
             VStack(alignment: .center, spacing: 40) {
                 Spacer()
-                Text("\(sendText) \(flow.amount) ZEC to")
+                Text("\(sendText.localized()) \(flow.amount) \("ZEC to".localized())")
                     .foregroundColor(.black)
                     .font(.title)
                 Text("\(flow.address)")

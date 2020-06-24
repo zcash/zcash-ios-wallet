@@ -51,7 +51,7 @@ struct ActionableMessage_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            ActionableMessage(message: "Zcash address in buffer!", actionText: "Paste", action: {})
+            ActionableMessage(message: "Zcash address in buffer!".localized(), actionText: "Paste".localized(), action: {})
             .padding()
             
         }

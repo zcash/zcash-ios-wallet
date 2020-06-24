@@ -50,7 +50,7 @@ struct BackupWallet: View {
                     .font(.system(size: 18))
                     .padding(.horizontal, 48)
                 
-                Text("Syncing \($viewModel.progress.wrappedValue)%")
+                Text("Syncing %@%".localized(with: "\($viewModel.progress.wrappedValue)"))
                     .foregroundColor(.white)
                     .font(.system(size: 20))
                     .padding(.horizontal, 48)

@@ -34,7 +34,7 @@ struct HoldToSend: View {
             
             VStack(alignment: .center) {
                 Spacer()
-                Text("Send \(flow.amount) ZEC to")
+                Text("Send %@ ZEC to".localized(with: "\(flow.amount)"))
                     .foregroundColor(.white)
                     .font(.title)
                 Text("\(flow.address)?")
@@ -68,7 +68,7 @@ struct HoldToSend: View {
                 
                 Spacer()
                 
-                Text("Network fee: \(networkFee.toZecAmount())")
+                Text("Network fee: %@".localized(with: "\(networkFee.toZecAmount())" ))
                     .font(.footnote)
                     .foregroundColor(Color.zLightGray2)
                     .opacity(0.46)

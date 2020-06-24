@@ -39,11 +39,11 @@ struct AddMemo: View {
                     .onTapGesture {
                         self.flow.includeSendingAddress.toggle()
                     }
-                    Text("Include your sending address in a memo")
+                    Text("Include your sending address in a memo".localized())
                         .foregroundColor(Color.zLightGray2)
                 }
                 
-                Text(legend)
+                Text(legend.localized())
                     .lineLimit(nil)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color.zLightGray2)
@@ -56,7 +56,7 @@ struct AddMemo: View {
                     self.flow.includesMemo = true
                     self.isShown = true
                 }) {
-                    Text("Add Memo")
+                    Text("Add Memo".localized())
                         .foregroundColor(.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: ZcashFillStyle.solid(color: Color.zYellow)))
                         .frame(height: self.buttonHeight)
@@ -80,7 +80,7 @@ struct AddMemo: View {
                     self.flow.includesMemo = false
                     self.isShown = true
                 }) {
-                    Text(sendText)
+                    Text(sendText.localized())
                         .foregroundColor(.white)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 2)))
                     .frame(height: self.buttonHeight)
@@ -93,7 +93,7 @@ struct AddMemo: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .navigationBarTitle("Add Memo (optional)", displayMode: .inline)
+        .navigationBarTitle("Add Memo (optional)".localized(), displayMode: .inline)
     }
 }
 

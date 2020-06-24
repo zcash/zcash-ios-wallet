@@ -70,9 +70,9 @@ struct RestoreWallet: View {
             VStack {
                 Spacer()
                 ZcashTextField(
-                    title: "Enter your Seed Phrase",
+                    title: "Enter your Seed Phrase".localized(),
                     subtitleView: AnyView(
-                        Text.subtitle(text: "Make sure nobody is watching you!")
+                        Text.subtitle(text: "Make sure nobody is watching you!".localized())
                     ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $seedPhrase,
@@ -81,9 +81,9 @@ struct RestoreWallet: View {
                 )
                 Spacer()
                 ZcashTextField(
-                    title: "Wallet Birthday height",
+                    title: "Wallet Birthday height".localized(),
                     subtitleView: AnyView(
-                        Text.subtitle(text: "If you don't know it, leave it blank. First Sync will take longer.")
+                        Text.subtitle(text: "If you don't know it, leave it blank. First Sync will take longer.".localized())
                     ),
                     keyboardType: UIKeyboardType.decimalPad,
                     binding: $walletBirthDay,

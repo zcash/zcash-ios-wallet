@@ -125,9 +125,9 @@ struct ZcashTextField_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            ZcashTextField(title: "To",
+            ZcashTextField(title: "To".localized(),
                            subtitleView: AnyView(
-                            Text("Enter Shielded Address")
+                            Text("Enter Shielded Address".localized())
                                 .foregroundColor(.zLightGray)
                                 .font(.footnote)
                             ),

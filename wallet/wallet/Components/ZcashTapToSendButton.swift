@@ -40,7 +40,7 @@ struct ZcashTapToSendButton: View {
                     .animation(.easeIn(duration: 5))
                 
                 
-                Text("Tap\nto send ZEC")
+                Text("Tap\nto send ZEC".localized())
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .frame(minWidth: geometry.size.width, idealWidth: geometry.size.width, maxWidth: geometry.size.width, minHeight: geometry.size.height, idealHeight: geometry.size.height, maxHeight: geometry.size.height, alignment: .center)

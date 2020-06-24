@@ -1,0 +1,156 @@
+/*
+  Localizable.strings
+  wallet
+
+  Copyright © 2020 Francisco Gindre. All rights reserved.
+*/
+
+// COMPONENTS:
+"Zcash address in buffer!" = "Zcash address in buffer!";
+"Paste" = "Paste";
+" Available" = " Available";
+"(tap in an amount to send)" = "(tap in an amount to send)";
+"(expecting " = "(expecting ";
+"Create new Wallet" = "Create new Wallet";
+"Done" = "Done";
+"Backup Wallet" = "Backup Wallet";
+"Press and hold\nto send ZEC" = "Press and hold\nto send ZEC";
+"Add Memo Here" = "Add Memo Here";
+"%@ chars" = "%@ chars";
+"from %@" = "from %@";
+"Tap\nto send ZEC" = "Tap\nto send ZEC";
+"To" = "To";
+"Enter Shielded Address" = "Enter Shielded Address";
+"Error" = "Error";
+"an error ocurred" = "an error ocurred";
+"Address Copied to clipboard!" = "Address Copied to clipboard!";
+"Copied to clipboard!" = "Copied to clipboard!";
+"close" = "close";
+"NUKE WALLET" = "NUKE WALLET";
+"OK" = "OK";
+"Shielded User\n" = "Shielded User\n";
+
+// WalletDetailsHeader
+"Your Wallet History" = "Your Wallet History";
+"Shielded address:" = "Shielded address:";
+
+// TransactionDetails
+"Tx Id:" = "Tx Id:";
+"Date:" = "Date:";
+"Shielded:" = "Shielded:";
+"Memo:" = "Memo:";
+"Address:" = "Address:";
+"Transaction Detail" = "Transaction Detail";
+
+//EnterRecipient
+"Enter a shielded Zcash address" = "Enter a shielded Zcash address";
+"This is a valid Zcash address!" = "This is a valid Zcash address!";
+"Invalid Zcash address!" = "Invalid Zcash address!";
+"You Have %@ sendable ZEC" = "You Have %@ sendable ZEC";
+"%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC";
+"You don't have any sendable ZEC yet" = "You don't have any sendable ZEC yet";
+"Zcash address in buffer" = "Zcash address in buffer";
+"Next" = "Next";
+
+"Amount" = "Amount";
+
+//AddMemo
+"Add Memo" = "Add Memo";
+"Your address is shielded from the public,\n but will be available to the receipient via the memo field." = "Your address is shielded from the public,\n but will be available to the receipient via the memo field.";
+"Your transaction is shielded and your address is unavailable to receipent." = "Your transaction is shielded and your address is unavailable to receipent.";
+"Include your sending address in a memo" = "Include your sending address in a memo";
+"Discard and Send" = "Discard and Send";
+"Send Now" = "Send Now";
+"Add Memo (optional)" = "Add Memo (optional)";
+
+//HoldToSend
+"Send %@ ZEC to" = "Send %@ ZEC to";
+"Network fee: %@" = "Network fee: %@";
+"Includes memo" = "Includes memo";
+
+//Sending
+"thing is that we really don't know what just went down, sorry!" = "thing is that we really don't know what just went down, sorry!";
+"Sending" = "Sending";
+"Sent" = "Sent";
+"an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
+"Unable to send" = "Unable to send";
+"ZEC to" = "ZEC to";
+
+
+//CreateNewWallet
+"Create New" = "Create New";
+"Restore" = "Restore";
+
+//RestoreWallet
+"Enter your Seed Phrase" = "Enter your Seed Phrase";
+"Make sure nobody is watching you!" = "Make sure nobody is watching you!";
+"Wallet Birthday height" = "Wallet Birthday height";
+"If you don't know it, leave it blank. First Sync will take longer." = "If you don't know it, leave it blank. First Sync will take longer.";
+"Proceed" = "Proceed";
+"Restore from Seed Phrase" = "Restore from Seed Phrase";
+
+//BackupWallet
+"Your Wallet needs\nto be Backed up" = "Your Wallet needs\nto be Backed up";
+"Syncing %@%" = "Syncing %@%";
+"Skip" = "Skip";
+
+//SeedBackup
+"Seed:" = "Seed:";
+"Wallet Birthday:" = "Wallet Birthday:";
+"Your Backup Seed" = "Your Backup Seed";
+"Please back them up wisely!\nWe recommend a paper backup and a password vault" = "Please back them up wisely!\nWe recommend a paper backup and a password vault";
+"Copy to clipboard" = "Copy to clipboard";
+"I'm all set!" = "I'm all set!";
+
+//Home
+"There was an error creating your wallet. Please back it up and try again" = "There was an error creating your wallet. Please back it up and try again";
+"Max Retry attempts (%@) have been reached" = "Max Retry attempts (%@) have been reached";
+"dismiss" = "dismiss";
+"Retry" = "Retry";
+"Send" = "Send";
+"No Balance" = "No Balance";
+"Wallet History" = "Wallet History";
+"Receive Funds" = "Receive Funds";
+"Your Profile" = "Your Profile";
+
+//ReceiveFunds
+"QR Code for %@" = "QR Code for %@";
+"Scan Recipient Address" = "Scan Recipient Address";
+
+//ScanAddress
+"Request Camera Access" = "Request Camera Access";
+"We don't have permission to access your camera" = "We don't have permission to access your camera";
+"Camera Unavailable" = "Camera Unavailable";
+"Switch to your Zcash address" = "Switch to your Zcash address";
+
+//ShareScreen
+"Share Screen" = "Share Screen";
+
+//ProfileScreen
+"Send Feedback" = "Send Feedback";
+"See Application Log" = "See Application Log";
+"ECC Wallet" = "ECC Wallet";
+
+//FundsAtRisk
+"Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet." = "Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.";
+"You should back this up immediately" = "You should back this up immediately";
+"as no one else can restore it for you" = "as no one else can restore it for you";
+"if your device is lost/broken/stolen…" = "if your device is lost/broken/stolen…";
+"Your " = "Your ";
+"funds " = "funds ";
+"are at risk!" = "are at risk!";
+"Backup now!" = "Backup now!";
+"Not now" = "Not now";
+
+//NukeWarning
+"Make sure you backed up your wallet before proceeding." = "Make sure you backed up your wallet before proceeding.";
+"If you nuke your wallet, there's no way to recover it." = "If you nuke your wallet, there's no way to recover it.";
+"You are about to " = "You are about to ";
+"NUKE " = "NUKE ";
+"your wallet!" = "your wallet!";
+"Delete Wallet?" = "Delete Wallet?";
+"You are about to" = "You are about to";
+" nuke your wallet. " = " nuke your wallet. ";
+"Are you sure you want to proceed?" = "Are you sure you want to proceed?";
+"I'm not sure" = "I'm not sure";
+"NUKE WALLET!" = "NUKE WALLET!";

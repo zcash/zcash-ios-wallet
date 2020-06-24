@@ -33,10 +33,10 @@ struct SeedBackup: View {
     }
     var copyText: String {
         """
-        Seed:
+        \("Seed:".localized())
         \(seed)
         
-        Wallet Birthday:
+        \("Wallet Birthday:".localized())
         \(birthday)
         """
     }
@@ -66,11 +66,11 @@ struct SeedBackup: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 16) {
                 
-                Text("Your Backup Seed")
+                Text("Your Backup Seed".localized())
                     .foregroundColor(.white)
                     .font(.title)
                     .frame(alignment: .leading)
-                Text("Please back them up wisely!\nWe recommend a paper backup and a password vault")
+                Text("Please back them up wisely!\nWe recommend a paper backup and a password vault".localized())
                     .font(.footnote)
                     .foregroundColor(Color.zLightGray)
                     .multilineTextAlignment(.leading)
@@ -78,7 +78,7 @@ struct SeedBackup: View {
                     .padding()
 
                 gridView
-                Text("Wallet birthday: \(birthday)")
+                Text("\("Wallet Birthday:".localized()): \(birthday)")
                     .foregroundColor(Color.zLightGray)
                     .font(.footnote)
                     .frame(alignment: .leading)
@@ -87,7 +87,7 @@ struct SeedBackup: View {
                     UIPasteboard.general.string = self.copyText
                     self.isCopyAlertShown = true
                 }) {
-                    Text("Copy to clipboard")
+                    Text("Copy to clipboard".localized())
                         .font(.system(size: 20))
                         .foregroundColor(.white)
                         .frame(height: buttonHeight)
@@ -95,7 +95,7 @@ struct SeedBackup: View {
                 }
                 if proceedsToHome {
                     NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
-                        Text("I'm all set!")
+                        Text("I'm all set!".localized())
                             .foregroundColor(.black)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: buttonHeight)
@@ -106,7 +106,7 @@ struct SeedBackup: View {
             }.padding([.horizontal, .bottom], 24)
             .alert(isPresented: self.$isCopyAlertShown) {
                 Alert(title: Text(""),
-                      message: Text("Address Copied to clipboard!"),
+                      message: Text("Address Copied to clipboard!".localized()),
                       dismissButton: .default(Text("OK"))
                 )
             }

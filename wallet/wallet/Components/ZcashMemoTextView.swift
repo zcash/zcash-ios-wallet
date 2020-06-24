@@ -20,7 +20,7 @@ struct ZcashMemoTextView: View {
         ZStack{
             ZStack(alignment: .bottom){
                 VStack(alignment: .trailing, spacing: 0) {
-                    TextView(placeholder: "Add Memo Here",
+                    TextView(placeholder: "Add Memo Here".localized(),
                              text: $text,
                              minHeight: self.textHeight,
                              limit: charLimit,
@@ -29,7 +29,7 @@ struct ZcashMemoTextView: View {
                         .frame(height: textHeight)
                         .padding(4)
                         .multilineTextAlignment(.leading)
-                    Text("\($text.wrappedValue.count)/\(charLimit) chars")
+                    Text("%@ chars".localized(with: "\($text.wrappedValue.count)/\(charLimit)"))
                         .font(.footnote)
                         .foregroundColor(Color.zLightGray2)
                         .opacity(0.4)
@@ -37,7 +37,7 @@ struct ZcashMemoTextView: View {
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        Text("Add a memo here")
+                        Text("Add a memo here".localized())
                             .foregroundColor(Color.zLightGray2)
                             .opacity(self.text.isEmpty ? 0.6 : 0)
                         
@@ -47,7 +47,7 @@ struct ZcashMemoTextView: View {
                         .layoutPriority(1)
                     Spacer()
                      if $showSendingAddress.wrappedValue {
-                        Text("from \(fromAddress)")
+                        Text("from %@".localized(with: "\(fromAddress)" ))
                             .foregroundColor(Color.zLightGray2)
                             .font(.caption)
                             .opacity(0.6)

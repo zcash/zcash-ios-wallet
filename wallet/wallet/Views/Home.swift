@@ -164,7 +164,7 @@ final class HomeViewModel: ObservableObject {
         case .maxRetriesReached(attempts: let attempts):
             return Alert(
                 title: Text("Error"),
-                message: Text("Max Retry attempts (\(attempts)) have been reached"),
+                message: Text("Max Retry attempts (%@) have been reached".localized(with: "\(attempts)")),
                 primaryButton: .default(Text("dismiss"),action: errorAction),
                 secondaryButton: .default(Text("Retry"),
                                           action: { ZECCWalletEnvironment.shared.synchronizer.start(retry: true )}
@@ -240,7 +240,7 @@ struct Home: View {
             )
         } else {
             return AnyView(
-                ActionableMessage(message: "No Balance")
+                ActionableMessage(message: "No Balance".localized())
             )
         }
     }

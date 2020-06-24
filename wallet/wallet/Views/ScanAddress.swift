@@ -111,7 +111,7 @@ struct ScanAddress: View {
                 Spacer()
                 
                 Button(action: {}){
-                    ZcashButton(text: "Request Camera Access")
+                    ZcashButton(text: "Request Camera Access".localized())
                         .frame(height: 50)
                 }
                 .padding()

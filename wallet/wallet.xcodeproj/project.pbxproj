@@ -83,6 +83,8 @@
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		821BF1B75860B8BFA922A614 /* Pods_walletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D5B43B5A8155F0D38949A4 /* Pods_walletUITests.framework */; };
+		8D3F362524A40FCF0087687A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
+		8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D73958F24A40E6C00936DE3 /* String+localized.swift */; };
 		9140DCD4E6D8E81E86004A00 /* Pods_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C97F088A3985ED71EDC7F7F6 /* Pods_wallet.framework */; };
 		DBAC4685D59CA6F781C82E3E /* Pods_walletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D63A72F6B7D564AEC15C6D /* Pods_walletTests.framework */; };
 /* End PBXBuildFile section */
@@ -123,7 +125,7 @@
 		0D11C23223BFA810001CF6F7 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		0D11C23423BFB33B001CF6F7 /* NavigationConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationConfigurator.swift; sourceTree = "<group>"; };
 		0D11C23623BFB666001CF6F7 /* ShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreen.swift; sourceTree = "<group>"; };
-		0D1250FF23B557E40014EE3A /* zECC Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "zECC Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D1250FF23B557E40014EE3A /* zECC Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "zECC Wallet.app"; path = "ECC Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12510223B557E40014EE3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D12510423B557E40014EE3A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0D12510823B557E60014EE3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -191,6 +193,9 @@
 		41D5B43B5A8155F0D38949A4 /* Pods_walletUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_walletUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49010075453C5CD74A5E09D2 /* Pods-wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.debug.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		4F1CD575112095FD4EB1B604 /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
+		8D3F362624A40FCF0087687A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8D3F362824A40FDF0087687A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8D73958F24A40E6C00936DE3 /* String+localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+localized.swift"; sourceTree = "<group>"; };
 		8F020BD1AB76698D896ED4C4 /* Pods-walletUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletUITests.release.xcconfig"; path = "Target Support Files/Pods-walletUITests/Pods-walletUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A85B99A0F1C01CABADF33492 /* Pods-walletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletTests.debug.xcconfig"; path = "Target Support Files/Pods-walletTests/Pods-walletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C97F088A3985ED71EDC7F7F6 /* Pods_wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,6 +268,7 @@
 				0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */,
 				0DDAF3A824098D1000EA9427 /* MnemonicSeedPhraseProvider.swift */,
 				0D75ECD82416D13800244CE4 /* SimpleLogger.swift */,
+				8D73958F24A40E6C00936DE3 /* String+localized.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 				0D100ED323BA75870089DB22 /* Views */,
 				0D12510223B557E40014EE3A /* AppDelegate.swift */,
 				0D12510423B557E40014EE3A /* SceneDelegate.swift */,
+				8D3F362724A40FCF0087687A /* Localizable.strings */,
 				0D12510823B557E60014EE3A /* Assets.xcassets */,
 				0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */,
 				0D0AAE1224102747009CD8F9 /* sendbutton.json */,
@@ -524,6 +531,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 0D1250F623B557E40014EE3A;
 			productRefGroup = 0D12510023B557E40014EE3A /* Products */;
@@ -547,6 +555,7 @@
 				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
 				0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */,
+				8D3F362524A40FCF0087687A /* Localizable.strings in Resources */,
 				0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */,
 				0D12510923B557E60014EE3A /* Assets.xcassets in Resources */,
 			);
@@ -686,6 +695,7 @@
 				0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
+				8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
 				0D92AEBE2422D6F30028AD53 /* ZcashTapToSendButton.swift in Sources */,
@@ -785,6 +795,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		8D3F362724A40FCF0087687A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D3F362624A40FCF0087687A /* en */,
+				8D3F362824A40FDF0087687A /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -792,6 +811,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -852,6 +872,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

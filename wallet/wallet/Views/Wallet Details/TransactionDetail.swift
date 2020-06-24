@@ -38,11 +38,11 @@ struct TransactionDetails: View {
                     .font(.largeTitle)
                 Spacer()
                 VStack(alignment: .center, spacing: 20) {
-                    DetailCell(title: "Tx Id:" , description: model.id, action: self.copyToClipBoard)
-                    DetailCell(title: "Date:", description: model.date.description)
-                    DetailCell(title: "Shielded:", description: model.shielded ? "🛡" : "❌")
-                    DetailCell(title: "Memo:", description: model.memo ?? "No memo" , action: self.copyToClipBoard)
-                    DetailCell(title: "Address:", description: model.zAddress ?? "", action: self.copyToClipBoard).opacity( model.zAddress != nil ? 1.0 : 0)
+                    DetailCell(title: "Tx Id:".localized() , description: model.id, action: self.copyToClipBoard)
+                    DetailCell(title: "Date:".localized(), description: model.date.description)
+                    DetailCell(title: "Shielded:".localized(), description: model.shielded ? "🛡" : "❌")
+                    DetailCell(title: "Memo:".localized(), description: model.memo ?? "No memo" , action: self.copyToClipBoard)
+                    DetailCell(title: "Address:".localized(), description: model.zAddress ?? "", action: self.copyToClipBoard).opacity( model.zAddress != nil ? 1.0 : 0)
                     
                 }
                 Spacer()
@@ -54,7 +54,7 @@ struct TransactionDetails: View {
                   dismissButton: .default(Text("OK"))
             )
         }
-        .navigationBarTitle("Transaction Detail", displayMode: .inline)
+        .navigationBarTitle("Transaction Detail".localized(), displayMode: .inline)
         .navigationBarBackButtonHidden(false)
     }
 }

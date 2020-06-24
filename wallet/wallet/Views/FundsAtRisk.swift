@@ -14,11 +14,11 @@ struct FundsAtRisk: View {
     let buttonHeight: CGFloat = 50
     var disclaimer: String {
         """
-        Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.
+        \("Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.".localized())
         
-        You should back this up immediately
-        as no one else can restore it for you
-        if your device is lost/broken/stolen…
+        \("You should back this up immediately".localized())
+        \("as no one else can restore it for you".localized())
+        \("if your device is lost/broken/stolen…".localized())
         """
     }
     var body: some View {
@@ -26,11 +26,11 @@ struct FundsAtRisk: View {
             ZcashBackground()
             VStack(spacing: 24) {
                 HStack {
-                    (Text("Your ")
+                    (Text("Your ".localized())
                         .foregroundColor(.white)
-                        + Text("funds ")
+                        + Text("funds ".localized())
                             .foregroundColor(Color.zAmberGradient4)
-                        + Text("are at risk!")
+                        + Text("are at risk!".localized())
                             .foregroundColor(.white))
                         .font(.title)
                         .frame(alignment: .leading)
@@ -44,7 +44,7 @@ struct FundsAtRisk: View {
                 Spacer()
                 
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)) {
-                    Text("Backup now!")
+                    Text("Backup now!".localized())
                         .foregroundColor(.black)
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
@@ -52,7 +52,7 @@ struct FundsAtRisk: View {
                 }.isDetailLink(false)
                 
                 NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
-                    Text("Not now")
+                    Text("Not now".localized())
                         .foregroundColor(Color.zDarkGray3)
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .frame(height: buttonHeight)
