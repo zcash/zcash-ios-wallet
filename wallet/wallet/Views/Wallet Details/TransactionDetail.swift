@@ -54,7 +54,7 @@ struct TransactionDetails: View {
                   dismissButton: .default(Text("OK"))
             )
         }
-        .navigationBarTitle("Transaction Detail".localized(), displayMode: .inline)
+        .navigationBarTitle(Text("Transaction Detail".localized()), displayMode: .inline)
         .navigationBarBackButtonHidden(false)
     }
 }

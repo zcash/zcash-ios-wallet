@@ -93,7 +93,7 @@ struct AddMemo: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .navigationBarTitle("Add Memo (optional)".localized(), displayMode: .inline)
+        .navigationBarTitle(Text("Add Memo (optional)".localized()), displayMode: .inline)
     }
 }
 
