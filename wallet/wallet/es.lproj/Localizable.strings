@@ -87,7 +87,7 @@
 "Wallet Birthday height" = "Numero de bloque de nacimiento";
 "If you don't know it, leave it blank. First Sync will take longer." = "Si no lo sabe, déjelo en blanco. La primera sincronización llevará más tiempo.";
 "Proceed" = "Continuar";
-"Restore from Seed Phrase" = "Restaurarse de frase semilla";
+"Restore from Seed Phrase" = "Restaurar desde frase semilla";
 
 //BackupWallet
 "Your Wallet needs\nto be Backed up" = "Su wallet necesita \n ser respaldada";
