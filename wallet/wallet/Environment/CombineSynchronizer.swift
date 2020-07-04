@@ -222,8 +222,8 @@ extension DetailModel {
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
-        if pendingTransaction.expiryHeight > 0, let latest = latestBlockHeight {
-            self.subtitle = "\(abs(latest - (pendingTransaction.expiryHeight - ZcashSDK.EXPIRY_OFFSET))) Confirmations"
+        if pendingTransaction.minedHeight > 0, let latest = latestBlockHeight {
+            self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) Confirmations"
         } else {
             self.subtitle = "Sent \(self.date.transactionDetail)"
         }
