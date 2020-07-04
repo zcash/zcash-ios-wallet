@@ -92,7 +92,7 @@
 //BackupWallet
 "Your Wallet needs\nto be Backed up" = "Su wallet necesita \n ser respaldada";
 "Syncing %@%" = "Sincronizando %@%";
-"Skip" = "Saltar";
+"Skip" = "Omitir";
 
 //SeedBackup
 "Seed:" = "Semilla(Seed):";
