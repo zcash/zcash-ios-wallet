@@ -67,8 +67,7 @@ class CombineSynchronizer {
             }
         }
     }
-    
-    
+        
     init(initializer: Initializer) throws {
         
         self.synchronizer = try SDKSynchronizer(initializer: initializer)
@@ -87,7 +86,6 @@ class CombineSynchronizer {
             self.status.send(.syncing)
         }.store(in: &cancellables)
         
-        
         NotificationCenter.default.publisher(for: .synchronizerProgressUpdated).receive(on: DispatchQueue.main).sink(receiveValue: { (progressNotification) in
             guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
             self.progress.send(newProgress)
@@ -95,7 +93,6 @@ class CombineSynchronizer {
             guard let blockHeight = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.blockHeight] as? BlockHeight else { return }
             self.syncBlockHeight.send(blockHeight)
         }).store(in: &cancellables)
-        
         
         NotificationCenter.default.publisher(for: .synchronizerMinedTransaction).sink(receiveValue: {minedNotification in
             guard let minedTx = minedNotification.userInfo?[SDKSynchronizer.NotificationKeys.minedTransaction] as? PendingTransactionEntity else { return }
@@ -143,7 +140,6 @@ class CombineSynchronizer {
         }
     }
     
-    
     func send(with spendingKey: String, zatoshi: Int64, to recipientAddress: String, memo: String?,from account: Int) -> Future<PendingTransactionEntity,Error>  {
         Future<PendingTransactionEntity, Error>() {
             promise in
@@ -173,10 +169,9 @@ extension CombineSynchronizer {
                 
                 do {
                     
-                    
                     let pending = try self.synchronizer.allPendingTransactions().map { DetailModel(pendingTransaction: $0, latestBlockHeight: self.syncBlockHeight.value) }
                     
-                    let txs = try self.synchronizer.allClearedTransactions().map {  DetailModel(confirmedTransaction: $0, sent: ($0.toAddress != nil)) }.filter({ s in
+                    let txs = try self.synchronizer.allClearedTransactions().map { DetailModel(confirmedTransaction: $0, sent: ($0.toAddress != nil)) }.filter({ s in
                         pending.first { (p) -> Bool in
                             p.id == s.id
                             } == nil })
@@ -201,7 +196,6 @@ extension CombineSynchronizer {
     }
 }
 
-
 extension Date {
     var transactionDetail: String {
         let formatter = DateFormatter()
@@ -219,7 +213,7 @@ extension DetailModel {
         self.subtitle = sent ? "Sent" : "Received" + " \(self.date.transactionDetail)"
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
-        if let memo =  confirmedTransaction.memo {
+        if let memo = confirmedTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
     }
@@ -228,14 +222,14 @@ extension DetailModel {
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
-        if pendingTransaction.expiryHeight > 0, let latest = latestBlockHeight {
-            self.subtitle = "\(abs(latest - pendingTransaction.expiryHeight - ZcashSDK.EXPIRY_OFFSET)) of 10 Confirmations"
+        if pendingTransaction.minedHeight > 0, let latest = latestBlockHeight {
+            self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) Confirmations"
         } else {
             self.subtitle = "Sent \(self.date.transactionDetail)"
         }
         self.zAddress = pendingTransaction.toAddress
         self.zecAmount = -Int64(pendingTransaction.value).asHumanReadableZecBalance()
-        if let memo =  pendingTransaction.memo {
+        if let memo = pendingTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
     }

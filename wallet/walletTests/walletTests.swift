@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import zECC_Wallet
+@testable import ECC_Wallet
 import MnemonicSwift
 @testable import ZcashLightClientKit
 class walletTests: XCTestCase {
