@@ -25,7 +25,7 @@ struct ProfileScreen: View {
                     Button(action: {
                         self.isCopyAlertShown = true
                     }) {
-                        Text("Shielded User\n" + (appEnvironment.initializer.getAddress()?.shortZaddress ?? ""))
+                        Text("Shielded User\n".localized() + (appEnvironment.initializer.getAddress()?.shortZaddress ?? ""))
                         .multilineTextAlignment(.center)
                         .font(.system(size: 18))
                         .foregroundColor(.white)
@@ -33,7 +33,7 @@ struct ProfileScreen: View {
                     
                     Spacer()
                     
-                    Text("Send Feedback")
+                    Text("Send Feedback".localized())
                         .foregroundColor(.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                         .frame(height: Self.buttonHeight)
@@ -41,13 +41,13 @@ struct ProfileScreen: View {
                     
                     NavigationLink(destination: SeedBackup(hideNavBar: false).environmentObject(appEnvironment)
                         ) {
-                        Text("Backup Wallet")
+                        Text("Backup Wallet".localized())
                             .foregroundColor(.white)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                                                .frame(height: Self.buttonHeight)
                                                
                     }
-                    Text("See Application Log")
+                    Text("See Application Log".localized())
                         .font(.system(size: 20))
                         .foregroundColor(Color.zLightGray)
                         .opacity(0.6)
@@ -55,7 +55,7 @@ struct ProfileScreen: View {
                       
                     
                     
-                    ActionableMessage(message: "ECC Wallet v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                    ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                       
                     
@@ -66,7 +66,7 @@ struct ProfileScreen: View {
                     Button(action: {
                         self.nukePressed = true
                     }) {
-                         Text("NUKE WALLET")
+                         Text("NUKE WALLET".localized())
                            .foregroundColor(.red)
                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
                             .frame(height: Self.buttonHeight)
@@ -77,8 +77,8 @@ struct ProfileScreen: View {
                 }.padding(.horizontal, Self.horizontalPadding)
                 .alert(isPresented: self.$isCopyAlertShown) {
                     Alert(title: Text(""),
-                          message: Text("Address Copied to clipboard!"),
-                          dismissButton: .default(Text("OK"))
+                          message: Text("Address Copied to clipboard!".localized()),
+                          dismissButton: .default(Text("OK".localized()))
                     )
                 }
             }

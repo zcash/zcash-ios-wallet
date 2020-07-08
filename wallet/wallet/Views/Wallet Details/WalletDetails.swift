@@ -123,7 +123,7 @@ struct WalletDetails: View {
             
         )
             .alert(isPresented: self.$viewModel.showError) {
-                Alert(title: Text("Error"), message: Text("an error ocurred"), dismissButton: .default(Text("ok")))
+                Alert(title: Text("Error".localized()), message: Text("an error ocurred".localized()), dismissButton: .default(Text("OK".localized())))
         }
     }
 }

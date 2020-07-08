@@ -14,11 +14,11 @@ struct NukeWarning: View {
     let buttonHeight: CGFloat = 50
     var disclaimer: String {
         """
-        Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.
+        \("Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.".localized())
         
-        Make sure you backed up your wallet before proceeding.
+        \("Make sure you backed up your wallet before proceeding.".localized())
         
-        If you nuke your wallet, there's no way to recover it.
+        \("If you nuke your wallet, there's no way to recover it.".localized())
         """
     }
     var body: some View {

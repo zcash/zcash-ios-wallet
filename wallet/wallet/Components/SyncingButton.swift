@@ -46,7 +46,7 @@ struct SyncingButton: View {
             lottieView.onReceive(viewModel.$frameProgress, perform: { (_) in
                 self.lottieView.play(from:  AnimationFrameTime(self.viewModel.lastFrameProgress), to: AnimationFrameTime(self.viewModel.frameProgress))
             })
-            Text("Syncing \(Int($viewModel.progress.wrappedValue*100))%")
+            Text("Syncing %@%".localized(with: "\(Int($viewModel.progress.wrappedValue*100))%"))
                 .foregroundColor(.white)
                 .opacity(viewModel.progress > 0 && viewModel.progress <= 1 ? 1.0 : 0.0)
         }

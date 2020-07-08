@@ -1,0 +1,156 @@
+/*
+  Localizable.strings
+  wallet
+
+  Copyright © 2020 Francisco Gindre. All rights reserved.
+*/
+
+// COMPONENTS:
+"Zcash address in buffer!" = "Dirección de Zcash en el búfer!";
+"Paste" = "Pegar";
+" Available" = " Disponible";
+"(tap in an amount to send)" = "(Ingresa un monto para enviar)";
+"(expecting " = "(esperando ";
+"Create new Wallet" = "Crea nueva Wallet";
+"Done" = "Listo";
+"Backup Wallet" = "Respaldar wallet";
+"Press and hold\nto send ZEC" = "Mantén presionada\npara enviar ZEC";
+"Add Memo Here" = "Escribe un Memo aquí";
+"%@ chars"= "%@ caracteres";
+"from %@" = "de %@";
+"Tap\nto send ZEC" = "Presiona\npara enviar ZEC";
+"To" = "Para";
+"Enter Shielded Address"="Ingrese la dirección blindada";
+"Error" = "Error";
+"an error ocurred" = "ocurrió un error";
+"Address Copied to clipboard!" = "Dirección copiada al portapapeles!";
+"Copied to clipboard!" = "Copiada al portapapeles!";
+"close" = "cerrar";
+"NUKE WALLET" = "DESTRUIR WALLET";
+"OK" = "OK";
+"Shielded User\n" = "Usuario blindado\n";
+
+// WalletDetailsHeader
+"Your Wallet History" = "Historial de tu Wallet";
+"Shielded address:" = "Dirección Blindada:";
+
+// TransactionDetails
+"Tx Id:" = "Tx Id:";
+"Date:" = "Fecha:";
+"Shielded:" = "Blindada:";
+"Memo:" = "Memo:";
+"Address:" = "Dirección:";
+"Transaction Detail" = "Detalles de la tx";
+
+//EnterRecipient
+"Enter a shielded Zcash address" = "Escribe una direccion blindada de Zcash";
+"This is a valid Zcash address!" = "Es una dirección Zcash válida!";
+"Invalid Zcash address!" = "Dirección Zcash inválida!";
+"You Have %@ sendable ZEC" = "Tienes %@ ZEC para enviar";
+"%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ ZEC para enviar. No tiene fondos suficientes para cubrir esa cantidad + la tarifa de minero de %@ ZEC";
+"You don't have any sendable ZEC yet" = "Todavía no tienes ZEC para enviar";
+"Zcash address in buffer" = "Dirección de Zcash en el portapapeles";
+"Next" = "Siguiente";
+
+"Amount" = "Amount";
+
+//AddMemo
+"Add Memo" = "Agregar Memo";
+"Your address is shielded from the public,\n but will be available to the receipient via the memo field." = "Su dirección está protegida y no será pública, pero estará disponible para el destinatario a través del memo.";
+"Your transaction is shielded and your address is unavailable to receipent." = "Su transacción esta blindada y su dirección no estará disponible para el destinatario";
+"Include your sending address in a memo" = "Incluir su dirección de envío en un memo";
+"Discard and Send" = "Descartar y enviar";
+"Send Now" = "Enviar ahora";
+"Add Memo (optional)" = "Agregar Memo (opcional)";
+
+//HoldToSend
+"Send %@ ZEC to" = "Enviar %@ ZEC a";
+"Network fee: %@" = "Tarifa de red: %@";
+"Includes memo" = "Incluir memo";
+
+//Sending
+"thing is that we really don't know what just went down, sorry!" = "Lo que pasa es que realmente no sabemos qué pasó, lo siento.";
+"Sending" = "Enviando";
+"Sent" = "Enviado";
+"an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
+"Unable to send" = "No se pudo enviar";
+"ZEC to" = "ZEC para";
+
+
+//CreateNewWallet
+"Create New" = "Crear nueva";
+"Restore" = "Restaurar";
+
+//RestoreWallet
+"Enter your Seed Phrase" = "Ingrese su frase semilla (Seed)";
+"Make sure nobody is watching you!" = "¡Asegúrate de que nadie te esté mirando!";
+"Wallet Birthday height" = "Numero de bloque de nacimiento";
+"If you don't know it, leave it blank. First Sync will take longer." = "Si no lo sabe, déjelo en blanco. La primera sincronización llevará más tiempo.";
+"Proceed" = "Continuar";
+"Restore from Seed Phrase" = "Restaurar desde frase semilla";
+
+//BackupWallet
+"Your Wallet needs\nto be Backed up" = "Su wallet necesita \n ser respaldada";
+"Syncing %@%" = "Sincronizando %@%";
+"Skip" = "Omitir";
+
+//SeedBackup
+"Seed:" = "Semilla(Seed):";
+"Wallet Birthday:" = "Bloque de nacimiento:";
+"Your Backup Seed" = "Su semilla (Seed) de respaldo";
+"Please back them up wisely!\nWe recommend a paper backup and a password vault" = "¡Haz una copia de respaldo sabiamente! \n Recomendamos una copia de respaldo en papel y un administrador de contraseñas";
+"Copy to clipboard" = "Copiar al portapapeles";
+"I'm all set!" = "¡Estoy listo!";
+
+//Home
+"There was an error creating your wallet. Please back it up and try again" = "Se produjo un error al crear tu wallet. Por favor, haga una copia de respaldo de su frase semilla e intente nuevamente";
+"Max Retry attempts (%@) have been reached" = "Ha alcanzado el límite máximo de reintentos (%@)";
+"dismiss" = "descartar";
+"Retry" = "Reintentar";
+"Send" = "Enviar";
+"No Balance" = "Sin Balance";
+"Wallet History" = "Historial de wallet";
+"Receive Funds" = "Recibir fondos";
+"Your Profile" = "Tu perfil";
+
+//ReceiveFunds
+"QR Code for %@" = "Código QR para %@";
+"Scan Recipient Address" = "Escanear dirección del destinatario";
+
+//ScanAddress
+"Request Camera Access" = "Solicitar acceso a la cámara";
+"We don't have permission to access your camera" = "No tenemos permiso para acceder a tu cámara";
+"Camera Unavailable" = "Cámara no disponible";
+"Switch to your Zcash address" = "Cambie a su dirección de Zcash";
+
+//ShareScreen
+"Share Screen" = "Compartir pantalla";
+
+//ProfileScreen
+"Send Feedback" = "Enviar comentarios";
+"See Application Log" = "Ver log de la aplicación";
+"ECC Wallet" = "ECC Wallet";
+
+//FundsAtRisk
+"Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet." = "Recuerda, con Zcash TU eres el banco. Solo tú, o cualquier persona con tu frase inicial, tiene acceso a tu wallet.";
+"You should back this up immediately" = "Deberías respaldar esto de inmediato";
+"as no one else can restore it for you" = "ya que nadie más puede restaurarlo por ti";
+"if your device is lost/broken/stolen…" = "si su dispositivo se pierde / se rompe / es robado…";
+"Your " = "Tus ";
+"funds " = "fondos ";
+"are at risk!" = "están en peligro!";
+"Backup now!" = "Respaldar ahora!";
+"Not now" = "Ahora no";
+
+//NukeWarning
+"Make sure you backed up your wallet before proceeding." = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";
+"If you nuke your wallet, there's no way to recover it." = "Si destruyes tu wallet, no hay forma de recuperarla.";
+"You are about to " = "Estas a punto de ";
+"NUKE " = "DESTRUIR ";
+"your wallet!" = "tu wallet!";
+"Delete Wallet?" = "Eliminar wallet?";
+"You are about to" = "Estas a punto de";
+" nuke your wallet. " = " destruir tu wallet. ";
+"Are you sure you want to proceed?" = "¿Estas seguro que deseas continuar?";
+"I'm not sure" = "No estoy seguro/a";
+"NUKE WALLET!" = "NUKE WALLET!";

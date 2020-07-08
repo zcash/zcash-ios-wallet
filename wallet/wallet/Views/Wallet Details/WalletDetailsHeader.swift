@@ -14,12 +14,12 @@ struct WalletDetailsHeader: View {
         ZStack {
             Color.zDarkGray2
             VStack(alignment: .leading) {
-                Text("Your Wallet History")
+                Text("Your Wallet History".localized())
                 .lineLimit(1)
                     .font(.title)
                     .foregroundColor(.white)
                 HStack {
-                    Text("Shielded address:")
+                    Text("Shielded address:".localized())
                         .lineLimit(1)
                         .font(.subheadline)
                         .foregroundColor(.white)

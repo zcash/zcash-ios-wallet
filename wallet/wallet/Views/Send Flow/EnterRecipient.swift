@@ -20,13 +20,13 @@ struct EnterRecipient: View {
     var addressSubtitle: String {
         let environment = ZECCWalletEnvironment.shared
         guard !flow.address.isEmpty else {
-           return "Enter a shielded Zcash address"
+            return "Enter a shielded Zcash address".localized()
         }
         
         if environment.isValidAddress(flow.address) {
-            return "This is a valid Zcash address!"
+            return "This is a valid Zcash address!".localized()
         } else {
-            return "Invalid Zcash address!"
+            return "Invalid Zcash address!".localized()
         }
     }
     
@@ -35,9 +35,9 @@ struct EnterRecipient: View {
             let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value)),
             let amountToSend = NumberFormatter.zecAmountFormatter.number(from: flow.amount)?.doubleValue {
             if ZECCWalletEnvironment.shared.sufficientFundsToSend(amount: amountToSend) {
-                return "You Have \(balance) sendable ZEC"
+                return "You Have %@ sendable ZEC".localized(with: "\(balance)")
             } else {
-                return "\(balance) sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of \(ZECCWalletEnvironment.minerFee) ZEC"
+                return "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC".localized(with: "\(balance)", "\(ZECCWalletEnvironment.minerFee)")
             }
         } else {
             return "You don't have any sendable ZEC yet"
@@ -67,7 +67,7 @@ struct EnterRecipient: View {
         }
         
         return AnyView(
-            ActionableMessage(message: "Zcash address in buffer", actionText: "Paste", action: { self.flow.address = clipboard })
+            ActionableMessage(message: "Zcash address in buffer".localized(), actionText: "Paste".localized(), action: { self.flow.address = clipboard })
                 )
     }
     
@@ -79,7 +79,7 @@ struct EnterRecipient: View {
                 
                 Spacer().frame(height: 96)
                 ZcashTextField(
-                    title: "To",
+                    title: "To".localized(),
                     subtitleView: AnyView(
                         Text.subtitle(text: addressSubtitle)
                         ),
@@ -111,7 +111,7 @@ struct EnterRecipient: View {
                 }
                 
                 ZcashTextField(
-                    title: "Amount",
+                    title: "Amount".localized(),
                     subtitleView: AnyView(
                         Text.subtitle(text: self.amountSubtitle(amount: flow.amount))
                     ),
