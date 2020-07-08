@@ -32,6 +32,9 @@ final class HomeViewModel: ObservableObject {
                 .assign(to: \.sendZecAmount, on: self)
                 .store(in: &cancellable)
             home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
+                .map({ (amount) -> String in
+                    amount.isEmpty ? "0" : amount
+                })
                 .assign(to: \.sendZecAmountText, on: self)
                 .store(in: &cancellable)
             
@@ -294,10 +297,10 @@ struct Home: View {
                 Spacer()
                 
                 self.keypad
-                    .frame(minWidth: 0, maxWidth: 250, alignment: .center)
+                    .frame(alignment: .center)
+                    .padding(.horizontal, buttonPadding)
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                     .disabled(!self.isSendingEnabled)
-                    .padding()
                     .alert(isPresented: self.$viewModel.showError) {
                         self.viewModel.errorAlert
                 }

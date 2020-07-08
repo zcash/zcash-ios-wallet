@@ -15,24 +15,15 @@ struct SendZecView: View {
     var body: some View {
         
         HStack(alignment: .center, spacing: 0) {
-            
-//            ZcashSymbol()
-//                .fill(Color.zLightGray)
-//                .frame(width: 25, height: 25)
-//                .offset(x: 0, y: -10)
-//
-            Text("$")
+  
+            Text("$\(self.$zatoshi.wrappedValue)")
             .lineLimit(1)
+            .minimumScaleFactor(0.5)
             .foregroundColor(.white)
             .font(
                 .custom("Zboto", size: 72)
             )
-            Text(self.$zatoshi.wrappedValue)
-                .lineLimit(1)
-                .foregroundColor(.white)
-                .font(
-                    .custom("Zboto", size: 72)
-                )
+
         }
     }
 }

@@ -152,6 +152,8 @@ final class ZECCWalletEnvironment: ObservableObject {
                 return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
             case .saplingSpendParametersNotFound:
                 return ZECCWalletEnvironment.WalletError.createFailed
+            case .malformedStringInput:
+                return ZECCWalletEnvironment.WalletError.genericError(message: "Malformed address or key detected")
             default:
                 return WalletError.genericError(message: "\(rustError)")
             }

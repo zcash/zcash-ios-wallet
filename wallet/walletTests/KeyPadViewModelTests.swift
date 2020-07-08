@@ -10,9 +10,9 @@ import XCTest
 import Combine
 @testable import ECC_Wallet
 class KeyPadViewModelTests: XCTestCase {
-
-
-
+    
+    
+    
     func testInitializer() {
         let value: Double = 1.234
         let textValue = "1.234"
@@ -81,11 +81,30 @@ class KeyPadViewModelTests: XCTestCase {
         viewModel.numberTapped("6")
         XCTAssertEqual("1.23456", viewModel.text)
         XCTAssertEqual(Double(1.23456), viewModel.value)
-
+        
         viewModel.numberTapped("7")
         XCTAssertEqual("1.234567", viewModel.text)
         XCTAssertEqual(Double(1.234567), viewModel.value)
         
+    }
+    
+    func testNoLeadingZero() {
+        let viewModel = KeyPadViewModel()
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.text, "1")
+    }
+    
+    func testZeroLeadingDecimals() {
+        let viewModel = KeyPadViewModel()
+        viewModel.numberTapped("0")
+        viewModel.dotTapped()
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.text, "0.00001")
     }
     
     func dotStressing() {
@@ -105,7 +124,7 @@ class KeyPadViewModelTests: XCTestCase {
         viewModel.numberTapped("1")
         XCTAssertEqual(".101", viewModel.text)
         XCTAssertEqual(Double(0.101), viewModel.value)
-
+        
     }
     
     func regretDecimal() {
