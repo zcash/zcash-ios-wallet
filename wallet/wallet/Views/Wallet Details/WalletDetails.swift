@@ -113,7 +113,6 @@ struct WalletDetails: View {
         }
         .onDisappear() {
             UITableView.appearance().separatorStyle = .singleLine
-            UITableView.appearance().backgroundColor = UIColor.white
         }
         .edgesIgnoringSafeArea([.bottom])
         .navigationBarItems(trailing:

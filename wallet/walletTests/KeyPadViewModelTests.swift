@@ -8,7 +8,7 @@
 
 import XCTest
 import Combine
-@testable import zECC_Wallet
+@testable import ECC_Wallet
 class KeyPadViewModelTests: XCTestCase {
 
 

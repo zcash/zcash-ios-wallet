@@ -288,7 +288,7 @@
 		0D12510023B557E40014EE3A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0D1250FF23B557E40014EE3A /* zECC Wallet.app */,
+				0D1250FF23B557E40014EE3A /* ECC Wallet.app */,
 				0D12511523B557E60014EE3A /* walletTests.xctest */,
 				0D12512023B557E60014EE3A /* walletUITests.xctest */,
 			);
@@ -460,7 +460,7 @@
 			);
 			name = wallet;
 			productName = wallet;
-			productReference = 0D1250FF23B557E40014EE3A /* zECC Wallet.app */;
+			productReference = 0D1250FF23B557E40014EE3A /* ECC Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0D12511423B557E60014EE3A /* walletTests */ = {
