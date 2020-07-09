@@ -14,6 +14,10 @@ var logger = SimpleLogger(logLevel: .debug, type: SimpleLogger.LoggerType.printe
 var logger = SimpleLogger(logLevel: .debug)
 #endif
 
+#if ENABLE_LOGGING
+import Mixpanel
+#endif
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {  
     
