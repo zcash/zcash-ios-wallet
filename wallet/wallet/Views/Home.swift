@@ -41,17 +41,10 @@ final class HomeViewModel: ObservableObject {
         }
     }
     init(amount: Double = 0, balance: Double = 0) {
-        //        verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
-        
-        //        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-        //            .sink(receiveValue: {
-        //                self.verifiedBalance = $0
-        //            })
-        //            .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
             .sink(receiveValue: {
@@ -217,8 +210,8 @@ struct Home: View {
     
     var enterAddressButton: some View {
         Button(action: {
+            tracker.track(.tap(action: .homeSend), properties: [:])
             self.startSendFlow()
-
         }) {
             Text("Send")
                 .foregroundColor(.black)
@@ -335,9 +328,11 @@ struct Home: View {
                         .opacity(0.4)
                 } else {
                     NavigationLink(
-                        destination: WalletDetails()
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
+                        destination: LazyView(
+                            WalletDetails()
+                                .environmentObject(WalletDetailsViewModel())
+                                .navigationBarTitle(Text(""), displayMode: .inline)
+                            )
                     ) {
                         walletDetails
                     }.isDetailLink(false)
@@ -353,6 +348,7 @@ struct Home: View {
         .navigationBarItems(leading:
             Button(action: {
                 self.viewModel.showReceiveFunds = true
+                tracker.track(.tap(action: .receive), properties: [:])
             }) {
                 Image("QRCodeIcon")
                     .accessibility(label: Text("Receive Funds"))
@@ -365,6 +361,7 @@ struct Home: View {
             }
             , trailing:
             Button(action: {
+                tracker.track(.tap(action: .showProfile), properties: [:])
                 self.viewModel.showProfile = true
             }) {
                 Image(systemName: "person.crop.circle")
@@ -378,6 +375,9 @@ struct Home: View {
         .sheet(isPresented: $viewModel.showProfile){
             ProfileScreen(isShown: self.$viewModel.showProfile)
                 .environmentObject(self.appEnvironment)
+        }
+        .onAppear {
+            tracker.track(.screen(screen: .home), properties: [:])
         }
     }
 }

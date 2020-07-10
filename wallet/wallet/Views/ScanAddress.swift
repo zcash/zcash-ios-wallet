@@ -73,6 +73,8 @@ struct ScanAddress: View {
         return AnyView(
             Button(action: {
                 self.toggleTorch(on: !self.torchEnabled)
+                tracker.track(.tap(action: .scanTorch),
+                              properties: ["value" : String(!self.torchEnabled)])
                 self.torchEnabled.toggle()
             }) {
                 Image("bolt")
@@ -172,7 +174,10 @@ struct ScanAddress: View {
             
             if viewModel.showCloseButton {
                 return AnyView(
-                    auth.navigationBarItems(leading: torchButton, trailing:  ZcashCloseButton(action: { self.isScanAddressShown = false }).frame(width: 30, height: 30))
+                    auth.navigationBarItems(leading: torchButton, trailing:  ZcashCloseButton(action: {
+                        tracker.track(.tap(action: .scanBack), properties: [:])
+                            self.isScanAddressShown = false
+                    }).frame(width: 30, height: 30))
                 )
             }
             return AnyView(
@@ -191,6 +196,9 @@ struct ScanAddress: View {
         viewFor(state: cameraAccess)
         .onDisappear() {
             self.toggleTorch(on: false)
+        }
+        .onAppear() {
+            tracker.track(.screen(screen: .scan), properties: [:])
         }
     }
     

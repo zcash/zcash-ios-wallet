@@ -84,6 +84,7 @@ struct SeedBackup: View {
                     .frame(alignment: .leading)
              
                 Button(action: {
+                    tracker.track(.tap(action: .copyAddress), properties: [:])
                     UIPasteboard.general.string = self.copyText
                     self.isCopyAlertShown = true
                 }) {
@@ -110,14 +111,18 @@ struct SeedBackup: View {
                       dismissButton: .default(Text("OK"))
                 )
             }
-        }   .navigationBarTitle("",displayMode: .inline)
-            .navigationBarHidden(hideNavBar)
+        }
+        .onAppear {
+            tracker.track(.screen(screen: .backup), properties: [:])
+        }
+        .navigationBarTitle("",displayMode: .inline)
+        .navigationBarHidden(hideNavBar)
     }
 }
 
 struct SeedBackup_Previews: PreviewProvider {
     static var previews: some View {
-        SeedBackup().environmentObject( ZECCWalletEnvironment.shared)
+        SeedBackup().environmentObject(ZECCWalletEnvironment.shared)
     }
 }
 

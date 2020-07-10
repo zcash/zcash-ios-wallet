@@ -48,6 +48,8 @@ struct HoldToSend: View {
                     logger.debug("long press cancelled")
                 }, longPressSucceded: {
                     logger.debug("long press succeded")
+                    tracker.track(.tap(action: .sendConfirmNext),
+                                  properties: [:])
                     self.holdOk = true
                 }, longPressStarted: {
                     logger.debug("long press started")
@@ -59,9 +61,7 @@ struct HoldToSend: View {
                     Sending().environmentObject(flow)
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarBackButtonHidden(true)
-                    ,
-                    
-                        isActive: $holdOk
+                    ,isActive: $holdOk
                     ) {
                         EmptyView()
                     }.isDetailLink(false)
@@ -77,8 +77,14 @@ struct HoldToSend: View {
             }
             .padding([.horizontal], 40)
         }
+        .onAppear {
+            tracker.track(.screen(screen: .sendConfirm),
+                          properties: [:])
+        }
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: ZcashCloseButton(action: {
+            tracker.track(.tap(action: .sendConfirmBack),
+                          properties: [:])
             self.flow.close()
             }).frame(width: 30, height: 30))
     }

@@ -15,7 +15,9 @@ var logger = SimpleLogger(logLevel: .debug)
 #endif
 
 #if ENABLE_LOGGING
-import Mixpanel
+let tracker = MixPanelLogger(token: "", test: true)
+#else
+let tracker = NullLogger()
 #endif
 
 @UIApplicationMain

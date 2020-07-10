@@ -106,15 +106,18 @@ struct Sending: View {
                 includesMemoView
                 Spacer()
                 Button(action: {
+                    tracker.track(.tap(action: .sendFinalClose), properties: [:])
                     self.flow.close()
                 }) {
                     doneButton
                 }
                 card
                 
-            }.padding([.horizontal, .bottom], 40)
+            }
+            .padding([.horizontal, .bottom], 40)
             
         }.navigationBarItems(trailing: Button(action: {
+            tracker.track(.tap(action: .sendFinalClose), properties: [:])
             self.flow.close()
         }) {
             Image("close")
@@ -123,10 +126,11 @@ struct Sending: View {
             .opacity(self.flow.isDone ? 1.0 : 0.0)
         )
         .alert(isPresented: self.$flow.showError) {
-                showErrorAlert
+            showErrorAlert
         }
         .onAppear() {
-                self.flow.send()
+            tracker.track(.screen(screen: .sendFinal), properties: [:])
+            self.flow.send()
         }
     }
 }

@@ -67,7 +67,10 @@ struct EnterRecipient: View {
         }
         
         return AnyView(
-            ActionableMessage(message: "Zcash address in buffer".localized(), actionText: "Paste".localized(), action: { self.flow.address = clipboard })
+            ActionableMessage(message: "Zcash address in buffer".localized(), actionText: "Paste".localized(), action: {
+                tracker.track(.tap(action: .sendAddressPaste), properties: [:])
+                    self.flow.address = clipboard
+                    })
                 )
     }
     
@@ -86,12 +89,16 @@ struct EnterRecipient: View {
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
+                        tracker.track(.tap(action: .sendAddressScan),
+                                      properties: [:])
                         self.flow.showScanView = true
                 },
                     accessoryIcon: Image("QRCodeIcon")
                         .renderingMode(.original),
                     onEditingChanged: { _ in },
-                    onCommit: { }
+                    onCommit: {
+                        tracker.track(.tap(action: .sendAddressDoneAddress), properties: [:])
+                }
                 ).sheet(isPresented: self.$flow.showScanView) {
                     NavigationView {
                         LazyView(
@@ -118,7 +125,10 @@ struct EnterRecipient: View {
                     keyboardType: UIKeyboardType.decimalPad,
                     binding: $flow.amount,
                     onEditingChanged: { _ in },
-                    onCommit: {}
+                    onCommit: {
+                        tracker.track(.tap(action: .sendAddressDoneAmount),
+                                      properties: [:])
+                    }
                 )
                 
                 addressInBuffer
@@ -140,6 +150,7 @@ struct EnterRecipient: View {
             
         }
         .onAppear() {
+            tracker.track(.screen(screen: .sendAddress), properties: [:])
             self.flow.clearMemo()
         }
         .onTapGesture {

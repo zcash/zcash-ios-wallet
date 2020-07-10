@@ -100,7 +100,7 @@ struct RestoreWallet: View {
                         logger.error("\(error)")
                         return
                     }
-                    
+                    tracker.track(.tap(action: .walletImport), properties: [:])
                     self.proceed = true
                 }) {
                     Text("Proceed")
@@ -110,12 +110,15 @@ struct RestoreWallet: View {
                 .disabled(disableProceed)
                 .opacity(disableProceed ? 0.4 : 1.0)
                 .frame(height: 58)
-                
-                
-            }.padding([.horizontal,.bottom], 30)
+            }
+            .padding([.horizontal,.bottom], 30)
         }.onTapGesture {
             UIApplication.shared.endEditing()
-        }.navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
+        }
+        .onAppear {
+            tracker.track(.screen(screen: .restore), properties: [:])
+        }
+        .navigationBarTitle("Restore from Seed Phrase", displayMode: .inline)
         .navigationBarHidden(false)
     }
 }

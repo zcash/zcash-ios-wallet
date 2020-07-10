@@ -13,7 +13,6 @@ protocol EventLogging {
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>)
 }
 
-
 enum Screen: String {
     case backup
     case home
@@ -39,6 +38,32 @@ enum Action: String {
     case ladingRestoreWallet = "landing.restore"
     case landingCreateNew = "landing.new"
     case landingBackupWallet = "landing.backup"
+    case showProfile = "home.profile"
+    case receive = "home.scan"
+    case receiveBack = "receive.back"
+    case receiveScan = "receive.scan"
+    case scanBack = "scan.back"
+    case scanReceive = "scan.receive"
+    case scanTorch = "scan.torch"
+    case homeSend = "home.send"
+    case sendAddressNext = "send.address.next"
+    case sendAddressDoneAddress = "send.address.done.address"
+    case sendAddressDoneAmount = "send.address.done.amount"
+    case sendAddressPaste = "send.address.paste"
+    case sendAddressBack = "send.address.back"
+    case sendAddressScan = "send.address.scan"
+    case sendConfirmBack = "send.confirm.back"
+    case sendConfirmNext = "send.confirm.next"
+    case sendMemoInclude = "send.memo.include"
+    case sendMemoExclude = "send.memo.exclude"
+    case sendMemoSkip = "send.memo.skip"
+    case sendMemoNext = "send.memo.next"
+    case sendFinalExit = "send.final.exit"
+    case sendFinalClose = "send.final.close"
+    case profileClose = "profile.close"
+    case profileNuke = "profile.nuke"
+    case profileBackup = "profile.backup"
+    case copyAddress = "copy.address"
 }
 enum LogEvent: Equatable {
     case screen(screen: Screen)
@@ -55,38 +80,53 @@ class NullLogger: EventLogging {
 #if ENABLE_LOGGING
 import Mixpanel
 class MixPanelLogger: EventLogging {
-    func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {
+    
+    struct TrackingEvent: Equatable {
+        let event: LogEvent
+        let properties: [String : String]?
         
-        
-        let eventProperties = Dictionary<String,String>(uniqueKeysWithValues: Array(properties))
-        switch event {
-        case .screen(let screen):
-            logEvent(screen.rawValue, properties: eventProperties)
-        case .tap(let action):
-            logEvent(action.rawValue, properties: eventProperties)
+        var description: String {
+            "Event: \(event) - Properties: \(properties ?? [:])"
         }
     }
     
-    var logSubject: PassthroughSubject<LogEvent, Never>
+    func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {
+ 
+        let eventProperties = Dictionary<String,String>(uniqueKeysWithValues: Array(properties))
+        
+        logSubject.send(TrackingEvent(event: event, properties: eventProperties))
+    }
+    
+    var logSubject: PassthroughSubject<TrackingEvent, Never>
     
     
-    private func logEvent(_ name: String, properties: [String : String]? = nil ) {
-        Mixpanel.mainInstance().track(event: name, properties: properties)
+    private func logEvetn(_ event: TrackingEvent) {
+        logger.event("MockPanel - \(event)")
+    }
+    
+    private func trackEvent(_ tracking: TrackingEvent) {
+        
+        switch tracking.event {
+        case .screen(let screen):
+            Mixpanel.mainInstance().track(event: screen.rawValue, properties: tracking.properties)
+        case .tap(let action):
+            Mixpanel.mainInstance().track(event: action.rawValue, properties: tracking.properties)
+        }
     }
     
     var cancellables = [AnyCancellable]()
     var scheduler = DispatchQueue.global()
-    init(token: String) {
+    init(token: String, test: Bool = false) {
         Mixpanel.initialize(token: token)
-        logSubject = PassthroughSubject<LogEvent,Never>()
+        logSubject = PassthroughSubject<TrackingEvent,Never>()
         
         logSubject.receive(on: scheduler)
-        .removeDuplicates()
+            .removeDuplicates()
             .debounce(for: 0.3, scheduler: scheduler)
             .sink { (event) in
-                self.logEvent("")
-            }
-            .store(in: &cancellables)
+                self.trackEvent(event)
+        }
+        .store(in: &cancellables)
     }
 }
 
