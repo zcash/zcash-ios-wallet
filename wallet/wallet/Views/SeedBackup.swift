@@ -56,7 +56,12 @@ struct SeedBackup: View {
             )
             
         } catch {
-            logger.error("error retrieving seed: \(error)")
+            let message = "error retrieving seed"
+            logger.error("\(message): \(error)")
+            tracker.track(.error(severity: .critical), properties: [
+                ErrorSeverity.messageKey : message,
+                ErrorSeverity.underlyingError : "\(error)"
+            ])
         }
         return AnyView(EmptyView())
     }

@@ -1,0 +1,5 @@
+import Foundation
+
+public struct Constants {
+    static let mixpanelProject: String = "{{ argument.mixpanel }}"
+}

@@ -1,1 +1,2 @@
 export LIGHTWALLETD_ADDRESS="localhost%3a9067"
+export MIXPANEL_TOKEN="deadbeef"

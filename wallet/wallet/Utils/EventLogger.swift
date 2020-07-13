@@ -38,6 +38,9 @@ enum Action: String {
     case ladingRestoreWallet = "landing.restore"
     case landingCreateNew = "landing.new"
     case landingBackupWallet = "landing.backup"
+    case landingBackupSkipped1 = "landing.backup.skip.1"
+    case landingBackupSkipped2 = "landing.backup.skip.2"
+    case landingBackupSkipped3 = "landing.backup.skip.3"
     case showProfile = "home.profile"
     case receive = "home.scan"
     case receiveBack = "receive.back"
@@ -68,6 +71,16 @@ enum Action: String {
 enum LogEvent: Equatable {
     case screen(screen: Screen)
     case tap(action: Action)
+    case error(severity: ErrorSeverity)
+}
+
+enum ErrorSeverity: String {
+    case critical = "error.critical"
+    case noncritical = "error.noncritical"
+    case warning = "error.warning"
+    
+    static let messageKey = "message"
+    static let underlyingError = "error"
 }
 
 
@@ -100,23 +113,40 @@ class MixPanelLogger: EventLogging {
     var logSubject: PassthroughSubject<TrackingEvent, Never>
     
     
-    private func logEvetn(_ event: TrackingEvent) {
+    private func logEvent(_ event: TrackingEvent) {
         logger.event("MockPanel - \(event)")
     }
     
     private func trackEvent(_ tracking: TrackingEvent) {
+        guard !test  else {
+            logEvent(tracking)
+            return
+        }
         
         switch tracking.event {
         case .screen(let screen):
             Mixpanel.mainInstance().track(event: screen.rawValue, properties: tracking.properties)
         case .tap(let action):
             Mixpanel.mainInstance().track(event: action.rawValue, properties: tracking.properties)
+        case .error(let severity):
+            Mixpanel.mainInstance().track(event: severity.rawValue, properties: tracking.properties)
         }
     }
     
     var cancellables = [AnyCancellable]()
     var scheduler = DispatchQueue.global()
+    
+    /// Attempts to log to console logger if true
+    var test: Bool
+    
+    /**
+     inits the Mixpanel logger
+     Parameters:
+      - Parameter token: the Mixpanel token
+      - Parameter test: attempts to send the logs to the console instead if such logger is set up. No logs are sent to MixPanel
+     */
     init(token: String, test: Bool = false) {
+        self.test = test
         Mixpanel.initialize(token: token)
         logSubject = PassthroughSubject<TrackingEvent,Never>()
         

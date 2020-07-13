@@ -67,6 +67,9 @@ final class HomeViewModel: ObservableObject {
             .map( ZECCWalletEnvironment.mapError )
             .sink { [weak self] error in
                 guard let self = self else { return }
+                tracker.track(.error(severity: .noncritical), properties: [
+                    ErrorSeverity.underlyingError : "\(error)"
+                ])
                 self.show(error: error)
         }
         .store(in: &cancellable)
@@ -79,17 +82,31 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let error):
-                    logger.error("error scanning: \(error)")
+                    let message = "error scanning:"
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.underlyingError : "\(error)",
+                        ErrorSeverity.messageKey : message
+                    ])
+
+                    logger.error("\(message) \(error)")
                 case .finished:
                     logger.debug("finished scanning")
                 }
             }) { (notification) in
                 guard let address = notification.userInfo?["zAddress"] as? String else {
-                    logger.error("empty notification after scanning qr code")
+                    let message = "empty notification after scanning qr code"
+                    logger.error(message)
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.messageKey : message
+                    ])
                     return
                 }
                 guard ZECCWalletEnvironment.shared.isValidAddress(address) else {
-                    logger.error("scanned qr but address is invalid")
+                    let message = "scanned qr but address is invalid"
+                    logger.error(message)
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.messageKey : message
+                    ])
                     return
                 }
                 self.showReceiveFunds = false
