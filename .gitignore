@@ -79,3 +79,4 @@ lib
 *.a
 *.generated.swift
 env-vars.sh
+wallet/wallet/Generated/Constants.generated.swift
