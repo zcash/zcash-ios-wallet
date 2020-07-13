@@ -153,6 +153,7 @@
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
 		0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DB123BED85C00709636 /* ActionableMessage.swift */; };
 		0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8668424BCE55400F3B883 /* Constants.generated.swift */; };
+		0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD8B9B724B6898F0031FF42 /* EventLogger.swift */; };
 		0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEC5DF823BD60CF002EFD0D /* Ring.swift */; };
 		0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
@@ -958,6 +959,7 @@
 			files = (
 				0DCDFF9724B6722B000F6999 /* EnterRecipient.swift in Sources */,
 				0DCDFF9824B6722B000F6999 /* SyncingButton.swift in Sources */,
+				0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */,
 				0DCDFF9924B6722B000F6999 /* SeedBackup.swift in Sources */,
 				0DCDFF9A24B6722B000F6999 /* Fonts.swift in Sources */,
 				0DCDFF9B24B6722B000F6999 /* CombineSynchronizer.swift in Sources */,
