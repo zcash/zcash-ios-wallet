@@ -41,17 +41,10 @@ final class HomeViewModel: ObservableObject {
         }
     }
     init(amount: Double = 0, balance: Double = 0) {
-        //        verifiedBalance = balance
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
-        
-        //        environment.synchronizer.verifiedBalance.receive(on: DispatchQueue.main)
-        //            .sink(receiveValue: {
-        //                self.verifiedBalance = $0
-        //            })
-        //            .store(in: &cancellable)
         
         environment.synchronizer.balance.receive(on: DispatchQueue.main)
             .sink(receiveValue: {
@@ -74,6 +67,9 @@ final class HomeViewModel: ObservableObject {
             .map( ZECCWalletEnvironment.mapError )
             .sink { [weak self] error in
                 guard let self = self else { return }
+                tracker.track(.error(severity: .noncritical), properties: [
+                    ErrorSeverity.underlyingError : "\(error)"
+                ])
                 self.show(error: error)
         }
         .store(in: &cancellable)
@@ -86,17 +82,31 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let error):
-                    logger.error("error scanning: \(error)")
+                    let message = "error scanning:"
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.underlyingError : "\(error)",
+                        ErrorSeverity.messageKey : message
+                    ])
+
+                    logger.error("\(message) \(error)")
                 case .finished:
                     logger.debug("finished scanning")
                 }
             }) { (notification) in
                 guard let address = notification.userInfo?["zAddress"] as? String else {
-                    logger.error("empty notification after scanning qr code")
+                    let message = "empty notification after scanning qr code"
+                    logger.error(message)
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.messageKey : message
+                    ])
                     return
                 }
                 guard ZECCWalletEnvironment.shared.isValidAddress(address) else {
-                    logger.error("scanned qr but address is invalid")
+                    let message = "scanned qr but address is invalid"
+                    logger.error(message)
+                    tracker.track(.error(severity: .warning), properties: [
+                        ErrorSeverity.messageKey : message
+                    ])
                     return
                 }
                 self.showReceiveFunds = false
@@ -217,8 +227,8 @@ struct Home: View {
     
     var enterAddressButton: some View {
         Button(action: {
+            tracker.track(.tap(action: .homeSend), properties: [:])
             self.startSendFlow()
-
         }) {
             Text("Send")
                 .foregroundColor(.black)
@@ -335,9 +345,11 @@ struct Home: View {
                         .opacity(0.4)
                 } else {
                     NavigationLink(
-                        destination: WalletDetails()
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
+                        destination: LazyView(
+                            WalletDetails()
+                                .environmentObject(WalletDetailsViewModel())
+                                .navigationBarTitle(Text(""), displayMode: .inline)
+                            )
                     ) {
                         walletDetails
                     }.isDetailLink(false)
@@ -353,6 +365,7 @@ struct Home: View {
         .navigationBarItems(leading:
             Button(action: {
                 self.viewModel.showReceiveFunds = true
+                tracker.track(.tap(action: .receive), properties: [:])
             }) {
                 Image("QRCodeIcon")
                     .accessibility(label: Text("Receive Funds"))
@@ -365,6 +378,7 @@ struct Home: View {
             }
             , trailing:
             Button(action: {
+                tracker.track(.tap(action: .showProfile), properties: [:])
                 self.viewModel.showProfile = true
             }) {
                 Image(systemName: "person.crop.circle")
@@ -378,6 +392,9 @@ struct Home: View {
         .sheet(isPresented: $viewModel.showProfile){
             ProfileScreen(isShown: self.$viewModel.showProfile)
                 .environmentObject(self.appEnvironment)
+        }
+        .onAppear {
+            tracker.track(.screen(screen: .home), properties: [:])
         }
     }
 }

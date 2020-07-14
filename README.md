@@ -41,6 +41,31 @@ for more information about the security and privacy limitations of the wallet.
 7. build and run on simulator.
 
 
+# To Log or not to Log
+
+This is our internal dogfooding app, and we implemented some level of event logging to be able to study user interactions and improve the User Experience with Zcash on mobile devices.
+
+## No Logs please
+
+*You can build and run the app **without it** by using the `wallet-no-logging`*
+
+The "no logging" target does not even build or include the Mixpanel sdk on your build or any code related with it. You can make sure of this by looking at the code yourself. If you think there's a better way achieve this, please open an Issue with your proposal. :-) 
+
+## I want to use Mixpanel
+
+If you wish to use mixpanel in your own build, make sure to include the following line in your env-vars.sh file
+`export MIXPANEL_TOKEN="YOUR_TOKEN"`
+And build the `wallet` target. Sourcery will pick it up and generate the Constants.generated.swift file that the Mixpanel SDK will use to send the events to your board
+
+## I use some other kind of tracker...
+that I would like to include in my project. The app does not care about the details of the event logger as long as it implements this protocol
+````Swift
+protocol EventLogging {
+    func track(_ event: LogEvent, properties: KeyValuePairs<String, String>)
+}
+````
+
+You can implement your own tracker proxy
 ## Troubleshooting
 
 ### No network environment....

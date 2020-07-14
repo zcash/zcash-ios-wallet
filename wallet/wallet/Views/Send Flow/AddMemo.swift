@@ -37,6 +37,11 @@ struct AddMemo: View {
                 HStack {
                     ZcashCheckCircle(isChecked: $flow.includeSendingAddress)
                     .onTapGesture {
+                        self.flow.includeSendingAddress ?
+                            tracker.track(.tap(action: .sendMemoExclude),
+                                          properties: [:]) :
+                            tracker.track(.tap(action: .sendMemoInclude),
+                                          properties: [:])
                         self.flow.includeSendingAddress.toggle()
                     }
                     Text("Include your sending address in a memo".localized())
@@ -53,6 +58,7 @@ struct AddMemo: View {
                     .layoutPriority(0.5)
                 Spacer()
                 Button(action: {
+                    tracker.track(.tap(action: .sendMemoNext), properties: [:])
                     self.flow.includesMemo = true
                     self.isShown = true
                 }) {
@@ -65,11 +71,7 @@ struct AddMemo: View {
                     
                 }.disabled(isMemoEmpty)
                 
-                NavigationLink(
-                    destination: HoldToSend().environmentObject(flow)
-                    ) {
-                        EmptyView()
-                }.isDetailLink(false)
+              
                 NavigationLink(
                     destination: HoldToSend().environmentObject(flow),
                     isActive: self.$isShown
@@ -77,6 +79,7 @@ struct AddMemo: View {
                     EmptyView()
                 }.isDetailLink(false)
                 Button(action: {
+                    tracker.track(.tap(action: .sendMemoSkip), properties: [:])
                     self.flow.includesMemo = false
                     self.isShown = true
                 }) {
@@ -93,7 +96,12 @@ struct AddMemo: View {
         }.onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .navigationBarTitle(Text("Add Memo (optional)".localized()), displayMode: .inline)
+        .onAppear {
+            tracker.track(.screen(screen: .sendMemo),
+                          properties: [:])
+        }
+        .navigationBarTitle(Text("Add Memo (optional)".localized()),
+                            displayMode: .inline)
     }
 }
 

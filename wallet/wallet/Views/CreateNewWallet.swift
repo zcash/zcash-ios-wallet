@@ -15,8 +15,7 @@ struct CreateNewWallet: View {
     let buttonPadding: CGFloat = 24
     let buttonHeight: CGFloat = 50
     var body: some View {
-        
-        
+
         ZStack {
             
             ZcashBackground()
@@ -28,8 +27,10 @@ struct CreateNewWallet: View {
                 
                 Spacer()
                 NavigationLink(destination:
-                    BackupWallet().environmentObject(appEnvironment)
+                    LazyView (
+                        BackupWallet().environmentObject(self.appEnvironment)
                         .navigationBarHidden(true)
+                    )
                     
                 ) {
                     Text("Create New".localized())
@@ -53,8 +54,10 @@ struct CreateNewWallet: View {
                 }
                 #endif
                 NavigationLink(
-                    destination: RestoreWallet()
-                        .environmentObject(appEnvironment)
+                    destination: LazyView (
+                        RestoreWallet()
+                            .environmentObject(self.appEnvironment)
+                        )
                         
                 ) {
                     Text("Restore".localized())
@@ -64,8 +67,12 @@ struct CreateNewWallet: View {
                     
                 }
                 
-            } .padding([.horizontal, .bottom], self.buttonPadding)
-        } 
+            }
+            .padding([.horizontal, .bottom], self.buttonPadding)
+        }
+        .onAppear {
+            tracker.track(.screen(screen: .landing), properties: [ : ])
+        }
     }
     
 }

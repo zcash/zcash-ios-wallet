@@ -61,6 +61,10 @@ struct FundsAtRisk: View {
             }.padding([.horizontal, .bottom], 24)
             
         }
+        .onAppear {
+            /// TODO: change Navigation links to buttons
+            tracker.track(.tap(action: .landingBackupSkipped1), properties: [:])
+        }
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
         

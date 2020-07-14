@@ -78,13 +78,20 @@ struct BackupWallet: View {
             }.navigationBarBackButtonHidden(true)
         .onAppear() {
             do {
+                /// TODO: change previous navigation link to button to capture action
+                tracker.track(.tap(action: .landingBackupWallet), properties: [:])
                 try self.appEnvironment.createNewWallet()
                 self.viewModel.bindSync()
             } catch {
-                logger.error("could not create new wallet: \(error)")
+                let message = "could not create new wallet:"
+                logger.error("\(message) \(error)")
+                tracker.track(.error(severity: .critical),
+                              properties: [
+                                ErrorSeverity.messageKey : message,
+                                ErrorSeverity.underlyingError : "\(error)"
+                                ])
             }
         }
-        
     }
 }
 

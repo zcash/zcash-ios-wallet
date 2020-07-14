@@ -1,20 +1,30 @@
 platform :ios, '13.0'
 use_frameworks!
 
+def base_pods
+  pod 'ZcashLightClientKit'
+  pod 'KeychainSwift', '~> 19.0.0'
+  pod 'MnemonicSwift'
+  pod 'TinyQRScanner'
+  pod 'lottie-ios'
+end
+
 inhibit_all_warnings!
+
+target 'wallet-no-logging' do
+  base_pods
+end
+
 target 'wallet' do 
- pod 'ZcashLightClientKit'
- pod 'KeychainSwift', '~> 19.0.0'
- pod 'MnemonicSwift'
- pod 'TinyQRScanner'
- pod 'lottie-ios'
- target 'walletTests' do 
-  inherit! :search_paths
- end
+  base_pods
+  pod 'Mixpanel-swift'
+  target 'walletTests' do
+    inherit! :search_paths
+  end
  
- target 'walletUITests' do 
-   inherit! :search_paths
- end
+  target 'walletUITests' do
+    inherit! :search_paths
+  end
 end
 
 post_install do |installer|

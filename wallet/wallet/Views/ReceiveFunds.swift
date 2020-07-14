@@ -81,6 +81,7 @@ struct ReceiveFunds: View {
                                 EmptyView()
                             }
                             Button(action: {
+                                tracker.track(.tap(action: .receiveScan), properties: [:])
                                 self.isScanAddressShown = true
                             }) {
                                 Text("Scan Recipient Address")
@@ -104,9 +105,14 @@ struct ReceiveFunds: View {
                         }
                     })
                 
-            }.navigationBarTitle(Text(""), displayMode: .inline)
+            }
+            .onAppear {
+                tracker.track(.screen(screen: .receive), properties: [:])
+            }
+            .navigationBarTitle(Text(""), displayMode: .inline)
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
+                tracker.track(.tap(action: .receiveBack), properties: [:])
                 self.isShown = false
                 }).frame(width: 30, height: 30))
         }
