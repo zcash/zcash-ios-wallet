@@ -16,6 +16,7 @@ struct ProfileScreen: View {
     static let horizontalPadding = CGFloat(30)
     @State var isCopyAlertShown = false
     @Binding var isShown: Bool
+    @State var isFeedbackActive = false
     var body: some View {
         NavigationView {
             ZStack {
@@ -34,11 +35,16 @@ struct ProfileScreen: View {
                     }
                     
                     Spacer()
-                    
-                    Text("Send Feedback".localized())
-                        .foregroundColor(.black)
-                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
-                        .frame(height: Self.buttonHeight)
+                    NavigationLink(destination: LazyView(
+                        FeedbackForm(isActive: self.$isFeedbackActive)
+                        ),
+                                   isActive: $isFeedbackActive) {
+                                    
+                                    Text("Send Feedback".localized())
+                                        .foregroundColor(.black)
+                                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
+                                        .frame(height: Self.buttonHeight)
+                    }
                     
                     
                     NavigationLink(destination: LazyView(
@@ -98,7 +104,6 @@ struct ProfileScreen: View {
                 tracker.track(.tap(action: .profileClose), properties: [:])
                 self.isShown = false
             }).frame(width: 30, height: 30))
-            
         }
     }
 }

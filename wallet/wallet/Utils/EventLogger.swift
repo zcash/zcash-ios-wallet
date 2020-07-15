@@ -72,6 +72,7 @@ enum LogEvent: Equatable {
     case screen(screen: Screen)
     case tap(action: Action)
     case error(severity: ErrorSeverity)
+    case feedback
 }
 
 enum ErrorSeverity: String {
@@ -130,6 +131,8 @@ class MixPanelLogger: EventLogging {
             Mixpanel.mainInstance().track(event: action.rawValue, properties: tracking.properties)
         case .error(let severity):
             Mixpanel.mainInstance().track(event: severity.rawValue, properties: tracking.properties)
+        case .feedback:
+            Mixpanel.mainInstance().track(event: "funnel.feedback.submitted.100", properties: tracking.properties)
         }
     }
     
