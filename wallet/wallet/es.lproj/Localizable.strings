@@ -29,7 +29,8 @@
 "NUKE WALLET" = "DESTRUIR WALLET";
 "OK" = "OK";
 "Shielded User\n" = "Usuario blindado\n";
-
+"No Confirmations yet" = "Sin confirmar";
+"Confirmations" = "Confirmaciones";
 // WalletDetailsHeader
 "Your Wallet History" = "Historial de tu Wallet";
 "Shielded address:" = "Dirección Blindada:";

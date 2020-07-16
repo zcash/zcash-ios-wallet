@@ -224,9 +224,9 @@ extension DetailModel {
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
         if pendingTransaction.isPending(currentHeight: latestBlockHeight ?? -1), let latest = latestBlockHeight {
             if pendingTransaction.isMined {
-                self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) Confirmations"
+                self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) \("Confirmations".localized())"
             } else {
-                self.subtitle = "no confirmations yet"
+                self.subtitle = "No Confirmations yet".localized()
             }
             
         } else {
