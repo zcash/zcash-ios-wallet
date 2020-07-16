@@ -345,11 +345,11 @@ struct Home: View {
                         .opacity(0.4)
                 } else {
                     NavigationLink(
-                        destination: LazyView(
+                        destination:
                             WalletDetails()
                                 .environmentObject(WalletDetailsViewModel())
                                 .navigationBarTitle(Text(""), displayMode: .inline)
-                            )
+                            
                     ) {
                         walletDetails
                     }.isDetailLink(false)
