@@ -175,8 +175,8 @@ final class SendFlowEnvironment: ObservableObject {
         NumberFormatter.zecAmountFormatter.number(from: self.amount)?.doubleValue
     }
     func close() {
-        NotificationCenter.default.post(name: .sendFlowClosed, object: nil)
         self.isActive = false
+        NotificationCenter.default.post(name: .sendFlowClosed, object: nil)
     }
     
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {

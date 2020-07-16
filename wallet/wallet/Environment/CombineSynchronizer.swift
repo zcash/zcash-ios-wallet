@@ -210,7 +210,7 @@ extension DetailModel {
         self.id = confirmedTransaction.transactionEntity.transactionId.toHexStringTxId()
         self.shielded = confirmedTransaction.toAddress?.isValidShieldedAddress ?? true
         self.status = sent ? .paid(success: confirmedTransaction.minedHeight > 0) : .received
-        self.subtitle = sent ? "Sent" : "Received" + " \(self.date.transactionDetail)"
+        self.subtitle = sent ? "Sent".localized() + " \(self.date.transactionDetail)" : "Received".localized() + " \(self.date.transactionDetail)"
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
         if let memo = confirmedTransaction.memo {
@@ -222,8 +222,13 @@ extension DetailModel {
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
         self.status = .paid(success: pendingTransaction.isSubmitSuccess)
-        if pendingTransaction.minedHeight > 0, let latest = latestBlockHeight {
-            self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) Confirmations"
+        if pendingTransaction.isPending(currentHeight: latestBlockHeight ?? -1), let latest = latestBlockHeight {
+            if pendingTransaction.isMined {
+                self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) Confirmations"
+            } else {
+                self.subtitle = "no confirmations yet"
+            }
+            
         } else {
             self.subtitle = "Sent \(self.date.transactionDetail)"
         }
