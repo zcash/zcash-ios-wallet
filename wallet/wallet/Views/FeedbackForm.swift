@@ -99,8 +99,8 @@ struct FeedbackForm: View {
             tracker.track(.screen(screen: .feedback), properties: [:])
         }
         .alert(isPresented: $showFeedbackSentAlert) {
-            Alert(title: Text("Error".localized()),
-                  message: Text("an error ocurred".localized()),
+            Alert(title: Text("Feedback Sent!".localized()),
+                  message: Text("Thanks for your feedback!".localized()),
                   dismissButton: .default(Text("OK".localized()),action: {
                     self.isActive = false
                   }))
