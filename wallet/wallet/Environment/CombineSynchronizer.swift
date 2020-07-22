@@ -226,7 +226,7 @@ extension DetailModel {
             if pendingTransaction.isMined {
                 self.subtitle = "\(abs(latest - pendingTransaction.minedHeight)) \("Confirmations".localized())"
             } else {
-                self.subtitle = "No Confirmations yet".localized()
+                self.subtitle = "Pending confirmation".localized()
             }
             
         } else {

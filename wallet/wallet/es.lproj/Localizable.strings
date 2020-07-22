@@ -29,7 +29,7 @@
 "NUKE WALLET" = "DESTRUIR WALLET";
 "OK" = "OK";
 "Shielded User\n" = "Usuario blindado\n";
-"No Confirmations yet" = "Sin confirmar";
+"Pending confirmation" = "Confirmación pendiente";
 "Confirmations" = "Confirmaciones";
 // WalletDetailsHeader
 "Your Wallet History" = "Historial de tu Wallet";
