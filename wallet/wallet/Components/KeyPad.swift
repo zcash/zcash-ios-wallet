@@ -36,7 +36,7 @@ struct KeyPad: View {
 
                             }
                             .buttonStyle(KeyPadButtonStyle(size: self.keySize))
-                                .cornerRadius(self.keySize/2)
+//                                .cornerRadius(self.keySize/2)
                             }
                         }
                     }
@@ -61,7 +61,7 @@ struct KeyPadButtonStyle: ButtonStyle {
             .contentShape(Circle())
             .animation(nil)
             .foregroundColor(configuration.isPressed ? Color.black : .white)
-            .background(configuration.isPressed ? Color.white : .clear)
+            .background(Circle().fill(configuration.isPressed ? Color.white : .clear))
             .animation(.easeInOut(duration: 0.2))
     }
 }
