@@ -58,6 +58,7 @@ struct KeyPadButtonStyle: ButtonStyle {
                 maxHeight:  .infinity,
                 alignment: .center
             )
+            .contentShape(Circle())
             .animation(nil)
             .foregroundColor(configuration.isPressed ? Color.black : .white)
             .background(configuration.isPressed ? Color.white : .clear)
@@ -110,7 +111,7 @@ class KeyPadViewModel: ObservableObject {
         switch text {
         case "<":
             deleteTapped()
-        case ".":
+        case KeyPadViewModel.formatter.currencyDecimalSeparator:
             dotTapped()
         default:
             numberTapped(text)
@@ -178,9 +179,9 @@ class KeyPadViewModel: ObservableObject {
     
     func dotTapped() {
         
-        guard !text.contains(".") else { return }
+        guard !text.contains(KeyPadViewModel.formatter.currencyDecimalSeparator) else { return }
         
-        let newText = text + "."
+        let newText = text + KeyPadViewModel.formatter.currencyDecimalSeparator
         
         guard let newValue = doubleFromText(newText) else {
             return
