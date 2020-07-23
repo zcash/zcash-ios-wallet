@@ -16,8 +16,6 @@ struct FeedbackForm: View {
     @State var showFeedbackSentAlert = false
     @Binding var isActive: Bool
     
-    @ObservedObject private var keyboard = KeyboardResponder()
-    
     var validForm: Bool {
         details.count > 0
     }
@@ -86,10 +84,11 @@ struct FeedbackForm: View {
                 }
                 .padding(.bottom, 20)
                 .padding([.horizontal],30)
+       
             
         }
         .background(ZcashBackground())
-        .offset(x: 0, y: -keyboard.currentHeight)
+        .keyboardAdaptive()
         .animation(.easeInOut)
         .navigationBarTitle("",displayMode: .inline)
         .onTapGesture {
@@ -105,6 +104,7 @@ struct FeedbackForm: View {
                     self.isActive = false
                   }))
         }
+       
         
     }
 }
