@@ -47,6 +47,10 @@
 		0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF923C66B7500E5E55E /* Sending.swift */; };
 		0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AFE23C67DCE00E5E55E /* DetailCard.swift */; };
 		0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */; };
+		0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */; };
+		0D4B91DB24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */; };
+		0D4B91DD24CA395100A0E024 /* UIResponder+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */; };
+		0D4B91DE24CA395100A0E024 /* UIResponder+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */; };
 		0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */; };
 		0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100223C52CE200CD2854 /* AddMemo.swift */; };
 		0D4C100523C52D3400CD2854 /* ZcashMemoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */; };
@@ -235,6 +239,8 @@
 		0D421AF923C66B7500E5E55E /* Sending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sending.swift; sourceTree = "<group>"; };
 		0D421AFE23C67DCE00E5E55E /* DetailCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCard.swift; sourceTree = "<group>"; };
 		0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFlowEnvironment.swift; sourceTree = "<group>"; };
+		0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptive.swift; sourceTree = "<group>"; };
+		0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Current.swift"; sourceTree = "<group>"; };
 		0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		0D4C100223C52CE200CD2854 /* AddMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemo.swift; sourceTree = "<group>"; };
 		0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashMemoTextView.swift; sourceTree = "<group>"; };
@@ -373,6 +379,8 @@
 				8D73958F24A40E6C00936DE3 /* String+localized.swift */,
 				0DD8B9B724B6898F0031FF42 /* EventLogger.swift */,
 				0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */,
+				0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */,
+				0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -889,6 +897,7 @@
 				0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */,
 				0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
+				0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
 				8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
@@ -932,6 +941,7 @@
 				0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */,
 				0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */,
 				0D100EE023BAAB170089DB22 /* BackupWallet.swift in Sources */,
+				0D4B91DD24CA395100A0E024 /* UIResponder+Current.swift in Sources */,
 				0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */,
 				0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */,
 				0D11C23123BF966C001CF6F7 /* ScanAddress.swift in Sources */,
@@ -995,9 +1005,11 @@
 				0DCDFFA624B6722B000F6999 /* BalanceUtils.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
 				0DCDFFA824B6722B000F6999 /* LazyView.swift in Sources */,
+				0D4B91DB24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
 				0DCDFFA924B6722B000F6999 /* ShareScreen.swift in Sources */,
 				0DCDFFAA24B6722B000F6999 /* HoldToSend.swift in Sources */,
 				0DCDFFAB24B6722B000F6999 /* BalanceDetail.swift in Sources */,
+				0D4B91DE24CA395100A0E024 /* UIResponder+Current.swift in Sources */,
 				0DCDFFAC24B6722B000F6999 /* Home.swift in Sources */,
 				0DCDFFAD24B6722B000F6999 /* ActionableMessage.swift in Sources */,
 				0DCDFFAE24B6722B000F6999 /* DetailCard.swift in Sources */,
