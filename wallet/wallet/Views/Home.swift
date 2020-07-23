@@ -140,6 +140,7 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveValue: { _ in
             self.view?.keypad.viewModel.clear()
                 self.sendingPushed = false
+                self.zAddress = ""
         }
         ).store(in: &cancellable)
     }

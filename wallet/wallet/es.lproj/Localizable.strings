@@ -30,7 +30,8 @@
 "OK" = "OK";
 "Shielded User\n" = "Usuario blindado\n";
 "Pending confirmation" = "Confirmación pendiente";
-"Confirmations" = "Confirmaciones";
+"Confirmations" = "%s Confirmaciones";
+"Sent" = "Enviado %@";
 // WalletDetailsHeader
 "Your Wallet History" = "Historial de tu Wallet";
 "Shielded address:" = "Dirección Blindada:";

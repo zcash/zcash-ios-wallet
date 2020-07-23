@@ -88,7 +88,7 @@ struct DetailCard: View {
         
     }
     
-    var zecAmount: AnyView {
+    var zecAmount: some View {
         let amount = model.zecAmount.toZecAmount()
         var text = ((model.zecAmount > 0 && model.zecAmount >= 0.001) ? "+ " : "") + ((model.zecAmount < 0.001 && model.zecAmount > 0) ? "< 0.001" : amount)
         var color = Color.zPositiveZecAmount
@@ -98,18 +98,18 @@ struct DetailCard: View {
             color = success ? Color.zNegativeZecAmount : Color.zLightGray2
             opacity = success ? 1 : 0.6
             
-            text = success ? text : "(\(amount) ZEC)"
+            text = success ? text : "(\(text) ZEC)"
             
         default:
             break
         }
         
         
-        return AnyView(
+        return
             Text(text)
                 .foregroundColor(color)
                 .opacity(opacity)
-            )
+            
     }
     
     var body: some View {
@@ -233,5 +233,66 @@ struct DetailRow_Previews: PreviewProvider {
                     )
             )
         }.previewLayout(.fixed(width: 360, height: 69))
+    }
+}
+
+
+import ZcashLightClientKit
+extension Date {
+    var transactionDetail: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yy h:mm a"
+        formatter.locale = Locale.current
+        return formatter.string(from: self)
+    }
+}
+extension DetailModel {
+    init(confirmedTransaction: ConfirmedTransactionEntity, sent: Bool = false) {
+        self.date = Date(timeIntervalSince1970: confirmedTransaction.blockTimeInSeconds)
+        self.id = confirmedTransaction.transactionEntity.transactionId.toHexStringTxId()
+        self.shielded = confirmedTransaction.toAddress?.isValidShieldedAddress ?? true
+        self.status = sent ? .paid(success: confirmedTransaction.minedHeight > 0) : .received
+        self.subtitle = sent ? "Sent".localized() + " \(self.date.transactionDetail)" : "Received".localized() + " \(self.date.transactionDetail)"
+        self.zAddress = confirmedTransaction.toAddress
+        self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
+        if let memo = confirmedTransaction.memo {
+            self.memo = String(bytes: memo, encoding: .utf8)
+        }
+    }
+    init(pendingTransaction: PendingTransactionEntity, latestBlockHeight: BlockHeight? = nil) {
+        let submitSuccess = pendingTransaction.isSubmitSuccess
+        let isPending = pendingTransaction.isPending(currentHeight: latestBlockHeight ?? -1)
+        
+        self.date = Date(timeIntervalSince1970: pendingTransaction.createTime)
+        self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
+        self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
+        self.status = .paid(success: submitSuccess)
+        
+        self.subtitle = DetailModel.subtitle(isPending: isPending,
+                                             isSubmitSuccess: submitSuccess,
+                                             minedHeight: pendingTransaction.minedHeight,
+                                             date: self.date.transactionDetail,
+                                             latestBlockHeight: latestBlockHeight)
+        self.zAddress = pendingTransaction.toAddress
+        self.zecAmount = -Int64(pendingTransaction.value).asHumanReadableZecBalance()
+        if let memo = pendingTransaction.memo {
+            self.memo = String(bytes: memo, encoding: .utf8)
+        }
+    }
+}
+
+extension DetailModel {
+    
+    static func subtitle(isPending: Bool, isSubmitSuccess: Bool, minedHeight: BlockHeight, date: String, latestBlockHeight: BlockHeight?) -> String {
+        
+        guard isPending else {
+            return "\("Sent".localized()) \(date)"
+        }
+        
+        guard minedHeight > 0, let latestHeight = latestBlockHeight, latestHeight > 0 else {
+            return "Pending confirmation".localized()
+        }
+        
+        return "\(abs(latestHeight - minedHeight)) \("Confirmations".localized())"
     }
 }

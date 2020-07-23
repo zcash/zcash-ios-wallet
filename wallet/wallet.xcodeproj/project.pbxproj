@@ -51,6 +51,7 @@
 		0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100223C52CE200CD2854 /* AddMemo.swift */; };
 		0D4C100523C52D3400CD2854 /* ZcashMemoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */; };
 		0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */; };
+		0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */; };
 		0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
@@ -238,6 +239,7 @@
 		0D4C100223C52CE200CD2854 /* AddMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemo.swift; sourceTree = "<group>"; };
 		0D4C100423C52D3400CD2854 /* ZcashMemoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashMemoTextView.swift; sourceTree = "<group>"; };
 		0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCheckCircle.swift; sourceTree = "<group>"; };
+		0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTests.swift; sourceTree = "<group>"; };
 		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
 		0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-spend.params"; sourceTree = "<group>"; };
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 		0D12511823B557E60014EE3A /* walletTests */ = {
 			isa = PBXGroup;
 			children = (
+				0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */,
 				0D12511923B557E60014EE3A /* walletTests.swift */,
 				0D12511B23B557E60014EE3A /* Info.plist */,
 				0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */,
@@ -953,6 +956,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D1B6D7A24243F46004C75DB /* NumberTests.swift in Sources */,
+				0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */,
 				0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */,
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
 				0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */,
@@ -1199,7 +1203,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1225,7 +1229,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
