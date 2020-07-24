@@ -35,9 +35,9 @@ struct EnterRecipient: View {
             let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value)),
             let amountToSend = NumberFormatter.zecAmountFormatter.number(from: flow.amount)?.doubleValue {
             if ZECCWalletEnvironment.shared.sufficientFundsToSend(amount: amountToSend) {
-                return "You Have %@ sendable ZEC".localized(with: "\(balance)")
+                return String(format:NSLocalizedString("You Have %@ sendable ZEC", comment: ""), "\(balance)")
             } else {
-                return "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC".localized(with: "\(balance)", "\(ZECCWalletEnvironment.minerFee)")
+                return String(format: "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC", "\(balance)", "\(ZECCWalletEnvironment.minerFee)")
             }
         } else {
             return "You don't have any sendable ZEC yet"

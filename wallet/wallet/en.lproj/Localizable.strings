@@ -29,7 +29,9 @@
 "NUKE WALLET" = "NUKE WALLET";
 "OK" = "OK";
 "Shielded User\n" = "Shielded User\n";
-
+"Pending confirmation" = "Pending confirmation";
+"Confirmations" = "Confirmations";
+"Sent" = "Sent";
 // WalletDetailsHeader
 "Your Wallet History" = "Your Wallet History";
 "Shielded address:" = "Shielded address:";

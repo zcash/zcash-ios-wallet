@@ -33,7 +33,7 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = memo + "\nfrom \(replyTo)"
+        let expected = memo + "\nReply-To: \(replyTo)"
         XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         
@@ -44,7 +44,7 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Ha" + "\nfrom \(replyTo)"
+        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday!" + "\nReply-To: \(replyTo)"
         XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
         

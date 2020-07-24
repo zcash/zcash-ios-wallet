@@ -29,7 +29,7 @@ struct ZcashMemoTextView: View {
                         .frame(height: textHeight)
                         .padding(4)
                         .multilineTextAlignment(.leading)
-                    Text("%@ chars".localized(with: "\($text.wrappedValue.count)/\(charLimit)"))
+                    Text(String(format:NSLocalizedString("%@ chars",comment:""), "\($text.wrappedValue.count)/\(charLimit)"))
                         .font(.footnote)
                         .foregroundColor(Color.zLightGray2)
                         .opacity(0.4)
@@ -47,7 +47,7 @@ struct ZcashMemoTextView: View {
                         .layoutPriority(1)
                     Spacer()
                      if $showSendingAddress.wrappedValue {
-                        Text("from %@".localized(with: "\(fromAddress)" ))
+                        Text(String(format:NSLocalizedString("from %@", comment: ""),"\(fromAddress)"))
                             .foregroundColor(Color.zLightGray2)
                             .font(.caption)
                             .opacity(0.6)

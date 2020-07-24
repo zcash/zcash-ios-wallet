@@ -135,8 +135,12 @@ final class HomeViewModel: ObservableObject {
             }
         }).store(in: &cancellable)
         
-        NotificationCenter.default.publisher(for: .sendFlowClosed).sink(receiveValue: { _ in
+        NotificationCenter.default.publisher(for: .sendFlowClosed)
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { _ in
             self.view?.keypad.viewModel.clear()
+                self.sendingPushed = false
+                self.zAddress = ""
         }
         ).store(in: &cancellable)
     }
@@ -177,7 +181,7 @@ final class HomeViewModel: ObservableObject {
         case .maxRetriesReached(attempts: let attempts):
             return Alert(
                 title: Text("Error"),
-                message: Text("Max Retry attempts (%@) have been reached".localized(with: "\(attempts)")),
+                message: Text(String(format:NSLocalizedString("Max Retry attempts (%@) have been reached", comment: ""),"\(attempts)")),
                 primaryButton: .default(Text("dismiss"),action: errorAction),
                 secondaryButton: .default(Text("Retry"),
                                           action: { ZECCWalletEnvironment.shared.synchronizer.start(retry: true )}

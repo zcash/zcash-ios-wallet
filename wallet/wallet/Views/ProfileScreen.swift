@@ -23,16 +23,23 @@ struct ProfileScreen: View {
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
                     Image("zebra_profile")
-                    Button(action: {
-                        tracker.track(.tap(action: .copyAddress),
-                                      properties: [:])
-                        self.isCopyAlertShown = true
-                    }) {
-                        Text("Shielded User\n".localized() + (appEnvironment.initializer.getAddress()?.shortZaddress ?? ""))
-                            .multilineTextAlignment(.center)
+                    VStack {
+                        Text("Shielded User".localized())
                             .font(.system(size: 18))
                             .foregroundColor(.white)
+                        Button(action: {
+                            tracker.track(.tap(action: .copyAddress),
+                                          properties: [:])
+                            self.isCopyAlertShown = true
+                        }) {
+                            Text(appEnvironment.initializer.getAddress() ?? "")
+                            .lineLimit(3)
+                                .multilineTextAlignment(.center)
+                                .font(.system(size: 18))
+                                .foregroundColor(.white)
+                        }
                     }
+                    .padding(0)
                     
                     Spacer()
                     NavigationLink(destination: LazyView(
@@ -58,12 +65,13 @@ struct ProfileScreen: View {
                             .frame(height: Self.buttonHeight)
                         
                     }
-                    Text("See Application Log".localized())
-                        .font(.system(size: 20))
-                        .foregroundColor(Color.zLightGray)
-                        .opacity(0.6)
-                        .frame(height: Self.buttonHeight)
-                    
+                    // TODO: Make Troubleshooting great again
+//                    Text("See Application Log".localized())
+//                        .font(.system(size: 20))
+//                        .foregroundColor(Color.zLightGray)
+//                        .opacity(0.6)
+//                        .frame(height: Self.buttonHeight)
+//
                     ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                     
@@ -84,10 +92,11 @@ struct ProfileScreen: View {
                             .frame(height: Self.buttonHeight)
                     }
                     
-                    Spacer()
+                    
                     
                 }
                 .padding(.horizontal, Self.horizontalPadding)
+                .padding(.bottom, 30)
                 .alert(isPresented: self.$isCopyAlertShown) {
                     Alert(title: Text(""),
                           message: Text("Address Copied to clipboard!".localized()),
