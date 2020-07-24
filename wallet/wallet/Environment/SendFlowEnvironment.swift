@@ -181,7 +181,7 @@ final class SendFlowEnvironment: ObservableObject {
     
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
         
-        let replyTo = "\nfrom \(address)"
+        let replyTo = "\nReply-To: \(address)"
         
         if (memo.count + replyTo.count) >= charLimit {
             let truncatedMemo = String(memo[memo.startIndex ..< memo.index(memo.startIndex, offsetBy: (memo.count - replyTo.count))])
