@@ -75,6 +75,12 @@
 		0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */; };
 		0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */; };
 		0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */; };
+		0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1A24CB5D5C009C654E /* ShareView.swift */; };
+		0DBA1E1C24CB5D5C009C654E /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1A24CB5D5C009C654E /* ShareView.swift */; };
+		0DBA1E1E24CB628B009C654E /* DisplayAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */; };
+		0DBA1E1F24CB628B009C654E /* DisplayAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */; };
+		0DBA1E2124CB6951009C654E /* AddressFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E2024CB6950009C654E /* AddressFragment.swift */; };
+		0DBA1E2224CB6951009C654E /* AddressFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E2024CB6950009C654E /* AddressFragment.swift */; };
 		0DBAA0912419A77500B08BC7 /* NukeWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBAA0902419A77500B08BC7 /* NukeWarning.swift */; };
 		0DC0847724BE57BE00F498A5 /* FeedbackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */; };
 		0DC0847924BE583400F498A5 /* RateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0847824BE583400F498A5 /* RateComponent.swift */; };
@@ -264,6 +270,9 @@
 		0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
 		0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedManagement.swift; sourceTree = "<group>"; };
 		0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZECCWalletEnvironment.swift; sourceTree = "<group>"; };
+		0DBA1E1A24CB5D5C009C654E /* ShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAddress.swift; sourceTree = "<group>"; };
+		0DBA1E2024CB6950009C654E /* AddressFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFragment.swift; sourceTree = "<group>"; };
 		0DBAA0902419A77500B08BC7 /* NukeWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NukeWarning.swift; sourceTree = "<group>"; };
 		0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackForm.swift; sourceTree = "<group>"; };
 		0DC0847824BE583400F498A5 /* RateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateComponent.swift; sourceTree = "<group>"; };
@@ -354,6 +363,7 @@
 				0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */,
 				0DBAA0902419A77500B08BC7 /* NukeWarning.swift */,
 				0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */,
+				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -514,6 +524,7 @@
 		0DEC5DFA23BD63AA002EFD0D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0DBA1E1A24CB5D5C009C654E /* ShareView.swift */,
 				0D0AAE1024102380009CD8F9 /* SyncingButton.swift */,
 				0D0AAE0E24102379009CD8F9 /* LottieView.swift */,
 				0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */,
@@ -538,6 +549,7 @@
 				0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */,
 				0D1B6D7724241C20004C75DB /* LazyView.swift */,
 				0DC0847824BE583400F498A5 /* RateComponent.swift */,
+				0DBA1E2024CB6950009C654E /* AddressFragment.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -906,11 +918,13 @@
 				0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */,
 				0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */,
 				0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */,
+				0DBA1E1E24CB628B009C654E /* DisplayAddress.swift in Sources */,
 				0D1B6D7824241C20004C75DB /* LazyView.swift in Sources */,
 				0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */,
 				0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */,
 				0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */,
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
+				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */,
@@ -945,6 +959,7 @@
 				0D4C100323C52CE200CD2854 /* AddMemo.swift in Sources */,
 				0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */,
 				0D11C23123BF966C001CF6F7 /* ScanAddress.swift in Sources */,
+				0DBA1E2124CB6951009C654E /* AddressFragment.swift in Sources */,
 				0D7D5DDB24BFAC7C0028083C /* KeyboardResponder.swift in Sources */,
 				0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */,
 				0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */,
@@ -995,6 +1010,7 @@
 				0DCDFF9D24B6722B000F6999 /* ProfileScreen.swift in Sources */,
 				0DCDFF9E24B6722B000F6999 /* ZECCWalletEnvironment.swift in Sources */,
 				0D7D5DDC24BFAC7C0028083C /* KeyboardResponder.swift in Sources */,
+				0DBA1E1C24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0DCDFF9F24B6722B000F6999 /* ZcashButton.swift in Sources */,
 				0DCDFFA024B6722B000F6999 /* ZcashTextField.swift in Sources */,
 				0DCDFFA124B6722B000F6999 /* String+localized.swift in Sources */,
@@ -1030,6 +1046,7 @@
 				0DCDFFBD24B6722B000F6999 /* ZcashSeedPhraseGrid.swift in Sources */,
 				0DCDFFBE24B6722B000F6999 /* Sending.swift in Sources */,
 				0DCDFFBF24B6722B000F6999 /* String+Zcash.swift in Sources */,
+				0DBA1E1F24CB628B009C654E /* DisplayAddress.swift in Sources */,
 				0DCDFFC024B6722B000F6999 /* UIKit+Extensions.swift in Sources */,
 				0DCDFFC124B6722B000F6999 /* ZcashButtonBackground.swift in Sources */,
 				0DCDFFC224B6722B000F6999 /* ReceiveFunds.swift in Sources */,
@@ -1041,6 +1058,7 @@
 				0DCDFFC824B6722B000F6999 /* AddMemo.swift in Sources */,
 				0DCDFFC924B6722B000F6999 /* QRCodeGenerator.swift in Sources */,
 				0DCDFFCA24B6722B000F6999 /* ScanAddress.swift in Sources */,
+				0DBA1E2224CB6951009C654E /* AddressFragment.swift in Sources */,
 				0DCDFFCB24B6722B000F6999 /* AppDelegate.swift in Sources */,
 				0DCDFFCC24B6722B000F6999 /* Ring.swift in Sources */,
 				0DCDFFCD24B6722B000F6999 /* QRCodeScannerView.swift in Sources */,

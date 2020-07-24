@@ -10,12 +10,13 @@ import SwiftUI
 
 struct QRCodeContainer: View {
     var qrImage: Image
+    var badge: Image
     var body: some View {
         ZStack {
             qrImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-            Image("QR-zcashlogo")
+            badge
             .resizable()
             .frame(width: 64, height: 64)
         }
@@ -27,7 +28,8 @@ struct QRCodeContainer_Previews: PreviewProvider {
         
         ZStack {
             ZcashBackground()
-            QRCodeContainer(qrImage: Image("QrCode"))
+            QRCodeContainer(qrImage: Image("QrCode"),
+                            badge: Image("QR-zcashlogo"))
             .frame(width: 285, height: 285)
             
         }
