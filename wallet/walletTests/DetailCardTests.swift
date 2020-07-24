@@ -29,7 +29,7 @@ class DetailCardTests: XCTestCase {
         XCTAssertEqual(DetailModel.subtitle(isPending: true, isSubmitSuccess: true, minedHeight: minedHeight, date: date, latestBlockHeight: -1), "Pending confirmation".localized())
         
         // submission failed
-        XCTAssertEqual(DetailModel.subtitle(isPending: false, isSubmitSuccess: false, minedHeight: -1, date: date, latestBlockHeight: latestHeight), "Sent %s".localized(with: date))
+        XCTAssertEqual(DetailModel.subtitle(isPending: false, isSubmitSuccess: false, minedHeight: -1, date: date, latestBlockHeight: latestHeight), "Sent" + " \(date)")
         
     }
 
