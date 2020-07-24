@@ -24,7 +24,7 @@ struct ReceiveFunds: View {
     @Binding var isShown: Bool
     var qrImage: Image {
         if let img = QRCodeGenerator.generate(from: self.address) {
-            return Image(img, scale: 1, label: Text("QR Code for %@".localized(with:"\(self.address)") ))
+            return Image(img, scale: 1, label: Text(String(format:NSLocalizedString("QR Code for %@", comment: ""),"\(self.address)") ))
         } else {
             return Image("zebra_profile")
         }

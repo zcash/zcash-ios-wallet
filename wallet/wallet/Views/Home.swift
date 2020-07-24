@@ -181,7 +181,7 @@ final class HomeViewModel: ObservableObject {
         case .maxRetriesReached(attempts: let attempts):
             return Alert(
                 title: Text("Error"),
-                message: Text("Max Retry attempts (%@) have been reached".localized(with: "\(attempts)")),
+                message: Text(String(format:NSLocalizedString("Max Retry attempts (%@) have been reached", comment: ""),"\(attempts)")),
                 primaryButton: .default(Text("dismiss"),action: errorAction),
                 secondaryButton: .default(Text("Retry"),
                                           action: { ZECCWalletEnvironment.shared.synchronizer.start(retry: true )}

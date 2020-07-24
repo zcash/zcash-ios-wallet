@@ -47,7 +47,7 @@ struct ZcashMemoTextView: View {
                         .layoutPriority(1)
                     Spacer()
                      if $showSendingAddress.wrappedValue {
-                        Text("from %@".localized(with: "\(fromAddress)" ))
+                        Text(String(format:NSLocalizedString("from %@", comment: ""),"\(fromAddress)"))
                             .foregroundColor(Color.zLightGray2)
                             .font(.caption)
                             .opacity(0.6)

@@ -83,7 +83,7 @@ struct SeedBackup: View {
                     .padding()
 
                 gridView
-                Text("\("Wallet Birthday:".localized()): \(birthday)")
+                Text("\("Wallet Birthday:".localized()) \(birthday)")
                     .foregroundColor(Color.zLightGray)
                     .font(.footnote)
                     .frame(alignment: .leading)
