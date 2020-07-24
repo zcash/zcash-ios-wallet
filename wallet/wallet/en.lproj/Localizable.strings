@@ -30,7 +30,7 @@
 "OK" = "OK";
 "Shielded User\n" = "Shielded User\n";
 "Pending confirmation" = "Pending confirmation";
-"Confirmations" = "%d Confirmations";
+"Confirmations" = "Confirmations";
 "Sent" = "Sent";
 // WalletDetailsHeader
 "Your Wallet History" = "Your Wallet History";

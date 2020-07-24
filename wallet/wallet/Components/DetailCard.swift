@@ -35,42 +35,6 @@ struct DetailModel: Identifiable {
     
 }
 
-//final class DetailCardViewModel {
-//    var model: DetailModel
-//
-//    var title: String {
-//
-//        switch model.status {
-//        case .paid:
-//            return "You paid \(model.zAddress)"
-//        case .received:
-//            return "\(model.shielded ? "Unknown" : model.zAddress) paid you"
-//
-//        }
-//    }
-//
-//    var showShield: Bool {
-//        model.shielded
-//    }
-//
-//    var zecAmountColor: Color
-//
-//    var zecAmount: String {
-//        model.zecAmount.toZecAmount() + " ZEC"
-//    }
-//
-//    init(model: DetailModel) {
-//        self.model = model
-//        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
-//    }
-//
-//    func setup() {
-//        zecAmountColor = model.zecAmount < 0 ? Color.zNegativeZecAmount : Color.zPositiveZecAmount
-//
-//    }
-//}
-
-
 struct DetailCard: View {
  
     var model: DetailModel
