@@ -283,6 +283,10 @@ struct Home: View {
         )
     }
     
+    var amountOpacity: Double {
+        self.isSendingEnabled ? self.$viewModel.sendZecAmount.wrappedValue > 0 ? 1.0 : 0.6 : 0.3
+    }
+    
     var body: some View {
         ZStack {
             
@@ -297,7 +301,7 @@ struct Home: View {
                 
                 Spacer()
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
-                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
+                    .opacity(amountOpacity)
                     .scaledToFit()
                 
                 if self.isSendingEnabled {
@@ -392,7 +396,12 @@ struct Home: View {
                     .padding()
         })
             
-        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarTitle(
+            Text("Enter an amount to send")
+                .font(.system(size: 12))
+                .foregroundColor(.white),
+                displayMode: .inline
+        )
         .sheet(isPresented: $viewModel.showProfile){
             ProfileScreen(isShown: self.$viewModel.showProfile)
                 .environmentObject(self.appEnvironment)

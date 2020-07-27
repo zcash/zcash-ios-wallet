@@ -9,7 +9,7 @@
 "Zcash address in buffer!" = "Dirección de Zcash en el búfer!";
 "Paste" = "Pegar";
 " Available" = " Disponible";
-"(tap in an amount to send)" = "(Ingresa un monto para enviar)";
+"Enter an amount to send" = "Ingresa un monto para enviar";
 "(expecting " = "(esperando ";
 "Create new Wallet" = "Crea nueva Wallet";
 "Done" = "Listo";

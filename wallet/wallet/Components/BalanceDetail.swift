@@ -14,14 +14,13 @@ enum BalanceStatus {
     case waiting(change: Double)
 }
 
-
 struct BalanceDetail: View {
     var availableZec: Double
     var status: BalanceStatus
     
     var available: some View {
         Text(format(zec: availableZec) + " ZEC")
-            .foregroundColor(.white)
+            .foregroundColor(.zLightGray)
         + Text(" Available")
             .foregroundColor(Color.zAmberGradient1)
     }
@@ -83,7 +82,6 @@ struct BalanceDetail_Previews: PreviewProvider {
                 BalanceDetail(availableZec: 0.0011,status: .expecting(zec: 2))
                 BalanceDetail(availableZec: 12.2,status: .waiting(change: 5.3111112))
             }
-            
         }
     }
 }

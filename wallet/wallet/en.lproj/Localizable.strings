@@ -9,7 +9,7 @@
 "Zcash address in buffer!" = "Zcash address in buffer!";
 "Paste" = "Paste";
 " Available" = " Available";
-"(tap in an amount to send)" = "(tap in an amount to send)";
+"Enter an amount to send" = "Enter an amount to send";
 "(expecting " = "(expecting ";
 "Create new Wallet" = "Create new Wallet";
 "Done" = "Done";
