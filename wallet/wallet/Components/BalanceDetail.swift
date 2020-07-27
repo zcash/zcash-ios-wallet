@@ -29,15 +29,16 @@ struct BalanceDetail: View {
     func format(zec: Double) -> String {
         NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: zec)) ?? "ERROR" //TODO: handle this weird stuff
     }
-    
+    var includeCaption: Bool {
+        switch status {
+        case .available(_):
+            return false
+        default:
+            return true
+        }
+    }
     var caption: some View {
         switch status {
-        case .available(let showCaption):
-            return Text(showCaption ? "(tap in an amount to send)" : "")
-                .font(.body)
-                .foregroundColor(Color.zLightGray)
-                
-            
         case .expecting(let zec):
             return  Text("(expecting ")
                            .font(.body)
@@ -59,12 +60,16 @@ struct BalanceDetail: View {
                        + Text(" ZEC)")
                            .font(.body)
                            .foregroundColor(Color.zLightGray)
+            default:
+                return Text("")
         }
     }
     var body: some View {
         VStack(alignment: .center) {
             available
-            caption
+            if includeCaption {
+                caption
+            }
         }
     }
 }
