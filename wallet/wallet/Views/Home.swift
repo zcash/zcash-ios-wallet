@@ -236,7 +236,7 @@ struct Home: View {
         }) {
             Text("Send")
                 .foregroundColor(.black)
-                .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: Color.zYellow)))
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                 .frame(height: buttonHeight)
                 .padding([.leading, .trailing], buttonPadding)
                 .opacity(isSendingEnabled ? 1.0 : 0.3 ) // validate this

@@ -36,7 +36,7 @@ struct SyncingButton: View {
             }.store(in: &dispose)
         }
     }
-    var lottieView = LottieView(filename: "sendbutton")
+    var lottieView = LottieView(filename: "lottie_button_loading_new")
     @ObservedObject var viewModel: SyncingViewModel
     init(progressSubject: CurrentValueSubject<Float,Never>) {
         self.viewModel = SyncingViewModel(progressSubject: progressSubject)
