@@ -1,0 +1,162 @@
+/*
+  Localizable.strings
+  wallet
+
+  Copyright © 2020 Francisco Gindre. All rights reserved.
+*/
+
+// COMPONENTS:
+"Zcash address in buffer!" = "Zcash adres in buffer!";
+"Paste" = "Plakken";
+" Available" = " beschikbaar";
+"(tap in an amount to send)" = "(voer de te verzenden hoeveelheid in)";
+"(expecting " = "(verwacht ";
+"Create new Wallet" = "Maak een nieuwe Wallet";
+"Done" = "Klaar";
+"Backup Wallet" = "Backup Wallet";
+"Press and hold\nto send ZEC" = "Tap en houd vast\nom ZEC te versturen";
+"Add Memo Here" = "Voeg notitie toe";
+"%@ chars" = "%@ karakters";
+"from %@" = "van %@";
+"Tap\nto send ZEC" = "Tap\nom ZEC te versturen";
+"To" = "Aan";
+"Enter Shielded Address" = "Voer verborgen adres in";
+"Error" = "Fout";
+"an error ocurred" = "er is een fout opgetrden";
+"Address Copied to clipboard!" = "Adres naar  Copied to clipboard!";
+"Copied to clipboard!" = "Naar klembord gekopieerd!";
+"close" = "sluit";
+"NUKE WALLET" = "VERNIETIG WALLET";
+"OK" = "OK";
+"Shielded User\n" = "Verborgen Gebruiker\n";
+"Pending confirmation" = "In afwachting van bevestiging";
+"Confirmations" = "Bevestigingen";
+"Sent" = "Verzonden";
+// WalletDetailsHeader
+"Your Wallet History" = "Je Wallet geschiedenis";
+"Shielded address:" = "Verborgen adres:";
+
+// TransactionDetails
+"Tx Id:" = "Tx Id:";
+"Date:" = "Datum:";
+"Shielded:" = "Verborgen:";
+"Memo:" = "Notitie:";
+"Address:" = "Adres:";
+"Transaction Detail" = "Transactie Detail";
+
+//EnterRecipient
+"Enter a shielded Zcash address" = "Voer een verborgen Zcash adres in";
+"This is a valid Zcash address!" = "Dit is een geldig Zcash adres!";
+"Invalid Zcash address!" = "Ongeldig Zcash adres!";
+"You Have %@ sendable ZEC" = "Je hebt %@ ZEC beschikbaar om te verzenden";
+"%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ beschikbare ZEC. Je hebt onvoldoende middelen om het bedrag + Miner Fee van %@ ZEC te dekken.";
+"You don't have any sendable ZEC yet" = "Je hebt nog geen verstuurbare ZEC beschikbaar.";
+"Zcash address in buffer" = "Zcash adres in buffer";
+"Next" = "Volgende";
+
+"Amount" = "Bedrag";
+
+//AddMemo
+"Add Memo" = "Notitie toevoegen";
+"Your address is shielded from the public,\n but will be available to the receipient via the memo field." = "Je adres is verborgen voor het publiek,\n maar is wel beschikbaar aan de ontvanger via het notitie veld.";
+"Your transaction is shielded and your address is unavailable to receipent." = "Je transactie is verborgen en je adres is niet leesbaar voor de ontvanger.";
+"Include your sending address in a memo" = "Neem je eigen versturende adres op in een notitie";
+"Discard and Send" = "Verwijderen en Versturen";
+"Send Now" = "Nu versturen";
+"Add Memo (optional)" = "Voeg notitie toe (optioneel)";
+
+//HoldToSend
+"Send %@ ZEC to" = "Verstuur %@ ZEC aan";
+"Network fee: %@" = "Network fee: %@";
+"Includes memo" = "Notitie ingesloten";
+
+//Sending
+"thing is that we really don't know what just went down, sorry!" = "het punt is dat we niet precies weten wat er mis ging, sorry!";
+"Sending" = "Versturen";
+"Sent" = "Verzonden";
+"an error ocurred while submitting your transaction" = "er is iets fout gegaan tijdens het versturen van je transactie";
+"Unable to send" = "Versturen is mislukt";
+"ZEC to" = "ZEC aan";
+
+
+//CreateNewWallet
+"Create New" = "Nieuw aanmaken";
+"Restore" = "Herstellen";
+
+//RestoreWallet
+"Enter your Seed Phrase" = "Voer je Seed Phrase in";
+"Make sure nobody is watching you!" = "Wees er zeker van dat je niet bekeken wordt!";
+"Wallet Birthday height" = "Wallet Birthday height";
+"If you don't know it, leave it blank. First Sync will take longer." = "Als je het niet weet, laat het veld dan leef. De eerste synchronisatie zal langer duren.";
+"Proceed" = "Doorgaan";
+"Restore from Seed Phrase" = "Herstel van Seed Phrase";
+
+//BackupWallet
+"Your Wallet needs\nto be Backed up" = "Maak een backup \nvan je Wallet";
+"Syncing %@%" = "Synchroniseren %@%";
+"Skip" = "Overslaan";
+
+//SeedBackup
+"Seed:" = "Seed:";
+"Wallet Birthday:" = "Wallet Birthday:";
+"Your Backup Seed" = "Je Backup Seed";
+"Please back them up wisely!\nWe recommend a paper backup and a password vault" = "Sla ze verstandig op!\nWe adviseren een papieren paper backup en een password vault";
+"Copy to clipboard" = "Kopieer naar klembord";
+"I'm all set!" = "Ik ben er helemaal klaar voor!";
+
+//Home
+"There was an error creating your wallet. Please back it up and try again" = "Ir is iets mis gegaan bij het aanmaken van je wallet. Maak een backup en probeer het nog een keer";
+"Max Retry attempts (%@) have been reached" = "Maximum aantal pogingen (%@) bereikt";
+"dismiss" = "sluiten";
+"Retry" = "Opnieuw";
+"Send" = "Verstuur";
+"No Balance" = "geen saldo";
+"Wallet History" = "Wallet geschiedenis";
+"Receive Funds" = "Ontvang ZEC";
+"Your Profile" = "Je profiel";
+
+//ReceiveFunds
+"QR Code for %@" = "QR Code voor %@";
+"Scan Recipient Address" = "Ontvangst adres scannen";
+
+//ScanAddress
+"Request Camera Access" = "Camera toegang vragen";
+"We don't have permission to access your camera" = "We hebben geen toestemming om je camera te gebruiken";
+"Camera Unavailable" = "Camera niet beschikbaar";
+"Switch to your Zcash address" = "Wissel naar je Zcash adres";
+
+//ShareScreen
+"Share Screen" = "Scherm delen";
+
+//ProfileScreen
+"Send Feedback" = "Feedback versturen";
+"See Application Log" = "Bekijk Applicatie Log";
+"ECC Wallet" = "ECC Wallet";
+
+//FundsAtRisk
+"Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet." = "Vergeet niet dat JIJ de bank bent met Zcash. Alleen jij, of eenieder met jouw seed phrase, heeft toegang tot je Wallet.";
+"You should back this up immediately" = "Dit moet je zo snel mogelijk in een backup zetten en";
+"as no one else can restore it for you" = "bewaren omdat niemand dit voor je kan herstellen";
+"if your device is lost/broken/stolen…" = "wanneer je device verloren/kapot laten vallen/gestolen…";
+"Your " = "Jou ";
+"funds " = "middelen ";
+"are at risk!" = "lopen risico!";
+"Backup now!" = "Maak nu een Backup!";
+"Not now" = "Niet nu";
+
+//NukeWarning
+"Make sure you backed up your wallet before proceeding." = "Controleer dat je zeker weet dat je een backup hebt van je waller voordat je doorgaat.";
+"If you nuke your wallet, there's no way to recover it." = "Wanneer je je wallet vernietigd, dan is er geen enkele manier om je wallet te herstellen.";
+"You are about to " = "Je staat op het punt om ";
+"NUKE " = "je wallet ";
+"your wallet!" = "te vernietigen!";
+"Delete Wallet?" = "Wallet verwijderen?";
+"You are about to" = "Je staat op het punt om";
+" nuke your wallet. " = " je wallet te verwijderen. ";
+"Are you sure you want to proceed?" = "Weet je zeker dat je door wilt gaang";
+"I'm not sure" = "Ik heb geen idee";
+"NUKE WALLET!" = "VERNIETIG WALLET!";
+
+//FeedBackForm
+"Feedback Sent!" = "Feedback verzonden!";
+"Thanks for your feedback!" = "Bedankt voor je feedback!";
