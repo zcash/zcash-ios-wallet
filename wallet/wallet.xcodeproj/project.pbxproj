@@ -11,7 +11,6 @@
 		0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */; };
 		0D0AAE0F2410237A009CD8F9 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE0E24102379009CD8F9 /* LottieView.swift */; };
 		0D0AAE1124102380009CD8F9 /* SyncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1024102380009CD8F9 /* SyncingButton.swift */; };
-		0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1224102747009CD8F9 /* sendbutton.json */; };
 		0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */; };
 		0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */; };
 		0D100ED723BA78990089DB22 /* ZcashSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100ED623BA78990089DB22 /* ZcashSymbol.swift */; };
@@ -41,6 +40,8 @@
 		0D27C4A723C4C3AE0044B48E /* EnterRecipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */; };
 		0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
 		0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */; };
+		0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */; };
+		0D2D5C1724CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */; };
 		0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3AAB44244652700010EA3C /* TransactionDetail.swift */; };
 		0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */; };
 		0D421AF823C65B8F00E5E55E /* HoldToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF723C65B8F00E5E55E /* HoldToSend.swift */; };
@@ -151,7 +152,6 @@
 		0DCDFFD424B6722B000F6999 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23223BFA810001CF6F7 /* HostingController.swift */; };
 		0DCDFFD524B6722B000F6999 /* MnemonicSeedPhraseHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */; };
 		0DCDFFD624B6722B000F6999 /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
-		0DCDFFDA24B6722B000F6999 /* sendbutton.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1224102747009CD8F9 /* sendbutton.json */; };
 		0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
 		0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
@@ -203,7 +203,6 @@
 		0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPadViewModelTests.swift; sourceTree = "<group>"; };
 		0D0AAE0E24102379009CD8F9 /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		0D0AAE1024102380009CD8F9 /* SyncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncingButton.swift; sourceTree = "<group>"; };
-		0D0AAE1224102747009CD8F9 /* sendbutton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sendbutton.json; sourceTree = "<group>"; };
 		0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundsAtRisk.swift; sourceTree = "<group>"; };
 		0D100ED423BA75EE0089DB22 /* ZcashLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashLogo.swift; sourceTree = "<group>"; };
 		0D100ED623BA78990089DB22 /* ZcashSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSymbol.swift; sourceTree = "<group>"; };
@@ -239,6 +238,7 @@
 		0D27C4A623C4C3AE0044B48E /* EnterRecipient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterRecipient.swift; sourceTree = "<group>"; };
 		0D27C4A823C4C4640044B48E /* ZcashTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTextField.swift; sourceTree = "<group>"; };
 		0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottie_button_loading_new.json; sourceTree = "<group>"; };
 		0D3AAB44244652700010EA3C /* TransactionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetail.swift; sourceTree = "<group>"; };
 		0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0D421AF723C65B8F00E5E55E /* HoldToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldToSend.swift; sourceTree = "<group>"; };
@@ -433,7 +433,7 @@
 				8D3F362724A40FCF0087687A /* Localizable.strings */,
 				0D12510823B557E60014EE3A /* Assets.xcassets */,
 				0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */,
-				0D0AAE1224102747009CD8F9 /* sendbutton.json */,
+				0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */,
 				0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */,
 				0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */,
 				0D12511023B557E60014EE3A /* Info.plist */,
@@ -710,9 +710,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D0AAE1324102747009CD8F9 /* sendbutton.json in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
 				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
+				0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
 				0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */,
 				8D3F362524A40FCF0087687A /* Localizable.strings in Resources */,
@@ -739,9 +739,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DCDFFDA24B6722B000F6999 /* sendbutton.json in Resources */,
 				0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */,
 				0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */,
+				0D2D5C1724CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */,
 				0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */,
 				0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */,
