@@ -28,6 +28,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     }
     static let genericErrorMessage = "An error ocurred, please check your device logs"
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
+    static let memoLengthLimit: Int = 512
     
     @Published var state: WalletState
     

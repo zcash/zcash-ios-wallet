@@ -1,16 +1,14 @@
 //
-//  EnterRecipient.swift
+//  SendTransaction.swift
 //  wallet
 //
-//  Created by Francisco Gindre on 1/7/20.
+//  Created by Francisco Gindre on 7/27/20.
 //  Copyright © 2020 Francisco Gindre. All rights reserved.
 //
 
 import SwiftUI
-import Combine
-
-struct EnterRecipient: View {
-    
+import ZcashLightClientKit
+struct SendTransaction: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     
     var availableBalance: Bool {
@@ -30,7 +28,7 @@ struct EnterRecipient: View {
         }
     }
     
-    func amountSubtitle(amount: String) ->  String {
+    func amountSubtitle(amount: String) -> String {
         if availableBalance,
             let balance = NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value)),
             let amountToSend = NumberFormatter.zecAmountFormatter.number(from: flow.amount)?.doubleValue {
@@ -50,13 +48,16 @@ struct EnterRecipient: View {
     
     var sufficientAmount: Bool {
         let amount = (flow.doubleAmount ??  0 )
-         return amount > 0 && amount <= ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value
+        return amount > 0 && amount <= ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value
     }
     
     var validForm: Bool {
-        availableBalance && validAddress && sufficientAmount
+        availableBalance && validAddress && sufficientAmount && validMemo
     }
     
+    var validMemo: Bool {
+        flow.memo.count >= 0 && flow.memo.count <= charLimit
+    }
     
     var addressInBuffer: AnyView {
         
@@ -69,9 +70,15 @@ struct EnterRecipient: View {
         return AnyView(
             ActionableMessage(message: "Zcash address in buffer".localized(), actionText: "Paste".localized(), action: {
                 tracker.track(.tap(action: .sendAddressPaste), properties: [:])
-                    self.flow.address = clipboard
-                    })
-                )
+                self.flow.address = clipboard
+            })
+        )
+    }
+    var charLimit: Int {
+        if flow.includeSendingAddress {
+            return ZECCWalletEnvironment.memoLengthLimit - SendFlowEnvironment.replyToAddress((ZECCWalletEnvironment.shared.initializer.getAddress() ?? "")).count
+        }
+        return ZECCWalletEnvironment.memoLengthLimit
     }
     
     var body: some View {
@@ -80,12 +87,40 @@ struct EnterRecipient: View {
             
             VStack(alignment: .leading, spacing: 20) {
                 
-                Spacer().frame(height: 96)
-                ZcashTextField(
-                    title: "To:".localized(),
+                ZcashNavigationBar(
+                    leadingItem: {
+                        Button(action: {
+                            self.flow.close()
+                        }) {
+                            Image("Back")
+                                .renderingMode(.original)
+                        }
+                },
+                headerItem: {
+                    ZecAmountHeader(amount: self.flow.amount)
+                },
+                    
+                trailingItem: {
+                    Button(action: {}) {
+                        Text("Send")
+                            .foregroundColor(.black)
+                            .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: .zAmberGradient2)))
+                            .frame(width: 63, height: 24)
+                            .contentShape(RoundedRectangle(cornerRadius: 12))
+                        
+                    }
+                        .opacity(validForm ? 1.0 : 0.3 ) // validate this
+                        .disabled(!validForm)
+                }
+                )
+                .frame(height: 64)
+                    .edgesIgnoringSafeArea([.horizontal])
+                
+                ZcashActionableTextField(
+                    title: "To:".localized().uppercased(),
                     subtitleView: AnyView(
                         Text.subtitle(text: addressSubtitle)
-                        ),
+                    ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $flow.address,
                     action: {
@@ -104,65 +139,43 @@ struct EnterRecipient: View {
                         LazyView(
                             
                             ScanAddress(
-                                  viewModel: ScanAddressViewModel(
+                                viewModel: ScanAddressViewModel(
                                     shouldShowSwitchButton: false,
                                     showCloseButton: true,
                                     address: self.$flow.address,
                                     shouldShow: self.$flow.showScanView),
-                                  cameraAccess: CameraAccessHelper.authorizationStatus,
-                                  isScanAddressShown: self.$flow.showScanView
+                                cameraAccess: CameraAccessHelper.authorizationStatus,
+                                isScanAddressShown: self.$flow.showScanView
                             ).environmentObject(ZECCWalletEnvironment.shared)
-                           
+                            
                         )
                     }
                 }
-                
-                ZcashTextField(
-                    title: "Amount".localized(),
-                    subtitleView: AnyView(
-                        Text.subtitle(text: self.amountSubtitle(amount: flow.amount))
-                    ),
-                    keyboardType: UIKeyboardType.decimalPad,
-                    binding: $flow.amount,
-                    onEditingChanged: { _ in },
-                    onCommit: {
-                        tracker.track(.tap(action: .sendAddressDoneAmount),
-                                      properties: [:])
-                    }
-                )
-                
+                ZcashMemoTextField(text: $flow.memo,
+                                   includesReplyTo: $flow.includeSendingAddress,
+                                   charLimit: .constant(charLimit))
                 addressInBuffer
-                
                 Spacer()
-                NavigationLink(destination: AddMemo().environmentObject(flow)){
-                    Text("Next")
-                        .foregroundColor(.black)
-                        .font(.body)
-                        .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: Color.zYellow)))
-                        .frame(height: 58)
-                        
-                }
-                .isDetailLink(false)
-                .opacity(validForm ? 1.0 : 0.3 ) // validate this
-                .disabled(!validForm)
-                
             }.padding([.horizontal,.bottom], 24)
             
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
+        .navigationBarTitle(Text(""), displayMode: .inline)
         .onAppear() {
             tracker.track(.screen(screen: .sendAddress), properties: [:])
             self.flow.clearMemo()
         }
+            .keyboardAdaptive()
+            .animation(.easeInOut)
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
     }
 }
 
-
-//
-//struct EnterRecipient_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EnterRecipient().environmentObject(SendFlowEnvironment(amount: 1.2345, verifiedBalance: 23.456, isActive: .constant(true)))
-//    }
-//}
+struct SendTransaction_Previews: PreviewProvider {
+    static var previews: some View {
+        SendTransaction()
+    }
+}

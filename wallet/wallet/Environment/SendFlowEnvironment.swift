@@ -41,7 +41,7 @@ class SendFlow {
 
 final class SendFlowEnvironment: ObservableObject {
     
-    static let maxMemoLength: Int = 255
+    static let maxMemoLength: Int = ZECCWalletEnvironment.memoLengthLimit
     enum FlowError: Error {
         case invalidEnvironment
         case duplicateSent
@@ -179,9 +179,13 @@ final class SendFlowEnvironment: ObservableObject {
         NotificationCenter.default.post(name: .sendFlowClosed, object: nil)
     }
     
+    static func replyToAddress(_ address: String) -> String {
+        "\nReply-To: \(address)"
+    }
+    
     static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
         
-        let replyTo = "\nReply-To: \(address)"
+        let replyTo = replyToAddress(address)
         
         if (memo.count + replyTo.count) >= charLimit {
             let truncatedMemo = String(memo[memo.startIndex ..< memo.index(memo.startIndex, offsetBy: (memo.count - replyTo.count))])

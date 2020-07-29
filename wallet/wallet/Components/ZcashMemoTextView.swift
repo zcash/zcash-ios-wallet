@@ -23,7 +23,7 @@ struct ZcashMemoTextView: View {
                     TextView(placeholder: "Add Memo Here".localized(),
                              text: $text,
                              minHeight: self.textHeight,
-                             limit: charLimit,
+                             limit: .constant(charLimit),
                              calculatedHeight: $textHeight)
                         .foregroundColor(.white)
                         .frame(height: textHeight)

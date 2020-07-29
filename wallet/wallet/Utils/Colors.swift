@@ -34,6 +34,12 @@ extension Color {
     /// \#282828 Color(red: 0.17, green: 0.17, blue: 0.17)
     static let zGray = Color(red:0.16, green:0.16, blue:0.16)
     
+    /// \#4A4A4A Color(red: 74/255, green: 74/255, blue: 74/255)
+    static let zGray2 = Color(red: 74/255, green: 74/255, blue: 74/255)
+    
+    /// \#656565 Color(red: 0.4, green: 0.4, blue: 0.4)
+    static let zGray3 = Color(red: 0.4, green: 0.4, blue: 0.4)
+    
     /// Color(red: 151/255, green: 151/255, blue: 151/255)
     static let zLightGray = Color(red: 151/255, green: 151/255, blue: 151/255)
     
@@ -49,8 +55,7 @@ extension Color {
     /// \#A7A7A7 Color(red: 0.65, green: 0.65, blue: 0.65)
     static let zDarkGray3 = Color(red: 0.65, green: 0.65, blue: 0.65)
     
-    /// \#656565 Color(red: 0.4, green: 0.4, blue: 0.4)
-    static let zGray2 = Color(red: 0.4, green: 0.4, blue: 0.4)
+   
     
     /// # Card colors
     

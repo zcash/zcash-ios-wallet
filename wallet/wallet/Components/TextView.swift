@@ -12,15 +12,23 @@ import UIKit
 struct TextView: UIViewRepresentable {
     var placeholder: String
     @Binding var text: String
-    var limit: Int
+    @Binding var limit: Int
     var minHeight: CGFloat
+    var typingAttributes: [NSAttributedString.Key: Any]
     @Binding var calculatedHeight: CGFloat
-
-    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, limit: Int = Int.max, calculatedHeight: Binding<CGFloat>) {
+    
+    init(placeholder: String,
+         text: Binding<String>,
+         minHeight: CGFloat,
+         limit: Binding<Int>,
+         calculatedHeight: Binding<CGFloat>,
+         typingAttributes: [NSAttributedString.Key: Any]
+          = [:]) {
         self.placeholder = placeholder
         self._text = text
         self.minHeight = minHeight
-        self.limit = limit
+        self._limit = limit
+        self.typingAttributes = typingAttributes
         self._calculatedHeight = calculatedHeight
     }
 
@@ -31,8 +39,10 @@ struct TextView: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.delegate = context.coordinator
-
+        
+        textView.typingAttributes = typingAttributes
         // Decrease priority of content resistance, so content would not push external layout set in SwiftUI
+        
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         textView.isScrollEnabled = false
@@ -42,7 +52,7 @@ struct TextView: UIViewRepresentable {
         textView.font = UIFont.systemFont(ofSize: 16)
         // Set the placeholder
         textView.text = placeholder
-        textView.textColor = UIColor.lightGray
+        textView.textColor = UIColor.white
 
         return textView
     }
@@ -51,7 +61,7 @@ struct TextView: UIViewRepresentable {
         if textView.text != self.text {
             textView.text = self.text
         }
-
+        context.coordinator.limit = self.limit
         recalculateHeight(view: textView)
     }
 
@@ -71,9 +81,10 @@ struct TextView: UIViewRepresentable {
     class Coordinator : NSObject, UITextViewDelegate {
 
         var parent: TextView
-
+        var limit: Int
         init(_ uiTextView: TextView) {
             self.parent = uiTextView
+            self.limit = uiTextView.limit
         }
 
         func textViewDidChange(_ textView: UITextView) {
@@ -94,7 +105,8 @@ struct TextView: UIViewRepresentable {
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             let userPressedDelete = text.isEmpty && range.length > 0
-            return  textView.text.count < parent.limit || userPressedDelete
+            return  textView.text.count + text.count <= limit || userPressedDelete
         }
     }
 }
+
