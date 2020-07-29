@@ -1,0 +1,98 @@
+//
+//  ZcasMemoTextField.swift
+//  wallet
+//
+//  Created by Francisco Gindre on 1/7/20.
+//  Copyright © 2020 Francisco Gindre. All rights reserved.
+//
+
+import SwiftUI
+
+
+
+struct ZcashMemoTextField: View {
+    @Binding var text: String
+    @Binding var includesReplyTo: Bool
+    @State var textHeight: CGFloat = 48
+    @Binding var charLimit: Int
+    
+    var activeColor = Color.zAmberGradient2
+    var inactiveColor = Color.zGray2
+    var isHighlighted: Bool {
+        text.count > 0 || includesReplyTo
+    }
+    
+    var paragraphStyle: NSParagraphStyle {
+        let p = NSMutableParagraphStyle()
+        p.firstLineHeadIndent = 50
+        return p
+    }
+    
+    var body: some View {
+        ZStack{
+            ZStack(alignment: .bottom){
+                VStack(alignment: .trailing, spacing: 0) {
+                    TextView(placeholder: "",
+                             text: $text,
+                             minHeight: self.textHeight,
+                             limit: $charLimit,
+                             calculatedHeight: $textHeight, typingAttributes: [ NSAttributedString.Key.paragraphStyle : paragraphStyle])
+                        .foregroundColor(.white)
+                        .frame(height: textHeight)
+                        .padding(4)
+                        .multilineTextAlignment(.leading)
+                    .overlay(
+                        Baseline().stroke(isHighlighted ? activeColor : inactiveColor , lineWidth: 2)
+                        )
+
+                    HStack {
+                        Text(String(format:NSLocalizedString("%@ chars",comment:""), "\($text.wrappedValue.count)/\(charLimit)"))
+                        .font(.footnote)
+                        .foregroundColor(inactiveColor)
+                        
+                        Spacer()
+                        Toggle(isOn: $includesReplyTo) {
+                            Text("includes reply to")
+                        }
+                    .toggleStyle(SquareToggleStyle(isHighlighted: $includesReplyTo))
+                    }
+                        .padding(4)
+                }
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text("MEMO:")
+                            .foregroundColor(isHighlighted ? inactiveColor : .white)
+                        Text("Add a memo here")
+                            .foregroundColor(inactiveColor)
+                            .opacity(self.text.isEmpty ? 1 : 0)
+                        
+                        Spacer()
+                        }
+
+                
+                    Spacer()
+                        .frame(height: textHeight)
+                     
+                }
+                .edgesIgnoringSafeArea(.all)
+                }
+            .padding(0)
+        }
+       
+    }
+}
+
+struct ZcashMemoTextField_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            ZcashBackground()
+            VStack(alignment: .center) {
+                ZcashMemoTextField(text: .constant(""),
+                                   includesReplyTo: .constant(false), charLimit: .constant(512)
+                                  )
+                    
+                    .padding([.leading, .trailing], 24)
+            }
+        }
+    }
+}

@@ -19,7 +19,7 @@
 "%@ chars" = "%@ chars";
 "from %@" = "from %@";
 "Tap\nto send ZEC" = "Tap\nto send ZEC";
-"To" = "To";
+"To:" = "To:";
 "Enter Shielded Address" = "Enter Shielded Address";
 "Error" = "Error";
 "an error ocurred" = "an error ocurred";

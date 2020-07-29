@@ -22,3 +22,9 @@ extension ZcashButton {
         ZcashButton(color: Color.red, fill: Color.clear, text: "NUKE WALLET")
     }
 }
+
+extension View {
+    func eraseToAnyView() -> AnyView {
+        AnyView(self)
+    }
+}
