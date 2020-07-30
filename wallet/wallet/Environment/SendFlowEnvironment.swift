@@ -41,7 +41,7 @@ class SendFlow {
 
 final class SendFlowEnvironment: ObservableObject {
     
-    static let maxMemoLength: Int = 255
+    static let maxMemoLength: Int = 512
     enum FlowError: Error {
         case invalidEnvironment
         case duplicateSent
@@ -193,13 +193,13 @@ final class SendFlowEnvironment: ObservableObject {
     }
     
     static func buildMemo(memo: String, includesMemo: Bool, replyToAddress: String?) -> String? {
-        guard !memo.isEmpty else { return nil }
         
         guard includesMemo else { return nil }
         
         if let addr = replyToAddress {
             return includeReplyTo(address: addr, in: memo)
         }
+        guard !memo.isEmpty else { return nil }
         
         return memo
     }

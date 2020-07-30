@@ -151,7 +151,7 @@ struct EnterRecipient: View {
         }
         .onAppear() {
             tracker.track(.screen(screen: .sendAddress), properties: [:])
-            self.flow.clearMemo()
+           // self.flow.clearMemo()
         }
         .onTapGesture {
             UIApplication.shared.endEditing()
