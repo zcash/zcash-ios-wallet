@@ -194,11 +194,16 @@ struct SendTransaction: View {
                 self.authError = output
                 self.showError = true
             case .success:
+                self.flow.includesMemo = true
                 self.sendOk = true
             case .userDeclined:
                 break
             }
         }
+    }
+    
+    var includesMemo: Bool {
+        !self.flow.memo.isEmpty || self.flow.includeSendingAddress
     }
     
     func alert(for authEvent: AuthenticationEvent) -> Alert {
