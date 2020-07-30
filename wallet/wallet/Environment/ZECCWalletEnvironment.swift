@@ -195,6 +195,14 @@ extension ZECCWalletEnvironment {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
+    func isValidShieldedAddress(_ address: String) -> Bool {
+        self.initializer.isValidShieldedAddress(address)
+    }
+    
+    func isValidTransparentAddress(_ address: String) -> Bool {
+        self.initializer.isValidTransparentAddress(address)
+    }
+    
     func isValidAddress(_ address: String) -> Bool {
         self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
     }

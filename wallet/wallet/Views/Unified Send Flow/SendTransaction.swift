@@ -13,6 +13,8 @@ struct SendTransaction: View {
     @State var showError = false
     @State var authError: AuthenticationEvent = .userDeclined
     @State var sendOk = false
+    @State var addressHelperSelection: AddressHelperView.Selection = .none 
+    
     var availableBalance: Bool {
         ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value > 0
     }
@@ -68,13 +70,8 @@ struct SendTransaction: View {
             clipboard.shortZaddress != nil else {
                 return AnyView(EmptyView())
         }
-        
-        return AnyView(
-            ActionableMessage(message: "Zcash address in buffer".localized(), actionText: "Paste".localized(), action: {
-                tracker.track(.tap(action: .sendAddressPaste), properties: [:])
-                self.flow.address = clipboard
-            })
-        )
+        return AddressHelperView(selection: $addressHelperSelection, mode: .clipboard(address: clipboard)).eraseToAnyView()
+ 
     }
     var charLimit: Int {
         if flow.includeSendingAddress {
@@ -158,7 +155,12 @@ struct SendTransaction: View {
                 ZcashMemoTextField(text: $flow.memo,
                                    includesReplyTo: $flow.includeSendingAddress,
                                    charLimit: .constant(charLimit))
+                
+                
                 addressInBuffer
+                    .onReceive(NotificationCenter.default.publisher(for: .addressSelection)) { (notification) in
+                        self.flow.address = (notification.userInfo?["value"] as? String) ?? "" 
+                }
                 
                 NavigationLink(destination:
                                    
