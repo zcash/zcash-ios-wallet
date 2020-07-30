@@ -205,6 +205,8 @@ final class SendFlowEnvironment: ObservableObject {
         }
         guard !memo.isEmpty else { return nil }
         
+        guard !memo.isEmpty else { return nil }
+        
         return memo
     }
 }
