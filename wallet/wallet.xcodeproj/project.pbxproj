@@ -186,6 +186,8 @@
 		0DF26E2524D1F75E00F32978 /* SquareToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2324D1F75E00F32978 /* SquareToggleStyle.swift */; };
 		0DF26E2724D1F88100F32978 /* Baseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2624D1F88100F32978 /* Baseline.swift */; };
 		0DF26E2824D1F88100F32978 /* Baseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2624D1F88100F32978 /* Baseline.swift */; };
+		0DF26E2A24D2208A00F32978 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */; };
+		0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		3B413006FADE74F203B484C0 /* Pods_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACB15604DA487A1AF476359 /* Pods_wallet.framework */; };
@@ -313,6 +315,7 @@
 		0DF26E2024D1F75300F32978 /* ZcashMemoTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZcashMemoTextField.swift; sourceTree = "<group>"; };
 		0DF26E2324D1F75E00F32978 /* SquareToggleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SquareToggleStyle.swift; sourceTree = "<group>"; };
 		0DF26E2624D1F88100F32978 /* Baseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Baseline.swift; sourceTree = "<group>"; };
+		0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
 		0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashHoldToSendButton.swift; sourceTree = "<group>"; };
 		0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCloseButton.swift; sourceTree = "<group>"; };
 		18C69464FD3770D35A524106 /* Pods-wallet-no-logging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-no-logging.debug.xcconfig"; path = "Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging.debug.xcconfig"; sourceTree = "<group>"; };
@@ -413,6 +416,7 @@
 				0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */,
 				0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */,
 				0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */,
+				0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -974,6 +978,7 @@
 				0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
 				0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */,
+				0DF26E2A24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DF26E2424D1F75E00F32978 /* SquareToggleStyle.swift in Sources */,
 				0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */,
 				0D2D5C1924CF8031001A58AD /* ZcashActionableTextField.swift in Sources */,
@@ -1064,6 +1069,7 @@
 				0DF26E2224D1F75300F32978 /* ZcashMemoTextField.swift in Sources */,
 				0DCDFFA524B6722B000F6999 /* WalletDetails.swift in Sources */,
 				0DCDFFA624B6722B000F6999 /* BalanceUtils.swift in Sources */,
+				0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
 				0DCDFFA824B6722B000F6999 /* LazyView.swift in Sources */,
 				0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */,
@@ -1283,7 +1289,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1294,7 +1300,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -1309,7 +1315,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
@@ -1319,7 +1325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -1422,7 +1428,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 45;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1433,7 +1439,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
 				PRODUCT_NAME = "wallet-no-logs";
 				SWIFT_VERSION = 5.0;
@@ -1447,7 +1453,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
@@ -1457,7 +1463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
 				PRODUCT_NAME = "wallet-no-logs";
 				SWIFT_VERSION = 5.0;

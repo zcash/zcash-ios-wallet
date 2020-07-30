@@ -161,3 +161,6 @@
 //FeedBackForm
 "Feedback Sent!" = "Feedback Sent!";
 "Thanks for your feedback!" = "Thanks for your feedback!";
+
+//SendTransaction
+"Authorize this payment" = "Autoriza este pago";

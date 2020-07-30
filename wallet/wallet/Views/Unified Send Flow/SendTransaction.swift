@@ -10,7 +10,9 @@ import SwiftUI
 import ZcashLightClientKit
 struct SendTransaction: View {
     @EnvironmentObject var flow: SendFlowEnvironment
-    
+    @State var showError = false
+    @State var authError: AuthenticationEvent = .userDeclined
+    @State var sendOk = false
     var availableBalance: Bool {
         ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value > 0
     }
@@ -101,7 +103,9 @@ struct SendTransaction: View {
                 },
                     
                 trailingItem: {
-                    Button(action: {}) {
+                    Button(action: {
+                        AuthenticationHelper.authenticate(with: "Authorize this payment".localized())
+                    }) {
                         Text("Send")
                             .foregroundColor(.black)
                             .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: .zAmberGradient2)))
@@ -155,8 +159,19 @@ struct SendTransaction: View {
                                    includesReplyTo: $flow.includeSendingAddress,
                                    charLimit: .constant(charLimit))
                 addressInBuffer
+                
+                NavigationLink(destination:
+                                   
+                                   Sending().environmentObject(flow)
+                                   .navigationBarTitle("", displayMode: .inline)
+                                   .navigationBarBackButtonHidden(true)
+                                   ,isActive: $sendOk
+                                   ) {
+                                       EmptyView()
+                                   }.isDetailLink(false)
                 Spacer()
             }.padding([.horizontal,.bottom], 24)
+            
             
         }
         .navigationBarBackButtonHidden(true)
@@ -164,13 +179,51 @@ struct SendTransaction: View {
         .navigationBarTitle(Text(""), displayMode: .inline)
         .onAppear() {
             tracker.track(.screen(screen: .sendAddress), properties: [:])
-            self.flow.clearMemo()
+//            self.flow.clearMemo()
         }
-            .keyboardAdaptive()
-            .animation(.easeInOut)
+        .keyboardAdaptive()
+        .animation(.easeInOut)
+        .alert(isPresented: $showError) {
+            alert(for: self.authError)
+        }
         .onTapGesture {
             UIApplication.shared.endEditing()
+        }.onReceive(AuthenticationHelper.authenticationPublisher) { (output) in
+            switch output {
+            case .failed(_), .userFailed:
+                self.authError = output
+                self.showError = true
+            case .success:
+                self.sendOk = true
+            case .userDeclined:
+                break
+            }
         }
+    }
+    
+    func alert(for authEvent: AuthenticationEvent) -> Alert {
+        var title = "This is embarassing".localized()
+        var message = "you shouldn't be seeing this".localized()
+        
+        switch authEvent {
+        case .failed(let authError):
+            title = "Authorization Failed!".localized()
+            switch authError {
+            case .authError(let localAuthError):
+              message = localAuthError.localizedDescription
+            case .generalError(let errorMessage):
+                message = errorMessage
+            case .unknown:
+                message = "unknown error".localized()
+            }
+        case .userFailed:
+            title = "Authorization Failed!".localized()
+            message = "It appears that you were not able to authenticate".localized()
+        default:
+            break
+        }
+        
+        return Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Dismiss")))
     }
 }
 

@@ -245,8 +245,7 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        true // FIX: user should be able to proceed to next screen with no amount
-        //        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
+        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
@@ -321,6 +320,7 @@ struct Home: View {
                         Text("Enter an amount to send")
                             .font(.system(size: 14))
                             .foregroundColor(.white)
+                            .opacity(self.isSendingEnabled ? 1 : 0.4)
                 },
                     trailingItem: {
                         Button(action: {
@@ -379,6 +379,8 @@ struct Home: View {
                             self.endSendFlow()
                         }
                     }
+                    .disabled(!isAmountValid)
+                    .opacity(isAmountValid ? 1 : 0.6)
                     
                     NavigationLink(
                         destination: LazyView(

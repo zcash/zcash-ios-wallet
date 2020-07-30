@@ -197,13 +197,14 @@ final class SendFlowEnvironment: ObservableObject {
     }
     
     static func buildMemo(memo: String, includesMemo: Bool, replyToAddress: String?) -> String? {
-        guard !memo.isEmpty else { return nil }
         
         guard includesMemo else { return nil }
         
         if let addr = replyToAddress {
             return includeReplyTo(address: addr, in: memo)
         }
+        
+        guard !memo.isEmpty else { return nil }
         
         return memo
     }
