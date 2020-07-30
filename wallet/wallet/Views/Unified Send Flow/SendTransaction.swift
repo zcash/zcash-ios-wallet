@@ -159,7 +159,11 @@ struct SendTransaction: View {
                 
                 addressInBuffer
                     .onReceive(NotificationCenter.default.publisher(for: .addressSelection)) { (notification) in
-                        self.flow.address = (notification.userInfo?["value"] as? String) ?? "" 
+                        let address = (notification.userInfo?["value"] as? String) ?? ""
+                        self.flow.address = address
+                        if !address.isEmpty {
+                            tracker.track(.tap(action: .copyAddress), properties: [:])
+                        }
                 }
                 
                 NavigationLink(destination:
@@ -173,7 +177,6 @@ struct SendTransaction: View {
                                    }.isDetailLink(false)
                 Spacer()
             }.padding([.horizontal,.bottom], 24)
-            
             
         }
         .navigationBarBackButtonHidden(true)

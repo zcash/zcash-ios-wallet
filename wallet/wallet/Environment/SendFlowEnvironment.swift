@@ -145,11 +145,11 @@ final class SendFlowEnvironment: ObservableObject {
                     logger.error("\(error)")
                     self.error = error
                     self.showError = true
-                    
+                    SendFlow.end()
                 }
                 // fix me:                
                 self.isDone = true
-                SendFlow.end()
+                
             }) { [weak self] (transaction) in
                 guard let self = self else {
                     return
