@@ -82,7 +82,7 @@ struct EnterRecipient: View {
                 
                 Spacer().frame(height: 96)
                 ZcashTextField(
-                    title: "To".localized(),
+                    title: "To:".localized(),
                     subtitleView: AnyView(
                         Text.subtitle(text: addressSubtitle)
                         ),

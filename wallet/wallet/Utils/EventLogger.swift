@@ -27,6 +27,7 @@ enum Screen: String {
     case sendConfirm = "send.confirm"
     case sendFinal = "send.final"
     case sendMemo = "send.memo"
+    case sendTransaction = "send.transaction"
     
 }
 enum Action: String {

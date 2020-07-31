@@ -1,13 +1,13 @@
 //
-//  ZcashTextField.swift
+//  ZcashActionableTextField.swift
 //  wallet
 //
-//  Created by Francisco Gindre on 1/7/20.
-//  Copyright © 2020 Francisco Gindre. All rights reserved.
+//  Created by Francisco Gindre on 7/27/20.
+//  Copyright © 2020 Electric Coin Company
 //
 
 import SwiftUI
-struct ZcashTextField: View {
+struct ZcashActionableTextField: View {
     
     var title: String
     var placeholder: String = ""
@@ -20,10 +20,12 @@ struct ZcashTextField: View {
     var subtitleView: AnyView
     var onCommit: () -> Void
     var onEditingChanged: (Bool) -> Void
-    
-    
+    var inactiveColor: Color = .zGray2
+    var activeColor: Color = .zAmberGradient2
     
     @Binding var text: String
+    
+    
     
     var accessoryView: AnyView {
         if let img = accessoryIcon, let action = action {
@@ -31,9 +33,7 @@ struct ZcashTextField: View {
                 Button(action: {
                     action()
                 }) {
-                    img
-                        .resizable()
-                    
+                    img.resizable()
                 }
             )
         } else {
@@ -41,13 +41,15 @@ struct ZcashTextField: View {
         }
     }
     
-    
+    var isActive: Bool {
+        text.count > 0
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .foregroundColor(.white)
-            
-            HStack {
+            HStack(alignment: .center) {
+                Text(title)
+                    .foregroundColor(isActive ? .zLightGray : .white)
+                
                 TextField(placeholder,
                           text: $text,
                           onEditingChanged: self.onEditingChanged,
@@ -60,16 +62,17 @@ struct ZcashTextField: View {
                     .autocapitalization(autocapitalize ? .none : .sentences)
                     .disableAutocorrection(!autocorrect)
                     
-                    
-                    .padding([.top])
                 accessoryView
                     .frame(width: 25, height: 25)
+                    .padding(.bottom,4)
             }.overlay(
-                Baseline().stroke(Color.zAmberGradient2,lineWidth: 2)
+                Baseline().stroke(isActive ? activeColor : inactiveColor ,lineWidth: 2)
             )
-            .font(.footnote)
+            .font(.body)
+                
             subtitleView
         }
+        
     }
     
     init(title: String,
@@ -81,6 +84,7 @@ struct ZcashTextField: View {
          accessoryIcon: Image? = nil,
          onEditingChanged: @escaping (Bool) -> Void,
          onCommit: @escaping () -> Void) {
+        
         self.title = title
         self.accessoryIcon = accessoryIcon
         self.action = action
@@ -98,7 +102,7 @@ struct ZcashTextField: View {
     
 }
 
-struct ZcashTextField_Previews: PreviewProvider {
+struct ZcashActionableTextField_Previews: PreviewProvider {
     
     @State static var text: String = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
     static var previews: some View {

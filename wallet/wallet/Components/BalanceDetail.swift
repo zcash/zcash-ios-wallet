@@ -14,14 +14,13 @@ enum BalanceStatus {
     case waiting(change: Double)
 }
 
-
 struct BalanceDetail: View {
     var availableZec: Double
     var status: BalanceStatus
     
     var available: some View {
         Text(format(zec: availableZec) + " ZEC")
-            .foregroundColor(.white)
+            .foregroundColor(.zLightGray)
         + Text(" Available")
             .foregroundColor(Color.zAmberGradient1)
     }
@@ -29,15 +28,16 @@ struct BalanceDetail: View {
     func format(zec: Double) -> String {
         NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: zec)) ?? "ERROR" //TODO: handle this weird stuff
     }
-    
+    var includeCaption: Bool {
+        switch status {
+        case .available(_):
+            return false
+        default:
+            return true
+        }
+    }
     var caption: some View {
         switch status {
-        case .available(let showCaption):
-            return Text(showCaption ? "(tap in an amount to send)" : "")
-                .font(.body)
-                .foregroundColor(Color.zLightGray)
-                
-            
         case .expecting(let zec):
             return  Text("(expecting ")
                            .font(.body)
@@ -59,12 +59,16 @@ struct BalanceDetail: View {
                        + Text(" ZEC)")
                            .font(.body)
                            .foregroundColor(Color.zLightGray)
+            default:
+                return Text("")
         }
     }
     var body: some View {
         VStack(alignment: .center) {
             available
-            caption
+            if includeCaption {
+                caption
+            }
         }
     }
 }
@@ -78,7 +82,6 @@ struct BalanceDetail_Previews: PreviewProvider {
                 BalanceDetail(availableZec: 0.0011,status: .expecting(zec: 2))
                 BalanceDetail(availableZec: 12.2,status: .waiting(change: 5.3111112))
             }
-            
         }
     }
 }

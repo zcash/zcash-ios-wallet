@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ZcashCheckCircle: View {
     @Binding var isChecked: Bool
-    var externalRingColor: Color = Color.zGray2
+    var externalRingColor: Color = Color.zGray3
     var internalRingColor: Color = Color.zAmberGradient2
     var backgroundColor: Color = .clear
     func backgroundShape(size: CGSize) -> some View {
