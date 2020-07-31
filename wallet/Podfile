@@ -11,18 +11,18 @@ end
 
 inhibit_all_warnings!
 
-target 'wallet-no-logging' do
+target 'ECC-Wallet-no-logging' do
   base_pods
 end
 
-target 'wallet' do 
+target 'ECC-Wallet' do 
   base_pods
   pod 'Mixpanel-swift'
-  target 'walletTests' do
+  target 'ECC-WalletTests' do
     inherit! :search_paths
   end
  
-  target 'walletUITests' do
+  target 'ECC-WalletUITests' do
     inherit! :search_paths
   end
 end
