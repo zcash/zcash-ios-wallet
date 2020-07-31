@@ -23,17 +23,17 @@ enum AuthenticationError: Error {
     case unknown
 }
 class AuthenticationHelper {
-    
+    static let authenticationPolicy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
     static var authenticationPublisher =  PassthroughSubject<AuthenticationEvent,Never>()
     static func authenticate(with localizedReason: String) {
         let context = LAContext()
         var error: NSError?
         
         // check whether biometric authentication is possible
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+        if context.canEvaluatePolicy(authenticationPolicy, error: &error) {
             // it's possible, so go ahead and use it
             
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: localizedReason) { success, authenticationError in
+            context.evaluatePolicy(authenticationPolicy, localizedReason: localizedReason) { success, authenticationError in
                 // authentication has now completed
                 DispatchQueue.main.async {
                     if success {
@@ -65,7 +65,18 @@ class AuthenticationHelper {
                 }
             }
         } else {
-            authenticationPublisher.send(.success)
+            guard let authError = error as? LAError else {
+                guard let e = error else {
+                    //no error whatsoever
+                    authenticationPublisher.send(.success)
+                    return
+                }
+                authenticationPublisher.send(.failed(error:.generalError(message: e.localizedDescription)))
+                
+                return
+            }
+            authenticationPublisher.send(.failed(error: .generalError(message: authError.localizedDescription)))
+            
         }
     }
 }
