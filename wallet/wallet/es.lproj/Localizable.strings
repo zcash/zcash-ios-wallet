@@ -44,30 +44,20 @@
 "Address:" = "Dirección:";
 "Transaction Detail" = "Detalles de la tx";
 
-//EnterRecipient
+//SendTransaction
 "Enter a shielded Zcash address" = "Escribe una direccion blindada de Zcash";
 "This is a valid Zcash address!" = "Es una dirección Zcash válida!";
 "Invalid Zcash address!" = "Dirección Zcash inválida!";
 "You Have %@ sendable ZEC" = "Tienes %@ ZEC para enviar";
 "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ ZEC para enviar. No tiene fondos suficientes para cubrir esa cantidad + la tarifa de minero de %@ ZEC";
 "You don't have any sendable ZEC yet" = "Todavía no tienes ZEC para enviar";
-"Zcash address in buffer" = "Dirección de Zcash en el portapapeles";
-"Next" = "Siguiente";
 
 "Amount" = "Amount";
 
 //AddMemo
-"Add Memo" = "Agregar Memo";
-"Your address is shielded from the public,\n but will be available to the receipient via the memo field." = "Su dirección está protegida y no será pública, pero estará disponible para el destinatario a través del memo.";
-"Your transaction is shielded and your address is unavailable to receipent." = "Su transacción esta blindada y su dirección no estará disponible para el destinatario";
-"Include your sending address in a memo" = "Incluir su dirección de envío en un memo";
-"Discard and Send" = "Descartar y enviar";
-"Send Now" = "Enviar ahora";
 "Add Memo (optional)" = "Agregar Memo (opcional)";
 
 //HoldToSend
-"Send %@ ZEC to" = "Enviar %@ ZEC a";
-"Network fee: %@" = "Tarifa de red: %@";
 "Includes memo" = "Incluir memo";
 
 //Sending
