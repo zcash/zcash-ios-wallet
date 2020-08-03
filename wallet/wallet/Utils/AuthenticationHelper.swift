@@ -23,7 +23,12 @@ enum AuthenticationError: Error {
     case unknown
 }
 class AuthenticationHelper {
+    
+    #if targetEnvironment(simulator)
+    static let authenticationPolicy = LAPolicy.deviceOwnerAuthentication
+    #else
     static let authenticationPolicy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
+    #endif
     static var authenticationPublisher =  PassthroughSubject<AuthenticationEvent,Never>()
     static func authenticate(with localizedReason: String) {
         let context = LAContext()
