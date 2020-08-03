@@ -21,4 +21,4 @@ install:
   - curl https://download.z.cash/downloads/sapling-output.params > ${WALLET_WALLET_DIR}/sapling-output.params
   - curl https://download.z.cash/downloads/sapling-spend.params > ${WALLET_WALLET_DIR}/sapling-spend.params
 script:
-  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/wallet.xcworkspace -scheme ECC-Wallet -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build
+  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/wallet.xcworkspace -scheme "ECC-Wallet" -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build
