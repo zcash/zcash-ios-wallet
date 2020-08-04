@@ -732,7 +732,7 @@
 				};
 			};
 			buildConfigurationList = 0D1250FA23B557E40014EE3A /* Build configuration list for PBXProject "ECC-Wallet" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
