@@ -42,6 +42,7 @@ struct ProfileScreen: View {
                     .padding(0)
                     
                     Spacer()
+                    #if ENABLE_LOGGING
                     NavigationLink(destination: LazyView(
                         FeedbackForm(isActive: self.$isFeedbackActive)
                         ),
@@ -52,7 +53,7 @@ struct ProfileScreen: View {
                                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                                         .frame(height: Self.buttonHeight)
                     }
-                    
+                    #endif
                     
                     NavigationLink(destination: LazyView(
                         SeedBackup(hideNavBar: false)

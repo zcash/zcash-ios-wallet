@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0BF91D06169AC881D248F0AA /* Pods_wallet_no_logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05755ABE887C0E4977E8BA96 /* Pods_wallet_no_logging.framework */; };
 		0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */; };
+		0D07B40DDE6D1EC3E6412CE1 /* Pods_ECC_Wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E35EE9E1FF450129E6B39D53 /* Pods_ECC_Wallet.framework */; };
 		0D0AAE0F2410237A009CD8F9 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE0E24102379009CD8F9 /* LottieView.swift */; };
 		0D0AAE1124102380009CD8F9 /* SyncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1024102380009CD8F9 /* SyncingButton.swift */; };
 		0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */; };
@@ -186,11 +186,11 @@
 		0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
-		3B413006FADE74F203B484C0 /* Pods_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACB15604DA487A1AF476359 /* Pods_wallet.framework */; };
-		821BF1B75860B8BFA922A614 /* Pods_walletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D5B43B5A8155F0D38949A4 /* Pods_walletUITests.framework */; };
 		8D3F362524A40FCF0087687A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
 		8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D73958F24A40E6C00936DE3 /* String+localized.swift */; };
-		DBAC4685D59CA6F781C82E3E /* Pods_walletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D63A72F6B7D564AEC15C6D /* Pods_walletTests.framework */; };
+		BABBC9CA990303F17A76CAEE /* Pods_ECC_WalletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A27DE1BA307BA79AF558DCBB /* Pods_ECC_WalletUITests.framework */; };
+		D0DE96F2A4EC1243F7B668E2 /* Pods_ECC_Wallet_no_logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F98B8F09503E4B5A2323A3FA /* Pods_ECC_Wallet_no_logging.framework */; };
+		F70B17A1E28C2C93B8A21ECA /* Pods_ECC_WalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36B81DA8FB2A74AD2728DEF5 /* Pods_ECC_WalletTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,7 +211,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		05755ABE887C0E4977E8BA96 /* Pods_wallet_no_logging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet_no_logging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		027E3A71136B5B4D796FE4D9 /* Pods-ECC-WalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-WalletTests.debug.xcconfig"; path = "Target Support Files/Pods-ECC-WalletTests/Pods-ECC-WalletTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0394897B71FCB571DCBA2B04 /* Pods-ECC-WalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-WalletTests.release.xcconfig"; path = "Target Support Files/Pods-ECC-WalletTests/Pods-ECC-WalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		0D040F5823C3ECDD00ACD07E /* KeyPadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPadViewModelTests.swift; sourceTree = "<group>"; };
 		0D0AAE0E24102379009CD8F9 /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		0D0AAE1024102380009CD8F9 /* SyncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncingButton.swift; sourceTree = "<group>"; };
@@ -236,10 +237,10 @@
 		0D12510B23B557E60014EE3A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0D12510E23B557E60014EE3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D12511023B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D12511523B557E60014EE3A /* walletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D12511523B557E60014EE3A /* ECC-WalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ECC-WalletTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12511923B557E60014EE3A /* walletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletTests.swift; sourceTree = "<group>"; };
 		0D12511B23B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D12512023B557E60014EE3A /* walletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D12512023B557E60014EE3A /* ECC-WalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ECC-WalletUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D12512423B557E60014EE3A /* walletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletUITests.swift; sourceTree = "<group>"; };
 		0D12512623B557E60014EE3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D1B6D7724241C20004C75DB /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
@@ -292,8 +293,8 @@
 		0DC167B023BE37B300332890 /* BalanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceUtils.swift; sourceTree = "<group>"; };
 		0DC37D7224D37D7C00ACFE12 /* AddressHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressHelperView.swift; sourceTree = "<group>"; };
 		0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressValidator.swift; sourceTree = "<group>"; };
-		0DCDFFE624B6722B000F6999 /* wallet-no-logs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wallet-no-logs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0DCDFFE724B6722B000F6999 /* wallet-no-logs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "wallet-no-logs-Info.plist"; path = "/Users/pacu/Repos/ECC/zcash-ios-wallet/wallet/wallet-no-logs-Info.plist"; sourceTree = "<absolute>"; };
+		0DCDFFE624B6722B000F6999 /* ECC-Wallet-no-logs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ECC-Wallet-no-logs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DCDFFE724B6722B000F6999 /* ECC-Wallet-no-logs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ECC-Wallet-no-logs-Info.plist"; sourceTree = "<group>"; };
 		0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineSynchronizer.swift; sourceTree = "<group>"; };
 		0DD8B9B724B6898F0031FF42 /* EventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogger.swift; sourceTree = "<group>"; };
 		0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicSeedPhraseHandling.swift; sourceTree = "<group>"; };
@@ -315,17 +316,24 @@
 		18C69464FD3770D35A524106 /* Pods-wallet-no-logging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-no-logging.debug.xcconfig"; path = "Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging.debug.xcconfig"; sourceTree = "<group>"; };
 		29D1459C46D96D9D3DF2A55C /* Pods-walletUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletUITests.debug.xcconfig"; path = "Target Support Files/Pods-walletUITests/Pods-walletUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2E7FFE45D0C33A74C7344A5E /* Pods-walletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletTests.release.xcconfig"; path = "Target Support Files/Pods-walletTests/Pods-walletTests.release.xcconfig"; sourceTree = "<group>"; };
-		41D5B43B5A8155F0D38949A4 /* Pods_walletUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_walletUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		36B81DA8FB2A74AD2728DEF5 /* Pods_ECC_WalletTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECC_WalletTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4561814BA5B2134841DF75E7 /* Pods-ECC-Wallet-no-logging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-Wallet-no-logging.debug.xcconfig"; path = "Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging.debug.xcconfig"; sourceTree = "<group>"; };
 		49010075453C5CD74A5E09D2 /* Pods-wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.debug.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		4F1CD575112095FD4EB1B604 /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
+		5FFB8D9CEB83884D76AC0960 /* Pods-ECC-WalletUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-WalletUITests.release.xcconfig"; path = "Target Support Files/Pods-ECC-WalletUITests/Pods-ECC-WalletUITests.release.xcconfig"; sourceTree = "<group>"; };
+		727FE4974F8832ED9217E96A /* Pods-ECC-Wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-Wallet.debug.xcconfig"; path = "Target Support Files/Pods-ECC-Wallet/Pods-ECC-Wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		8D3F362624A40FCF0087687A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8D3F362824A40FDF0087687A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8D73958F24A40E6C00936DE3 /* String+localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+localized.swift"; sourceTree = "<group>"; };
 		8F020BD1AB76698D896ED4C4 /* Pods-walletUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletUITests.release.xcconfig"; path = "Target Support Files/Pods-walletUITests/Pods-walletUITests.release.xcconfig"; sourceTree = "<group>"; };
+		A27DE1BA307BA79AF558DCBB /* Pods_ECC_WalletUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECC_WalletUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85B99A0F1C01CABADF33492 /* Pods-walletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-walletTests.debug.xcconfig"; path = "Target Support Files/Pods-walletTests/Pods-walletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA8163D8FC63C0383BA13D13 /* Pods-wallet-no-logging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-no-logging.release.xcconfig"; path = "Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging.release.xcconfig"; sourceTree = "<group>"; };
-		AACB15604DA487A1AF476359 /* Pods_wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5D63A72F6B7D564AEC15C6D /* Pods_walletTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_walletTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B29005011E7A8D04F5FB5009 /* Pods-ECC-WalletUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-WalletUITests.debug.xcconfig"; path = "Target Support Files/Pods-ECC-WalletUITests/Pods-ECC-WalletUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		CA0B4D8E758BD88483D3B5EE /* Pods-ECC-Wallet-no-logging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-Wallet-no-logging.release.xcconfig"; path = "Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging.release.xcconfig"; sourceTree = "<group>"; };
+		D1B51D8DC0F8B49AD8EAE6C4 /* Pods-ECC-Wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECC-Wallet.release.xcconfig"; path = "Target Support Files/Pods-ECC-Wallet/Pods-ECC-Wallet.release.xcconfig"; sourceTree = "<group>"; };
+		E35EE9E1FF450129E6B39D53 /* Pods_ECC_Wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECC_Wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F98B8F09503E4B5A2323A3FA /* Pods_ECC_Wallet_no_logging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECC_Wallet_no_logging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,7 +341,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B413006FADE74F203B484C0 /* Pods_wallet.framework in Frameworks */,
+				0D07B40DDE6D1EC3E6412CE1 /* Pods_ECC_Wallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +349,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBAC4685D59CA6F781C82E3E /* Pods_walletTests.framework in Frameworks */,
+				F70B17A1E28C2C93B8A21ECA /* Pods_ECC_WalletTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,7 +357,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				821BF1B75860B8BFA922A614 /* Pods_walletUITests.framework in Frameworks */,
+				BABBC9CA990303F17A76CAEE /* Pods_ECC_WalletUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +365,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BF91D06169AC881D248F0AA /* Pods_wallet_no_logging.framework in Frameworks */,
+				D0DE96F2A4EC1243F7B668E2 /* Pods_ECC_Wallet_no_logging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +433,7 @@
 				0D12510023B557E40014EE3A /* Products */,
 				EA66A8F666D2E80F5C4EC4F5 /* Pods */,
 				0F65A46FFC0823E2EE87ED5E /* Frameworks */,
-				0DCDFFE724B6722B000F6999 /* wallet-no-logs-Info.plist */,
+				0DCDFFE724B6722B000F6999 /* ECC-Wallet-no-logs-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -433,9 +441,9 @@
 			isa = PBXGroup;
 			children = (
 				0D1250FF23B557E40014EE3A /* ECC Wallet.app */,
-				0D12511523B557E60014EE3A /* walletTests.xctest */,
-				0D12512023B557E60014EE3A /* walletUITests.xctest */,
-				0DCDFFE624B6722B000F6999 /* wallet-no-logs.app */,
+				0D12511523B557E60014EE3A /* ECC-WalletTests.xctest */,
+				0D12512023B557E60014EE3A /* ECC-WalletUITests.xctest */,
+				0DCDFFE624B6722B000F6999 /* ECC-Wallet-no-logs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -589,10 +597,10 @@
 		0F65A46FFC0823E2EE87ED5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E5D63A72F6B7D564AEC15C6D /* Pods_walletTests.framework */,
-				41D5B43B5A8155F0D38949A4 /* Pods_walletUITests.framework */,
-				05755ABE887C0E4977E8BA96 /* Pods_wallet_no_logging.framework */,
-				AACB15604DA487A1AF476359 /* Pods_wallet.framework */,
+				E35EE9E1FF450129E6B39D53 /* Pods_ECC_Wallet.framework */,
+				F98B8F09503E4B5A2323A3FA /* Pods_ECC_Wallet_no_logging.framework */,
+				36B81DA8FB2A74AD2728DEF5 /* Pods_ECC_WalletTests.framework */,
+				A27DE1BA307BA79AF558DCBB /* Pods_ECC_WalletUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -608,6 +616,14 @@
 				8F020BD1AB76698D896ED4C4 /* Pods-walletUITests.release.xcconfig */,
 				18C69464FD3770D35A524106 /* Pods-wallet-no-logging.debug.xcconfig */,
 				AA8163D8FC63C0383BA13D13 /* Pods-wallet-no-logging.release.xcconfig */,
+				727FE4974F8832ED9217E96A /* Pods-ECC-Wallet.debug.xcconfig */,
+				D1B51D8DC0F8B49AD8EAE6C4 /* Pods-ECC-Wallet.release.xcconfig */,
+				4561814BA5B2134841DF75E7 /* Pods-ECC-Wallet-no-logging.debug.xcconfig */,
+				CA0B4D8E758BD88483D3B5EE /* Pods-ECC-Wallet-no-logging.release.xcconfig */,
+				027E3A71136B5B4D796FE4D9 /* Pods-ECC-WalletTests.debug.xcconfig */,
+				0394897B71FCB571DCBA2B04 /* Pods-ECC-WalletTests.release.xcconfig */,
+				B29005011E7A8D04F5FB5009 /* Pods-ECC-WalletUITests.debug.xcconfig */,
+				5FFB8D9CEB83884D76AC0960 /* Pods-ECC-WalletUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -615,9 +631,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0D1250FE23B557E40014EE3A /* wallet */ = {
+		0D1250FE23B557E40014EE3A /* ECC-Wallet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0D12512923B557E60014EE3A /* Build configuration list for PBXNativeTarget "wallet" */;
+			buildConfigurationList = 0D12512923B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-Wallet" */;
 			buildPhases = (
 				04BA33C9C2CE0C770BEA81AD /* [CP] Check Pods Manifest.lock */,
 				0D100EC623BA642E0089DB22 /* ShellScript */,
@@ -630,14 +646,14 @@
 			);
 			dependencies = (
 			);
-			name = wallet;
+			name = "ECC-Wallet";
 			productName = wallet;
 			productReference = 0D1250FF23B557E40014EE3A /* ECC Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0D12511423B557E60014EE3A /* walletTests */ = {
+		0D12511423B557E60014EE3A /* ECC-WalletTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0D12512C23B557E60014EE3A /* Build configuration list for PBXNativeTarget "walletTests" */;
+			buildConfigurationList = 0D12512C23B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-WalletTests" */;
 			buildPhases = (
 				8C3EAD89BAA309B5FC123070 /* [CP] Check Pods Manifest.lock */,
 				0D12511123B557E60014EE3A /* Sources */,
@@ -649,14 +665,14 @@
 			dependencies = (
 				0D12511723B557E60014EE3A /* PBXTargetDependency */,
 			);
-			name = walletTests;
+			name = "ECC-WalletTests";
 			productName = walletTests;
-			productReference = 0D12511523B557E60014EE3A /* walletTests.xctest */;
+			productReference = 0D12511523B557E60014EE3A /* ECC-WalletTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		0D12511F23B557E60014EE3A /* walletUITests */ = {
+		0D12511F23B557E60014EE3A /* ECC-WalletUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0D12512F23B557E60014EE3A /* Build configuration list for PBXNativeTarget "walletUITests" */;
+			buildConfigurationList = 0D12512F23B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-WalletUITests" */;
 			buildPhases = (
 				E0558BAB804CA8B326196F9C /* [CP] Check Pods Manifest.lock */,
 				0D12511C23B557E60014EE3A /* Sources */,
@@ -668,14 +684,14 @@
 			dependencies = (
 				0D12512223B557E60014EE3A /* PBXTargetDependency */,
 			);
-			name = walletUITests;
+			name = "ECC-WalletUITests";
 			productName = walletUITests;
-			productReference = 0D12512023B557E60014EE3A /* walletUITests.xctest */;
+			productReference = 0D12512023B557E60014EE3A /* ECC-WalletUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		0DCDFF9324B6722B000F6999 /* wallet-no-logging */ = {
+		0DCDFF9324B6722B000F6999 /* ECC-Wallet-no-logging */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "wallet-no-logging" */;
+			buildConfigurationList = 0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "ECC-Wallet-no-logging" */;
 			buildPhases = (
 				0DCDFF9424B6722B000F6999 /* [CP] Check Pods Manifest.lock */,
 				0DCDFF9624B6722B000F6999 /* Sources */,
@@ -687,9 +703,9 @@
 			);
 			dependencies = (
 			);
-			name = "wallet-no-logging";
+			name = "ECC-Wallet-no-logging";
 			productName = wallet;
-			productReference = 0DCDFFE624B6722B000F6999 /* wallet-no-logs.app */;
+			productReference = 0DCDFFE624B6722B000F6999 /* ECC-Wallet-no-logs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -715,8 +731,8 @@
 					};
 				};
 			};
-			buildConfigurationList = 0D1250FA23B557E40014EE3A /* Build configuration list for PBXProject "wallet" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = 0D1250FA23B557E40014EE3A /* Build configuration list for PBXProject "ECC-Wallet" */;
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -729,10 +745,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0D1250FE23B557E40014EE3A /* wallet */,
-				0DCDFF9324B6722B000F6999 /* wallet-no-logging */,
-				0D12511423B557E60014EE3A /* walletTests */,
-				0D12511F23B557E60014EE3A /* walletUITests */,
+				0D1250FE23B557E40014EE3A /* ECC-Wallet */,
+				0DCDFF9324B6722B000F6999 /* ECC-Wallet-no-logging */,
+				0D12511423B557E60014EE3A /* ECC-WalletTests */,
+				0D12511F23B557E60014EE3A /* ECC-WalletUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -800,7 +816,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wallet-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ECC-Wallet-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -839,7 +855,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wallet-no-logging-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ECC-Wallet-no-logging-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -852,15 +868,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8C3EAD89BAA309B5FC123070 /* [CP] Check Pods Manifest.lock */ = {
@@ -878,7 +894,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-walletTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ECC-WalletTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -891,15 +907,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet/Pods-wallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet/Pods-ECC-Wallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet/Pods-wallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet/Pods-ECC-Wallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wallet/Pods-wallet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet/Pods-ECC-Wallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E0558BAB804CA8B326196F9C /* [CP] Check Pods Manifest.lock */ = {
@@ -917,7 +933,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-walletUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ECC-WalletUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1124,12 +1140,12 @@
 /* Begin PBXTargetDependency section */
 		0D12511723B557E60014EE3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0D1250FE23B557E40014EE3A /* wallet */;
+			target = 0D1250FE23B557E40014EE3A /* ECC-Wallet */;
 			targetProxy = 0D12511623B557E60014EE3A /* PBXContainerItemProxy */;
 		};
 		0D12512223B557E60014EE3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0D1250FE23B557E40014EE3A /* wallet */;
+			target = 0D1250FE23B557E40014EE3A /* ECC-Wallet */;
 			targetProxy = 0D12512123B557E60014EE3A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1273,14 +1289,14 @@
 		};
 		0D12512A23B557E60014EE3A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49010075453C5CD74A5E09D2 /* Pods-wallet.debug.xcconfig */;
+			baseConfigurationReference = 727FE4974F8832ED9217E96A /* Pods-ECC-Wallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 47;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = 6J82A38BF9;
+				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
@@ -1290,7 +1306,7 @@
 				);
 				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
-				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1299,13 +1315,13 @@
 		};
 		0D12512B23B557E60014EE3A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F1CD575112095FD4EB1B604 /* Pods-wallet.release.xcconfig */;
+			baseConfigurationReference = D1B51D8DC0F8B49AD8EAE6C4 /* Pods-ECC-Wallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = 6J82A38BF9;
+				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
@@ -1315,7 +1331,7 @@
 				);
 				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
-				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1324,7 +1340,7 @@
 		};
 		0D12512D23B557E60014EE3A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A85B99A0F1C01CABADF33492 /* Pods-walletTests.debug.xcconfig */;
+			baseConfigurationReference = 027E3A71136B5B4D796FE4D9 /* Pods-ECC-WalletTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1347,7 +1363,7 @@
 		};
 		0D12512E23B557E60014EE3A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2E7FFE45D0C33A74C7344A5E /* Pods-walletTests.release.xcconfig */;
+			baseConfigurationReference = 0394897B71FCB571DCBA2B04 /* Pods-ECC-WalletTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1370,7 +1386,7 @@
 		};
 		0D12513023B557E60014EE3A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29D1459C46D96D9D3DF2A55C /* Pods-walletUITests.debug.xcconfig */;
+			baseConfigurationReference = B29005011E7A8D04F5FB5009 /* Pods-ECC-WalletUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1391,7 +1407,7 @@
 		};
 		0D12513123B557E60014EE3A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F020BD1AB76698D896ED4C4 /* Pods-walletUITests.release.xcconfig */;
+			baseConfigurationReference = 5FFB8D9CEB83884D76AC0960 /* Pods-ECC-WalletUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1412,7 +1428,7 @@
 		};
 		0DCDFFE424B6722B000F6999 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18C69464FD3770D35A524106 /* Pods-wallet-no-logging.debug.xcconfig */;
+			baseConfigurationReference = 4561814BA5B2134841DF75E7 /* Pods-ECC-Wallet-no-logging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1422,14 +1438,14 @@
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "wallet-no-logs-Info.plist";
+				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "wallet-no-logs";
+				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
+				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1437,7 +1453,7 @@
 		};
 		0DCDFFE524B6722B000F6999 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA8163D8FC63C0383BA13D13 /* Pods-wallet-no-logging.release.xcconfig */;
+			baseConfigurationReference = CA0B4D8E758BD88483D3B5EE /* Pods-ECC-Wallet-no-logging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1446,14 +1462,14 @@
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "wallet-no-logs-Info.plist";
+				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.wallet;
-				PRODUCT_NAME = "wallet-no-logs";
+				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
+				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1462,7 +1478,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0D1250FA23B557E40014EE3A /* Build configuration list for PBXProject "wallet" */ = {
+		0D1250FA23B557E40014EE3A /* Build configuration list for PBXProject "ECC-Wallet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0D12512723B557E60014EE3A /* Debug */,
@@ -1471,7 +1487,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0D12512923B557E60014EE3A /* Build configuration list for PBXNativeTarget "wallet" */ = {
+		0D12512923B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-Wallet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0D12512A23B557E60014EE3A /* Debug */,
@@ -1480,7 +1496,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0D12512C23B557E60014EE3A /* Build configuration list for PBXNativeTarget "walletTests" */ = {
+		0D12512C23B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-WalletTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0D12512D23B557E60014EE3A /* Debug */,
@@ -1489,7 +1505,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0D12512F23B557E60014EE3A /* Build configuration list for PBXNativeTarget "walletUITests" */ = {
+		0D12512F23B557E60014EE3A /* Build configuration list for PBXNativeTarget "ECC-WalletUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0D12513023B557E60014EE3A /* Debug */,
@@ -1498,7 +1514,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "wallet-no-logging" */ = {
+		0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "ECC-Wallet-no-logging" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0DCDFFE424B6722B000F6999 /* Debug */,

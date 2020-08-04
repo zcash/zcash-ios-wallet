@@ -34,7 +34,7 @@ for more information about the security and privacy limitations of the wallet.
 
 4. Navigate to the wallet directory where the `Podfile` file is located and run `pod install`
 
-5. open the `wallet.xcworkspace` file
+5. open the `ECC-Wallet.xcworkspace` file
 
 6. locate the `.params` files that are missing in the project and include them at the specified locations
 
