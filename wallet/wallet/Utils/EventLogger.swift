@@ -64,6 +64,7 @@ enum Action: String {
     case sendMemoNext = "send.memo.next"
     case sendFinalExit = "send.final.exit"
     case sendFinalClose = "send.final.close"
+    case sendFinalDetails = "send.final.details"
     case profileClose = "profile.close"
     case profileNuke = "profile.nuke"
     case profileBackup = "profile.backup"

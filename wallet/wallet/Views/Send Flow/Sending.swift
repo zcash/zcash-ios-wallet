@@ -13,7 +13,7 @@ import ZcashLightClientKit
 struct Sending: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
-    
+    @State var showHistory: Bool = false
     var loading = LottieAnimation(filename: "lottie_sending")
     var errorMessage: String {
         guard let e = flow.error else {
@@ -37,13 +37,13 @@ struct Sending: View {
             errorMessage = "\(ZECCWalletEnvironment.mapError(error: error) )"
         }
         return Alert(title: Text("Error"),
-              message: Text(errorMessage),
-              dismissButton: .default(
-                Text("close"),
-                action: {
-                    self.flow.close()
-                    
-              }
+                     message: Text(errorMessage),
+                     dismissButton: .default(
+                        Text("close"),
+                        action: {
+                            self.flow.close()
+                            
+                     }
             )
         )
     }
@@ -74,22 +74,10 @@ struct Sending: View {
         return AnyView(
             Text("Done")
                 .foregroundColor(.black)
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                 .frame(height: 58)
         )
     }
     
-    
-    
-    var card: AnyView {
-        guard let pendingTx = flow.pendingTx else {
-            return AnyView(EmptyView())
-        }
-        return AnyView(
-            DetailCard(model: DetailModel(pendingTransaction: pendingTx))
-            .frame(height: 69)
-        )
-    }
     
     var body: some View {
         ZStack {
@@ -111,13 +99,34 @@ struct Sending: View {
                     
                 }
                 Spacer()
+                if self.flow.isDone {
+                    VStack {
+                        Button(action: {
+                            tracker.track(.tap(action: .sendFinalDetails), properties: [:])
+                            self.showHistory = true
+                        }) {
+                            Text("See Details")
+                                .foregroundColor(.black)
+                                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: Color.black, lineWidth: 2)))
+                                .frame(height: 58)
+                        }
+                        NavigationLink(destination: WalletDetails(isActive: $showHistory)
+                            .environmentObject(WalletDetailsViewModel())
+                            .navigationBarHidden(true),
+                                       isActive: $showHistory) {
+                                        EmptyView()
+                        }.isDetailLink(false)
+                    }
+                    
+                    
+                }
+                
                 Button(action: {
                     tracker.track(.tap(action: .sendFinalClose), properties: [:])
                     self.flow.close()
                 }) {
                     doneButton
                 }
-                card
                 
             }
             .padding([.horizontal, .bottom], 40)
@@ -133,14 +142,3 @@ struct Sending: View {
         }
     }
 }
-//
-//struct Sending_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        let flow = SendFlowEnvironment(amount: 1.234, verifiedBalance: 23.456, isActive: .constant(true))
-//        flow.address = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-//        flow.includesMemo = true
-//        flow.isDone = false
-//        return Sending().environmentObject(flow)
-//    }
-//}
