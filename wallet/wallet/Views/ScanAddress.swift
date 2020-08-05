@@ -15,15 +15,19 @@ extension Notification.Name {
 }
 
 class ScanAddressViewModel: ObservableObject {
-    var scannerDelegate: QRScannerViewDelegate
+    let addressPublisher = PassthroughSubject<String,Never>()
+    let scannerDelegate = CombineAdapter()
     var dispose = Set<AnyCancellable>()
     var shouldShowSwitchButton: Bool = true
     var showCloseButton: Bool = false
-    init(shouldShowSwitchButton: Bool, showCloseButton: Bool, delegate: CombineAdapter = CombineAdapter()) {
+    @Published var showInvalidAddressMessage: Bool = false
+    init(shouldShowSwitchButton: Bool, showCloseButton: Bool) {
         self.shouldShowSwitchButton = shouldShowSwitchButton
         self.showCloseButton = showCloseButton
-        self.scannerDelegate = delegate
-        delegate.publisher.sink(receiveCompletion: { (completion) in
+        
+        self.scannerDelegate.publisher.receive(on: DispatchQueue.main)
+            .removeDuplicates(by: { $0 == $1 })
+            .sink(receiveCompletion: { (completion) in
             switch completion {
             case .failure(let error):
                 logger.error("\(error)")
@@ -31,15 +35,16 @@ class ScanAddressViewModel: ObservableObject {
                 logger.debug("finished")
             }
         }) { (address) in
-            NotificationCenter.default.post(Notification(name: .qrZaddressScanned, object: self, userInfo: ["zAddress" : address]))
+            
+            guard ZECCWalletEnvironment.shared.isValidAddress(address) else {
+                self.showInvalidAddressMessage = true
+                return
+            }
+            self.showInvalidAddressMessage = false
+            self.addressPublisher.send(address)
         }.store(in: &dispose)
     }
-    
-    init(shouldShowSwitchButton: Bool, showCloseButton: Bool, address: Binding<String>, shouldShow: Binding<Bool>) {
-        self.shouldShowSwitchButton = shouldShowSwitchButton
-        self.showCloseButton = showCloseButton
-        self.scannerDelegate = BindingAdapter(address: address, shouldShow: shouldShow)
-    }
+  
 }
 
 struct ScanAddress: View {
@@ -48,7 +53,7 @@ struct ScanAddress: View {
     @ObservedObject var viewModel: ScanAddressViewModel
     @State var cameraAccess: CameraAccessHelper.Status
     @Binding var isScanAddressShown: Bool
-    
+    @State var wrongAddressScanned = false
     @State var torchEnabled: Bool = false
     
 //    init(scanViewModel: ScanAddressViewModel,
@@ -90,7 +95,25 @@ struct ScanAddress: View {
             
             VStack {
                 Spacer()
-                scanFrame
+                VStack {
+                    scanFrame
+                    Text("Invalid address!")
+                        .bold()
+                        .foregroundColor(.white)
+                        .opacity(self.wrongAddressScanned ? 1 : 0)
+                        .animation(.easeInOut)
+                        .onReceive(viewModel.$showInvalidAddressMessage) { (value) in
+                            
+                            guard value else { return }
+                            self.wrongAddressScanned = true
+                            DeviceFeedbackHelper.vibrate()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.wrongAddressScanned = false
+                            }
+                            
+                    }
+                    
+                }
                 Spacer()
                 switchButton
                 

@@ -184,6 +184,8 @@
 		0DF26E2824D1F88100F32978 /* Baseline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2624D1F88100F32978 /* Baseline.swift */; };
 		0DF26E2A24D2208A00F32978 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */; };
 		0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */; };
+		0DF3075024DB31570080B0CF /* DeviceFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */; };
+		0DF3075124DB31570080B0CF /* DeviceFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		8D3F362524A40FCF0087687A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
@@ -311,6 +313,7 @@
 		0DF26E2324D1F75E00F32978 /* SquareToggleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SquareToggleStyle.swift; sourceTree = "<group>"; };
 		0DF26E2624D1F88100F32978 /* Baseline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Baseline.swift; sourceTree = "<group>"; };
 		0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
+		0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceFeedbackHelper.swift; sourceTree = "<group>"; };
 		0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashHoldToSendButton.swift; sourceTree = "<group>"; };
 		0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCloseButton.swift; sourceTree = "<group>"; };
 		18C69464FD3770D35A524106 /* Pods-wallet-no-logging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-no-logging.debug.xcconfig"; path = "Target Support Files/Pods-wallet-no-logging/Pods-wallet-no-logging.debug.xcconfig"; sourceTree = "<group>"; };
@@ -420,6 +423,7 @@
 				0D4B91DC24CA395100A0E024 /* UIResponder+Current.swift */,
 				0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */,
 				0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */,
+				0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1002,6 +1006,7 @@
 				0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */,
 				0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */,
 				0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */,
+				0DF3075024DB31570080B0CF /* DeviceFeedbackHelper.swift in Sources */,
 				0D87E2CC240ECEC500648C09 /* ZcashButtonBackground.swift in Sources */,
 				0D11C22D23BF807E001CF6F7 /* ReceiveFunds.swift in Sources */,
 				0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */,
@@ -1102,6 +1107,7 @@
 				0DCDFFBA24B6722B000F6999 /* ZcashCloseButton.swift in Sources */,
 				0DCDFFBB24B6722B000F6999 /* NukeWarning.swift in Sources */,
 				0DCDFFBC24B6722B000F6999 /* TextView.swift in Sources */,
+				0DF3075124DB31570080B0CF /* DeviceFeedbackHelper.swift in Sources */,
 				0DCDFFBD24B6722B000F6999 /* ZcashSeedPhraseGrid.swift in Sources */,
 				0DCDFFBE24B6722B000F6999 /* Sending.swift in Sources */,
 				0DCDFFBF24B6722B000F6999 /* String+Zcash.swift in Sources */,

@@ -20,7 +20,6 @@ final class HomeViewModel: ObservableObject {
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
     var lastError:  ZECCWalletEnvironment.WalletError?
-    var zAddress = ""
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
@@ -74,49 +73,6 @@ final class HomeViewModel: ObservableObject {
         }
         .store(in: &cancellable)
         
-        zAddress = ""
-        
-        NotificationCenter.default.publisher(for: .qrZaddressScanned)
-            .receive(on: DispatchQueue.main)
-            .debounce(for: 1, scheduler: RunLoop.main)
-            .sink(receiveCompletion: { (completion) in
-                switch completion {
-                case .failure(let error):
-                    let message = "error scanning:"
-                    tracker.track(.error(severity: .warning), properties: [
-                        ErrorSeverity.underlyingError : "\(error)",
-                        ErrorSeverity.messageKey : message
-                    ])
-                    
-                    logger.error("\(message) \(error)")
-                case .finished:
-                    logger.debug("finished scanning")
-                }
-            }) { (notification) in
-                guard let address = notification.userInfo?["zAddress"] as? String else {
-                    let message = "empty notification after scanning qr code"
-                    logger.error(message)
-                    tracker.track(.error(severity: .warning), properties: [
-                        ErrorSeverity.messageKey : message
-                    ])
-                    return
-                }
-                guard ZECCWalletEnvironment.shared.isValidAddress(address) else {
-                    let message = "scanned qr but address is invalid"
-                    logger.error(message)
-                    tracker.track(.error(severity: .warning), properties: [
-                        ErrorSeverity.messageKey : message
-                    ])
-                    return
-                }
-                self.showReceiveFunds = false
-                logger.debug("got address \(address)")
-                self.zAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.sendingPushed = true
-                }
-        }
-        .store(in: &cancellable)
         
         environment.synchronizer.pendingTransactions.sink(receiveCompletion: { (completion) in
             
@@ -140,7 +96,6 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveValue: { _ in
                 self.view?.keypad.viewModel.clear()
                 self.sendingPushed = false
-                self.zAddress = ""
             }
         ).store(in: &cancellable)
     }
@@ -220,8 +175,7 @@ struct Home: View {
     func startSendFlow() {
         SendFlow.start(appEnviroment: appEnvironment,
                        isActive: self.$sendingPushed,
-                       amount: viewModel.sendZecAmount,
-                       sendTo: viewModel.zAddress)
+                       amount: viewModel.sendZecAmount)
         self.sendingPushed = true
     }
     
