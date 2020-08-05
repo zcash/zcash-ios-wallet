@@ -10,7 +10,15 @@ import Foundation
 import SwiftUI
 import Lottie
 
-extension LottieView {
+protocol LottieAnimatable {
+    
+    func currentProgress(_ progress: Float)
+    func currentFrame(_ frame: Float)
+    func play(from: AnimationFrameTime, to: AnimationFrameTime)
+    func play(loop: Bool)
+}
+
+extension LottieAnimation: LottieAnimatable {
     func currentProgress(_ progress: Float) {
         self.animationView.currentProgress = AnimationProgressTime(progress)
     }
@@ -22,13 +30,21 @@ extension LottieView {
     func play(from: AnimationFrameTime, to: AnimationFrameTime) {
         animationView.play(fromFrame: from, toFrame: to, loopMode: .none, completion: nil)
     }
+    
+    func play(loop: Bool = false) {
+        if loop {
+            animationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop, completion: nil)
+        } else {
+            animationView.play()
+        }
+    }
 }
 
-struct LottieView: UIViewRepresentable {
+struct LottieAnimation: UIViewRepresentable {
     let animationView = AnimationView()
     var filename: String
    
-    func makeUIView(context: UIViewRepresentableContext<LottieView>) -> UIView {
+    func makeUIView(context: UIViewRepresentableContext<LottieAnimation>) -> UIView {
         let view = UIView()
         let animation = Lottie.Animation.named(filename)
         animationView.backgroundBehavior = .pauseAndRestore
@@ -48,8 +64,31 @@ struct LottieView: UIViewRepresentable {
     
     
     
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieView>) {
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieAnimation>) {
        
     }
     
+}
+
+
+struct PlayLottie: ViewModifier {
+    var loop: Bool = false
+    func body(content: Content) -> some View {
+        play(content: content)
+    }
+    
+    private func play(content: Content) -> some View {
+        guard let lottie = content as? LottieAnimatable else {
+            return content
+        }
+        lottie.play(loop: loop)
+        return content
+    }
+    
+}
+
+extension View where Self == LottieAnimation {
+    func playAnimation() -> some View {
+        self.modifier(PlayLottie())
+    }
 }

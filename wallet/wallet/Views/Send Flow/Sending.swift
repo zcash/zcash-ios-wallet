@@ -14,6 +14,7 @@ struct Sending: View {
     
     @EnvironmentObject var flow: SendFlowEnvironment
     
+    var loading = LottieAnimation(filename: "lottie_sending")
     var errorMessage: String {
         guard let e = flow.error else {
             return "thing is that we really don't know what just went down, sorry!"
@@ -104,6 +105,11 @@ struct Sending: View {
                     .font(.title)
                     .lineLimit(1)
                 includesMemoView
+                if !flow.isDone {
+                    loading
+                        .frame(height: 48)
+                    
+                }
                 Spacer()
                 Button(action: {
                     tracker.track(.tap(action: .sendFinalClose), properties: [:])
@@ -116,20 +122,13 @@ struct Sending: View {
             }
             .padding([.horizontal, .bottom], 40)
             
-        }.navigationBarItems(trailing: Button(action: {
-            tracker.track(.tap(action: .sendFinalClose), properties: [:])
-            self.flow.close()
-        }) {
-            Image("close")
-                .renderingMode(.original)
-        }.disabled(!self.flow.isDone)
-            .opacity(self.flow.isDone ? 1.0 : 0.0)
-        )
+        }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert
         }
         .onAppear() {
             tracker.track(.screen(screen: .sendFinal), properties: [:])
+            self.loading.play(loop: true)
             self.flow.send()
         }
     }

@@ -55,19 +55,7 @@ struct ScanAddress: View {
     @Binding var isScanAddressShown: Bool
     @State var wrongAddressScanned = false
     @State var torchEnabled: Bool = false
-    
-//    init(scanViewModel: ScanAddressViewModel,
-//         cameraStatus: CameraAccessHelper.Status,
-//         isShown: Binding<Bool>,
-//         showCloseButton: Bool,
-//         showSwitchButton: Bool) {
-//        self.viewModel = scanViewModel
-//        self.cameraAccess = cameraStatus
-//        self._isScanAddressShown = isShown
-//        self.showCloseButton = showCloseButton
-//        self.shouldShowSwitchButton = showSwitchButton
-//    }
-//
+
     var scanFrame: some View {
         Image("QRCodeScanFrame")
             .padding()
@@ -97,7 +85,7 @@ struct ScanAddress: View {
                 Spacer()
                 VStack {
                     scanFrame
-                    Text("Invalid address!")
+                    Text("This QR Code does not contain a Zcash valid address!")
                         .bold()
                         .foregroundColor(.white)
                         .opacity(self.wrongAddressScanned ? 1 : 0)
