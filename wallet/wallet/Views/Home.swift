@@ -155,6 +155,7 @@ struct Home: View {
     var keypad: KeyPad
     @State var sendingPushed = false
     @State var showPending = true
+    @State var showHistory = false
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -350,20 +351,14 @@ struct Home: View {
                     }.isDetailLink(false)
                 }
                 
-                if viewModel.isSyncing {
+                NavigationLink(destination: WalletDetails(isActive: $showHistory)
+                    .environmentObject(WalletDetailsViewModel())
+                    .navigationBarHidden(true),
+                               isActive: $showHistory) {
                     walletDetails
-                        .opacity(0.4)
-                } else {
-                    NavigationLink(
-                        destination:
-                        WalletDetails()
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
-                        
-                    ) {
-                        walletDetails
-                    }.isDetailLink(false)
+                           .opacity(viewModel.isSyncing ? 0.4 : 1)
                 }
+                .disabled(viewModel.isSyncing)
                 /// FIXME: fix pending transactions stuck
                 //                if viewModel.pendingTransactions.count > 0 {
                 //                    detailCard

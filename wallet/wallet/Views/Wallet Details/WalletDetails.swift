@@ -61,7 +61,7 @@ class WalletDetailsViewModel: ObservableObject {
 
 struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
-    
+    @Binding var isActive: Bool
     var zAddress: String {
         viewModel.zAddress
     }
@@ -75,6 +75,23 @@ struct WalletDetails: View {
         ZStack {
             ZcashBackground()
             VStack(alignment: .center) {
+                ZcashNavigationBar(
+                    leadingItem: {
+                        Button(action: {
+                            self.isActive = false
+                        }) {
+                            Image("Back")
+                                .renderingMode(.original)
+                        }
+                    },
+                   headerItem: {
+                        BalanceDetail(
+                            availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value,
+                            status: status)
+                    },
+                   trailingItem: { EmptyView() }
+                )
+                    .padding(.horizontal, 10)
                 
                 List {
                     WalletDetailsHeader(zAddress: zAddress)
@@ -84,14 +101,14 @@ struct WalletDetails: View {
                     ForEach(self.viewModel.items, id: \.id) { row in    
                         NavigationLink(destination: LazyView(TransactionDetails(model: row))) {
                             DetailCard(model: row, backgroundColor: Color.zDarkGray2)
-                            }.isDetailLink(true)
-                        .listRowBackground(Color.zDarkGray2)
-                        .frame(height: 69)
-                        .padding(.horizontal, 16)
-                        .cornerRadius(0)
-                        .border(Color.zGray, width: 1)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                            
+                        }.isDetailLink(true)
+                            .listRowBackground(Color.zDarkGray2)
+                            .frame(height: 69)
+                            .padding(.horizontal, 16)
+                            .cornerRadius(0)
+                            .border(Color.zGray, width: 1)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        
                     }
                 }
                 .cornerRadius(20)
@@ -99,7 +116,7 @@ struct WalletDetails: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.zGray, lineWidth: 1.0)
                 )
-                    .padding()
+                .padding()
                 
                 Spacer()
                 
@@ -115,14 +132,7 @@ struct WalletDetails: View {
             UITableView.appearance().separatorStyle = .singleLine
         }
         .edgesIgnoringSafeArea([.bottom])
-        .navigationBarItems(trailing:
-            HStack {
-                BalanceDetail(availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value, status: status)
-                Spacer().frame(width: 110)
-            }.offset(x: 0, y: 5)
-            
-        )
-            .alert(isPresented: self.$viewModel.showError) {
+        .alert(isPresented: self.$viewModel.showError) {
                 Alert(title: Text("Error".localized()), message: Text("an error ocurred".localized()), dismissButton: .default(Text("OK".localized())))
         }
     }
@@ -130,7 +140,7 @@ struct WalletDetails: View {
 
 struct WalletDetails_Previews: PreviewProvider {
     static var previews: some View {
-        return WalletDetails().environmentObject(ZECCWalletEnvironment.shared)
+        return WalletDetails(isActive: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
     }
 }
 
