@@ -21,6 +21,7 @@ struct DetailModel: Identifiable {
     var status: Status
     var shielded: Bool = true
     var memo: String? = nil
+    var minedHeight: Int = -1
     var title: String {
 
         switch status {
@@ -42,7 +43,7 @@ struct DetailCard: View {
     
     var shieldImage: AnyView {
         
-        let view = model.shielded ? AnyView(Image("ic_shieldtick")) : AnyView(EmptyView())
+        let view = model.shielded ? AnyView(Image("ic_shieldtick").renderingMode(.original)) : AnyView(EmptyView())
         switch model.status {
         case .paid(let success):
             return success ? view : AnyView(EmptyView())
@@ -222,6 +223,7 @@ extension DetailModel {
         if let memo = confirmedTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
+        self.minedHeight = confirmedTransaction.minedHeight
     }
     init(pendingTransaction: PendingTransactionEntity, latestBlockHeight: BlockHeight? = nil) {
         let submitSuccess = pendingTransaction.isSubmitSuccess
@@ -242,6 +244,7 @@ extension DetailModel {
         if let memo = pendingTransaction.memo {
             self.memo = String(bytes: memo, encoding: .utf8)
         }
+        self.minedHeight = pendingTransaction.minedHeight
     }
 }
 

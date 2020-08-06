@@ -112,6 +112,7 @@ struct Sending: View {
                         }
                         NavigationLink(destination: WalletDetails(isActive: $showHistory)
                             .environmentObject(WalletDetailsViewModel())
+                            .navigationBarTitle("", displayMode: .inline)
                             .navigationBarHidden(true),
                                        isActive: $showHistory) {
                                         EmptyView()

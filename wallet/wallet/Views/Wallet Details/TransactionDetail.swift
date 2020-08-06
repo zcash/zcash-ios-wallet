@@ -13,6 +13,7 @@ struct TransactionDetails: View {
     
     var model: DetailModel
     @State var isCopyAlertShown: Bool = false
+    @Binding var isActive: Bool
     var status: String {
         
         switch model.status {
@@ -32,21 +33,27 @@ struct TransactionDetails: View {
     var body: some View {
         ZStack {
             ZcashBackground()
-            ScrollView([.vertical], showsIndicators: false) {
-                SendZecView(zatoshi: .constant(model.zecAmount.toZecAmount()))
-                Text(status).foregroundColor(.white)
-                    .font(.largeTitle)
-                Spacer()
-                VStack(alignment: .center, spacing: 20) {
-                    DetailCell(title: "Tx Id:".localized() , description: model.id, action: self.copyToClipBoard)
-                    DetailCell(title: "Date:".localized(), description: model.date.description)
-                    DetailCell(title: "Shielded:".localized(), description: model.shielded ? "🛡" : "❌")
-                    DetailCell(title: "Memo:".localized(), description: model.memo ?? "No memo" , action: self.copyToClipBoard)
-                    DetailCell(title: "Address:".localized(), description: model.zAddress ?? "", action: self.copyToClipBoard).opacity( model.zAddress != nil ? 1.0 : 0)
-                    
-                }
-                Spacer()
-            }.padding(.horizontal, 40)
+            VStack {
+               
+                ScrollView([.vertical], showsIndicators: false) {
+                    SendZecView(zatoshi: .constant(model.zecAmount.toZecAmount()))
+                    Text(status).foregroundColor(.white)
+                        .font(.largeTitle)
+                    Spacer()
+                    VStack(alignment: .center, spacing: 10) {
+                        if  model.minedHeight > 0 {
+                            DetailCell(title: "Mined Height", description: "\(model.minedHeight)", action: nil)
+                        }
+                        DetailCell(title: "Tx Id:".localized() , description: model.id, action: self.copyToClipBoard)
+                        DetailCell(title: "Date:".localized(), description: model.date.description)
+                        DetailCell(title: "Shielded:".localized(), description: model.shielded ? "🛡" : "❌")
+                        DetailCell(title: "Memo:".localized(), description: model.memo ?? "No memo" , action: self.copyToClipBoard)
+                        DetailCell(title: "Address:".localized(), description: model.zAddress ?? "", action: self.copyToClipBoard).opacity( model.zAddress != nil ? 1.0 : 0)
+                        
+                    }
+                    Spacer()
+                }.padding(.horizontal, 40)
+            }
             
         }.alert(isPresented: self.$isCopyAlertShown) {
             Alert(title: Text(""),
@@ -55,7 +62,12 @@ struct TransactionDetails: View {
             )
         }
         .navigationBarTitle(Text("Transaction Detail".localized()), displayMode: .inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(trailing:  ZcashCloseButton(action: {
+            
+            self.isActive = false
+        }).frame(width: 30, height: 30))
+
     }
 }
 
@@ -88,7 +100,7 @@ struct TransactionDetails_Previews: PreviewProvider {
                 status: .paid(success: true),
                 subtitle: "1 of 10 confirmations"
                 
-            )
+            ), isActive: .constant(true)
         )
     }
 }
