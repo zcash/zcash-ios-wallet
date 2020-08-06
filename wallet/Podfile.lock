@@ -64,7 +64,7 @@ PODS:
     - SwiftNIOFoundationCompat (< 3, >= 2.19.0)
     - SwiftNIOTLS (< 3, >= 2.19.0)
   - SwiftProtobuf (1.10.2)
-  - TinyQRScanner (1.0.0)
+  - TinyQRScanner (1.0.1)
   - ZcashLightClientKit (0.5.2):
     - gRPC-Swift (~> 1.0.0-alpha.11)
     - SQLite.swift (~> 0.12.2)
@@ -133,7 +133,7 @@ SPEC CHECKSUMS:
   SwiftNIOTLS: acb3279174477adab836874c30008ca9fced9fce
   SwiftNIOTransportServices: 2b8c130457110ef198e10b544b070885815db6c2
   SwiftProtobuf: bec1ae7d686ff73dd09d79866154f4970b891410
-  TinyQRScanner: 9930c4514dc6f123f3b9d95fcedbc1f8c241c5eb
+  TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
   ZcashLightClientKit: f123d4d856ba90c15b5633644e52cf4daf6fd7fe
 
 PODFILE CHECKSUM: 205b3e71c96c68e1a0f92cb33499609349b148ec
