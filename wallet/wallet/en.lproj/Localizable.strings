@@ -104,7 +104,7 @@
 "Retry" = "Retry";
 "Send" = "Send";
 "No Balance" = "No Balance";
-"Wallet History" = "Wallet History";
+"View History" = "View History";
 "Receive Funds" = "Receive Funds";
 "Your Profile" = "Your Profile";
 
@@ -117,6 +117,7 @@
 "We don't have permission to access your camera" = "We don't have permission to access your camera";
 "Camera Unavailable" = "Camera Unavailable";
 "Switch to your Zcash address" = "Switch to your Zcash address";
+"This QR Code does not contain a Zcash valid address!" = "This QR Code does not contain a Zcash valid address!";
 
 //ShareScreen
 "Share Screen" = "Share Screen";

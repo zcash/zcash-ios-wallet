@@ -22,9 +22,7 @@ struct ReceiveFunds: View {
             .onAppear {
                 tracker.track(.screen(screen: .receive), properties: [:])
             }
-            .navigationBarTitle(Text("Receive ZEC")
-                                .font(.system(size: 18))
-                                .bold(),
+            .navigationBarTitle(Text("Receive ZEC"),
                                 displayMode: .inline)
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {

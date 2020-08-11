@@ -14,7 +14,7 @@ struct SendTransaction: View {
     @State var authError: AuthenticationEvent = .userDeclined
     @State var sendOk = false
     @State var addressHelperSelection: AddressHelperView.Selection = .none 
-    
+    @State var scanViewModel = ScanAddressViewModel(shouldShowSwitchButton: false, showCloseButton: true)
     var availableBalance: Bool {
         ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value > 0
     }
@@ -71,7 +71,7 @@ struct SendTransaction: View {
                 return AnyView(EmptyView())
         }
         return AddressHelperView(selection: $addressHelperSelection, mode: .clipboard(address: clipboard)).eraseToAnyView()
- 
+        
     }
     var charLimit: Int {
         if flow.includeSendingAddress {
@@ -95,26 +95,26 @@ struct SendTransaction: View {
                                 .renderingMode(.original)
                         }
                 },
-                headerItem: {
-                    ZecAmountHeader(amount: self.flow.amount)
+                    headerItem: {
+                        ZecAmountHeader(amount: self.flow.amount)
                 },
                     
-                trailingItem: {
-                    Button(action: {
-                        AuthenticationHelper.authenticate(with: "Authorize this payment".localized())
-                    }) {
-                        Text("Send")
-                            .foregroundColor(.black)
-                            .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: .zAmberGradient2)))
-                            .frame(width: 63, height: 24)
-                            .contentShape(RoundedRectangle(cornerRadius: 12))
-                        
-                    }
-                        .opacity(validForm ? 1.0 : 0.3 ) // validate this
-                        .disabled(!validForm)
+                    trailingItem: {
+                        Button(action: {
+                            AuthenticationHelper.authenticate(with: "Authorize this payment".localized())
+                        }) {
+                            Text("Send")
+                                .foregroundColor(.black)
+                                .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: .zAmberGradient2)))
+                                .frame(width: 63, height: 24)
+                                .contentShape(RoundedRectangle(cornerRadius: 12))
+                            
+                        }
+                            .opacity(validForm ? 1.0 : 0.3 ) // validate this
+                            .disabled(!validForm)
                 }
                 )
-                .frame(height: 64)
+                    .frame(height: 64)
                     .edgesIgnoringSafeArea([.horizontal])
                 
                 ZcashActionableTextField(
@@ -135,22 +135,23 @@ struct SendTransaction: View {
                     onCommit: {
                         tracker.track(.tap(action: .sendAddressDoneAddress), properties: [:])
                 }
-                ).sheet(isPresented: self.$flow.showScanView) {
-                    NavigationView {
-                        LazyView(
-                            
-                            ScanAddress(
-                                viewModel: ScanAddressViewModel(
-                                    shouldShowSwitchButton: false,
-                                    showCloseButton: true,
-                                    address: self.$flow.address,
-                                    shouldShow: self.$flow.showScanView),
-                                cameraAccess: CameraAccessHelper.authorizationStatus,
-                                isScanAddressShown: self.$flow.showScanView
-                            ).environmentObject(ZECCWalletEnvironment.shared)
-                            
-                        )
-                    }
+                )
+                    .onReceive(scanViewModel.addressPublisher, perform: { (address) in
+                        self.flow.address = address
+                        self.flow.showScanView = false
+                    })
+                    .sheet(isPresented: self.$flow.showScanView) {
+                        NavigationView {
+                            LazyView(
+                                
+                                ScanAddress(
+                                    viewModel: self.scanViewModel,
+                                    cameraAccess: CameraAccessHelper.authorizationStatus,
+                                    isScanAddressShown: self.$flow.showScanView
+                                ).environmentObject(ZECCWalletEnvironment.shared)
+                                
+                            )
+                        }
                 }
                 ZcashMemoTextField(text: $flow.memo,
                                    includesReplyTo: $flow.includeSendingAddress,
@@ -167,14 +168,14 @@ struct SendTransaction: View {
                 }
                 
                 NavigationLink(destination:
-                                   
-                                   Sending().environmentObject(flow)
-                                   .navigationBarTitle("", displayMode: .inline)
-                                   .navigationBarBackButtonHidden(true)
-                                   ,isActive: $sendOk
-                                   ) {
-                                       EmptyView()
-                                   }.isDetailLink(false)
+                    
+                    Sending().environmentObject(flow)
+                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarBackButtonHidden(true)
+                    ,isActive: $sendOk
+                ) {
+                    EmptyView()
+                }.isDetailLink(false)
                 Spacer()
             }.padding([.horizontal,.bottom], 24)
             
@@ -184,7 +185,7 @@ struct SendTransaction: View {
         .navigationBarTitle(Text(""), displayMode: .inline)
         .onAppear() {
             tracker.track(.screen(screen: .sendAddress), properties: [:])
-//            self.flow.clearMemo()
+            //            self.flow.clearMemo()
         }
         .keyboardAdaptive()
         .animation(.easeInOut)
@@ -198,6 +199,8 @@ struct SendTransaction: View {
             case .failed(_), .userFailed:
                 self.authError = output
                 self.showError = true
+                
+            // this error is not tracked on purpose.
             case .success:
                 self.flow.includesMemo = true
                 self.sendOk = true
@@ -220,7 +223,7 @@ struct SendTransaction: View {
             title = "Authorization Failed!".localized()
             switch authError {
             case .authError(let localAuthError):
-              message = localAuthError.localizedDescription
+                message = localAuthError.localizedDescription
             case .generalError(let errorMessage):
                 message = errorMessage
             case .unknown:

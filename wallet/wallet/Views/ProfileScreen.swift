@@ -30,6 +30,7 @@ struct ProfileScreen: View {
                         Button(action: {
                             tracker.track(.tap(action: .copyAddress),
                                           properties: [:])
+                            UIPasteboard.general.string = self.appEnvironment.initializer.getAddress() 
                             self.isCopyAlertShown = true
                         }) {
                             Text(appEnvironment.initializer.getAddress() ?? "")

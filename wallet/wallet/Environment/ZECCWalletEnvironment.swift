@@ -19,13 +19,7 @@ enum WalletState {
 
 
 final class ZECCWalletEnvironment: ObservableObject {
-    enum WalletError: Error {
-        case createFailed
-        case initializationFailed(message: String)
-        case genericError(message: String)
-        case connectionFailed(message: String)
-        case maxRetriesReached(attempts: Int)
-    }
+    
     static let genericErrorMessage = "An error ocurred, please check your device logs"
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
     static let memoLengthLimit: Int = 512
@@ -141,41 +135,68 @@ final class ZECCWalletEnvironment: ObservableObject {
         }
     }
     
-    static func mapError(error: Error) -> ZECCWalletEnvironment.WalletError {
+    static func mapError(error: Error) -> WalletError {
         
         if let rustError = error as? RustWeldingError {
             switch rustError {
             case .genericError(let message):
-                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+                return WalletError.genericErrorWithMessage(message: message)
             case .dataDbInitFailed(let message):
-                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+                return WalletError.initializationFailed(message: message)
             case .dataDbNotEmpty:
-                return ZECCWalletEnvironment.WalletError.genericError(message: "attempt to initialize a db that was not empty")
+                return WalletError.initializationFailed(message: "attempt to initialize a db that was not empty")
             case .saplingSpendParametersNotFound:
-                return ZECCWalletEnvironment.WalletError.createFailed
+                return WalletError.createFailed
             case .malformedStringInput:
-                return ZECCWalletEnvironment.WalletError.genericError(message: "Malformed address or key detected")
+                return WalletError.genericErrorWithError(error: rustError)
             default:
-                return WalletError.genericError(message: "\(rustError)")
+                return WalletError.genericErrorWithError(error: rustError)
             }
         } else if let synchronizerError = error as? SynchronizerError {
             switch synchronizerError {
             case .generalError(let message):
-                return ZECCWalletEnvironment.WalletError.genericError(message: message)
+                return WalletError.genericErrorWithMessage(message: message)
             case .initFailed(let message):
                 return WalletError.initializationFailed(message: "Synchronizer failed to initialize: \(message)")
             case .syncFailed:
-                return WalletError.genericError(message: "Synchronizing failed")
-            case .connectionFailed(let message):
-                return WalletError.connectionFailed(message: message)
+                return WalletError.synchronizerFailed
+            case .connectionFailed(let error):
+                return WalletError.connectionFailedWithError(error: error)
             case .maxRetryAttemptsReached(attempts: let attempts):
                 return WalletError.maxRetriesReached(attempts: attempts)
-            case .connectionError(_, let message):
-              return WalletError.connectionFailed(message: message)
+            case .connectionError:
+              return WalletError.connectionFailed
+            case .networkTimeout:
+                return WalletError.networkTimeout
+            case .uncategorized(let underlyingError):
+                return WalletError.genericErrorWithError(error: underlyingError)
+            case .criticalError:
+                return WalletError.criticalError
+            }
+        } else if let serviceError = error as? LightWalletServiceError {
+            switch serviceError {
+            case .criticalError:
+                return WalletError.criticalError
+            case .userCancelled:
+                return WalletError.connectionFailed
+            case .unknown:
+                return WalletError.connectionFailed
+            case .failed:
+                return WalletError.connectionFailedWithError(error: error)
+            case .generalError:
+                return WalletError.connectionFailed
+            case .invalidBlock:
+                return WalletError.genericErrorWithError(error: error)
+            case .sentFailed(let error):
+                return WalletError.sendFailed(error: error)
+            case .genericError(error: let error):
+                return WalletError.genericErrorWithError(error: error)
+            case .timeOut:
+                return WalletError.networkTimeout
             }
         }
         
-        return ZECCWalletEnvironment.WalletError.genericError(message: Self.genericErrorMessage)
+        return WalletError.genericErrorWithError(error: error)
     }
     deinit {
         cancellables.forEach {

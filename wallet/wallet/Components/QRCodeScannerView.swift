@@ -72,6 +72,7 @@ public struct QRCodeScannerView: UIViewRepresentable {
     
     public func makeUIView(context: UIViewRepresentableContext<QRCodeScannerView>) -> QRScannerView {
         let view = QRScannerView()
+        view.continueVideoSessionAfterScanning = true
         view.delegate = delegate
         return view
     }

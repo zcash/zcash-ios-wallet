@@ -27,12 +27,10 @@ class SendFlow {
     
     @discardableResult static func start(appEnviroment: ZECCWalletEnvironment,
                       isActive: Binding<Bool>,
-                      amount: Double,
-                      sendTo: String?) -> SendFlowEnvironment {
+                      amount: Double) -> SendFlowEnvironment {
 
         let flow = SendFlowEnvironment(amount: amount,
                                        verifiedBalance: appEnviroment.initializer.getVerifiedBalance().asHumanReadableZecBalance(),
-                                       address: sendTo ?? "",
                                        isActive: isActive)
         Self.current = flow
         return flow
@@ -76,6 +74,8 @@ final class SendFlowEnvironment: ObservableObject {
                        switch completion {
                        case .failure(let error):
                            logger.error("error scanning: \(error)")
+                           tracker.track(.error(severity: .noncritical), properties:  [ErrorSeverity.messageKey : "\(error)"])
+                           self.error = error
                        case .finished:
                            logger.debug("finished scanning")
                        }
@@ -107,7 +107,9 @@ final class SendFlowEnvironment: ObservableObject {
 
     func send() {
         guard !txSent else {
-            logger.error("attempt to send tx twice")
+            let message = "attempt to send tx twice"
+            logger.error(message)
+            tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : message])
             return
         }
         let environment = ZECCWalletEnvironment.shared
@@ -145,6 +147,7 @@ final class SendFlowEnvironment: ObservableObject {
                     logger.error("\(error)")
                     self.error = error
                     self.showError = true
+                    tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : "\(ZECCWalletEnvironment.mapError(error: error))"])
                     SendFlow.end()
                 }
                 // fix me:                

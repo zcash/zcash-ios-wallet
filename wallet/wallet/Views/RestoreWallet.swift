@@ -47,7 +47,7 @@ struct RestoreWallet: View {
     func importSeed() throws {
         let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedSeedPhrase.isEmpty, let seedBytes =
-            MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase) else { throw ZECCWalletEnvironment.WalletError.createFailed
+            MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase) else { throw WalletError.createFailed
         }
         
         try SeedManager.default.importSeed(seedBytes)

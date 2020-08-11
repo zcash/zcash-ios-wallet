@@ -10,33 +10,13 @@ import SwiftUI
 import Combine
 class WalletDetailsViewModel: ObservableObject {
     
-    var items: [DetailModel] = []
+    @Published var items: [DetailModel] = []
     var showError = false
     var balance: Double = 0
     private var cancellables = Set<AnyCancellable>()
+
     init(){
-        
-        ZECCWalletEnvironment.shared.synchronizer.walletDetails
-            .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { [weak self] (completion) in
-                guard let self = self else { return }
-                switch completion {
-                case .failure(_):
-                    self.showError = true
-                case .finished:
-                    break
-                }
-            }) { (models) in
-                self.items = [DetailModel](models)
-        }
-            
-        .store(in: &cancellables)
-        
-        ZECCWalletEnvironment.shared.synchronizer.balance
-            .receive(on: RunLoop.main)
-            .assign(to: \.balance, on: self)
-            .store(in: &cancellables)
-        
+        pollData()
     }
     deinit {
         cancellables.forEach { (c) in
@@ -57,11 +37,36 @@ class WalletDetailsViewModel: ObservableObject {
     var zAddress: String {
         ZECCWalletEnvironment.shared.initializer.getAddress() ?? ""
     }
+    func pollData() {
+        ZECCWalletEnvironment.shared.synchronizer.walletDetails
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { [weak self] (completion) in
+                guard let self = self else { return }
+                switch completion {
+                case .failure(_):
+                    self.showError = true
+                case .finished:
+                    break
+                }
+            }) { (models) in
+                self.items = [DetailModel](models)
+        }
+            
+        .store(in: &cancellables)
+        
+        ZECCWalletEnvironment.shared.synchronizer.balance
+            .receive(on: RunLoop.main)
+            .assign(to: \.balance, on: self)
+            .store(in: &cancellables)
+    }
 }
 
 struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
-    
+    @Binding var isActive: Bool
+    @State var transactions = [DetailModel]()
+    @State var isDetailActive = false
+    @State var selectedIndex = -1
     var zAddress: String {
         viewModel.zAddress
     }
@@ -75,31 +80,54 @@ struct WalletDetails: View {
         ZStack {
             ZcashBackground()
             VStack(alignment: .center) {
+                ZcashNavigationBar(
+                    leadingItem: {
+                        Button(action: {
+                            self.isActive = false
+                        }) {
+                            Image("Back")
+                                .renderingMode(.original)
+                        }
+                    },
+                   headerItem: {
+                        BalanceDetail(
+                            availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value,
+                            status: status)
+                    },
+                   trailingItem: { EmptyView() }
+                )
+                    .padding(.horizontal, 10)
                 
                 List {
                     WalletDetailsHeader(zAddress: zAddress)
                         .listRowBackground(Color.zDarkGray2)
                         .frame(height: 100)
                         .padding([.trailing], 24)
-                    ForEach(self.viewModel.items, id: \.id) { row in    
-                        NavigationLink(destination: LazyView(TransactionDetails(model: row))) {
-                            DetailCard(model: row, backgroundColor: Color.zDarkGray2)
-                            }.isDetailLink(true)
-                        .listRowBackground(Color.zDarkGray2)
-                        .frame(height: 69)
-                        .padding(.horizontal, 16)
-                        .cornerRadius(0)
-                        .border(Color.zGray, width: 1)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                            
-                    }
+                    ForEach(0 ..< transactions.count, id: \.self) { index in
+                        Button(action: {
+                            self.selectedIndex = index
+                            self.isDetailActive = true
+                        }) {
+                        DetailCard(model: self.transactions[index], backgroundColor: Color.zDarkGray2)
+                           
+                        }
+                        
+                    } .listRowBackground(Color.zDarkGray2)
+                                               .frame(height: 69)
+                                               .padding(.horizontal, 16)
+                                               .cornerRadius(0)
+                                               .border(Color.zGray, width: 1)
+                                               .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
                 .cornerRadius(20)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.zGray, lineWidth: 1.0)
                 )
-                    .padding()
+                .padding()
+                    .onReceive(viewModel.$items) { (txs) in
+                        self.transactions = txs
+                }
                 
                 Spacer()
                 
@@ -115,14 +143,14 @@ struct WalletDetails: View {
             UITableView.appearance().separatorStyle = .singleLine
         }
         .edgesIgnoringSafeArea([.bottom])
-        .navigationBarItems(trailing:
-            HStack {
-                BalanceDetail(availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value, status: status)
-                Spacer().frame(width: 110)
-            }.offset(x: 0, y: 5)
-            
-        )
-            .alert(isPresented: self.$viewModel.showError) {
+        .sheet(isPresented:$isDetailActive) {
+            LazyView(
+                NavigationView {
+                    TransactionDetails(model: self.transactions[self.selectedIndex], isActive: self.$isDetailActive)
+                }
+            )
+        }
+        .alert(isPresented: self.$viewModel.showError) {
                 Alert(title: Text("Error".localized()), message: Text("an error ocurred".localized()), dismissButton: .default(Text("OK".localized())))
         }
     }
@@ -130,7 +158,7 @@ struct WalletDetails: View {
 
 struct WalletDetails_Previews: PreviewProvider {
     static var previews: some View {
-        return WalletDetails().environmentObject(ZECCWalletEnvironment.shared)
+        return WalletDetails(isActive: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
     }
 }
 
