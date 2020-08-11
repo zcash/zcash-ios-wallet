@@ -23,7 +23,7 @@ class CombineSynchronizer {
     var balance: CurrentValueSubject<Double,Never>
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
-    var error = PassthroughSubject<Error, Never>()
+    var errorPublisher = PassthroughSubject<Error, Never>()
     var receivedTransactions: Future<[ConfirmedTransactionEntity],Never> {
         Future<[ConfirmedTransactionEntity], Never>() {
             promise in
@@ -101,11 +101,11 @@ class CombineSynchronizer {
         
         NotificationCenter.default.publisher(for: .synchronizerFailed).sink { (notification) in
             guard let error = notification.userInfo?[SDKSynchronizer.NotificationKeys.error] as? Error else {
-                self.error.send(ZECCWalletEnvironment.WalletError.genericError(message: "An error ocurred, but we can't figure out what it is. Please check device logs for more details")
+                self.errorPublisher.send(WalletError.genericErrorWithMessage(message: "An error ocurred, but we can't figure out what it is. Please check device logs for more details")
                 )
                 return
             }
-            self.error.send(error)
+            self.errorPublisher.send(error)
         }.store(in: &cancellables)
         
     }
@@ -119,15 +119,12 @@ class CombineSynchronizer {
             try synchronizer.start(retry: retry)
         } catch {
             logger.error("error starting \(error)")
+            self.errorPublisher.send(error)
         }
     }
     
     func stop() {
-        do {
-            try synchronizer.stop()
-        } catch {
-            logger.error("error stopping \(error)")
-        }  
+        synchronizer.stop()
     }
     
     func cancel(pendingTransaction: PendingTransactionEntity) -> Bool {
@@ -154,6 +151,7 @@ class CombineSynchronizer {
         }
         
     }
+    
 }
 
 extension CombineSynchronizer {

@@ -75,6 +75,8 @@
 		0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
 		0D92AEBE2422D6F30028AD53 /* ZcashTapToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */; };
+		0D99079524E1762400743EB9 /* AlertMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99079424E1762400743EB9 /* AlertMessaging.swift */; };
+		0D99079624E1762400743EB9 /* AlertMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99079424E1762400743EB9 /* AlertMessaging.swift */; };
 		0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203C23D77D4B006F1510 /* WalletDetails.swift */; };
 		0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */; };
 		0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */; };
@@ -96,6 +98,8 @@
 		0DC37D7424D37D7D00ACFE12 /* AddressHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC37D7224D37D7C00ACFE12 /* AddressHelperView.swift */; };
 		0DC37D7624D3834E00ACFE12 /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */; };
 		0DC37D7724D3834E00ACFE12 /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */; };
+		0DCD012324DE245300ED0113 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD012224DE245300ED0113 /* ErrorHandling.swift */; };
+		0DCD012424DE245300ED0113 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD012224DE245300ED0113 /* ErrorHandling.swift */; };
 		0DCDFF9824B6722B000F6999 /* SyncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0AAE1024102380009CD8F9 /* SyncingButton.swift */; };
 		0DCDFF9924B6722B000F6999 /* SeedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EE123BAB1B80089DB22 /* SeedBackup.swift */; };
 		0DCDFF9A24B6722B000F6999 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAD23BEB0E500709636 /* Fonts.swift */; };
@@ -284,6 +288,7 @@
 		0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Zcash.swift"; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
 		0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTapToSendButton.swift; sourceTree = "<group>"; };
+		0D99079424E1762400743EB9 /* AlertMessaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessaging.swift; sourceTree = "<group>"; };
 		0D9C203C23D77D4B006F1510 /* WalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetails.swift; sourceTree = "<group>"; };
 		0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailsHeader.swift; sourceTree = "<group>"; };
 		0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
@@ -299,6 +304,7 @@
 		0DC167B023BE37B300332890 /* BalanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceUtils.swift; sourceTree = "<group>"; };
 		0DC37D7224D37D7C00ACFE12 /* AddressHelperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressHelperView.swift; sourceTree = "<group>"; };
 		0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressValidator.swift; sourceTree = "<group>"; };
+		0DCD012224DE245300ED0113 /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		0DCDFFE624B6722B000F6999 /* ECC-Wallet-no-logs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ECC-Wallet-no-logs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DCDFFE724B6722B000F6999 /* ECC-Wallet-no-logs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ECC-Wallet-no-logs-Info.plist"; sourceTree = "<group>"; };
 		0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineSynchronizer.swift; sourceTree = "<group>"; };
@@ -430,6 +436,8 @@
 				0DF26E2924D2208A00F32978 /* AuthenticationHelper.swift */,
 				0DC37D7524D3834E00ACFE12 /* AddressValidator.swift */,
 				0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */,
+				0DCD012224DE245300ED0113 /* ErrorHandling.swift */,
+				0D99079424E1762400743EB9 /* AlertMessaging.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -968,6 +976,7 @@
 				0DD8B9B824B6898F0031FF42 /* EventLogger.swift in Sources */,
 				0D100EE223BAB1B80089DB22 /* SeedBackup.swift in Sources */,
 				0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */,
+				0DCD012324DE245300ED0113 /* ErrorHandling.swift in Sources */,
 				0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */,
 				0DC167AF23BE35B300332890 /* SendZecView.swift in Sources */,
 				0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */,
@@ -1004,6 +1013,7 @@
 				0DF26E2424D1F75E00F32978 /* SquareToggleStyle.swift in Sources */,
 				0DC37D7624D3834E00ACFE12 /* AddressValidator.swift in Sources */,
 				0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */,
+				0D99079524E1762400743EB9 /* AlertMessaging.swift in Sources */,
 				0D2D5C1924CF8031001A58AD /* ZcashActionableTextField.swift in Sources */,
 				0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */,
 				0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */,
@@ -1071,6 +1081,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D99079624E1762400743EB9 /* AlertMessaging.swift in Sources */,
 				0DF26E2524D1F75E00F32978 /* SquareToggleStyle.swift in Sources */,
 				0DCDFF9824B6722B000F6999 /* SyncingButton.swift in Sources */,
 				0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */,
@@ -1148,6 +1159,7 @@
 				0DCDFFD124B6722B000F6999 /* ZcashSeedWordPill.swift in Sources */,
 				0DCDFFD224B6722B000F6999 /* CreateNewWallet.swift in Sources */,
 				0DCDFFD424B6722B000F6999 /* HostingController.swift in Sources */,
+				0DCD012424DE245300ED0113 /* ErrorHandling.swift in Sources */,
 				0DCDFFD524B6722B000F6999 /* MnemonicSeedPhraseHandling.swift in Sources */,
 				0DCDFFD624B6722B000F6999 /* ZcashBackground.swift in Sources */,
 			);
