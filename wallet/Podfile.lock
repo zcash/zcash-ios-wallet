@@ -1,4 +1,5 @@
 PODS:
+  - Bugsnag (6.1.2)
   - CGRPCZlib (1.0.0-alpha.17)
   - CNIOAtomics (2.20.2)
   - CNIOBoringSSL (2.9.0)
@@ -70,6 +71,7 @@ PODS:
     - SQLite.swift (~> 0.12.2)
 
 DEPENDENCIES:
+  - Bugsnag
   - gRPC-Swift (= 1.0.0-alpha.17)
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
@@ -80,6 +82,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Bugsnag
     - CGRPCZlib
     - CNIOAtomics
     - CNIOBoringSSL
@@ -109,6 +112,7 @@ SPEC REPOS:
     - ZcashLightClientKit
 
 SPEC CHECKSUMS:
+  Bugsnag: 67aed7ab92990833e164c2b83a240951ddb1ea33
   CGRPCZlib: 245283cd656bf0c309a48a887c27865d6f54f7ef
   CNIOAtomics: 7daf6423d00650104436c5f8a2a341679104ae83
   CNIOBoringSSL: fb66746214b40dded1a8ddf2e078af0eff07bfb8
@@ -137,6 +141,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
   ZcashLightClientKit: 7c6a9a4d6e1420f030baeff07e9e4818f6ec7dc9
 
-PODFILE CHECKSUM: 137bc8a100eaa5e68ed166427d8b7c16dadf4637
+PODFILE CHECKSUM: 368b05849ec15b4bd9dcaf35164ceef9f4836a8b
 
 COCOAPODS: 1.9.3

@@ -15,6 +15,7 @@ var logger = SimpleLogger(logLevel: .debug)
 #endif
 
 #if ENABLE_LOGGING
+import Bugsnag
 let tracker = MixPanelLogger(token: Constants.mixpanelProject)
 #else
 let tracker = NullLogger()
@@ -25,6 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        #if ENABLE_LOGGING
+        Bugsnag.start(withApiKey: Constants.bugsnagApiKey)
+        #endif
         let environment = ZECCWalletEnvironment.shared
         switch environment.state {
         case .initalized,
