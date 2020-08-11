@@ -2,4 +2,5 @@ import Foundation
 
 public struct Constants {
     static let mixpanelProject: String = "{{ argument.mixpanel }}"
+    static let bugsnagApiKey: String = "{{ argument.bugsnag }}"
 }
