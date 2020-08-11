@@ -3,6 +3,7 @@ use_frameworks!
 
 def base_pods
   pod 'ZcashLightClientKit'
+  pod 'gRPC-Swift', '= 1.0.0-alpha.17'
   pod 'KeychainSwift', '~> 19.0.0'
   pod 'MnemonicSwift'
   pod 'TinyQRScanner'
