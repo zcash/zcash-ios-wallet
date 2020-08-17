@@ -152,6 +152,8 @@ final class HomeViewModel: ObservableObject {
 }
 
 struct Home: View {
+    private static let childID = "HomeView"
+    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     var keypad: KeyPad
@@ -342,12 +344,9 @@ struct Home: View {
                     PushView(
                         destination: LazyView(
                             SendTransaction()
-                                .environmentObject(
-                                    SendFlow.current! //fixme
-                            )
-                                .navigationBarTitle("",displayMode: .inline)
-                                .navigationBarHidden(true)
-                        ), isActive: self.$sendingPushed
+                        ),
+                        destinationId: Self.childID,
+                        isActive: self.$sendingPushed
                     ) {
                         EmptyView()
                     }

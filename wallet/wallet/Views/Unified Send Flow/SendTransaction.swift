@@ -10,7 +10,7 @@ import SwiftUI
 import ZcashLightClientKit
 import NavigationStack
 struct SendTransaction: View {
-    @EnvironmentObject var flow: SendFlowEnvironment
+    @ObservedObject var flow: SendFlowEnvironment = SendFlow.current!
     @State var showError = false
     @State var authError: AuthenticationEvent = .userDeclined
     @State var sendOk = false
@@ -90,12 +90,8 @@ struct SendTransaction: View {
                 ZcashNavigationBar(
                     leadingItem: {
                         PopView {
-                            Button(action: {
-                                self.flow.close()
-                            }) {
                                 Image("Back")
                                     .renderingMode(.original)
-                            }
                         }
                 },
                     headerItem: {
