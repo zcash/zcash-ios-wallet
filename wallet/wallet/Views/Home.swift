@@ -362,15 +362,12 @@ struct Home: View {
                         WalletDetails(isActive: $showHistory)
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle(Text(""), displayMode: .inline)
+                            .navigationBarHidden(true)
                         
-                    ) {
+                    ,isActive: $showHistory) {
                         walletDetails
                     }.isDetailLink(false)
                 }
-                /// FIXME: fix pending transactions stuck
-                //                if viewModel.pendingTransactions.count > 0 {
-                //                    detailCard
-                //                }
             }
             .padding([.bottom], 20)
         }

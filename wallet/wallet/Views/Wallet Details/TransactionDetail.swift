@@ -13,7 +13,6 @@ struct TransactionDetails: View {
     
     var model: DetailModel
     @State var isCopyAlertShown: Bool = false
-    @Binding var isActive: Bool
     var status: String {
         
         switch model.status {
@@ -62,11 +61,7 @@ struct TransactionDetails: View {
             )
         }
         .navigationBarTitle(Text("Transaction Detail".localized()), displayMode: .inline)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(trailing:  ZcashCloseButton(action: {
-            
-            self.isActive = false
-        }).frame(width: 30, height: 30))
+        .navigationBarBackButtonHidden(false)
 
     }
 }
@@ -100,7 +95,7 @@ struct TransactionDetails_Previews: PreviewProvider {
                 status: .paid(success: true),
                 subtitle: "1 of 10 confirmations"
                 
-            ), isActive: .constant(true)
+            )
         )
     }
 }
