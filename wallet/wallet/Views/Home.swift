@@ -352,15 +352,25 @@ struct Home: View {
                     }.isDetailLink(false)
                 }
                 
-                NavigationLink(destination: WalletDetails(isActive: $showHistory)
-                    .environmentObject(WalletDetailsViewModel())
-                    .navigationBarTitle("",displayMode: .inline)
-                    .navigationBarHidden(true),
-                               isActive: $showHistory) {
+                if viewModel.isSyncing {
+                    //Warning: This exists for the purpose of not having a link in the screen while syncing. LazyLoading breaks the UITableView underneath list for some reason and refreshing wallet history polls the database which can't happen while syncing.
                     walletDetails
-                           .opacity(viewModel.isSyncing ? 0.4 : 1)
+                        .opacity(0.4)
+                } else {
+                    NavigationLink(
+                        destination:
+                        WalletDetails(isActive: $showHistory)
+                            .environmentObject(WalletDetailsViewModel())
+                            .navigationBarTitle(Text(""), displayMode: .inline)
+                        
+                    ) {
+                        walletDetails
+                    }.isDetailLink(false)
                 }
-                .disabled(viewModel.isSyncing)
+                /// FIXME: fix pending transactions stuck
+                //                if viewModel.pendingTransactions.count > 0 {
+                //                    detailCard
+                //                }
             }
             .padding([.bottom], 20)
         }
