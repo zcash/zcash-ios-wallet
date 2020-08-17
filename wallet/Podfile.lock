@@ -24,6 +24,7 @@ PODS:
     - Mixpanel-swift/Complete (= 2.7.7)
   - Mixpanel-swift/Complete (2.7.7)
   - MnemonicSwift (1.0.0)
+  - NavigationStack (0.1.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
@@ -66,7 +67,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.19.0)
   - SwiftProtobuf (1.11.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.6.0):
+  - ZcashLightClientKit (0.6.2):
     - gRPC-Swift (= 1.0.0-alpha.17)
     - SQLite.swift (~> 0.12.2)
 
@@ -77,8 +78,9 @@ DEPENDENCIES:
   - lottie-ios
   - Mixpanel-swift
   - MnemonicSwift
+  - NavigationStack (from `../../../swiftui-navigation-stack`)
   - TinyQRScanner
-  - ZcashLightClientKit (~> 0.6.0)
+  - ZcashLightClientKit (from `../../ZcashLightClientKit`)
 
 SPEC REPOS:
   trunk:
@@ -109,7 +111,12 @@ SPEC REPOS:
     - SwiftNIOTransportServices
     - SwiftProtobuf
     - TinyQRScanner
-    - ZcashLightClientKit
+
+EXTERNAL SOURCES:
+  NavigationStack:
+    :path: "../../../swiftui-navigation-stack"
+  ZcashLightClientKit:
+    :path: "../../ZcashLightClientKit"
 
 SPEC CHECKSUMS:
   Bugsnag: 67aed7ab92990833e164c2b83a240951ddb1ea33
@@ -127,6 +134,7 @@ SPEC CHECKSUMS:
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   Mixpanel-swift: 3a8fb9ce791e9c64d556b9446aa470b469c6fa7d
   MnemonicSwift: d743ec3dcc1cdce706a1876dba0b6250ad1ef90d
+  NavigationStack: 6b1fbf72d2284db6cb45ffb4abc72e9397ca7561
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftNIO: a3c1b37da3e97ce44b3cfafc61c05fe0cac540b8
   SwiftNIOConcurrencyHelpers: cd7afc3d1f1ceaf55bbd030e7d1a469d3024db92
@@ -139,8 +147,8 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: e69704b2d41b68a531bf3aa0177fec81ba1361e6
   SwiftProtobuf: f889fe5772f90ef7d7b8aac352d1fddf39650713
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: 7c6a9a4d6e1420f030baeff07e9e4818f6ec7dc9
+  ZcashLightClientKit: 9ff73c55a1c2a493db96357162dfcd5bac00f7df
 
-PODFILE CHECKSUM: 368b05849ec15b4bd9dcaf35164ceef9f4836a8b
+PODFILE CHECKSUM: 4d20e97b2cc9774d0dfcf3570067805422b42101
 
 COCOAPODS: 1.9.3

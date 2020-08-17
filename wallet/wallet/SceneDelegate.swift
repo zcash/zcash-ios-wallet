@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftUI
-
+import NavigationStack
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = HostingController(rootView:
                     AnyView(
-                        NavigationView {
+                        NavigationStackView {
                             firstView()
                         }
                     )
@@ -94,5 +94,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
             }
        
+    }
+
+}
+
+extension ZECCWalletEnvironment {
+    var isInitalized: Bool {
+        switch state {
+        case .uninitialized:
+            return false
+        default:
+            return true
+        }
     }
 }

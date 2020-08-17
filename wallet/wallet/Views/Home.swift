@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import ZcashLightClientKit
+import NavigationStack
 final class HomeViewModel: ObservableObject {
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
@@ -338,7 +339,7 @@ struct Home: View {
                     .disabled(!isAmountValid)
                     .opacity(isAmountValid ? 1 : 0.6)
                     
-                    NavigationLink(
+                    PushView(
                         destination: LazyView(
                             SendTransaction()
                                 .environmentObject(
@@ -349,7 +350,7 @@ struct Home: View {
                         ), isActive: self.$sendingPushed
                     ) {
                         EmptyView()
-                    }.isDetailLink(false)
+                    }
                 }
                 
                 if viewModel.isSyncing {
@@ -357,24 +358,18 @@ struct Home: View {
                     walletDetails
                         .opacity(0.4)
                 } else {
-                    NavigationLink(
-                        destination:
-                        WalletDetails(isActive: $showHistory)
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
-                            .navigationBarHidden(true)
-                        
-                    ,isActive: $showHistory) {
+                    PushView(destination: WalletDetails(isActive: self.$showHistory)
+                        .environmentObject(WalletDetailsViewModel())) {
                         walletDetails
-                    }.isDetailLink(false)
+                            .opacity(viewModel.isSyncing ? 0.4 : 1)
+                    }
+                    
                 }
             }
             .padding([.bottom], 20)
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarTitle("", displayMode: .inline)
-        .navigationBarHidden(true)
-            
+
+
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
         }

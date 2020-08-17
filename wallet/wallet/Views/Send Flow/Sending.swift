@@ -110,7 +110,7 @@ struct Sending: View {
                                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                                 .frame(height: 58)
                         }
-                        NavigationLink(destination: WalletDetails(isActive: $showHistory)
+                        NavigationLink(destination: WalletDetails(isActive: self.$showHistory)
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle("", displayMode: .inline)
                             .navigationBarHidden(true),

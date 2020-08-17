@@ -8,6 +8,7 @@
 
 import SwiftUI
 import ZcashLightClientKit
+import NavigationStack
 struct SendTransaction: View {
     @EnvironmentObject var flow: SendFlowEnvironment
     @State var showError = false
@@ -88,11 +89,13 @@ struct SendTransaction: View {
                 
                 ZcashNavigationBar(
                     leadingItem: {
-                        Button(action: {
-                            self.flow.close()
-                        }) {
-                            Image("Back")
-                                .renderingMode(.original)
+                        PopView {
+                            Button(action: {
+                                self.flow.close()
+                            }) {
+                                Image("Back")
+                                    .renderingMode(.original)
+                            }
                         }
                 },
                     headerItem: {

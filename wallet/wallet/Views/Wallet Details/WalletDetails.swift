@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import NavigationStack
 class WalletDetailsViewModel: ObservableObject {
     
     var items: [DetailModel] = []
@@ -64,6 +65,7 @@ struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
     @State var isDetailShown: Bool = false
     @Binding var isActive: Bool
+    @State var selectedIndex: Int?
     var zAddress: String {
         viewModel.zAddress
     }
@@ -79,9 +81,7 @@ struct WalletDetails: View {
             VStack(alignment: .center) {
                 ZcashNavigationBar(
                     leadingItem: {
-                        Button(action: {
-                            self.isActive.toggle()
-                        }) {
+                        PopView {
                             Image("Back")
                                 .renderingMode(.original)
                         }
@@ -100,18 +100,17 @@ struct WalletDetails: View {
                         .listRowBackground(Color.zDarkGray2)
                         .frame(height: 100)
                         .padding([.trailing], 24)
-                    ForEach(self.viewModel.items, id: \.id) { row in    
-                        NavigationLink(destination: LazyView(TransactionDetails(model: row))) {
-                            DetailCard(model: row, backgroundColor: Color.zDarkGray2)
-                            }.isDetailLink(true)
-                        .listRowBackground(Color.zDarkGray2)
-                        .frame(height: 69)
-                        .padding(.horizontal, 16)
-                        .cornerRadius(0)
-                        .border(Color.zGray, width: 1)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                            
-                    }
+                    ForEach(0 ..< self.viewModel.items.count, id: \.self) { index in
+                        PushView(destination: TransactionDetails(model: self.viewModel.items[index]), tag: index, selection: self.$selectedIndex) {
+                            DetailCard(model: self.viewModel.items[index], backgroundColor: Color.zDarkGray2)
+                        }
+                        
+                    } .listRowBackground(Color.zDarkGray2)
+                                               .frame(height: 69)
+                                               .padding(.horizontal, 16)
+                                               .cornerRadius(0)
+                                               .border(Color.zGray, width: 1)
+                                               .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
                 .cornerRadius(20)
                 .overlay(
@@ -135,7 +134,7 @@ struct WalletDetails: View {
             print("wallet details onDisappear")
         }
         .edgesIgnoringSafeArea([.bottom])
-        .navigationBarHidden(true)
+        
         .alert(isPresented: self.$viewModel.showError) {
             Alert(title: Text("Error".localized()),
                   message: Text("an error ocurred".localized()),
@@ -144,11 +143,7 @@ struct WalletDetails: View {
     }
 }
 
-struct WalletDetails_Previews: PreviewProvider {
-    static var previews: some View {
-        return WalletDetails(isActive: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
-    }
-}
+
 
 class MockWalletDetailViewModel: WalletDetailsViewModel {
     
