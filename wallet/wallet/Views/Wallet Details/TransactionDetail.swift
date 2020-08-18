@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct TransactionDetails: View {
+struct TransactionDetailsOLD: View {
     
     var model: DetailModel
     @State var isCopyAlertShown: Bool = false
@@ -83,10 +83,10 @@ struct DetailCell: View {
     }
 }
 
-struct TransactionDetails_Previews: PreviewProvider {
+struct TransactionDetailsOLD_Previews: PreviewProvider {
     static var previews: some View {
         
-        return TransactionDetails(model:
+        return TransactionDetailsOLD(model:
             DetailModel(
                 id: "bb031",
                 zAddress: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",

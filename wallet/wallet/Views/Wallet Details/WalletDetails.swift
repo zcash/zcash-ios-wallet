@@ -101,7 +101,7 @@ struct WalletDetails: View {
                         .frame(height: 100)
                         .padding([.trailing], 24)
                     ForEach(self.viewModel.items, id: \.id) { row in    
-                        NavigationLink(destination: LazyView(TransactionDetails(model: row))) {
+                        NavigationLink(destination: LazyView(TransactionDetails(detail: row))) {
                             DetailCard(model: row, backgroundColor: Color.zDarkGray2)
                             }.isDetailLink(true)
                         .listRowBackground(Color.zDarkGray2)
