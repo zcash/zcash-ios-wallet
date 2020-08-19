@@ -36,7 +36,7 @@ struct HeaderFooterTxDetailView : View {
 import Foundation
 struct HeaderFooterFactory {
     
-    // TODO: change this
+    
     static func formatValue(_ value: Double) -> String {
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 2
@@ -58,7 +58,8 @@ struct HeaderFooterFactory {
     }
     
     static func failedHeaderWithValue(_ value: Double,
-                                      shielded: Bool) -> HeaderFooterTxDetailView {
+                                      shielded: Bool,
+                                      formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
             caption: Text("You Failed to send")
                 .foregroundColor(.white)
@@ -71,7 +72,9 @@ struct HeaderFooterFactory {
             accessory: Image("outgoing_failed").eraseToAnyView()
         )
     }
-    static func failedFooterWithValue(_ value: Double, shielded: Bool) -> HeaderFooterTxDetailView {
+    static func failedFooterWithValue(_ value: Double,
+                                      shielded: Bool,
+                                      formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
                            caption: Text("Total Spent")
                                .foregroundColor(.white)
@@ -85,7 +88,8 @@ struct HeaderFooterFactory {
                        )
     }
     static func successHeaderWithValue(_ value: Double,
-                                       shielded: Bool) -> HeaderFooterTxDetailView {
+                                       shielded: Bool,
+                                       formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
                            caption: Text("You Sent")
                                .foregroundColor(.zYellow)
@@ -99,7 +103,8 @@ struct HeaderFooterFactory {
     }
     
     static func successFooterWithValue(_ value: Double,
-                                       shielded: Bool) -> HeaderFooterTxDetailView {
+                                       shielded: Bool,
+                                       formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
                           caption: Text("Total Spent")
                               .foregroundColor(.zYellow)

@@ -40,9 +40,12 @@ struct TransactionDetails: View {
             ZcashBackground()
             VStack(spacing: 30) {
                 VStack {
-                    DateAndHeight(date: detail.date, formatterBlock: formatDateDetail, height: detail.minedHeight)
+                    DateAndHeight(date: detail.date,
+                                  formatterBlock: formatDateDetail,
+                                  height: detail.minedHeight)
                     HeaderFooterFactory.header(for: detail)
                     SubwayPathBuilder.buildSubway(detail: detail, expandMemo: .constant(false))
+                        .padding(.leading, 32)
                     HeaderFooterFactory.footer(for: detail)
                     
                 }
@@ -154,15 +157,28 @@ extension String {
     }
 }
 
+fileprivate func formatAmount(_ amount: Double) -> String {
+    abs(amount).toZecAmount()
+}
+
 extension HeaderFooterFactory {
     static func header(for detail: DetailModel) -> some View {
         detail.success ?
-            Self.successHeaderWithValue(detail.zecAmount, shielded: detail.shielded) :
-            Self.failedHeaderWithValue(detail.zecAmount, shielded: detail.shielded)
+            Self.successHeaderWithValue(detail.zecAmount,
+                                        shielded: detail.shielded,
+                                        formatValue: formatAmount) :
+            Self.failedHeaderWithValue(detail.zecAmount,
+                                       shielded: detail.shielded,
+                                        formatValue: formatAmount)
     }
     
     static func footer(for detail: DetailModel) -> some View {
-        detail.success ? Self.successFooterWithValue(detail.zecAmount, shielded: detail.shielded) : self.failedFooterWithValue(detail.zecAmount, shielded: detail.shielded)
+        detail.success ? Self.successFooterWithValue(detail.zecAmount,
+                                                     shielded: detail.shielded,
+                                                     formatValue: formatAmount) :
+            self.failedFooterWithValue(detail.zecAmount,
+                                       shielded: detail.shielded,
+                                       formatValue: formatAmount)
     }
 }
 
