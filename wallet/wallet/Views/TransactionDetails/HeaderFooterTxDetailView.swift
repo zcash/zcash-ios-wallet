@@ -37,7 +37,7 @@ import Foundation
 struct HeaderFooterFactory {
     
     
-    static func formatValue(_ value: Double) -> String {
+    static func defaultFormatter(_ value: Double) -> String {
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 2
         
@@ -45,6 +45,16 @@ struct HeaderFooterFactory {
         
     }
     
+    static func accessoryArrow(sent: Bool) -> AnyView {
+        if sent {
+            return Image("outgoing_confirmed")
+                .eraseToAnyView()
+        } else {
+            return Image("outgoing_confirmed")
+                .rotationEffect(Angle(degrees: 180))
+                .eraseToAnyView()
+        }
+    }
     static func outline(success: Bool, shielded: Bool) -> Color  {
         guard success else {
             return Color.red
@@ -59,7 +69,7 @@ struct HeaderFooterFactory {
     
     static func failedHeaderWithValue(_ value: Double,
                                       shielded: Bool,
-                                      formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
+                                      formatValue: (Double) -> String = Self.defaultFormatter) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
             caption: Text("You Failed to send")
                 .foregroundColor(.white)
@@ -74,7 +84,7 @@ struct HeaderFooterFactory {
     }
     static func failedFooterWithValue(_ value: Double,
                                       shielded: Bool,
-                                      formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
+                                      formatValue: (Double) -> String = Self.defaultFormatter) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
                            caption: Text("Total Spent")
                                .foregroundColor(.white)
@@ -89,30 +99,33 @@ struct HeaderFooterFactory {
     }
     static func successHeaderWithValue(_ value: Double,
                                        shielded: Bool,
-                                       formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
+                                       sent: Bool,
+                                       formatValue: (Double) -> String = Self.defaultFormatter) -> HeaderFooterTxDetailView {
         HeaderFooterTxDetailView(
-                           caption: Text("You Sent")
+                           caption: (sent ? Text("Total Spent") : Text("You Received"))
                                .foregroundColor(.zYellow)
                                .font(.footnote),
                            mainText: Text("$\(formatValue(value))")
                                .font(Font.zoboto(size: 36))
                                .foregroundColor(.white),
                            outline: outline(success: true, shielded: shielded),
-                           accessory: Image("outgoing_confirmed").eraseToAnyView()
+                           accessory: accessoryArrow(sent: sent)
                        )
     }
     
     static func successFooterWithValue(_ value: Double,
                                        shielded: Bool,
-                                       formatValue: (Double) -> String = Self.formatValue) -> HeaderFooterTxDetailView {
+                                       sent: Bool,
+                                       formatValue: (Double) -> String = Self.defaultFormatter) -> HeaderFooterTxDetailView {
+        
         HeaderFooterTxDetailView(
-                          caption: Text("Total Spent")
+                          caption: (sent ? Text("Total Spent") : Text("You Received"))
                               .foregroundColor(.zYellow)
                               .font(.footnote),
                           mainText: Text("$\(formatValue(value))")
                               .font(Font.zoboto(size: 36))
                               .foregroundColor(.white),
-                          outline: .zYellow,
+                          outline: outline(success: true, shielded: shielded),
                           accessory: EmptyView().eraseToAnyView()
                       )
     }
@@ -128,9 +141,9 @@ struct HeaderFooterTxDetailView_Previews: PreviewProvider {
                 
                 HeaderFooterFactory.failedFooterWithValue(0, shielded: true)
                 
-                HeaderFooterFactory.successHeaderWithValue(4.32, shielded: true)
+                HeaderFooterFactory.successHeaderWithValue(4.32, shielded: true, sent: true)
                 
-                HeaderFooterFactory.successFooterWithValue(4.32, shielded: true)
+                HeaderFooterFactory.successFooterWithValue(4.32, shielded: true, sent: true)
                 
               
             }

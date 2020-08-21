@@ -79,6 +79,8 @@
 		0D7D5DDB24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
 		0D7D5DDC24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
 		0D87E2CC240ECEC500648C09 /* ZcashButtonBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D87E2CB240ECEC500648C09 /* ZcashButtonBackground.swift */; };
+		0D89FF4624ED9E2C008E79DD /* Date+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */; };
+		0D89FF4724ED9E2C008E79DD /* Date+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */; };
 		0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */; };
 		0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
@@ -176,6 +178,10 @@
 		0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0DCDFFE124B6722B000F6999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
 		0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */; };
+		0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
+		0DD1C2CE24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
+		0DD1C2D024F051EE0042C1E4 /* Foundation+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */; };
+		0DD1C2D124F051EE0042C1E4 /* Foundation+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */; };
 		0DD8B9B824B6898F0031FF42 /* EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD8B9B724B6898F0031FF42 /* EventLogger.swift */; };
 		0DDAF3A724097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */; };
 		0DDAF3A924098D1000EA9427 /* MnemonicSeedPhraseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDAF3A824098D1000EA9427 /* MnemonicSeedPhraseProvider.swift */; };
@@ -296,6 +302,7 @@
 		0D75ECD82416D13800244CE4 /* SimpleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		0D87E2CB240ECEC500648C09 /* ZcashButtonBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashButtonBackground.swift; sourceTree = "<group>"; };
+		0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Zcash.swift"; sourceTree = "<group>"; };
 		0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Zcash.swift"; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
@@ -320,6 +327,8 @@
 		0DCDFFE624B6722B000F6999 /* ECC-Wallet-no-logs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ECC-Wallet-no-logs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DCDFFE724B6722B000F6999 /* ECC-Wallet-no-logs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ECC-Wallet-no-logs-Info.plist"; sourceTree = "<group>"; };
 		0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineSynchronizer.swift; sourceTree = "<group>"; };
+		0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockExplorerUrlHandling.swift; sourceTree = "<group>"; };
+		0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Zcash.swift"; sourceTree = "<group>"; };
 		0DD8B9B724B6898F0031FF42 /* EventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogger.swift; sourceTree = "<group>"; };
 		0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicSeedPhraseHandling.swift; sourceTree = "<group>"; };
 		0DDAF3A824098D1000EA9427 /* MnemonicSeedPhraseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicSeedPhraseProvider.swift; sourceTree = "<group>"; };
@@ -462,6 +471,9 @@
 				0DF3074F24DB31570080B0CF /* DeviceFeedbackHelper.swift */,
 				0DCD012224DE245300ED0113 /* ErrorHandling.swift */,
 				0D99079424E1762400743EB9 /* AlertMessaging.swift */,
+				0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */,
+				0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */,
+				0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1025,6 +1037,8 @@
 				0DC167AF23BE35B300332890 /* SendZecView.swift in Sources */,
 				0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */,
 				0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */,
+				0DD1C2D024F051EE0042C1E4 /* Foundation+Zcash.swift in Sources */,
+				0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
@@ -1068,6 +1082,7 @@
 				0DC0847924BE583400F498A5 /* RateComponent.swift in Sources */,
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
 				0DC0847724BE57BE00F498A5 /* FeedbackForm.swift in Sources */,
+				0D89FF4624ED9E2C008E79DD /* Date+Zcash.swift in Sources */,
 				0DBAA0912419A77500B08BC7 /* NukeWarning.swift in Sources */,
 				0DF26E2124D1F75300F32978 /* ZcashMemoTextField.swift in Sources */,
 				0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */,
@@ -1189,11 +1204,14 @@
 				0DCDFFC224B6722B000F6999 /* ReceiveFunds.swift in Sources */,
 				0DCDFFC324B6722B000F6999 /* RestoreWallet.swift in Sources */,
 				0DCDFFC424B6722B000F6999 /* NavigationConfigurator.swift in Sources */,
+				0DD1C2D124F051EE0042C1E4 /* Foundation+Zcash.swift in Sources */,
 				0DCDFFC524B6722B000F6999 /* ZcashSymbol.swift in Sources */,
 				0DC37D7424D37D7D00ACFE12 /* AddressHelperView.swift in Sources */,
 				0D2D5C1A24CF8031001A58AD /* ZcashActionableTextField.swift in Sources */,
+				0DD1C2CE24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */,
 				0DCDFFC624B6722B000F6999 /* SimpleLogger.swift in Sources */,
 				0DCDFFC724B6722B000F6999 /* BackupWallet.swift in Sources */,
+				0D89FF4724ED9E2C008E79DD /* Date+Zcash.swift in Sources */,
 				0DF26E2824D1F88100F32978 /* Baseline.swift in Sources */,
 				0DCDFFC924B6722B000F6999 /* QRCodeGenerator.swift in Sources */,
 				0DCDFFCA24B6722B000F6999 /* ScanAddress.swift in Sources */,

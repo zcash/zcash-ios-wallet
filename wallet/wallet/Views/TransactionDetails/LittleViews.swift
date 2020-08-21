@@ -35,21 +35,29 @@ struct WithAMemoView: View {
     var memo: String
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            
-            HStack {
-                Text("with a")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                Image("memo_icon")
-                Text("memo")
-                    .font(.body)
-                    .foregroundColor(.white)
+            // TODO: move this elsewhere once the subway map is in place
+            Button (action: {
+                withAnimation {
+                    self.expanded.toggle()
+                }
+            }
+            ) {
+                HStack {
+                    Text("with a")
+                        .font(.body)
+                        .foregroundColor(.gray)
+                    Image("memo_icon")
+                    Text("memo")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
             }
             if expanded && !memo.isEmpty {
                 Text(memo)
                     .foregroundColor(.white)
                     .padding()
                     .background(Color.zGray2)
+                    .layoutPriority(Double.infinity)
                 
             }
         }

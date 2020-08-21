@@ -9,33 +9,25 @@
 import SwiftUI
 import Combine
 class WalletDetailsViewModel: ObservableObject {
-    
-    var items: [DetailModel] = []
+    // look at before changing https://stackoverflow.com/questions/60956270/swiftui-view-not-updating-based-on-observedobject
+    @Published var items = [DetailModel]()
     var showError = false
-    
     var balance: Double = 0
     private var cancellables = Set<AnyCancellable>()
+    
     init(){
-        
-        ZECCWalletEnvironment.shared.synchronizer.walletDetails
+        ZECCWalletEnvironment.shared.synchronizer.walletDetailsBuffer
             .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { [weak self] (completion) in
-                guard let self = self else { return }
-                switch completion {
-                case .failure(_):
-                    self.showError = true
-                case .finished:
-                    break
-                }
-            }) { (models) in
-                self.items = [DetailModel](models)
-        }
-            
-        .store(in: &cancellables)
+            .sink(receiveValue: { [weak self] (d) in
+                self?.items = d
+            })
+            .store(in: &cancellables)
         
         ZECCWalletEnvironment.shared.synchronizer.balance
             .receive(on: RunLoop.main)
-            .assign(to: \.balance, on: self)
+            .sink(receiveValue: { [weak self] (b) in
+                self?.balance = b
+            })
             .store(in: &cancellables)
         
     }
@@ -62,7 +54,7 @@ class WalletDetailsViewModel: ObservableObject {
 
 struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
-    @State var isDetailShown: Bool = false
+    @State var selectedId: String? = nil
     @Binding var isActive: Bool
     var zAddress: String {
         viewModel.zAddress
@@ -100,17 +92,17 @@ struct WalletDetails: View {
                         .listRowBackground(Color.zDarkGray2)
                         .frame(height: 100)
                         .padding([.trailing], 24)
-                    ForEach(self.viewModel.items, id: \.id) { row in    
-                        NavigationLink(destination: LazyView(TransactionDetails(detail: row))) {
-                            DetailCard(model: row, backgroundColor: Color.zDarkGray2)
-                            }.isDetailLink(true)
+                    ForEach(self.viewModel.items, id: \.id) { row in
+                        NavigationLink(destination: LazyView(TransactionDetails(detail: row, selectedId: self.$selectedId)), tag: row.id, selection: self.$selectedId) {
+                            DetailCard(model: row, backgroundColor: .zDarkGray2)
+                        }
+                        .isDetailLink(false)
                         .listRowBackground(Color.zDarkGray2)
                         .frame(height: 69)
                         .padding(.horizontal, 16)
                         .cornerRadius(0)
                         .border(Color.zGray, width: 1)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                            
                     }
                 }
                 .cornerRadius(20)
@@ -118,7 +110,7 @@ struct WalletDetails: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.zGray, lineWidth: 1.0)
                 )
-                    .padding()
+                .padding()
                 
                 Spacer()
                 
@@ -128,11 +120,12 @@ struct WalletDetails: View {
             
             UITableView.appearance().separatorStyle = .none
             UITableView.appearance().backgroundColor = UIColor.clear
-            print("wallet details onAppear")
+            tracker.track(.screen(screen: .history), properties: [:])
+
         }
         .onDisappear() {
             UITableView.appearance().separatorStyle = .singleLine
-            print("wallet details onDisappear")
+
         }
         .edgesIgnoringSafeArea([.bottom])
         .navigationBarHidden(true)
@@ -154,7 +147,7 @@ class MockWalletDetailViewModel: WalletDetailsViewModel {
     
     override init() {
         super.init()
-        self.items = DetailModel.mockDetails
+        
     }
     
 }
