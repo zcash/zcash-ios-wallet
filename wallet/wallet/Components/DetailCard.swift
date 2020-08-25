@@ -221,7 +221,7 @@ extension DetailModel {
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
         if let memo = confirmedTransaction.memo {
-            self.memo = String(bytes: memo, encoding: .utf8)
+            self.memo = memo.asZcashTransactionMemo()
         }
         self.minedHeight = confirmedTransaction.minedHeight
     }
@@ -242,7 +242,7 @@ extension DetailModel {
         self.zAddress = pendingTransaction.toAddress
         self.zecAmount = -Int64(pendingTransaction.value).asHumanReadableZecBalance()
         if let memo = pendingTransaction.memo {
-            self.memo = String(bytes: memo, encoding: .utf8)
+            self.memo = memo.asZcashTransactionMemo()
         }
         self.minedHeight = pendingTransaction.minedHeight
     }

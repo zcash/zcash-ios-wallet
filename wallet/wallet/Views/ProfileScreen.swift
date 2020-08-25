@@ -14,7 +14,7 @@ struct ProfileScreen: View {
     @State var nukePressed = false
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(30)
-    @State var isCopyAlertShown = false
+    @State var copiedValue: PasteboardItemModel?
     @Binding var isShown: Bool
     @State var isFeedbackActive = false
     var body: some View {
@@ -30,14 +30,17 @@ struct ProfileScreen: View {
                         Button(action: {
                             tracker.track(.tap(action: .copyAddress),
                                           properties: [:])
-                            UIPasteboard.general.string = self.appEnvironment.initializer.getAddress() 
-                            self.isCopyAlertShown = true
+                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.initializer.getAddress() ?? "", notify: "Address Copied to clipboard!")
+
                         }) {
                             Text(appEnvironment.initializer.getAddress() ?? "")
                             .lineLimit(3)
                                 .multilineTextAlignment(.center)
                                 .font(.system(size: 18))
                                 .foregroundColor(.white)
+                        }
+                        .onReceive(PasteboardAlertHelper.shared.publisher) { (item) in
+                            self.copiedValue = item
                         }
                     }
                     .padding(0)
@@ -99,11 +102,8 @@ struct ProfileScreen: View {
                 }
                 .padding(.horizontal, Self.horizontalPadding)
                 .padding(.bottom, 30)
-                .alert(isPresented: self.$isCopyAlertShown) {
-                    Alert(title: Text(""),
-                          message: Text("Address Copied to clipboard!".localized()),
-                          dismissButton: .default(Text("OK".localized()))
-                    )
+                .alert(item: self.$copiedValue) { (p) -> Alert in
+                    PasteboardAlertHelper.alert(for: p)
                 }
             }
             .onAppear {

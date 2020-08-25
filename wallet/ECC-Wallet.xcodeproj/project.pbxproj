@@ -45,6 +45,8 @@
 		0D1C2F25240D8655001AA427 /* ZcashSeedWordPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */; };
 		0D1C2F27240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */; };
 		0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F28240DB948001AA427 /* UILogicTests.swift */; };
+		0D2607D724F42C46006FDC36 /* PasteboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */; };
+		0D2607D824F42C46006FDC36 /* PasteboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */; };
 		0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
 		0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */; };
 		0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */; };
@@ -276,6 +278,7 @@
 		0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedWordPill.swift; sourceTree = "<group>"; };
 		0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedPhraseGrid.swift; sourceTree = "<group>"; };
 		0D1C2F28240DB948001AA427 /* UILogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogicTests.swift; sourceTree = "<group>"; };
+		0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardHelper.swift; sourceTree = "<group>"; };
 		0D27C4A823C4C4640044B48E /* ZcashTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTextField.swift; sourceTree = "<group>"; };
 		0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottie_button_loading_new.json; sourceTree = "<group>"; };
@@ -474,6 +477,7 @@
 				0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */,
 				0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */,
 				0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */,
+				0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1059,6 +1063,7 @@
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
 				0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */,
+				0D2607D724F42C46006FDC36 /* PasteboardHelper.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */,
 				0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */,
@@ -1190,6 +1195,7 @@
 				0DCDFFB624B6722B000F6999 /* CameraAccessHelper.swift in Sources */,
 				0DCDFFB724B6722B000F6999 /* ZcashHoldToSendButton.swift in Sources */,
 				0DCDFFB824B6722B000F6999 /* WalletDetailsHeader.swift in Sources */,
+				0D2607D824F42C46006FDC36 /* PasteboardHelper.swift in Sources */,
 				0DCDFFB924B6722B000F6999 /* LottieAnimation.swift in Sources */,
 				0DCDFFBA24B6722B000F6999 /* ZcashCloseButton.swift in Sources */,
 				0DCDFFBB24B6722B000F6999 /* NukeWarning.swift in Sources */,
@@ -1393,7 +1399,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
@@ -1419,7 +1425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
@@ -1532,7 +1538,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1557,7 +1563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;

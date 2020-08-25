@@ -13,6 +13,7 @@ struct TransactionDetails: View {
     @State var expandMemo = false
     @State var explorerAlert = false
     @Binding var selectedId: String?
+    @State var copiedItem: PasteboardItemModel?
     var exploreButton: some View {
         Button(action: {
             self.explorerAlert = true
@@ -67,6 +68,9 @@ struct TransactionDetails: View {
                             HeaderFooterFactory.header(for: detail)
                             SubwayPathBuilder.buildSubway(detail: detail, expandMemo: self.$expandMemo)
                                 .padding(.leading, 32)
+                                .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
+                                    self.copiedItem = p
+                                }
                             HeaderFooterFactory.footer(for: detail)
                             
                         }
@@ -91,6 +95,10 @@ struct TransactionDetails: View {
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
                           }))
                 }
+                
+            }
+            .alert(item: self.$copiedItem) { (p) -> Alert in
+                PasteboardAlertHelper.alert(for: p)
             }
         }
         .navigationBarTitle("", displayMode: .inline)
@@ -134,22 +142,32 @@ struct SubwayPathBuilder {
             
             if memo.includesReplyTo {
                 views.append(
-                    Text("includes reply-to")
+                    Button(action: {
+                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.replyToAddress ?? "", notify: "Copied to clipboard!")
+                        tracker.track(.tap(action: .copyAddress), properties: [:])
+                    }) {
+                        Text("includes reply-to")
                         .font(.body)
                         .foregroundColor(.gray)
+                    }
                         .eraseToAnyView()
                 )
             }
         }
         
-        if let toAddr = detail.zAddress {
+        if let fullAddr = detail.zAddress, let toAddr = fullAddr.shortZaddress {
             views.append(
+                
+                Button(action:{
+                       PasteboardAlertHelper.shared.copyToPasteBoard(value: fullAddr, notify: "Copied To Clipboard!")
+                                   }){
                 (Text("to ")
                     .font(.body)
                     .foregroundColor(.white) +
                     Text(toAddr)
                         .font(.body)
                         .foregroundColor(.gray))
+                }
                     .eraseToAnyView()
             )
         }
@@ -172,7 +190,7 @@ struct SubwayPathBuilder {
         return DetailListing(details: views)
     }
 }
-
+    
 
 extension DetailModel {
     
@@ -200,8 +218,33 @@ extension DetailModel {
 }
 
 extension String {
+    static let memoReplyToString = "Reply-To: "
+    
     var includesReplyTo: Bool {
-        false
+        self.replyToAddress != nil
+    }
+    
+    var removingReplyTo: String {
+        guard let keywordRange = self.range(of: Self.memoReplyToString) else {
+            return self
+        }
+        return String(self[self.startIndex ..< self.index(before: keywordRange.lowerBound)])
+    }
+    
+    var replyToAddress: String? {
+        guard let keywordRange = self.range(of: Self.memoReplyToString),
+                  keywordRange.upperBound < self.endIndex else {
+                  return nil
+              }
+              
+        let addressSlice = self[keywordRange.upperBound ..< self.endIndex]
+      
+        let afterReplyToString = String(addressSlice)
+        
+        guard afterReplyToString.isValidShieldedAddress else { return nil }
+        
+        return afterReplyToString
+            
     }
 }
 

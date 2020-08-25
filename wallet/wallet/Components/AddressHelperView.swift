@@ -161,15 +161,6 @@ struct AddressHelperView_Previews: PreviewProvider {
         Group {
             ZStack {
                 ZcashBackground()
-                //
-                //                AddressHelperViewSection(title: "COPIED TO CLIPBOARD") {
-                //                    AddrezzHelperViewCell(
-                //                        address: "ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6",
-                //                        shielded: true,
-                //                        selected: false)
-                //                    }.listStyle(PlainListStyle())
-                //                    }.padding(0)
-                //                .background(Color.clear)
                 
                 AddressHelperView(selection: .constant(.none),mode: .both(clipboard: "ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", lastUsed: "tuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"))
                 
