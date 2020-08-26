@@ -249,6 +249,14 @@ extension DetailModel {
 }
 
 extension DetailModel {
+    var isSubmitSuccess: Bool {
+        switch status {
+        case .paid(let s):
+            return s
+        default:
+            return false
+        }
+    }
     
     static func subtitle(isPending: Bool, isSubmitSuccess: Bool, minedHeight: BlockHeight, date: String, latestBlockHeight: BlockHeight?) -> String {
         
@@ -260,6 +268,6 @@ extension DetailModel {
             return "Pending confirmation".localized()
         }
         
-        return "\(abs(latestHeight - minedHeight)) \("Confirmations".localized())"
+        return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
     }
 }

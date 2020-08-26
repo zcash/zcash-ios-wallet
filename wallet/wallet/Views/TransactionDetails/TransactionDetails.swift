@@ -173,10 +173,12 @@ struct SubwayPathBuilder {
         }
         
         if detail.success {
+            let latestHeight = ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
+            let isConfirmed = detail.isConfirmed(latestHeight: latestHeight)
             views.append(
-                Text("confirmed")
+                Text(detail.makeStatusText(latestHeight: latestHeight))
                     .font(.body)
-                    .foregroundColor(detail.shielded ? .zYellow : .zTransparentBlue)
+                    .foregroundColor(isConfirmed ?  detail.shielded ? .zYellow : .zTransparentBlue : .zGray2)
                     .eraseToAnyView()
             )
         } else {
@@ -190,9 +192,29 @@ struct SubwayPathBuilder {
         return DetailListing(details: views)
     }
 }
-    
+
+
 
 extension DetailModel {
+    
+    func makeStatusText(latestHeight: Int) -> String {
+         guard !self.isConfirmed(latestHeight: latestHeight) else {
+             return "Confirmed"
+         }
+         
+         guard minedHeight > 0, latestHeight > 0 else {
+            return "Pending confirmation"
+         }
+         
+         return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
+     }
+    
+    func isConfirmed(latestHeight: Int) -> Bool {
+        guard self.isMined, latestHeight > 0 else { return false }
+        
+        return abs(latestHeight - self.minedHeight) >= 10
+        
+    }
     
     var isMined: Bool {
         self.minedHeight.isMined

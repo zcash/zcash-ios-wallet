@@ -155,7 +155,7 @@ class MockWalletDetailViewModel: WalletDetailsViewModel {
 extension DetailModel {
     static var mockDetails: [DetailModel] {
         var items =  [DetailModel]()
-        for _ in 0 ... 5 {
+       
             items.append(contentsOf:
                 [
                     
@@ -192,7 +192,7 @@ extension DetailModel {
                     
                 ]
             )
-        }
+        
         return items
     }
 }
