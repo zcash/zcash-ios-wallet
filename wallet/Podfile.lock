@@ -78,7 +78,7 @@ DEPENDENCIES:
   - Mixpanel-swift
   - MnemonicSwift
   - TinyQRScanner
-  - ZcashLightClientKit (from `../../ZcashLightClientKit`)
+  - ZcashLightClientKit
 
 SPEC REPOS:
   trunk:
@@ -109,10 +109,7 @@ SPEC REPOS:
     - SwiftNIOTransportServices
     - SwiftProtobuf
     - TinyQRScanner
-
-EXTERNAL SOURCES:
-  ZcashLightClientKit:
-    :path: "../../ZcashLightClientKit"
+    - ZcashLightClientKit
 
 SPEC CHECKSUMS:
   Bugsnag: 67aed7ab92990833e164c2b83a240951ddb1ea33
@@ -144,6 +141,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
   ZcashLightClientKit: 9ff73c55a1c2a493db96357162dfcd5bac00f7df
 
-PODFILE CHECKSUM: 39cbb568efea4064cd5a1d59c8a625e6086f5d2a
+PODFILE CHECKSUM: 649565ebda2ec00fc3914f6c476f4e4bb9d02600
 
 COCOAPODS: 1.9.3
