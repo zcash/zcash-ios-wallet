@@ -118,8 +118,6 @@ struct Sending: View {
                                         EmptyView()
                         }.isDetailLink(false)
                     }
-                    
-                    
                 }
                 
                 Button(action: {

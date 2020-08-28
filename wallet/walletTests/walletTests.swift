@@ -58,10 +58,11 @@ class walletTests: XCTestCase {
         let replyTo = "testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
         let replyToMemo = SendFlowEnvironment.includeReplyTo(address: replyTo, in: memo)
         
-        let expected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday!" + "\nReply-To: \(replyTo)"
+        let trimmedExpected = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments! Happy Birthday! Have "
+        let expected = trimmedExpected + "\nReply-To: \(replyTo)"
         XCTAssertTrue(replyToMemo.count <= SendFlowEnvironment.maxMemoLength)
         XCTAssertEqual(replyToMemo, expected)
-        
+        XCTAssertEqual(trimmedExpected, replyToMemo.removingReplyTo)
     }
     
     func testKeyPadDecimalLimit() {
@@ -87,7 +88,6 @@ class walletTests: XCTestCase {
             XCTFail()
             return
         }
-        
         
         XCTAssertTrue(phrase.split(separator: " ").count == 24)
         
@@ -145,6 +145,22 @@ class walletTests: XCTestCase {
         XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: words)?.hexString, hex)
     }
     
+    func testAlmostIncludesReplyTo() {
+           let memo = "this is a test memo"
+           let addr = "nowhere"
+           let expected = "\(memo)\nReply-To: \(addr)"
+           XCTAssertFalse(expected.includesReplyTo)
+           XCTAssertNil(expected.replyToAddress)
+       }
+    
+    func testIncludesReplyTo() {
+        let memo = "this is a test memo"
+        let addr = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
+        let expected = "\(memo)\nReply-To: \(addr)"
+        XCTAssertTrue(expected.includesReplyTo)
+        XCTAssertNotNil(expected.replyToAddress)
+    }
+    
     func testBuildMemo() {
         let memo = "this is a test memo"
         let addr = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
@@ -154,6 +170,18 @@ class walletTests: XCTestCase {
         
         XCTAssertEqual(nil, SendFlowEnvironment.buildMemo(memo: "", includesMemo: true, replyToAddress: nil))
         XCTAssertEqual(nil, SendFlowEnvironment.buildMemo(memo: memo, includesMemo: false, replyToAddress: addr))
+    }
+    
+    func testBlockExplorerUrl() {
+        let txId = "4fd71c6363ac451674ae117f98e8225e0d4d1de67d44091287e62ba0ccf5358b"
+        let expectedMainnetURL = "https://explorer.z.cash/tx/\(txId)"
+        let expectedTestnetURL = "https://explorer.testnet.z.cash/tx/\(txId)"
+        
+        let mainnetURL = UrlHandler.blockExplorerURL(for: txId, mainnet: true)?.absoluteString
+        let testnetURL = UrlHandler.blockExplorerURL(for: txId, mainnet: false)?.absoluteString
+        
+        XCTAssertEqual(mainnetURL, expectedMainnetURL)
+        XCTAssertEqual(testnetURL, expectedTestnetURL)
     }
 }
 

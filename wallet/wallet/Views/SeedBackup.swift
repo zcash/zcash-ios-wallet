@@ -12,7 +12,7 @@ struct SeedBackup: View {
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
     var hideNavBar = true
-    @State var isCopyAlertShown = false
+    @State var copyItemModel: PasteboardItemModel?
     @State var proceedsToHome = false
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
@@ -90,8 +90,7 @@ struct SeedBackup: View {
              
                 Button(action: {
                     tracker.track(.tap(action: .copyAddress), properties: [:])
-                    UIPasteboard.general.string = self.copyText
-                    self.isCopyAlertShown = true
+                    PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "Copied to clipboard!")
                 }) {
                     Text("Copy to clipboard".localized())
                         .font(.system(size: 20))
@@ -110,11 +109,8 @@ struct SeedBackup: View {
                 }
                 
             }.padding([.horizontal, .bottom], 24)
-            .alert(isPresented: self.$isCopyAlertShown) {
-                Alert(title: Text(""),
-                      message: Text("Address Copied to clipboard!".localized()),
-                      dismissButton: .default(Text("OK"))
-                )
+                .alert(item: self.$copyItemModel) { (p) -> Alert in
+                    PasteboardAlertHelper.alert(for: p)
             }
         }
         .onAppear {

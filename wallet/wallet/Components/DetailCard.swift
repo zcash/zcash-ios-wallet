@@ -221,7 +221,7 @@ extension DetailModel {
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
         if let memo = confirmedTransaction.memo {
-            self.memo = String(bytes: memo, encoding: .utf8)
+            self.memo = memo.asZcashTransactionMemo()
         }
         self.minedHeight = confirmedTransaction.minedHeight
     }
@@ -242,13 +242,21 @@ extension DetailModel {
         self.zAddress = pendingTransaction.toAddress
         self.zecAmount = -Int64(pendingTransaction.value).asHumanReadableZecBalance()
         if let memo = pendingTransaction.memo {
-            self.memo = String(bytes: memo, encoding: .utf8)
+            self.memo = memo.asZcashTransactionMemo()
         }
         self.minedHeight = pendingTransaction.minedHeight
     }
 }
 
 extension DetailModel {
+    var isSubmitSuccess: Bool {
+        switch status {
+        case .paid(let s):
+            return s
+        default:
+            return false
+        }
+    }
     
     static func subtitle(isPending: Bool, isSubmitSuccess: Bool, minedHeight: BlockHeight, date: String, latestBlockHeight: BlockHeight?) -> String {
         
@@ -260,6 +268,6 @@ extension DetailModel {
             return "Pending confirmation".localized()
         }
         
-        return "\(abs(latestHeight - minedHeight)) \("Confirmations".localized())"
+        return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
     }
 }

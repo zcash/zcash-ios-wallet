@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DisplayAddress: View {
     
-    @State var isCopyAlertShown = false
+    @State var copyItemModel: PasteboardItemModel?
     @State var isShareModalDisplayed = false
     @State var isShareAddressShown = false
     var qrImage: Image {
@@ -43,9 +43,9 @@ struct DisplayAddress: View {
                 
             
             Button(action: {
-                UIPasteboard.general.string = self.address
+                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "Address Copied to clipboard!")
                 logger.debug("address copied to clipboard")
-                self.isCopyAlertShown = true
+         
                 tracker.track(.tap(action: .copyAddress), properties: [:])
             }) {
                 VStack {
@@ -60,15 +60,11 @@ struct DisplayAddress: View {
                     }
                     
                 }.padding([.horizontal], 30)
-            }.alert(isPresented: self.$isCopyAlertShown) {
-                Alert(title: Text(""),
-                      message: Text("Address Copied to clipboard!"),
-                      dismissButton: .default(Text("OK"))
-                )
+            }.alert(item: self.$copyItemModel) { (p) -> Alert in
+                PasteboardAlertHelper.alert(for: p)
             }
             
             Spacer()
-            
             
             Button(action: {
                 tracker.track(.tap(action: .receiveScan), properties: [:])
