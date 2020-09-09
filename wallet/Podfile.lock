@@ -76,9 +76,9 @@ DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
   - Mixpanel-swift
-  - "MnemonicSwift (from `git@github.com:zcash-hackworks/MnemonicSwift.git`, branch `checksum-tests`)"
+  - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `checksum-tests`)
   - TinyQRScanner
-  - "ZcashLightClientKit (from `git@github.com:zcash/ZcashLightClientKit.git`, branch `master`)"
+  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, branch `master`)
 
 SPEC REPOS:
   trunk:
@@ -112,18 +112,18 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   MnemonicSwift:
     :branch: checksum-tests
-    :git: "git@github.com:zcash-hackworks/MnemonicSwift.git"
+    :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
     :branch: master
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
+    :git: https://github.com/zcash/ZcashLightClientKit.git
 
 CHECKOUT OPTIONS:
   MnemonicSwift:
     :commit: 485b97a32f45c635ec71d8bf2fb58e3f43cd55ce
-    :git: "git@github.com:zcash-hackworks/MnemonicSwift.git"
+    :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
     :commit: 2b11c7a0d44dc0b6ebd33790ec990b174c57fe66
-    :git: "git@github.com:zcash/ZcashLightClientKit.git"
+    :git: https://github.com/zcash/ZcashLightClientKit.git
 
 SPEC CHECKSUMS:
   Bugsnag: 67aed7ab92990833e164c2b83a240951ddb1ea33
@@ -155,6 +155,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
   ZcashLightClientKit: 6a7a724d5c249bc15983327157fe5ade6600dbcb
 
-PODFILE CHECKSUM: d58ae0c5c96483d00f737c5307562e11ee6e2179
+PODFILE CHECKSUM: 1929e74860b7e324151cf934ea191298a7df1082
 
 COCOAPODS: 1.9.3
