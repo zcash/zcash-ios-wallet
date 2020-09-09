@@ -28,6 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0D12511F23B557E60014EE3A"
+               BuildableName = "ECC-WalletUITests.xctest"
+               BlueprintName = "ECC-WalletUITests"
+               ReferencedContainer = "container:ECC-Wallet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0D12511423B557E60014EE3A"
+               BuildableName = "ECC-WalletTests.xctest"
+               BlueprintName = "ECC-WalletTests"
+               ReferencedContainer = "container:ECC-Wallet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
