@@ -23,4 +23,4 @@ install:
 
 
 script:
-  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/ECC-Wallet.xcworkspace -scheme ECC-Wallet-no-logging -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 build
+  - travis_wait 60 xcodebuild test -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/ECC-Wallet.xcworkspace -scheme ECC-Wallet-no-logging -destination platform\=iOS\ Simulator,OS\=13.2.2,name\=iPhone\ 8 test
