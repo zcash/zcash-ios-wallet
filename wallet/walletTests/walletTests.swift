@@ -20,13 +20,6 @@ class walletTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testZaddressValidator() {
-        let zAddresss = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-        let expected = "Ztestsap...tyjdc2p6"
-        
-        XCTAssertEqual(zAddresss.shortZaddress, expected)
-        XCTAssertNil("testsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6".shortZaddress)
-    }
 
     func testReplyToMemo() {
         let memo = "Happy Birthday! Have fun spending these ZEC! visit https://paywithz.cash to know all the places that take ZEC payments!"
@@ -82,40 +75,38 @@ class walletTests: XCTestCase {
         
     }
     
-    func testMnemonics() {
+    func testMnemonics() throws {
         
-        guard let phrase = Mnemonic.generateMnemonic(strength: 256) else {
-            XCTFail()
-            return
-        }
+        let phrase = try Mnemonic.generateMnemonic(strength: 256)
+
         
         XCTAssertTrue(phrase.split(separator: " ").count == 24)
         
-        XCTAssertNotNil(Mnemonic.deterministicSeedString(from: phrase),"could not generate seed from phrase: \(phrase)")
+        XCTAssertNotNil(try Mnemonic.deterministicSeedString(from: phrase),"could not generate seed from phrase: \(phrase)")
         
     }
     
     
-    func testRestore() {
+    func testRestore() throws {
         let expectedSeed =    "715b4b7950c2153e818f88122f8e54a00e36c42e47ba9589dc82fcecfc5b7ec7d06f4e3a3363a0221e06f14f52e03294290139d05d293059a55076b7f37d6726"
            
         let phrase = "abuse fee wage robot october tongue utility gloom dizzy best victory armor second share pilot help cotton mango music decorate scheme mix tell never"
         
-        XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: phrase)?.hexString,expectedSeed)
+        XCTAssertEqual(try MnemonicSeedProvider.default.toSeed(mnemonic: phrase).hexString,expectedSeed)
     }
     
-    func testRestoreZaddress() {
+    func testRestoreZaddress() throws {
         ZECCWalletEnvironment.shared.nuke()
         let phrase = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
         
         let expectedAddress = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
-        let seed = MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
+        let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
         
         let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
                
-        XCTAssertEqual(seed?.hexString, hex)
+        XCTAssertEqual(seed.hexString, hex)
         
-        try! SeedManager.default.importSeed(seed!)
+        try! SeedManager.default.importSeed(seed)
         try! SeedManager.default.importPhrase(bip39: phrase)
         let accounts = try! ZECCWalletEnvironment.shared.initializer.initialize(seedProvider: SeedManager.default, walletBirthdayHeight: 692345)
         
@@ -137,12 +128,12 @@ class walletTests: XCTestCase {
         
         XCTAssert(split.count == 8)
     }
-    func testCompatibility() {
+    func testCompatibility() throws {
         let words = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
         let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
         
-        XCTAssertTrue(MnemonicSeedProvider.default.isValid(mnemonic: words))
-        XCTAssertEqual(MnemonicSeedProvider.default.toSeed(mnemonic: words)?.hexString, hex)
+        XCTAssertNoThrow(try MnemonicSeedProvider.default.isValid(mnemonic: words))
+        XCTAssertEqual(try MnemonicSeedProvider.default.toSeed(mnemonic: words).hexString, hex)
     }
     
     func testAlmostIncludesReplyTo() {

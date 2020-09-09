@@ -14,24 +14,24 @@ class MnemonicSeedProvider: MnemonicSeedPhraseHandling {
        
     private init(){}
     
-    func randomMnemonic() -> String? {
-        Mnemonic.generateMnemonic(strength: 256)
+    func randomMnemonic() throws -> String {
+        try Mnemonic.generateMnemonic(strength: 256)
     }
     
-    func randomMnemonicWords() -> [String]? {
-        randomMnemonic()?.split(separator: " ").map({ String($0) })
+    func randomMnemonicWords() throws -> [String] {
+        try randomMnemonic().components(separatedBy: " ")
     }
     
-    func toSeed(mnemonic: String) -> [UInt8]? {
-        guard let data = Mnemonic.deterministicSeedBytes(from: mnemonic) else { return nil }
+    func toSeed(mnemonic: String) throws -> [UInt8] {
+        let data = try Mnemonic.deterministicSeedBytes(from: mnemonic)
         return [UInt8](data)
     }
     
-    func asWords(mnemonic: String) -> [String]? {
-        mnemonic.split(separator: " ").map({ String($0) })
+    func asWords(mnemonic: String) throws -> [String] {
+        mnemonic.components(separatedBy: " ")
     }
     
-    func isValid(mnemonic: String) -> Bool {
-        Mnemonic.validate(mnemonic: mnemonic)
+    func isValid(mnemonic: String) throws {
+        try Mnemonic.validate(mnemonic: mnemonic)
     }
 }

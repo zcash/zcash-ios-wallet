@@ -33,7 +33,7 @@ struct ZcashSeedPhraseGrid_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            ZcashSeedPhraseGrid(words: MnemonicSeedProvider.default.asWords(mnemonic: "kitchen renew wide common vague fold vacuum tilt amazing pear square gossip jewel month tree shock scan alpha just spot fluid toilet view dinner")!)
+            ZcashSeedPhraseGrid(words: try! MnemonicSeedProvider.default.asWords(mnemonic: "kitchen renew wide common vague fold vacuum tilt amazing pear square gossip jewel month tree shock scan alpha just spot fluid toilet view dinner"))
         }
     }
 }

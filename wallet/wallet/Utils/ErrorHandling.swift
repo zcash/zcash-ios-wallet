@@ -9,7 +9,7 @@
 import Foundation
 
 enum WalletError: Error {
-    case createFailed
+    case createFailed(underlying: Error)
     case initializationFailed(message: String)
     case synchronizerFailed
     case genericErrorWithMessage(message: String)

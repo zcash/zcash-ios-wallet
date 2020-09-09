@@ -2,10 +2,10 @@ platform :ios, '13.0'
 use_frameworks!
 
 def base_pods
-  pod 'ZcashLightClientKit'
-  pod 'gRPC-Swift', '= 1.0.0-alpha.17'
+  pod 'ZcashLightClientKit', :git => 'git@github.com:zcash/ZcashLightClientKit.git', :branch => 'master'
+  pod 'gRPC-Swift', '= 1.0.0-alpha.19'
   pod 'KeychainSwift', '~> 19.0.0'
-  pod 'MnemonicSwift'
+  pod 'MnemonicSwift', :git => 'git@github.com:zcash-hackworks/MnemonicSwift.git', :branch => 'checksum-tests'
   pod 'TinyQRScanner'
   pod 'lottie-ios'
 end
@@ -21,13 +21,17 @@ target 'ECC-Wallet' do
   pod 'Mixpanel-swift'
   pod 'Bugsnag'
   target 'ECC-WalletTests' do
-    inherit! :search_paths
-  end
- 
-  target 'ECC-WalletUITests' do
+     
     inherit! :search_paths
   end
 end
+
+
+
+ target 'ECC-WalletUITests' do
+   inherit! :search_paths
+   
+ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
