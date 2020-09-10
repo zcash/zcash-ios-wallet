@@ -23,7 +23,7 @@ PODS:
   - Mixpanel-swift (2.7.7):
     - Mixpanel-swift/Complete (= 2.7.7)
   - Mixpanel-swift/Complete (2.7.7)
-  - MnemonicSwift (1.0.0)
+  - MnemonicSwift (2.0.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
@@ -76,7 +76,7 @@ DEPENDENCIES:
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
   - Mixpanel-swift
-  - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `checksum-tests`)
+  - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
   - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, branch `master`)
 
@@ -111,7 +111,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MnemonicSwift:
-    :branch: checksum-tests
+    :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
     :branch: master
@@ -119,7 +119,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MnemonicSwift:
-    :commit: 485b97a32f45c635ec71d8bf2fb58e3f43cd55ce
+    :commit: f1377b9321b23401ffb0052cbb74741fa8dd9898
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
     :commit: 2b11c7a0d44dc0b6ebd33790ec990b174c57fe66
@@ -140,7 +140,7 @@ SPEC CHECKSUMS:
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   Mixpanel-swift: 3a8fb9ce791e9c64d556b9446aa470b469c6fa7d
-  MnemonicSwift: a8ae945fb35cc9745d40a25365c40adff506eb69
+  MnemonicSwift: 36384fc6b2640d93df9fe9fb60a8da7957cec36d
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftNIO: e1995d88785db2db1ad5ee4590e4206b8c2658dc
   SwiftNIOConcurrencyHelpers: d591e7cca9f9e61d2352a13303984b86cee2b212
@@ -155,6 +155,6 @@ SPEC CHECKSUMS:
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
   ZcashLightClientKit: 6a7a724d5c249bc15983327157fe5ade6600dbcb
 
-PODFILE CHECKSUM: 1929e74860b7e324151cf934ea191298a7df1082
+PODFILE CHECKSUM: 4f5ccd9ef9dc4322fd7217cb8bd461bdb8eff8fd
 
 COCOAPODS: 1.9.3
