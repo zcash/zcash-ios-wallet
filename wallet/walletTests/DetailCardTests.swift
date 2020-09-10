@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ECC_Wallet
+@testable import ECC_Wallet_no_logs
 class DetailCardTests: XCTestCase {
 
    

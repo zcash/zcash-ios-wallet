@@ -20,13 +20,13 @@ target 'ECC-Wallet' do
   base_pods
   pod 'Mixpanel-swift'
   pod 'Bugsnag'
-  target 'ECC-WalletTests' do
-     
-    inherit! :search_paths
-  end
+  
 end
 
-
+target 'ECC-WalletTests' do
+   base_pods
+  inherit! :search_paths
+end
 
  target 'ECC-WalletUITests' do
    inherit! :search_paths

@@ -234,6 +234,13 @@
 			remoteGlobalIDString = 0D1250FE23B557E40014EE3A;
 			remoteInfo = wallet;
 		};
+		0DF67CB4250AC9F30091C763 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D1250F723B557E40014EE3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DCDFF9324B6722B000F6999;
+			remoteInfo = "ECC-Wallet-no-logging";
+		};
 		0DF904512502FE4300328C5A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0D1250F723B557E40014EE3A /* Project object */;
@@ -727,11 +734,13 @@
 				0D12511123B557E60014EE3A /* Sources */,
 				0D12511223B557E60014EE3A /* Frameworks */,
 				0D12511323B557E60014EE3A /* Resources */,
+				70CEA1A652FAED2ACEFBD6EA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0D12511723B557E60014EE3A /* PBXTargetDependency */,
+				0DF67CB5250AC9F30091C763 /* PBXTargetDependency */,
 			);
 			name = "ECC-WalletTests";
 			productName = walletTests;
@@ -764,6 +773,7 @@
 			buildConfigurationList = 0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "ECC-Wallet-no-logging" */;
 			buildPhases = (
 				0DCDFF9424B6722B000F6999 /* [CP] Check Pods Manifest.lock */,
+				0DF67CB3250AC9720091C763 /* ShellScript */,
 				0DCDFF9624B6722B000F6999 /* Sources */,
 				0DCDFFD724B6722B000F6999 /* Frameworks */,
 				0DCDFFD924B6722B000F6999 /* Resources */,
@@ -793,11 +803,11 @@
 					};
 					0D12511423B557E60014EE3A = {
 						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 0D1250FE23B557E40014EE3A;
+						TestTargetID = 0DCDFF9324B6722B000F6999;
 					};
 					0D12511F23B557E60014EE3A = {
 						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 0D1250FE23B557E40014EE3A;
+						TestTargetID = 0DCDFF9324B6722B000F6999;
 					};
 				};
 			};
@@ -951,6 +961,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0DF67CB3250AC9720091C763 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source ${SRCROOT}/env-vars.sh\nsh ${PROJECT_DIR}/Scripts/generate_constants.sh\n";
+		};
+		70CEA1A652FAED2ACEFBD6EA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-WalletTests/Pods-ECC-WalletTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ECC-WalletTests/Pods-ECC-WalletTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ECC-WalletTests/Pods-ECC-WalletTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8C3EAD89BAA309B5FC123070 /* [CP] Check Pods Manifest.lock */ = {
@@ -1282,6 +1326,11 @@
 			target = 0D1250FE23B557E40014EE3A /* ECC-Wallet */;
 			targetProxy = 0D12512123B557E60014EE3A /* PBXContainerItemProxy */;
 		};
+		0DF67CB5250AC9F30091C763 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DCDFF9324B6722B000F6999 /* ECC-Wallet-no-logging */;
+			targetProxy = 0DF67CB4250AC9F30091C763 /* PBXContainerItemProxy */;
+		};
 		0DF904522502FE4300328C5A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0DCDFF9324B6722B000F6999 /* ECC-Wallet-no-logging */;
@@ -1496,7 +1545,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC Wallet.app/ECC Wallet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-no-logs.app/ECC-Wallet-no-logs";
 			};
 			name = Debug;
 		};
@@ -1519,7 +1568,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC Wallet.app/ECC Wallet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-no-logs.app/ECC-Wallet-no-logs";
 			};
 			name = Release;
 		};
@@ -1540,7 +1589,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "ECC-Wallet";
+				TEST_TARGET_NAME = "ECC-Wallet-no-logging";
 			};
 			name = Debug;
 		};
@@ -1561,7 +1610,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "ECC-Wallet";
+				TEST_TARGET_NAME = "ECC-Wallet-no-logging";
 			};
 			name = Release;
 		};
