@@ -210,6 +210,7 @@
 		0DF3075524DB4A440080B0CF /* lottie_sending.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075224DB4A440080B0CF /* lottie_sending.json */; };
 		0DF3075624DB4A440080B0CF /* lottie_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075324DB4A440080B0CF /* lottie_success.json */; };
 		0DF3075724DB4A440080B0CF /* lottie_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075324DB4A440080B0CF /* lottie_success.json */; };
+		0DF67CB8250AF9080091C763 /* Constants.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8668424BCE55400F3B883 /* Constants.generated.swift */; };
 		0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF023C7787F0009DD7E /* ZcashHoldToSendButton.swift */; };
 		0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFC0CF223C8EA1C0009DD7E /* ZcashCloseButton.swift */; };
 		8D3F362524A40FCF0087687A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
@@ -1267,6 +1268,7 @@
 				0DCDFFB624B6722B000F6999 /* CameraAccessHelper.swift in Sources */,
 				0DCDFFB724B6722B000F6999 /* ZcashHoldToSendButton.swift in Sources */,
 				0DCDFFB824B6722B000F6999 /* WalletDetailsHeader.swift in Sources */,
+				0DF67CB8250AF9080091C763 /* Constants.generated.swift in Sources */,
 				0D2607D824F42C46006FDC36 /* PasteboardHelper.swift in Sources */,
 				0DCDFFB924B6722B000F6999 /* LottieAnimation.swift in Sources */,
 				0DCDFFBA24B6722B000F6999 /* ZcashCloseButton.swift in Sources */,

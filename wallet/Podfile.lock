@@ -122,7 +122,7 @@ CHECKOUT OPTIONS:
     :commit: f1377b9321b23401ffb0052cbb74741fa8dd9898
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :commit: 2b11c7a0d44dc0b6ebd33790ec990b174c57fe66
+    :commit: 14ed1c2106974b00a62ffc6cd7416ded81f18005
     :git: https://github.com/zcash/ZcashLightClientKit.git
 
 SPEC CHECKSUMS:
