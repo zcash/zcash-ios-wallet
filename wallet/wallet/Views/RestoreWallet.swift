@@ -14,6 +14,7 @@ struct RestoreWallet: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var seedPhrase: String = ""
     @State var walletBirthDay: String = ""
+    @State var showError = false
     var isValidBirthday: Bool {
         validateBirthday(walletBirthDay)
     }
@@ -36,7 +37,12 @@ struct RestoreWallet: View {
     }
     
     func validateSeed(_ seed: String) -> Bool {
-        MnemonicSeedProvider.default.isValid(mnemonic: seed)
+        do {
+            try MnemonicSeedProvider.default.isValid(mnemonic: seed)
+            return true
+        } catch {
+            return false
+        }
     }
     
     func importBirthday() throws {
@@ -46,9 +52,12 @@ struct RestoreWallet: View {
     
     func importSeed() throws {
         let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedSeedPhrase.isEmpty, let seedBytes =
-            MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase) else { throw WalletError.createFailed
+        guard !trimmedSeedPhrase.isEmpty else {
+            throw WalletError.createFailed(underlying: MnemonicError.invalidSeed)
         }
+        
+        let seedBytes =
+            try MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase)
         
         try SeedManager.default.importSeed(seedBytes)
         try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
@@ -59,6 +68,21 @@ struct RestoreWallet: View {
     }
     
     @State var proceed: Bool = false
+    
+    var seedPhraseSubtitle: some View {
+        if seedPhrase.isEmpty {
+            return Text.subtitle(text: "Make sure nobody is watching you!".localized())
+        }
+        
+        do {
+           try MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)
+           return Text.subtitle(text: "Your seed phrase is valid")
+        } catch {
+            return Text.subtitle(text: "Your seed phrase is invalid!")
+                .foregroundColor(.red)
+                .bold()
+        }
+    }
     var body: some View {
         ZStack {
             NavigationLink(destination: LazyView(Home(amount: 0, verifiedBalance: self.appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(self.appEnvironment)), isActive: $proceed) {
@@ -67,19 +91,19 @@ struct RestoreWallet: View {
             
             ZcashBackground()
             
-            VStack {
-                Spacer()
+            VStack(spacing: 40) {
+                
                 ZcashTextField(
                     title: "Enter your Seed Phrase".localized(),
                     subtitleView: AnyView(
-                        Text.subtitle(text: "Make sure nobody is watching you!".localized())
+                        seedPhraseSubtitle
                     ),
                     keyboardType: UIKeyboardType.alphabet,
                     binding: $seedPhrase,
                     onEditingChanged: { _ in },
                     onCommit: {}
                 )
-                Spacer()
+                
                 ZcashTextField(
                     title: "Wallet Birthday height".localized(),
                     subtitleView: AnyView(
@@ -98,6 +122,8 @@ struct RestoreWallet: View {
                         try self.appEnvironment.initialize()
                     } catch {
                         logger.error("\(error)")
+                        tracker.track(.error(severity: .critical), properties: [
+                            ErrorSeverity.underlyingError : "\(error)"])
                         return
                     }
                     tracker.track(.tap(action: .walletImport), properties: [:])
@@ -111,9 +137,14 @@ struct RestoreWallet: View {
                 .opacity(disableProceed ? 0.4 : 1.0)
                 .frame(height: 58)
             }
-            .padding([.horizontal,.bottom], 30)
+            .padding([.horizontal,.top, .bottom], 30)
         }.onTapGesture {
             UIApplication.shared.endEditing()
+        }
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Could not restore wallet"),
+                  message: Text("There's a problem restoring your wallet. Please verify your seed phrase and try again."),
+                  dismissButton: .default(Text("Dismiss")))
         }
         .onAppear {
             tracker.track(.screen(screen: .restore), properties: [:])

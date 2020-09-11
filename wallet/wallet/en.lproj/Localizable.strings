@@ -83,6 +83,8 @@
 "If you don't know it, leave it blank. First Sync will take longer." = "If you don't know it, leave it blank. First Sync will take longer.";
 "Proceed" = "Proceed";
 "Restore from Seed Phrase" = "Restore from Seed Phrase";
+"Your seed phrase is valid" = "Your seed phrase is valid";
+"Your seed phrase is invalid!" = "Your seed phrase is invalid!";
 
 //BackupWallet
 "Your Wallet needs\nto be Backed up" = "Your Wallet needs\nto be Backed up";

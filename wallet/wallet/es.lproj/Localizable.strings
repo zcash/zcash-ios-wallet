@@ -96,6 +96,8 @@
 "If you don't know it, leave it blank. First Sync will take longer." = "Si no lo sabe, déjelo en blanco. La primera sincronización llevará más tiempo.";
 "Proceed" = "Continuar";
 "Restore from Seed Phrase" = "Restaurar desde frase semilla";
+"Your seed phrase is valid" = "Tu frase semilla es válida";
+"Your seed phrase is invalid!" = "¡Tu frase semilla es inválida!";
 
 //BackupWallet
 "Your Wallet needs\nto be Backed up" = "Su wallet necesita \n ser respaldada";

@@ -84,15 +84,18 @@ final class ZECCWalletEnvironment: ObservableObject {
     
     func createNewWallet() throws {
         
-        guard let randomPhrase = MnemonicSeedProvider.default.randomMnemonic(),
-            let randomSeed = MnemonicSeedProvider.default.toSeed(mnemonic: randomPhrase) else {
-                throw WalletError.createFailed
+        do {
+            let randomPhrase = try MnemonicSeedProvider.default.randomMnemonic()
+            let randomSeed = try MnemonicSeedProvider.default.toSeed(mnemonic: randomPhrase)
+            let birthday = WalletBirthday.birthday(with: BlockHeight.max)
+            try SeedManager.default.importSeed(randomSeed)
+            try SeedManager.default.importBirthday(birthday.height)
+            try SeedManager.default.importPhrase(bip39: randomPhrase)
+            try self.initialize()
+        
+        } catch {
+            throw WalletError.createFailed(underlying: error)
         }
-        let birthday = WalletBirthday.birthday(with: BlockHeight.max)
-        try SeedManager.default.importSeed(randomSeed)
-        try SeedManager.default.importBirthday(birthday.height)
-        try SeedManager.default.importPhrase(bip39: randomPhrase)
-        try self.initialize()
     }
     
     func initialize() throws {
@@ -146,7 +149,7 @@ final class ZECCWalletEnvironment: ObservableObject {
             case .dataDbNotEmpty:
                 return WalletError.initializationFailed(message: "attempt to initialize a db that was not empty")
             case .saplingSpendParametersNotFound:
-                return WalletError.createFailed
+                return WalletError.createFailed(underlying: rustError)
             case .malformedStringInput:
                 return WalletError.genericErrorWithError(error: rustError)
             default:

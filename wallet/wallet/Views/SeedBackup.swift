@@ -5,13 +5,15 @@
 //  Created by Francisco Gindre on 12/30/19.
 //  Copyright © 2019 Francisco Gindre. All rights reserved.
 //
-
+    
 import SwiftUI
 
 struct SeedBackup: View {
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 58
     var hideNavBar = true
+    @State var error: WalletError?
+    @State var showError = false
     @State var copyItemModel: PasteboardItemModel?
     @State var proceedsToHome = false
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
@@ -46,10 +48,9 @@ struct SeedBackup: View {
             
             let seedPhrase = try SeedManager.default.exportPhrase()
             
-            guard MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase),
-                let words = MnemonicSeedProvider.default.asWords(mnemonic: seedPhrase) else {
-                    throw MnemonicError.invalidSeed
-            }
+            try MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)
+            
+            let words = try MnemonicSeedProvider.default.asWords(mnemonic: seedPhrase)
             
             return AnyView(
                 ZcashSeedPhraseGrid(words: words)
@@ -62,6 +63,7 @@ struct SeedBackup: View {
                 ErrorSeverity.messageKey : message,
                 ErrorSeverity.underlyingError : "\(error)"
             ])
+            self.showError = true
         }
         return AnyView(EmptyView())
     }
@@ -112,6 +114,11 @@ struct SeedBackup: View {
                 .alert(item: self.$copyItemModel) { (p) -> Alert in
                     PasteboardAlertHelper.alert(for: p)
             }
+        }
+        .alert(isPresented: self.$showError) {
+            Alert(title: Text("Problem Retrieving your seed"),
+                  message: Text("we are unable to display your seed phrase. close the app and retry this operation"),
+                  dismissButton: .default(Text("Dismiss")))
         }
         .onAppear {
             tracker.track(.screen(screen: .backup), properties: [:])

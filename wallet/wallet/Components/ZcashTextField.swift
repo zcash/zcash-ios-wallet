@@ -57,7 +57,7 @@ struct ZcashTextField: View {
                     .foregroundColor(Color.white)
                     .textContentType(contentType)
                     .keyboardType(keyboardType)
-                    .autocapitalization(autocapitalize ? .none : .sentences)
+                    .autocapitalization(autocapitalize ? .sentences : .none)
                     .disableAutocorrection(!autocorrect)
                     
                     

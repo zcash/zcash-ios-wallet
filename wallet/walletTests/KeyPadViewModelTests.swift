@@ -8,7 +8,7 @@
 
 import XCTest
 import Combine
-@testable import ECC_Wallet
+@testable import ECC_Wallet_no_logs
 class KeyPadViewModelTests: XCTestCase {
     
     
