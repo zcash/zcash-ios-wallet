@@ -5,7 +5,7 @@
 //  Created by Francisco Gindre on 12/30/19.
 //  Copyright © 2019 Francisco Gindre. All rights reserved.
 //
-
+    
 import SwiftUI
 
 struct SeedBackup: View {
@@ -48,12 +48,9 @@ struct SeedBackup: View {
             
             let seedPhrase = try SeedManager.default.exportPhrase()
             
-            guard ((try? MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)) == nil)
-                 else {
-                    throw MnemonicError.invalidSeed
-            }
+            try MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)
             
-             let words = try MnemonicSeedProvider.default.asWords(mnemonic: seedPhrase)
+            let words = try MnemonicSeedProvider.default.asWords(mnemonic: seedPhrase)
             
             return AnyView(
                 ZcashSeedPhraseGrid(words: words)
@@ -66,6 +63,7 @@ struct SeedBackup: View {
                 ErrorSeverity.messageKey : message,
                 ErrorSeverity.underlyingError : "\(error)"
             ])
+            self.showError = true
         }
         return AnyView(EmptyView())
     }
