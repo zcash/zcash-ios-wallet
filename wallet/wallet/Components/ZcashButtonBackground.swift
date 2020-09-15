@@ -104,7 +104,7 @@ struct ZcashButtonBackground_Previews: PreviewProvider {
                     .foregroundColor(Color.black)
                     .modifier(ZcashButtonBackground(buttonShape: .chamfered(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient))))
                     .frame(height: 50)
-                Text("Backup Wallet")
+                Text("button_backup")
                 .font(.body)
                 .foregroundColor(Color.white)
                     .modifier(ZcashButtonBackground(buttonShape: .chamfered(fillStyle: .outline(color: Color.white, lineWidth: 1))))

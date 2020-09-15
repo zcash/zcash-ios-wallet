@@ -24,12 +24,11 @@
 // COMPONENTS:
 "Zcash address in buffer!" = "Dirección de Zcash en el búfer!";
 "Paste" = "Pegar";
-" Available" = " Disponible";
-"Enter an amount to send" = "Ingresa un monto para enviar";
-"(expecting " = "(esperando ";
+"balance_available" = "Disponible";
+"expecting" = "esperando";
 "Create new Wallet" = "Crea nueva Wallet";
 "Done" = "Listo";
-"Backup Wallet" = "Respaldar wallet";
+"button_backup" = "Respaldar Wallet";
 "Press and hold\nto send ZEC" = "Mantén presionada\npara enviar ZEC";
 "Add Memo Here" = "Escribe un Memo aquí";
 "%@ chars"= "%@ caracteres";
@@ -40,8 +39,7 @@
 "Error" = "Error";
 "an error ocurred" = "ocurrió un error";
 "Address Copied to clipboard!" = "Dirección copiada al portapapeles!";
-"Copied to clipboard!" = "Copiada al portapapeles!";
-"close" = "cerrar";
+"button_close" = "Cerrar";
 "NUKE WALLET" = "DESTRUIR WALLET";
 "OK" = "OK";
 "Shielded User\n" = "Usuario blindado\n";
@@ -61,9 +59,11 @@
 "Transaction Detail" = "Detalles de la tx";
 
 //SendTransaction
-"Enter a shielded Zcash address" = "Escribe una direccion blindada de Zcash";
-"This is a valid Zcash address!" = "Es una dirección Zcash válida!";
-"Invalid Zcash address!" = "Dirección Zcash inválida!";
+"feedback_default" = "Escribe una direccion blindada de Zcash";
+"feedback_shieldedaddress" = "Esta es una dirección blindada válida";
+"feedback_transparentaddress" = "Esta es una dirección transparente válida";
+"feedback_invalidaddress" = "¡Cuidado, esta dirección no es válida!";
+"feedback_sameaddress" = "¡Cuidado, parece que esta es tu propia dirección!";
 "You Have %@ sendable ZEC" = "Tienes %@ ZEC para enviar";
 "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ ZEC para enviar. No tiene fondos suficientes para cubrir esa cantidad + la tarifa de minero de %@ ZEC";
 "You don't have any sendable ZEC yet" = "Todavía no tienes ZEC para enviar";
@@ -100,28 +100,27 @@
 "Your seed phrase is invalid!" = "¡Tu frase semilla es inválida!";
 
 //BackupWallet
-"Your Wallet needs\nto be Backed up" = "Su wallet necesita \n ser respaldada";
-"Syncing %@%" = "Sincronizando %@%";
+"Your wallet needs to be backed up." = "Su wallet necesita \n ser respaldada";
+"Syncing %@%%" = "Sincronizando %@%%"; // key not mapped so that if locale fetch fails the app does not crash
 "Skip" = "Omitir";
 
 //SeedBackup
-"Seed:" = "Semilla(Seed):";
-"Wallet Birthday:" = "Bloque de nacimiento:";
-"Your Backup Seed" = "Su semilla (Seed) de respaldo";
-"Please back them up wisely!\nWe recommend a paper backup and a password vault" = "¡Haz una copia de respaldo sabiamente! \n Recomendamos una copia de respaldo en papel y un administrador de contraseñas";
-"Copy to clipboard" = "Copiar al portapapeles";
-"I'm all set!" = "¡Estoy listo!";
+
+"seed_birthday" = "Bloque de inicial";
+"title_backupseed" = "Tu semilla de respaldo";
+"copy_backupseed" = "¡Haz una copia de respaldo sabiamente! \n Recomendamos una copia de respaldo en papel y un administrador de contraseñas";
+"button_copytoclipboard" = "Copiar al portapapeles";
 
 //Home
 "There was an error creating your wallet. Please back it up and try again" = "Se produjo un error al crear tu wallet. Por favor, haga una copia de respaldo de su frase semilla e intente nuevamente";
 "Max Retry attempts (%@) have been reached" = "Ha alcanzado el límite máximo de reintentos (%@)";
-"dismiss" = "descartar";
 "Retry" = "Reintentar";
-"Send" = "Enviar";
-"No Balance" = "Sin Balance";
-"View History" = "Ver Historial";
-"Receive Funds" = "Recibir fondos";
-"Your Profile" = "Tu perfil";
+"button_send" = "Enviar";
+"balance_amounttosend" = "Ingresar un monto para enviar";
+"balance_nofunds" = "No hay fondos disponibles";
+"button_wallethistory" = "Historial de Wallet";
+"Receive Funds" = "Recibir fondos"; // These are accessibility strings
+"Your Profile" = "Tu perfil"; // These are accessibility strings
 
 //ReceiveFunds
 "QR Code for %@" = "Código QR para %@";
@@ -143,15 +142,11 @@
 "ECC Wallet" = "ECC Wallet";
 
 //FundsAtRisk
-"Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet." = "Recuerda, con Zcash TU eres el banco. Solo tú, o cualquier persona con tu frase inicial, tiene acceso a tu wallet.";
-"You should back this up immediately" = "Deberías respaldar esto de inmediato";
-"as no one else can restore it for you" = "ya que nadie más puede restaurarlo por ti";
-"if your device is lost/broken/stolen…" = "si su dispositivo se pierde / se rompe / es robado…";
-"Your " = "Tus ";
-"funds " = "fondos ";
-"are at risk!" = "están en peligro!";
-"Backup now!" = "Respaldar ahora!";
-"Not now" = "Ahora no";
+"seed_remindertext" = "Recuerda, en Zcash tu eres el banco. Cualquiera que tenga tu frase semilla podrá acceder a tu wallet";
+"seed_remindertext2" = "Deberías respaldar tu wallet inmediatamente. Solo tú puedes hacerlo.";
+"seed_reminder" = "¡Tus fondos están en riesgo!";
+"button_backup" = "Respaldar";
+"button_skip" = "Omitir por ahora";
 
 //NukeWarning
 "Make sure you backed up your wallet before proceeding." = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";

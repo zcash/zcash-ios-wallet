@@ -120,13 +120,13 @@ final class HomeViewModel: ObservableObject {
         }
         
         guard let error = lastError else {
-            return Alert(title: Text("Error"), message: Text(genericErrorMessage), dismissButton: .default(Text("dismiss"),action: errorAction))
+            return Alert(title: Text("Error"), message: Text(genericErrorMessage), dismissButton: .default(Text("button_close"),action: errorAction))
         }
         
         
         let defaultAlert = Alert(title: Text(error.title),
                                 message: Text(error.message),
-                                dismissButton: .default(Text("dismiss"),
+                                dismissButton: .default(Text("button_close"),
                                                     action: errorAction))
         switch error {
         case .synchronizerError(let canRetry):
@@ -134,7 +134,7 @@ final class HomeViewModel: ObservableObject {
                 return Alert(
                         title: Text(error.title),
                         message: Text(error.message),
-                        primaryButton: .default(Text("dismiss"),action: errorAction),
+                        primaryButton: .default(Text("button_close"),action: errorAction),
                         secondaryButton: .default(Text("Retry"),
                                                      action: {
                                                         self.clearError()
@@ -190,7 +190,7 @@ struct Home: View {
             tracker.track(.tap(action: .homeSend), properties: [:])
             self.startSendFlow()
         }) {
-            Text("Send")
+            Text("button_send")
                 .foregroundColor(.black)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                 .frame(height: buttonHeight)
@@ -212,13 +212,13 @@ struct Home: View {
             )
         } else {
             return AnyView(
-                ActionableMessage(message: "No Balance".localized())
+                ActionableMessage(message: "balance_nofunds".localized())
             )
         }
     }
     
     var walletDetails: some View {
-        Text("View History")
+        Text("button_wallethistory")
             .foregroundColor(.white)
             .font(.body)
             .opacity(0.6)
@@ -273,7 +273,7 @@ struct Home: View {
                         }
                 },
                     headerItem: {
-                        Text("Enter an amount to send")
+                        Text("balance_amounttosend")
                             .font(.system(size: 14))
                             .foregroundColor(.white)
                             .opacity(self.isSendingEnabled ? 1 : 0.4)

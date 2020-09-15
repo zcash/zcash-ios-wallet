@@ -14,11 +14,9 @@ struct FundsAtRisk: View {
     let buttonHeight: CGFloat = 50
     var disclaimer: String {
         """
-        \("Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.".localized())
+        \("seed_remindertext".localized())
         
-        \("You should back this up immediately".localized())
-        \("as no one else can restore it for you".localized())
-        \("if your device is lost/broken/stolen…".localized())
+        \("seed_remindertext2".localized())
         """
     }
     var body: some View {
@@ -26,12 +24,8 @@ struct FundsAtRisk: View {
             ZcashBackground()
             VStack(spacing: 24) {
                 HStack {
-                    (Text("Your ".localized())
+                    Text("seed_reminder")
                         .foregroundColor(.white)
-                        + Text("funds ".localized())
-                            .foregroundColor(Color.zAmberGradient4)
-                        + Text("are at risk!".localized())
-                            .foregroundColor(.white))
                         .font(.title)
                         .frame(alignment: .leading)
                     Spacer()
@@ -44,7 +38,7 @@ struct FundsAtRisk: View {
                 Spacer()
                 
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)) {
-                    Text("Backup now!".localized())
+                    Text("button_backup")
                         .foregroundColor(.black)
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
@@ -52,7 +46,7 @@ struct FundsAtRisk: View {
                 }.isDetailLink(false)
                 
                 NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
-                    Text("Not now".localized())
+                    Text("button_skip".localized())
                         .foregroundColor(Color.zDarkGray3)
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .frame(height: buttonHeight)

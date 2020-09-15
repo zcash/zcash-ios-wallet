@@ -143,7 +143,7 @@ struct SubwayPathBuilder {
             if memo.includesReplyTo {
                 views.append(
                     Button(action: {
-                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.replyToAddress ?? "", notify: "Copied to clipboard!")
+                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.replyToAddress ?? "", notify: "feedback_addresscopied".localized())
                         tracker.track(.tap(action: .copyAddress), properties: [:])
                     }) {
                         Text("includes reply-to")
@@ -159,7 +159,7 @@ struct SubwayPathBuilder {
             views.append(
                 
                 Button(action:{
-                       PasteboardAlertHelper.shared.copyToPasteBoard(value: fullAddr, notify: "Copied To Clipboard!")
+                    PasteboardAlertHelper.shared.copyToPasteBoard(value: fullAddr, notify: "feedback_addresscopied".localized())
                                    }){
                 (Text("to ")
                     .font(.body)

@@ -30,7 +30,7 @@ struct ProfileScreen: View {
                         Button(action: {
                             tracker.track(.tap(action: .copyAddress),
                                           properties: [:])
-                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.initializer.getAddress() ?? "", notify: "Address Copied to clipboard!")
+                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.initializer.getAddress() ?? "", notify: "feedback_addresscopied".localized())
 
                         }) {
                             Text(appEnvironment.initializer.getAddress() ?? "")
@@ -64,7 +64,7 @@ struct ProfileScreen: View {
                             .environmentObject(self.appEnvironment)
                         )
                     ) {
-                        Text("Backup Wallet".localized())
+                        Text("button_backup".localized())
                             .foregroundColor(.white)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                             .frame(height: Self.buttonHeight)

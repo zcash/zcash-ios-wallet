@@ -27,13 +27,13 @@ struct BackupWallet: View {
                 Spacer()
                 ZcashLogo()
                 
-                Text("Your wallet needs to be backed up.")
+                Text("feedback_walletbackupstatus")
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .font(.system(size: 18))
                     .padding(.horizontal, 48)
                 
-                Text(String(format: NSLocalizedString("Syncing %@ %%", comment: ""),"\(Int(self.progress * 100))"))
+                Text(String(format: NSLocalizedString("Syncing %@%%", comment: ""),"\(Int(self.progress * 100))"))
                     .foregroundColor(.white)
                     .font(.system(size: 20))
                     .padding(.horizontal, 48)
@@ -41,12 +41,9 @@ struct BackupWallet: View {
                     .onReceive(ZECCWalletEnvironment.shared.synchronizer.progress, perform: { progress in
                         self.progress = progress
                     })
-                    
-                
-//                Spacer()
-                
+  
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
-                    Text("Backup Wallet")
+                    Text("button_backup")
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .foregroundColor(.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))

@@ -22,13 +22,17 @@ struct SendTransaction: View {
     var addressSubtitle: String {
         let environment = ZECCWalletEnvironment.shared
         guard !flow.address.isEmpty else {
-            return "Enter a shielded Zcash address".localized()
+            return "feedback_default".localized()
         }
         
-        if environment.isValidAddress(flow.address) {
-            return "This is a valid Zcash address!".localized()
+        if environment.isValidShieldedAddress(flow.address) {
+            return "feedback_shieldedaddress".localized()
+        } else if environment.isValidTransparentAddress(flow.address) {
+            return "feedback_transparentaddress".localized()
+        } else if (environment.initializer.getAddress() ?? "") == flow.address {
+            return "feedback_sameaddress".localized()
         } else {
-            return "Invalid Zcash address!".localized()
+            return "feedback_invalidaddress".localized()
         }
     }
     
@@ -103,7 +107,7 @@ struct SendTransaction: View {
                         Button(action: {
                             AuthenticationHelper.authenticate(with: "Authorize this payment".localized())
                         }) {
-                            Text("Send")
+                            Text("button_send")
                                 .foregroundColor(.black)
                                 .zcashButtonBackground(shape: .rounded(fillStyle: .solid(color: .zAmberGradient2)))
                                 .frame(width: 63, height: 24)
@@ -118,7 +122,7 @@ struct SendTransaction: View {
                     .edgesIgnoringSafeArea([.horizontal])
                 
                 ZcashActionableTextField(
-                    title: "To:".localized().uppercased(),
+                    title: "\("To".localized()):",
                     subtitleView: AnyView(
                         Text.subtitle(text: addressSubtitle)
                     ),
@@ -236,7 +240,7 @@ struct SendTransaction: View {
             break
         }
         
-        return Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Dismiss")))
+        return Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("button_close")))
     }
 }
 

@@ -144,7 +144,7 @@ struct RestoreWallet: View {
         .alert(isPresented: $showError) {
             Alert(title: Text("Could not restore wallet"),
                   message: Text("There's a problem restoring your wallet. Please verify your seed phrase and try again."),
-                  dismissButton: .default(Text("Dismiss")))
+                  dismissButton: .default(Text("button_close")))
         }
         .onAppear {
             tracker.track(.screen(screen: .restore), properties: [:])

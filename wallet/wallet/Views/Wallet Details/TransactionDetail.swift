@@ -56,7 +56,7 @@ struct TransactionDetailsOLD: View {
             
         }.alert(isPresented: self.$isCopyAlertShown) {
             Alert(title: Text(""),
-                  message: Text("Copied to clipboard!"),
+                  message: Text("feedback_addresscopied"),
                   dismissButton: .default(Text("OK"))
             )
         }

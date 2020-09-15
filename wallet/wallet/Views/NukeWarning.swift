@@ -14,7 +14,7 @@ struct NukeWarning: View {
     let buttonHeight: CGFloat = 50
     var disclaimer: String {
         """
-        \("Remember, with Zcash YOU are the bank. Only you, or anyone with your seed phrase, has access to your wallet.".localized())
+        \("seed_remindertext".localized())
         
         \("Make sure you backed up your wallet before proceeding.".localized())
         

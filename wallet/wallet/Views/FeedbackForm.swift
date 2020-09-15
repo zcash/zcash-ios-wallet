@@ -72,7 +72,7 @@ struct FeedbackForm: View {
                         ])
                         self.showFeedbackSentAlert = true
                     }) {
-                        Text("Send")
+                        Text("button_send")
                             .foregroundColor(.black)
                             .zcashButtonBackground(
                                 shape: .roundedCorners(

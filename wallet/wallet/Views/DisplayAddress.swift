@@ -43,7 +43,7 @@ struct DisplayAddress: View {
                 
             
             Button(action: {
-                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "Address Copied to clipboard!")
+                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "feedback_addresscopied".localized())
                 logger.debug("address copied to clipboard")
          
                 tracker.track(.tap(action: .copyAddress), properties: [:])

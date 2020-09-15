@@ -35,10 +35,10 @@ struct SeedBackup: View {
     }
     var copyText: String {
         """
-        \("Seed:".localized())
+        \("title_backupseed".localized()):
         \(seed)
         
-        \("Wallet Birthday:".localized())
+        \("seed_birthday".localized()):
         \(birthday)
         """
     }
@@ -73,11 +73,11 @@ struct SeedBackup: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: 16) {
                 
-                Text("Your Backup Seed".localized())
+                Text("title_backupseed".localized())
                     .foregroundColor(.white)
                     .font(.title)
                     .frame(alignment: .leading)
-                Text("Please back them up wisely!\nWe recommend a paper backup and a password vault".localized())
+                Text("copy_backupseed".localized())
                     .font(.footnote)
                     .foregroundColor(Color.zLightGray)
                     .multilineTextAlignment(.leading)
@@ -85,16 +85,16 @@ struct SeedBackup: View {
                     .padding()
 
                 gridView
-                Text("\("Wallet Birthday:".localized()) \(birthday)")
+                Text("\("seed_birthday".localized()): \(birthday)")
                     .foregroundColor(Color.zLightGray)
                     .font(.footnote)
                     .frame(alignment: .leading)
              
                 Button(action: {
                     tracker.track(.tap(action: .copyAddress), properties: [:])
-                    PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "Copied to clipboard!")
+                    PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "feedback_addresscopied".localized())
                 }) {
-                    Text("Copy to clipboard".localized())
+                    Text("button_copytoclipboard")
                         .font(.system(size: 20))
                         .foregroundColor(.white)
                         .frame(height: buttonHeight)
@@ -102,7 +102,7 @@ struct SeedBackup: View {
                 }
                 if proceedsToHome {
                     NavigationLink(destination:  Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment)) {
-                        Text("I'm all set!".localized())
+                        Text("Done")
                             .foregroundColor(.black)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: buttonHeight)
@@ -118,7 +118,7 @@ struct SeedBackup: View {
         .alert(isPresented: self.$showError) {
             Alert(title: Text("Problem Retrieving your seed"),
                   message: Text("we are unable to display your seed phrase. close the app and retry this operation"),
-                  dismissButton: .default(Text("Dismiss")))
+                  dismissButton: .default(Text("button_close")))
         }
         .onAppear {
             tracker.track(.screen(screen: .backup), properties: [:])

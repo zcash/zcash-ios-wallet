@@ -60,7 +60,7 @@ struct ZcashMemoTextField: View {
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        Text("MEMO:")
+                        Text("\("Memo".localized()):")
                             .foregroundColor(isHighlighted ? inactiveColor : .white)
                         Text("Add Memo (optional)")
                             .foregroundColor(inactiveColor)

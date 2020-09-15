@@ -39,7 +39,7 @@ struct Sending: View {
         return Alert(title: Text("Error"),
                      message: Text(errorMessage),
                      dismissButton: .default(
-                        Text("close"),
+                        Text("button_close"),
                         action: {
                             self.flow.close()
                             
