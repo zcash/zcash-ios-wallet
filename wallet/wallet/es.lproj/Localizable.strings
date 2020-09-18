@@ -106,7 +106,7 @@
 
 //BackupWallet
 "Your wallet needs to be backed up." = "Su wallet necesita \n ser respaldada";
-"Syncing %@%%" = "Sincronizando %@%%"; // key not mapped so that if locale fetch fails the app does not crash
+"balance_syncing" = "Sincronizando %@%%"; // key not mapped so that if locale fetch fails the app does not crash
 "Skip" = "Omitir";
 
 //SeedBackup

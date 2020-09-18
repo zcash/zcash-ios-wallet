@@ -1,0 +1,94 @@
+"ECC Wallet" = "Кошелек ECC";
+"loadingtext" = "Загрузка";
+"welcometext" = "Добро пожаловать!";
+// Seed Backup/Restore Ваша фраза восстановления
+"title_backupseed" = "Ваша фраза восстановления";
+"copy_backupseed" = "Мы рекомендуем использовать резервную копию на бумаге и хранилище паролей.";
+"feedback_walletbackupstatus" = "Необходимо создать резервную копию вашего кошелька.";
+"seed_verify" = "Проверьте свою резервную копию.";
+"seed_verifytext" = "Пожалуйста, заполните отсутствующие слова фразы восстановления, чтобы проверить свою резервную копию.";
+"seed_restore" = "Восстановление из резервной копии";
+"seed_restoretext" = "Вам необходимо будет ввести 24 слова фразы восстановления по порядку.";
+"seed_reminder" = "Существует риск потерять средства!";
+"seed_remindertext" = "Помните, что с Zcash Вы сами находитесь в роли банка. Любой, кто владеет фразой восстановления, получает полный доступ к кошельку.";
+"seed_remindertext2" = "Вам следует незамедлительно создать резервную копию, так она позволит восстановить доступ к Вашему кошельку.";
+"seed_accepted" = "Фраза восстановления принята, идёт сканирование блокчейна!";
+"seed_birthdaytext" = "Мы сканируем блокчейн на предмет транзакций, которые относятся к вашему кошельку. Если вы можете указать дату создания данного кошелька, процесс ускорится.";
+"seed_enterdate" = "Введите дату";
+"seed_birthday" = "Кошелёк создан";
+"button_dontknow" = "Я не знаю";
+"button_backup" = "Резервная копия";
+"button_skip" = "Пропустить";
+
+// Balance Screen
+
+"balance_screen" = "Экран баланса";
+"balance_amounttosend" = "Введите сумму для отправки";
+"balance_expecting" = "Ожидание %@ ZEC";
+"balance_available" = "Доступно";
+"balance_nofunds" = "Нет доступных средств";
+"balance_syncing" = "Синхронизация %@%%";
+"balance_scanning" = "Сканирование %@%%";
+"button_sendamount" = "Отправить сумму";
+"button_wallethistory" = "История транзакций";
+
+// Address Screen
+"address_screen" = "Ваш адрес";
+"address_shielded" = "Ваш защищённый адрес";
+"address_transparent" = "Ваш прозрачный адрес";
+"feedback_addresscopied" = "Адрес скопирован!";
+"Request ZEC" = "Запросить сумму в ZEC";
+"Receive" = "Получите ZEC";
+"button_copytoclipboard" = "Скопировать в буфер обмена";
+// Profile Screen
+"profile_screen" = "Защищенный пользователь";
+"button_feedback" = "Отправить отзыв";
+"button_backup" = "Резервная копия кошелька";
+"button_applicationlogs" = "Просмотреть журнал операций приложения";
+"button_close" = "Закрыть";
+
+// Send Screen
+"send_screen" = "Отправить экран";
+"button_send" = "Отправить";
+"send_fromshielded" = "";
+"send_fromtransparent" = "с Вашего прозрачного кошелька";
+"send_fromboth" = "с двух кошельков";
+"label_to" = "на";
+"feedback_default" = "Введите действующий Zcash-адрес ";
+"feedback_shieldedaddress" = "Это действующий защищённый адрес";
+"feedback_transparentaddress" = "Это действующий прозрачный адрес";
+"feedback_sameaddress" = "Внимание, похоже, это ваш адрес!";
+"feedback_invalidaddress" = "Внимание, этот адрес недействителен!";
+"label_memo" = "Заметка";
+"label_charactercount" = "символы (символы)";
+"label_replyto" = "добавить ответ на";
+"send_onclipboard" = "В буфере обмена";
+"send_lastused" = "Последний используемый";
+"send_unknown" = "Неизвестно";
+"send_scanQR" = "Сканировать адрес получателя";
+"send_securityauth" = "Подтвердите, чтобы отправить";
+"send_securityauth2" = "Пожалуйста подтвердите, что хотите отправить %@ ZEC на адрес";
+"send_sending" = "Отправка XX ZEC на";
+"send_cancelled" = "Отменено";
+"send_sent" = "Отправлено!";
+"button_done" = "Готово";
+"button_seedetails" = "Смотреть подробности";
+"button_back" = "Вернуться назад";
+
+// Wallet History
+"screen_wallethistory" = "История транзакций";
+"wallet_history_sent" = "Sent";
+
+
+//NukeWarning
+
+"nuke_title" = "Estás a punto de DESTRUIR tu wallet";
+"nuke_nukewarning" = "Recuerda, en Zcash tú eres el banco. Cualquiera que tenga tu frase semilla podrá acceder a tu wallet";
+"nuke_nukewarning2" = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";
+"nuke_nukewarning3" = "Si destruyes tu wallet sin haberla respaldado, no hay forma de recuperarla.";
+"nuke_nukeButton" = "DESTRUIR WALLET";
+"nuke_backupbutton" = "¡Respaldar ahora!";
+"nuke_alerttitle" = "¿Eliminar Wallet?";
+"nuke_alertmessage" = "Estás a punto de DESTRUIR tu wallet. ¿Estás seguro que deseas continuar?";
+"nuke_alertcancel" = "No estoy seguro";
+"nuke_alertconfirm" = "¡DESTRUIR WALLET!";
