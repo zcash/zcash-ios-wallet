@@ -105,6 +105,7 @@ struct WalletDetails: View {
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
                 }
+                .listStyle(PlainListStyle())
                 .cornerRadius(20)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
@@ -132,7 +133,7 @@ struct WalletDetails: View {
         .alert(isPresented: self.$viewModel.showError) {
             Alert(title: Text("Error".localized()),
                   message: Text("an error ocurred".localized()),
-                  dismissButton: .default(Text("OK".localized())))
+                  dismissButton: .default(Text("button_close".localized())))
         }
     }
 }

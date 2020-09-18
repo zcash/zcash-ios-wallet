@@ -33,7 +33,7 @@ struct BackupWallet: View {
                     .font(.system(size: 18))
                     .padding(.horizontal, 48)
                 
-                Text(String(format: NSLocalizedString("Syncing %@%%", comment: ""),"\(Int(self.progress * 100))"))
+                Text(String(format: NSLocalizedString("balance_syncing", comment: ""),"\(Int(self.progress * 100))"))
                     .foregroundColor(.white)
                     .font(.system(size: 20))
                     .padding(.horizontal, 48)
@@ -51,7 +51,7 @@ struct BackupWallet: View {
                 }.isDetailLink(false)
                 
                 NavigationLink(destination:  FundsAtRisk().environmentObject(appEnvironment)) {
-                    Text("Skip")
+                    Text("button_skip")
                         .foregroundColor(Color.zDarkGray3)
                         .font(.system(size: 20))
                         .frame(height: buttonHeight)

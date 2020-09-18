@@ -37,7 +37,7 @@ struct DisplayAddress: View {
                 .frame(width: qrSize, height: qrSize, alignment: .center)
                 .layoutPriority(1)
             
-            Text("Your Shielded Address")
+            Text("address_shielded")
                 .foregroundColor(.white)
                 .font(.system(size: 18))
                 

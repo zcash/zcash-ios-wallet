@@ -21,8 +21,9 @@
 "We were unable to send your transaction. Your funds are safe, we just need to wait until the transaction expires before you can send them again." = "We were unable to send your transaction. Your funds are safe, we just need to wait until the transaction expires before you can send them again.";
 "There's an internal error. Probably nothing serious. If this error persists, back up your seed phrase and restore your wallet" = "There's an internal error. Probably nothing serious. If this error persists, back up your seed phrase and restore your wallet";
 "If this error persists, back up your seed phrase and restore your wallet" = "If this error persists, back up your seed phrase and restore your wallet";
+
 // COMPONENTS:
-"Zcash address in buffer!" = "Dirección de Zcash en el búfer!";
+"button_back" = "Volver";
 "Paste" = "Pegar";
 "balance_available" = "Disponible";
 "expecting" = "esperando";
@@ -30,45 +31,51 @@
 "Done" = "Listo";
 "button_backup" = "Respaldar Wallet";
 "Press and hold\nto send ZEC" = "Mantén presionada\npara enviar ZEC";
-"Add Memo Here" = "Escribe un Memo aquí";
-"%@ chars"= "%@ caracteres";
 "from %@" = "de %@";
 "Tap\nto send ZEC" = "Presiona\npara enviar ZEC";
-"To:" = "Para:";
 "Enter Shielded Address"="Ingrese la dirección blindada";
 "Error" = "Error";
 "an error ocurred" = "ocurrió un error";
 "Address Copied to clipboard!" = "Dirección copiada al portapapeles!";
 "button_close" = "Cerrar";
-"NUKE WALLET" = "DESTRUIR WALLET";
-"OK" = "OK";
-"Shielded User\n" = "Usuario blindado\n";
 "Pending confirmation" = "Confirmación pendiente";
 "of 10 Confirmations" = "de 10 Confirmaciones";
-"Sent" = "Enviado %@";
+
+
+
+// profile screen
+"NUKE WALLET" = "DESTRUIR WALLET";
+"profile_screen" = "Usuario blindado\n";
+
 // WalletDetailsHeader
-"Your Wallet History" = "Historial de tu Wallet";
+"screen_wallethistory" = "Historial de tu Wallet";
+"wallet_history_sent" = "Sent";
+"wallet_history_received" = "Received";
 "Shielded address:" = "Dirección Blindada:";
 
-// TransactionDetails
-"Tx Id:" = "Tx Id:";
-"Date:" = "Fecha:";
-"Shielded:" = "Blindada:";
-"Memo:" = "Memo:";
-"Address:" = "Dirección:";
-"Transaction Detail" = "Detalles de la tx";
-
 //SendTransaction
+"send_fromshielded" = "de tu wallet blindada";
+"send_fromtransparent" = "de tu wallet transparente";
+"send_fromboth" = "from both wallets";
 "feedback_default" = "Escribe una direccion blindada de Zcash";
 "feedback_shieldedaddress" = "Esta es una dirección blindada válida";
 "feedback_transparentaddress" = "Esta es una dirección transparente válida";
 "feedback_invalidaddress" = "¡Cuidado, esta dirección no es válida!";
 "feedback_sameaddress" = "¡Cuidado, parece que esta es tu propia dirección!";
+"send_onclipboard" = "On Clipboard";
+"send_lastused" = "Last Used";
+"send_unknown" = "Unknown";
+"label_replyto" = "incluir remitente";
+"send_securityauth" = "Identifícate para enviar";
+"send_securityauth2" = "Confirma que quieres enviar %@ ZEC a";
+"label_memo" = "Memo";
+"label_to" = "To";
+"label_charactercount" = "%@ caracteres";
+"Add Memo Here" = "Escribe un Memo aquí";
 "You Have %@ sendable ZEC" = "Tienes %@ ZEC para enviar";
+
 "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ ZEC para enviar. No tiene fondos suficientes para cubrir esa cantidad + la tarifa de minero de %@ ZEC";
 "You don't have any sendable ZEC yet" = "Todavía no tienes ZEC para enviar";
-
-"Amount" = "Amount";
 
 //AddMemo
 "Add Memo (optional)" = "Agregar Memo (opcional)";
@@ -77,13 +84,11 @@
 "Includes memo" = "Incluir memo";
 
 //Sending
-"thing is that we really don't know what just went down, sorry!" = "Lo que pasa es que realmente no sabemos qué pasó, lo siento.";
-"Sending" = "Enviando";
-"Sent" = "Enviado";
+"thing is that we really don't know what just went down, sorry!" = "Lo que pasa es que realmente no sabemos qué pasó, lo sentimos.";
+"send_sending" = "Enviando %@ ZEC a";
 "an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
 "Unable to send" = "No se pudo enviar";
-"ZEC to" = "ZEC para";
-
+"button_seedetails" = "See Details";
 
 //CreateNewWallet
 "Create New" = "Crear nueva";
@@ -124,22 +129,24 @@
 
 //ReceiveFunds
 "QR Code for %@" = "Código QR para %@";
-"Scan Recipient Address" = "Escanear dirección del destinatario";
+"address_shielded" = "Tu dirección blindada";
+"receive_title" = "Recibir ZEC";
+"label_to" = "Para";
 
 //ScanAddress
-"Request Camera Access" = "Solicitar acceso a la cámara";
-"We don't have permission to access your camera" = "No tenemos permiso para acceder a tu cámara";
-"Camera Unavailable" = "Cámara no disponible";
-"Switch to your Zcash address" = "Cambie a su dirección de Zcash";
-"This QR Code does not contain a Zcash valid address!" = "¡Este Código QR no contiene una dirección Zcash!";
-
+"scan_invalidQR" = "¡Este Código QR no contiene una dirección Zcash!";
+"scan_cameraunallowed" = "Habilita el uso de la cámara en la configuración de tu dispositivo";
+"scan_cameraunallowed2" = "Solicitar acceso a la cámara";
+"scan_cameraunavaliable" = "Cámara no disponible";
+"scan_invalidQR" = "¡El QR no contiene una dirección Zcash Válida!";
 //ShareScreen
-"Share Screen" = "Compartir pantalla";
+"Share Screen" = "Compartir";
 
 //ProfileScreen
-"Send Feedback" = "Enviar comentarios";
-"See Application Log" = "Ver log de la aplicación";
+"button_feedback" = "Enviar comentarios";
+"button_applicationlogs" = "Ver logs de la aplicación";
 "ECC Wallet" = "ECC Wallet";
+"button_backup_profile" = "Respaldar Wallet";
 
 //FundsAtRisk
 "seed_remindertext" = "Recuerda, en Zcash tu eres el banco. Cualquiera que tenga tu frase semilla podrá acceder a tu wallet";
@@ -149,22 +156,18 @@
 "button_skip" = "Omitir por ahora";
 
 //NukeWarning
-"Make sure you backed up your wallet before proceeding." = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";
-"If you nuke your wallet, there's no way to recover it." = "Si destruyes tu wallet, no hay forma de recuperarla.";
-"You are about to " = "Estas a punto de ";
-"NUKE " = "DESTRUIR ";
-"your wallet!" = "tu wallet!";
-"Delete Wallet?" = "Eliminar wallet?";
-"You are about to" = "Estas a punto de";
-" nuke your wallet. " = " destruir tu wallet. ";
-"Are you sure you want to proceed?" = "¿Estas seguro que deseas continuar?";
-"I'm not sure" = "No estoy seguro/a";
-"NUKE WALLET!" = "NUKE WALLET!";
 
+"nuke_title" = "Estás a punto de DESTRUIR tu wallet";
+"nuke_nukewarning" = "Recuerda, en Zcash tú eres el banco. Cualquiera que tenga tu frase semilla podrá acceder a tu wallet";
+"nuke_nukewarning2" = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";
+"nuke_nukewarning3" = "Si destruyes tu wallet sin haberla respaldado, no hay forma de recuperarla.";
+"nuke_nukeButton" = "DESTRUIR WALLET";
+"nuke_backupbutton" = "¡Respaldar ahora!";
+"nuke_alerttitle" = "¿Eliminar Wallet?";
+"nuke_alertmessage" = "Estás a punto de DESTRUIR tu wallet. ¿Estás seguro que deseas continuar?";
+"nuke_alertcancel" = "No estoy seguro";
+"nuke_alertconfirm" = "¡DESTRUIR WALLET!";
 
 //FeedBackForm
 "Feedback Sent!" = "Feedback Sent!";
 "Thanks for your feedback!" = "Thanks for your feedback!";
-
-//SendTransaction
-"Authorize this payment" = "Autoriza este pago";

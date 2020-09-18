@@ -14,11 +14,11 @@ struct NukeWarning: View {
     let buttonHeight: CGFloat = 50
     var disclaimer: String {
         """
-        \("seed_remindertext".localized())
+        \("nuke_nukewarning".localized())
         
-        \("Make sure you backed up your wallet before proceeding.".localized())
+        \("nuke_nukewarning2".localized())
         
-        \("If you nuke your wallet, there's no way to recover it.".localized())
+        \("nuke_nukewarning3".localized())
         """
     }
     var body: some View {
@@ -26,12 +26,8 @@ struct NukeWarning: View {
             ZcashBackground()
             VStack(spacing: 24) {
                 HStack {
-                    (Text("You are about to ")
+                    Text("nuke_title")
                         .foregroundColor(.white)
-                        + Text("NUKE ")
-                            .foregroundColor(Color.zAmberGradient4)
-                        + Text("your wallet!")
-                            .foregroundColor(.white))
                         .font(.title)
                         .frame(alignment: .leading)
                     Spacer()
@@ -47,7 +43,7 @@ struct NukeWarning: View {
                                                 .environmentObject(appEnvironment)
                                                 .navigationBarHidden(false)
                                                 .navigationBarTitle("", displayMode: .inline)) {
-                    Text("Backup now!")
+                    Text("nuke_backupbutton")
                         .foregroundColor(.black)
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
@@ -57,19 +53,19 @@ struct NukeWarning: View {
                 Button(action: {
                     self.showNukeAlert = true
                 }) {
-                    Text("NUKE WALLET")
+                    Text("nuke_nukeButton")
                         .foregroundColor(.red)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 2)))
                         .frame(height: self.buttonHeight)
                 }.alert(isPresented: $showNukeAlert) {
-                    Alert(title: Text("Delete Wallet?"),
-                          message: Text("You are about to")+Text(" nuke your wallet. ").foregroundColor(.red) + Text("Are you sure you want to proceed?"),
+                    Alert(title: Text("nuke_alerttitle"),
+                          message: Text("nuke_alertmessage"),
                           primaryButton: .default(
-                            Text("I'm not sure")
+                            Text("nuke_alertcancel")
                             ,action: { self.showNukeAlert = false}
                         ),
                           secondaryButton: .destructive(
-                            Text("NUKE WALLET!"),
+                            Text("nuke_alertconfirm"),
                             action: {
                                 self.appEnvironment.nuke(abortApplication: true)
                           }

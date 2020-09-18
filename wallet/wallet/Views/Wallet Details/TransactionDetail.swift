@@ -57,7 +57,7 @@ struct TransactionDetailsOLD: View {
         }.alert(isPresented: self.$isCopyAlertShown) {
             Alert(title: Text(""),
                   message: Text("feedback_addresscopied"),
-                  dismissButton: .default(Text("OK"))
+                  dismissButton: .default(Text("button_close"))
             )
         }
         .navigationBarTitle(Text("Transaction Detail".localized()), displayMode: .inline)

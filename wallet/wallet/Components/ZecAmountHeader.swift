@@ -16,7 +16,7 @@ extension WalletType {
     var localizedString: String {
         switch self {
         case .shielded:
-            return NSLocalizedString("shielded", comment: "")
+            return NSLocalizedString("send_fromshielded", comment: "")
         }
     }
 }
@@ -31,7 +31,7 @@ struct ZecAmountHeader: View {
             Text("$\(amount)")
                 .font(.zoboto(size: 36))
                 .foregroundColor(.white)
-            Text(String(format:NSLocalizedString("from your %@ wallet", comment: ""),walletType.localizedString))
+            Text(walletType.localizedString)
                 .font(.footnote)
                 .foregroundColor(.white)
         }

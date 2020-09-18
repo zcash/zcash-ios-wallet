@@ -97,6 +97,7 @@ struct SendTransaction: View {
                         }) {
                             Image("Back")
                                 .renderingMode(.original)
+                            .accessibility(label: Text("button_back"))
                         }
                 },
                     headerItem: {
@@ -105,7 +106,7 @@ struct SendTransaction: View {
                     
                     trailingItem: {
                         Button(action: {
-                            AuthenticationHelper.authenticate(with: "Authorize this payment".localized())
+                            AuthenticationHelper.authenticate(with: "send_securityauth".localized())
                         }) {
                             Text("button_send")
                                 .foregroundColor(.black)
@@ -122,7 +123,7 @@ struct SendTransaction: View {
                     .edgesIgnoringSafeArea([.horizontal])
                 
                 ZcashActionableTextField(
-                    title: "\("To".localized()):",
+                    title: "\("label_to".localized()):",
                     subtitleView: AnyView(
                         Text.subtitle(text: addressSubtitle)
                     ),
@@ -189,7 +190,6 @@ struct SendTransaction: View {
         .navigationBarTitle(Text(""), displayMode: .inline)
         .onAppear() {
             tracker.track(.screen(screen: .sendAddress), properties: [:])
-            //            self.flow.clearMemo()
         }
         .keyboardAdaptive()
         .animation(.easeInOut)

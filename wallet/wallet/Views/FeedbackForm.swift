@@ -100,7 +100,7 @@ struct FeedbackForm: View {
         .alert(isPresented: $showFeedbackSentAlert) {
             Alert(title: Text("Feedback Sent!".localized()),
                   message: Text("Thanks for your feedback!".localized()),
-                  dismissButton: .default(Text("OK".localized()),action: {
+                  dismissButton: .default(Text("button_close".localized()),action: {
                     self.isActive = false
                   }))
         }

@@ -22,14 +22,7 @@ struct Sending: View {
         
         return "\(e)"
     }
-    var sendGerund: String {
-        "Sending"
-    }
-    
-    var sendPastTense: String {
-        "Sent"
-    }
-    
+ 
     var showErrorAlert: Alert {
         var errorMessage = "an error ocurred while submitting your transaction"
         
@@ -48,12 +41,12 @@ struct Sending: View {
         )
     }
     
-    var sendText: String {
+    var sendText: some View {
         guard flow.error == nil else {
-            return "Unable to send"
+            return Text("Unable to send")
         }
         
-        return flow.isDone ? sendPastTense : sendGerund
+        return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString("send_sending", comment: ""), flow.amount))
     }
     
     var includesMemoView: AnyView {
@@ -72,7 +65,7 @@ struct Sending: View {
     var doneButton: AnyView {
         guard flow.isDone else { return AnyView(EmptyView()) }
         return AnyView(
-            Text("Done")
+            Text("button_done")
                 .foregroundColor(.black)
                 .frame(height: 58)
         )
@@ -84,7 +77,7 @@ struct Sending: View {
             ZcashBackground.amberGradient
             VStack(alignment: .center, spacing: 40) {
                 Spacer()
-                Text("\(sendText.localized()) \(flow.amount) \("ZEC to".localized())")
+                sendText
                     .foregroundColor(.black)
                     .font(.title)
                 Text("\(flow.address)")
@@ -105,7 +98,7 @@ struct Sending: View {
                             tracker.track(.tap(action: .sendFinalDetails), properties: [:])
                             self.showHistory = true
                         }) {
-                            Text("See Details")
+                            Text("button_seedetails")
                                 .foregroundColor(.black)
                                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: Color.black, lineWidth: 2)))
                                 .frame(height: 58)

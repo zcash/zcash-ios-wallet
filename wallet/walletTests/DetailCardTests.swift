@@ -10,8 +10,6 @@ import XCTest
 @testable import ECC_Wallet_no_logs
 class DetailCardTests: XCTestCase {
 
-   
-
     func testSubtitle() throws {
         
         let date = "some_date"
@@ -29,7 +27,7 @@ class DetailCardTests: XCTestCase {
         XCTAssertEqual(DetailModel.subtitle(isPending: true, isSubmitSuccess: true, minedHeight: minedHeight, date: date, latestBlockHeight: -1), "Pending confirmation".localized())
         
         // submission failed
-        XCTAssertEqual(DetailModel.subtitle(isPending: false, isSubmitSuccess: false, minedHeight: -1, date: date, latestBlockHeight: latestHeight), "Sent" + " \(date)")
+        XCTAssertEqual(DetailModel.subtitle(isPending: false, isSubmitSuccess: false, minedHeight: -1, date: date, latestBlockHeight: latestHeight), "wallet_history_sent".localized() + " \(date)")
         
     }
 

@@ -217,7 +217,7 @@ extension DetailModel {
         self.id = confirmedTransaction.transactionEntity.transactionId.toHexStringTxId()
         self.shielded = confirmedTransaction.toAddress?.isValidShieldedAddress ?? true
         self.status = sent ? .paid(success: confirmedTransaction.minedHeight > 0) : .received
-        self.subtitle = sent ? "Sent".localized() + " \(self.date.transactionDetail)" : "Received".localized() + " \(self.date.transactionDetail)"
+        self.subtitle = sent ? "wallet_history_sent".localized() + " \(self.date.transactionDetail)" : "Received".localized() + " \(self.date.transactionDetail)"
         self.zAddress = confirmedTransaction.toAddress
         self.zecAmount = (sent ? -Int64(confirmedTransaction.value) : Int64(confirmedTransaction.value)).asHumanReadableZecBalance()
         if let memo = confirmedTransaction.memo {
@@ -261,7 +261,7 @@ extension DetailModel {
     static func subtitle(isPending: Bool, isSubmitSuccess: Bool, minedHeight: BlockHeight, date: String, latestBlockHeight: BlockHeight?) -> String {
         
         guard isPending else {
-            return "\("Sent".localized()) \(date)"
+            return "\("wallet_history_sent".localized()) \(date)"
         }
         
         guard minedHeight > 0, let latestHeight = latestBlockHeight, latestHeight > 0 else {
@@ -271,3 +271,4 @@ extension DetailModel {
         return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
     }
 }
+    

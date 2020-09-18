@@ -23,8 +23,9 @@ struct ProfileScreen: View {
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
                     Image("zebra_profile")
+                        .accessibility(label: Text("A Zebra"))
                     VStack {
-                        Text("Shielded User".localized())
+                        Text("profile_screen")
                             .font(.system(size: 18))
                             .foregroundColor(.white)
                         Button(action: {
@@ -52,7 +53,7 @@ struct ProfileScreen: View {
                         ),
                                    isActive: $isFeedbackActive) {
                                     
-                                    Text("Send Feedback".localized())
+                                    Text("button_feedback")
                                         .foregroundColor(.black)
                                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
                                         .frame(height: Self.buttonHeight)
@@ -64,14 +65,14 @@ struct ProfileScreen: View {
                             .environmentObject(self.appEnvironment)
                         )
                     ) {
-                        Text("button_backup".localized())
+                        Text("button_backup")
                             .foregroundColor(.white)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                             .frame(height: Self.buttonHeight)
                         
                     }
                     // TODO: Make Troubleshooting great again
-//                    Text("See Application Log".localized())
+//                    Text("button_applicationlogs".localized())
 //                        .font(.system(size: 20))
 //                        .foregroundColor(Color.zLightGray)
 //                        .opacity(0.6)
