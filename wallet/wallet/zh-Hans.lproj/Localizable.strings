@@ -75,13 +75,16 @@
 "wallet_history_sent" = "Sent";
 //NukeWarning
 
-"nuke_title" = "Estás a punto de DESTRUIR tu wallet";
-"nuke_nukewarning" = "Recuerda, en Zcash tú eres el banco. Cualquiera que tenga tu frase semilla podrá acceder a tu wallet";
-"nuke_nukewarning2" = "Asegúrese de hacer una copia de seguridad de su wallet antes de continuar.";
-"nuke_nukewarning3" = "Si destruyes tu wallet sin haberla respaldado, no hay forma de recuperarla.";
-"nuke_nukeButton" = "DESTRUIR WALLET";
-"nuke_backupbutton" = "¡Respaldar ahora!";
-"nuke_alerttitle" = "¿Eliminar Wallet?";
-"nuke_alertmessage" = "Estás a punto de DESTRUIR tu wallet. ¿Estás seguro que deseas continuar?";
-"nuke_alertcancel" = "No estoy seguro";
-"nuke_alertconfirm" = "¡DESTRUIR WALLET!";
+//NukeWarning
+
+
+"nuke_title" = "You are about to NUKE your wallet";
+"nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
+"nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";
+"nuke_nukewarning3" = "If you nuke  your wallet without backing up your seed, there's no way to recover it";
+"nuke_nukeButton" = "NUKE WALLET";
+"nuke_backupbutton" = "Backup Now!";
+"nuke_alerttitle" = "Delete Wallet?";
+"nuke_alertmessage" = "You are about to nuke your wallet. Are you sure you want to proceed?";
+"nuke_alertcancel" = "I'm not sure";
+"nuke_alertconfirm" = "NUKE WALLET!";

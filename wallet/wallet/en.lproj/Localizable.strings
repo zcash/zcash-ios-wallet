@@ -149,7 +149,7 @@
 
 
 "nuke_title" = "You are about to NUKE your wallet";
-"nuke_nukewarning" = "You are about to NUKE your wallet";
+"nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
 "nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";
 "nuke_nukewarning3" = "If you nuke  your wallet without backing up your seed, there's no way to recover it";
 "nuke_nukeButton" = "NUKE WALLET";
