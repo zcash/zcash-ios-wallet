@@ -23,7 +23,7 @@
 "button_close" = "Close";
 "Pending confirmation" = "Pending confirmation";
 "of 10 Confirmations" = "of 10 Confirmations";
-
+"button_share_address" = "Share Address";
 
 // profile screen
 "NUKE WALLET" = "NUKE WALLET";
@@ -55,24 +55,16 @@
 "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC";
 "You don't have any sendable ZEC yet" = "You don't have any sendable ZEC yet";
 "send_securityauth" = "Authenticate to send";
-
-
-//AddMemo
-
-"Add Memo (optional)" = "Add Memo (optional)";
-
-//HoldToSend
-
-"Includes memo" = "Includes memo";
+"label_add_memo" = "Add Memo (optional)";
 
 //Sending
 "thing is that we really don't know what just went down, sorry!" = "thing is that we really don't know what just went down, sorry!";
 "send_sending" = "Sending %@ ZEC to";
 "send_sent" = "Sent!";
 "an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
-"Unable to send" = "Unable to send";
+"label_unabletosend" = "Unable to send to";
 "button_seedetails" = "See Details";
-
+"label_includesmemo" = "Includes memo";
 
 //CreateNewWallet
 "Create New" = "Create New";

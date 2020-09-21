@@ -62,7 +62,7 @@ struct ZcashMemoTextField: View {
                     HStack {
                         Text("\("label_memo".localized()):")
                             .foregroundColor(isHighlighted ? inactiveColor : .white)
-                        Text("Add Memo (optional)")
+                        Text("label_add_memo")
                             .foregroundColor(inactiveColor)
                             .opacity(self.text.isEmpty ? 1 : 0)
                             .allowsHitTesting(false)

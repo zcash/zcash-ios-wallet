@@ -19,7 +19,7 @@
 "button_dontknow" = "Я не знаю";
 "button_backup" = "Резервная копия";
 "button_skip" = "Пропустить";
-
+"button_share_address" = "Share Address";
 // Balance Screen
 
 "balance_screen" = "Экран баланса";
@@ -50,7 +50,7 @@
 // Send Screen
 "send_screen" = "Отправить экран";
 "button_send" = "Отправить";
-"send_fromshielded" = "";
+"send_fromshielded" = "from shielded wallet";
 "send_fromtransparent" = "с Вашего прозрачного кошелька";
 "send_fromboth" = "с двух кошельков";
 "label_to" = "на";
@@ -60,7 +60,7 @@
 "feedback_sameaddress" = "Внимание, похоже, это ваш адрес!";
 "feedback_invalidaddress" = "Внимание, этот адрес недействителен!";
 "label_memo" = "Заметка";
-"label_charactercount" = "символы (символы)";
+"label_charactercount" = "%@ символы (символы)";
 "label_replyto" = "добавить ответ на";
 "send_onclipboard" = "В буфере обмена";
 "send_lastused" = "Последний используемый";
@@ -74,15 +74,15 @@
 "button_done" = "Готово";
 "button_seedetails" = "Смотреть подробности";
 "button_back" = "Вернуться назад";
-
+"label_add_memo" = "Add Memo Here (optional)";
+"scan_invalidQR" = "This QR Code does not contain a Zcash valid address!";
+"label_includesmemo" = "Includes Memo";
+"label_unabletosend" = "Unable to send";
 // Wallet History
 "screen_wallethistory" = "История транзакций";
 "wallet_history_sent" = "Sent";
 
-
 //NukeWarning
-
-
 "nuke_title" = "You are about to NUKE your wallet";
 "nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
 "nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";

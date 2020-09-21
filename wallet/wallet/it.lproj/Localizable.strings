@@ -8,25 +8,28 @@
 // COMPONENTS:
 "button_back" = "Go Back";
 "Paste" = "Paste";
-"balance_available" = "Available";
+"balance_available" = "Disponibile";
 "expecting " = "expecting";
 "Create new Wallet" = "Create new Wallet";
 "button_done" = "Done";
 "button_backup" = "Backup Wallet";
 "Press and hold\nto send ZEC" = "Press and hold\nto send ZEC";
-"Add Memo Here" = "Add Memo Here";
+
 "Tap\nto send ZEC" = "Tap\nto send ZEC";
 "Enter Shielded Address" = "Enter Shielded Address";
 "Error" = "Error";
 "an error ocurred" = "an error ocurred";
-"feedback_addresscopied" = "Address Copied!";
-"button_close" = "Close";
-"Pending confirmation" = "Pending confirmation";
+"feedback_addresscopied" = "indirizzo Copiato!";
+"button_close" = "Chiudere";
+"Pending confirmation" = "Confermazione Pendiente";
 "of 10 Confirmations" = "of 10 Confirmations";
+"button_share_address" = "Compartire Indirizzo";
 
 "ECC Wallet" = "ECC Wallet";
 "loadingtext" = "Caricando";
 "welcometext" = "Benvenuto";
+
+// Seed Backup/Restore
 "title_backupseed" = "Il tuo seme di backup";
 "copy_backupseed" = "Ti consigliamo di eseguire il backup su carta e ottenere un gestore di password";
 "feedback_walletbackupstatus" = "La tua Wallet ha bisogno di un backup";
@@ -44,6 +47,9 @@
 "button_dontknow" = "non lo so";
 "button_backup" = "Fare Backup";
 "button_skip" = "Salta per ora";
+"button_share_address" = "Share Address";
+
+// Balance Screen
 "balance_screen" = "Bilancio";
 "balance_amounttosend" = "Inserisci un importo da inviare";
 "balance_expecting" = "aspettando %@ ZEC";
@@ -53,6 +59,8 @@
 "balance_scanning" = "Scanning %@%%";
 "button_sendamount" = "Invia importo";
 "button_wallethistory" = "cronologia del wallet";
+
+// Address Screen
 "address_screen" = "Tuo Indirizzo";
 "address_shielded" = "Il tuo indirizzo blindato";
 "address_transparent" = "Il tuo indirizzo trasparente";
@@ -60,11 +68,15 @@
 "Request ZEC" = "Richiedi ZEC";
 "receive_title" = "Ricevi ZEC";
 "button_copytoclipboard" = "copia negli appunti";
+
+// Profile Screen
 "profile_screen" = "Utente blindato";
 "button_feedback" =    "Invia feedback";
 "button_backup" = "Backup Wallet";
 "button_applicationlogs" = "Vedere Registri dell'applicazione";
 "button_close" = "Chiudere";
+
+// Send Screen
 "send_screen" =    "Invio";
 "button_send" = "Invio";
 "send_fromshielded" = "del tuo wallet blindato";
@@ -77,7 +89,7 @@
 "feedback_sameaddress" = "Attenzione, sembra che questo sia il tuo indirizzo!";
 "feedback_invalidaddress" = "Attenzione, questo indirizzo non è valido!";
 "label_memo" = "Memo";
-"label_charactercount" = "caratteri";
+"label_charactercount" = "%@ caratteri";
 "label_replyto" = "includere mittente";
 "send_onclipboard" = "Negli appunti";
 "send_lastused" = "Ultimo uso";
@@ -91,11 +103,15 @@
 "button_done" = "Pronto";
 "button_seedetails" = "Vedi i dettagli";
 "button_back" = "ritornare";
+"label_add_memo" = "Aggiungi un Memo";
+"label_includesmemo" = "Memo Aggiunto";
+"label_unabletosend" = "Unable to send";
+// Wallet History
 "screen_wallethistory" = "Storia del tuo Wallet";
 "wallet_history_sent" = "Inviato";
+
+
 //NukeWarning
-
-
 "nuke_title" = "Stai per DESTRUIRE il tuo Wallet";
 "nuke_nukewarning" = "Ricorda, in Zcash sei tu la banca. Chiunque abbia la tua frase seme può accedere al tuo Wallet";
 "nuke_nukewarning2" = "

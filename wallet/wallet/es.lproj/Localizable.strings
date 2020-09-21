@@ -40,7 +40,7 @@
 "button_close" = "Cerrar";
 "Pending confirmation" = "Confirmación pendiente";
 "of 10 Confirmations" = "de 10 Confirmaciones";
-
+"button_share_address" = "Compartir Dirección";
 
 
 // profile screen
@@ -71,24 +71,20 @@
 "label_memo" = "Memo";
 "label_to" = "To";
 "label_charactercount" = "%@ caracteres";
-"Add Memo Here" = "Escribe un Memo aquí";
+"label_add_memo" = "Agregar Memo (opcional)";
+
 "You Have %@ sendable ZEC" = "Tienes %@ ZEC para enviar";
 
 "%@ sendable ZEC. You don't have sufficient funds to cover the amount + Miner Fee of %@ ZEC" = "%@ ZEC para enviar. No tiene fondos suficientes para cubrir esa cantidad + la tarifa de minero de %@ ZEC";
 "You don't have any sendable ZEC yet" = "Todavía no tienes ZEC para enviar";
 
-//AddMemo
-"Add Memo (optional)" = "Agregar Memo (opcional)";
-
-//HoldToSend
-"Includes memo" = "Incluir memo";
-
 //Sending
 "thing is that we really don't know what just went down, sorry!" = "Lo que pasa es que realmente no sabemos qué pasó, lo sentimos.";
 "send_sending" = "Enviando %@ ZEC a";
 "an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
-"Unable to send" = "No se pudo enviar";
+"label_unabletosend" = "No se pudo enviar a";
 "button_seedetails" = "See Details";
+"label_includesmemo" = "Incluir memo";
 
 //CreateNewWallet
 "Create New" = "Crear nueva";
@@ -134,7 +130,6 @@
 "label_to" = "Para";
 
 //ScanAddress
-"scan_invalidQR" = "¡Este Código QR no contiene una dirección Zcash!";
 "scan_cameraunallowed" = "Habilita el uso de la cámara en la configuración de tu dispositivo";
 "scan_cameraunallowed2" = "Solicitar acceso a la cámara";
 "scan_cameraunavaliable" = "Cámara no disponible";

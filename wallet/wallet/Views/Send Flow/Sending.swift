@@ -43,7 +43,7 @@ struct Sending: View {
     
     var sendText: some View {
         guard flow.error == nil else {
-            return Text("Unable to send")
+            return Text("label_unabletosend")
         }
         
         return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString("send_sending", comment: ""), flow.amount))
@@ -55,7 +55,7 @@ struct Sending: View {
             HStack {
                 ZcashCheckCircle(isChecked: .constant(flow.includesMemo),externalRingColor: .clear, backgroundColor: .black)
                     .disabled(true)
-                Text("Includes memo")
+                Text("label_includesmemo")
                     .foregroundColor(.black)
                     .font(.footnote)
             }

@@ -70,7 +70,7 @@ struct DisplayAddress: View {
                 tracker.track(.tap(action: .receiveScan), properties: [:])
                 self.isShareAddressShown = true
             }) {
-                Text("Share Address")
+                Text("button_share_address")
                     .foregroundColor(Color.white)
                     .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                     .frame(height: 58)
