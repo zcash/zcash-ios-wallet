@@ -37,7 +37,7 @@ struct ProfileScreen: View {
                             Text(appEnvironment.initializer.getAddress() ?? "")
                             .lineLimit(3)
                                 .multilineTextAlignment(.center)
-                                .font(.system(size: 18))
+                                .font(.system(size: 15))
                                 .foregroundColor(.white)
                         }
                         .onReceive(PasteboardAlertHelper.shared.publisher) { (item) in
@@ -46,7 +46,7 @@ struct ProfileScreen: View {
                     }
                     .padding(0)
                     
-                    Spacer()
+//                    Spacer()
                     #if ENABLE_LOGGING
                     NavigationLink(destination: LazyView(
                         FeedbackForm(isActive: self.$isFeedbackActive)
@@ -81,13 +81,6 @@ struct ProfileScreen: View {
                     ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                         .disabled(true)
                     
-                    
-                    NavigationLink(destination: LazyView (
-                        NukeWarning().environmentObject(self.appEnvironment)
-                    ), isActive: self.$nukePressed) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                    
                     Button(action: {
                         tracker.track(.tap(action: .profileNuke), properties: [:])
                         self.nukePressed = true
@@ -98,11 +91,15 @@ struct ProfileScreen: View {
                             .frame(height: Self.buttonHeight)
                     }
                     
-                    
+                    NavigationLink(destination: LazyView (
+                                           NukeWarning().environmentObject(self.appEnvironment)
+                                       ), isActive: self.$nukePressed) {
+                                           EmptyView()
+                                       }.isDetailLink(false)
                     
                 }
                 .padding(.horizontal, Self.horizontalPadding)
-                .padding(.bottom, 30)
+                .padding(.bottom, 15)
                 .alert(item: self.$copiedValue) { (p) -> Alert in
                     PasteboardAlertHelper.alert(for: p)
                 }
