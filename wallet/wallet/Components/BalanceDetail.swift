@@ -19,9 +19,9 @@ struct BalanceDetail: View {
     var status: BalanceStatus
     
     var available: some View {
-        Text(format(zec: availableZec) + " ZEC")
+        Text(format(zec: availableZec) + " ZEC ")
             .foregroundColor(.zLightGray)
-        + Text(" Available")
+        + Text("balance_available")
             .foregroundColor(Color.zAmberGradient1)
     }
     
@@ -39,7 +39,7 @@ struct BalanceDetail: View {
     var caption: some View {
         switch status {
         case .expecting(let zec):
-            return  Text("(expecting ")
+            return  Text("(\("expecting".localized()) ")
                            .font(.body)
                            .foregroundColor(Color.zLightGray) +
             Text("+" + format(zec: zec))
@@ -50,7 +50,7 @@ struct BalanceDetail: View {
                 .foregroundColor(Color.zLightGray)
         
         case .waiting(let change):
-            return  Text("(expecting ")
+            return  Text("(\("expecting".localized()) ")
                                       .font(.body)
                                     .foregroundColor(Color.zLightGray) +
                        Text("+" + format(zec: change))

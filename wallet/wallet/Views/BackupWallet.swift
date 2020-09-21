@@ -10,30 +10,13 @@ import SwiftUI
 import Combine
 struct BackupWallet: View {
     
-    class BackupWalletViewModel: ObservableObject {
-        var showModal: Bool = false
-        var progress: Int = 0
-        
-        var disposables = [AnyCancellable]()
-        init() {}
-        
-        func bindSync() {
-            ZECCWalletEnvironment.shared.synchronizer.progress
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { self.progress =  Int($0 * 100)})
-            .store(in: &disposables)
-        }
-        deinit {
-            disposables.forEach({ $0.cancel() })
-        }
-    }
-    
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @ObservedObject var viewModel =  BackupWalletViewModel()
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 40
     let buttonHeight: CGFloat = 50
     
+    @State var progress: Float = 0
+    @State var showModal = false
     
     var body: some View {
         
@@ -44,22 +27,23 @@ struct BackupWallet: View {
                 Spacer()
                 ZcashLogo()
                 
-                Text("Your Wallet needs\nto be Backed up")
+                Text("feedback_walletbackupstatus")
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .font(.system(size: 18))
                     .padding(.horizontal, 48)
                 
-                Text(String(format: NSLocalizedString("Syncing %@%", comment: ""),"\($viewModel.progress.wrappedValue)"))
+                Text(String(format: NSLocalizedString("balance_syncing", comment: ""),"\(Int(self.progress * 100))"))
                     .foregroundColor(.white)
                     .font(.system(size: 20))
                     .padding(.horizontal, 48)
-                    .opacity(0) //TODO: fix this
-                
-                Spacer()
-                
+                    .opacity(self.progress > 0 ? 1.0 : 0)
+                    .onReceive(ZECCWalletEnvironment.shared.synchronizer.progress, perform: { progress in
+                        self.progress = progress
+                    })
+  
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
-                    Text("Backup Wallet")
+                    Text("button_backup")
                         .font(.system(size: 20, weight: .regular, design: .default))
                         .foregroundColor(.black)
                         .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
@@ -67,7 +51,7 @@ struct BackupWallet: View {
                 }.isDetailLink(false)
                 
                 NavigationLink(destination:  FundsAtRisk().environmentObject(appEnvironment)) {
-                    Text("Skip")
+                    Text("button_skip")
                         .foregroundColor(Color.zDarkGray3)
                         .font(.system(size: 20))
                         .frame(height: buttonHeight)
@@ -77,20 +61,7 @@ struct BackupWallet: View {
             
             }.navigationBarBackButtonHidden(true)
         .onAppear() {
-            do {
-                /// TODO: change previous navigation link to button to capture action
                 tracker.track(.tap(action: .landingBackupWallet), properties: [:])
-                try self.appEnvironment.createNewWallet()
-                self.viewModel.bindSync()
-            } catch {
-                let message = "could not create new wallet:"
-                logger.error("\(message) \(error)")
-                tracker.track(.error(severity: .critical),
-                              properties: [
-                                ErrorSeverity.messageKey : message,
-                                ErrorSeverity.underlyingError : "\(error)"
-                                ])
-            }
         }
     }
 }

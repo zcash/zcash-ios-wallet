@@ -1,0 +1,95 @@
+"ECC Wallet" = "Кошелек ECC";
+"loadingtext" = "Загрузка";
+"welcometext" = "Добро пожаловать!";
+// Seed Backup/Restore Ваша фраза восстановления
+"title_backupseed" = "Ваша фраза восстановления";
+"copy_backupseed" = "Мы рекомендуем использовать резервную копию на бумаге и хранилище паролей.";
+"feedback_walletbackupstatus" = "Необходимо создать резервную копию вашего кошелька.";
+"seed_verify" = "Проверьте свою резервную копию.";
+"seed_verifytext" = "Пожалуйста, заполните отсутствующие слова фразы восстановления, чтобы проверить свою резервную копию.";
+"seed_restore" = "Восстановление из резервной копии";
+"seed_restoretext" = "Вам необходимо будет ввести 24 слова фразы восстановления по порядку.";
+"seed_reminder" = "Существует риск потерять средства!";
+"seed_remindertext" = "Помните, что с Zcash Вы сами находитесь в роли банка. Любой, кто владеет фразой восстановления, получает полный доступ к кошельку.";
+"seed_remindertext2" = "Вам следует незамедлительно создать резервную копию, так она позволит восстановить доступ к Вашему кошельку.";
+"seed_accepted" = "Фраза восстановления принята, идёт сканирование блокчейна!";
+"seed_birthdaytext" = "Мы сканируем блокчейн на предмет транзакций, которые относятся к вашему кошельку. Если вы можете указать дату создания данного кошелька, процесс ускорится.";
+"seed_enterdate" = "Введите дату";
+"seed_birthday" = "Кошелёк создан";
+"button_dontknow" = "Я не знаю";
+"button_backup" = "Резервная копия";
+"button_skip" = "Пропустить";
+"button_share_address" = "Share Address";
+// Balance Screen
+
+"balance_screen" = "Экран баланса";
+"balance_amounttosend" = "Введите сумму для отправки";
+"balance_expecting" = "Ожидание %@ ZEC";
+"balance_available" = "Доступно";
+"balance_nofunds" = "Нет доступных средств";
+"balance_syncing" = "Синхронизация %@%%";
+"balance_scanning" = "Сканирование %@%%";
+"button_sendamount" = "Отправить сумму";
+"button_wallethistory" = "История транзакций";
+
+// Address Screen
+"address_screen" = "Ваш адрес";
+"address_shielded" = "Ваш защищённый адрес";
+"address_transparent" = "Ваш прозрачный адрес";
+"feedback_addresscopied" = "Адрес скопирован!";
+"Request ZEC" = "Запросить сумму в ZEC";
+"Receive" = "Получите ZEC";
+"button_copytoclipboard" = "Скопировать в буфер обмена";
+// Profile Screen
+"profile_screen" = "Защищенный пользователь";
+"button_feedback" = "Отправить отзыв";
+"button_backup" = "Резервная копия кошелька";
+"button_applicationlogs" = "Просмотреть журнал операций приложения";
+"button_close" = "Закрыть";
+
+// Send Screen
+"send_screen" = "Отправить экран";
+"button_send" = "Отправить";
+"send_fromshielded" = "from shielded wallet";
+"send_fromtransparent" = "с Вашего прозрачного кошелька";
+"send_fromboth" = "с двух кошельков";
+"label_to" = "на";
+"feedback_default" = "Введите действующий Zcash-адрес ";
+"feedback_shieldedaddress" = "Это действующий защищённый адрес";
+"feedback_transparentaddress" = "Это действующий прозрачный адрес";
+"feedback_sameaddress" = "Внимание, похоже, это ваш адрес!";
+"feedback_invalidaddress" = "Внимание, этот адрес недействителен!";
+"label_memo" = "Заметка";
+"label_charactercount" = "%@ символы (символы)";
+"label_replyto" = "добавить ответ на";
+"send_onclipboard" = "В буфере обмена";
+"send_lastused" = "Последний используемый";
+"send_unknown" = "Неизвестно";
+"send_scanQR" = "Сканировать адрес получателя";
+"send_securityauth" = "Подтвердите, чтобы отправить";
+"send_securityauth2" = "Пожалуйста подтвердите, что хотите отправить %@ ZEC на адрес";
+"send_sending" = "Отправка XX ZEC на";
+"send_cancelled" = "Отменено";
+"send_sent" = "Отправлено!";
+"button_done" = "Готово";
+"button_seedetails" = "Смотреть подробности";
+"button_back" = "Вернуться назад";
+"label_add_memo" = "Add Memo Here (optional)";
+"scan_invalidQR" = "This QR Code does not contain a Zcash valid address!";
+"label_includesmemo" = "Includes Memo";
+"label_unabletosend" = "Unable to send";
+// Wallet History
+"screen_wallethistory" = "История транзакций";
+"wallet_history_sent" = "Sent";
+
+//NukeWarning
+"nuke_title" = "You are about to NUKE your wallet";
+"nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
+"nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";
+"nuke_nukewarning3" = "If you nuke  your wallet without backing up your seed, there's no way to recover it";
+"nuke_nukeButton" = "NUKE WALLET";
+"nuke_backupbutton" = "Backup Now!";
+"nuke_alerttitle" = "Delete Wallet?";
+"nuke_alertmessage" = "You are about to nuke your wallet. Are you sure you want to proceed?";
+"nuke_alertcancel" = "I'm not sure";
+"nuke_alertconfirm" = "NUKE WALLET!";

@@ -52,7 +52,7 @@ struct AddressHelperView: View {
             }.eraseToAnyView()
         case .both(let clipboard, let lastUsed):
             return VStack(spacing: 0) {
-                AddressHelperViewSection(title: "COPIED TO CLIPBOARD") {
+                AddressHelperViewSection(title: "send_onclipboard") {
                     AddrezzHelperViewCell(address: clipboard, shielded: isValidZ(address: clipboard),selected: self.selection == Selection.clipboardSelection)
                 }
                 .onTapGesture {
@@ -68,7 +68,7 @@ struct AddressHelperView: View {
         
         case .clipboard(let address):
            return  VStack(spacing: 0) {
-            AddressHelperViewSection(title: "COPIED TO CLIPBOARD") {
+            AddressHelperViewSection(title: "send_onclipboard") {
                 AddrezzHelperViewCell(address: address, shielded: isValidZ(address: address),selected: self.selection == Selection.clipboardSelection)
                 }
             .onTapGesture {

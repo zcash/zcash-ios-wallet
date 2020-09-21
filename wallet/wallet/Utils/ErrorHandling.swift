@@ -60,9 +60,9 @@ func mapToUserFacingError(_ walletError: WalletError) -> UserFacingErrors {
     switch walletError {
 
     case .createFailed:
-        return .initalizationFailed
+        return .initalizationFailed(underlyingError: walletError)
     case .initializationFailed:
-        return .initalizationFailed
+        return .initalizationFailed(underlyingError: walletError)
     case .synchronizerFailed:
         return .synchronizerError(canRetry: false)
     case .genericErrorWithMessage:
@@ -85,7 +85,7 @@ func mapToUserFacingError(_ walletError: WalletError) -> UserFacingErrors {
 }
 
 enum UserFacingErrors: Error {
-    case initalizationFailed
+    case initalizationFailed(underlyingError: Error)
     case synchronizerError(canRetry: Bool)
     case connectionFailed
     case transactionSubmissionError

@@ -1,0 +1,93 @@
+"ECC Wallet" = "ECC 钱包";
+"loadingtext" = "准备工作";
+"welcometext" = "欢迎使用 ECC 钱包！";
+// Seed Backup/Restore
+"title_backupseed" = "您的备份种子（助记词）";
+"copy_backupseed" = "我们建议您使用纸笔抄录备份种子，并锁到带密码的保险箱里。";
+"feedback_walletbackupstatus" = "您的钱包需要备份。";
+"seed_verify" = "需要验证您的备份。";
+"seed_verifytext" = "请填入缺失的词语，以验证您的备份无误。";
+"seed_restore" = "从备份助记词中恢复钱包";
+"seed_restoretext" = "您需要按照顺序输入 24 个助记词。";
+"seed_reminder" = "您的资金处在安全风险中！";
+"seed_remindertext" = "请记住，使用 Zcash 的时候，没有其他人在托管您的资金，您 是自己的银行。使用资金的唯一凭证就是助记词。如有他人知道了您的助记词，就有了转移您资金的所有权限。";
+"seed_remindertext2" = "请立即备份，如果您遗失了自己的备份，没有任何人能帮您恢复钱包、找回资金。";
+"seed_accepted" = "已接受助记词，正在扫描您的帐户余额。";
+"seed_birthdaytext" = "软件正在扫描区块链以发现与您的钱包有关的交易。如果您能提供这个钱包的创建时间，可以加快扫描速度。";
+"seed_enterdate" = "输入日期";
+"seed_birthday" = "创建日期";
+"button_dontknow" = "我不知道 / 我忘了";
+"button_backup" = "备份";
+"button_skip" = "跳过";
+// Balance Screen
+"balance_screen" = "余额扫描";
+"balance_amounttosend" = "输入您想发送的数额";
+"balance_expecting" = "预计为 %@ ZEC";
+"balance_available" = "可用";
+"balance_nofunds" = "暂无可用的款项";
+"balance_syncing" = "正在同步 %@%%";
+"balance_scanning" = "正在扫描 %@%%";
+"button_sendamount" = "发送数额";
+// Address Screen
+"button_wallethistory" = "钱包历史";
+"address_screen" = "您的地址";
+"address_shielded" = "您的隐蔽地址";
+"address_transparent" = "您的透明地址";
+"feedback_addresscopied" = "已复制地址";
+"Request ZEC" = "请求 ZEC";
+"receive_title" = "接收 ZEC";
+"button_copytoclipboard" = "已复制到剪贴板";
+"button_share_address" = "Share Address";
+// Profile Screen
+"profile_screen" = "隐蔽用户";
+"button_feedback" = "发送反馈";
+"button_backup" = "备份钱包";
+"button_applicationlogs" = "查看应用日志";
+"button_close" = "关闭";
+// Send Screen
+"send_screen" = "发送资金功能";
+"button_send" = "发送";
+"send_fromshielded" = "从您的隐蔽钱包发送";
+"send_fromtransparent" = "从您的透明钱包发送";
+"send_fromboth" = "同时从您的隐蔽钱包和透明钱包拼凑数额";
+"label_to" = "至";
+"feedback_default" = "请输入一个有效的 Zcash 地址";
+"feedback_shieldedaddress" = "这是一个有效的隐蔽地址";
+"feedback_transparentaddress" = "这是一个有效的透明地址";
+"feedback_sameaddress" = "警告，该地址似乎是您自己的地址！";
+"feedback_invalidaddress" = "警告，该地址不是一个有效地址！";
+"label_memo" = "备注";
+"label_charactercount" = "字符";
+"label_replyto" = "include reply-to";
+"send_onclipboard" = "在剪贴板内";
+"send_lastused" = "上一次使用";
+"send_unknown" = "未知";
+"send_scanQR" = "扫描接收人地址";
+"send_securityauth" = "授权发送";
+"send_securityauth2" = "请确认，您现在要发送 %@ ZEC 发送给 ";
+"send_sending" = "正在发送 %@ ZEC 给";
+"send_cancelled" = "已取消";
+"send_sent" = "已发送！";
+"button_done" = "完成";
+"button_seedetails" = "查看细节";
+"button_back" = "返回";
+"label_add_memo" = "Add Memo Here (optional)";
+"scan_invalidQR" = "This QR Code does not contain a Zcash valid address!";
+"label_includesmemo" = "Includes Memo";
+"label_unabletosend" = "Unable to send";
+// Wallet History
+"screen_wallethistory" = "您的钱包历史";
+"wallet_history_sent" = "Sent";
+
+//NukeWarning
+
+"nuke_title" = "You are about to NUKE your wallet";
+"nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
+"nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";
+"nuke_nukewarning3" = "If you nuke  your wallet without backing up your seed, there's no way to recover it";
+"nuke_nukeButton" = "NUKE WALLET";
+"nuke_backupbutton" = "Backup Now!";
+"nuke_alerttitle" = "Delete Wallet?";
+"nuke_alertmessage" = "You are about to nuke your wallet. Are you sure you want to proceed?";
+"nuke_alertcancel" = "I'm not sure";
+"nuke_alertconfirm" = "NUKE WALLET!";

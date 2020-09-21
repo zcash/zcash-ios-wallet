@@ -14,7 +14,7 @@ struct WalletDetailsHeader: View {
         ZStack {
             Color.zDarkGray2
             VStack(alignment: .leading) {
-                Text("Your Wallet History".localized())
+                Text("screen_wallethistory")
                 .lineLimit(1)
                     .font(.title)
                     .foregroundColor(.white)

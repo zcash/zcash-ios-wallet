@@ -16,7 +16,7 @@ struct ZcashSeedPhraseGrid: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .center, spacing: 8) {
             ForEach(wordGrid.indices, id: \.self) { i in
                 HStack(alignment: .center, spacing: 6) {
                     ForEach(self.wordGrid[i].indices, id: \.self) { j in

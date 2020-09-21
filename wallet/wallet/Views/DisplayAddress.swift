@@ -37,13 +37,13 @@ struct DisplayAddress: View {
                 .frame(width: qrSize, height: qrSize, alignment: .center)
                 .layoutPriority(1)
             
-            Text("Your Shielded Address")
+            Text("address_shielded")
                 .foregroundColor(.white)
                 .font(.system(size: 18))
                 
             
             Button(action: {
-                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "Address Copied to clipboard!")
+                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "feedback_addresscopied".localized())
                 logger.debug("address copied to clipboard")
          
                 tracker.track(.tap(action: .copyAddress), properties: [:])
@@ -59,7 +59,7 @@ struct DisplayAddress: View {
                         }
                     }
                     
-                }.padding([.horizontal], 30)
+                }.padding([.horizontal], 15)
             }.alert(item: self.$copyItemModel) { (p) -> Alert in
                 PasteboardAlertHelper.alert(for: p)
             }
@@ -70,7 +70,7 @@ struct DisplayAddress: View {
                 tracker.track(.tap(action: .receiveScan), properties: [:])
                 self.isShareAddressShown = true
             }) {
-                Text("Share Address")
+                Text("button_share_address")
                     .foregroundColor(Color.white)
                     .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
                     .frame(height: 58)

@@ -25,8 +25,8 @@ struct SquareToggleStyle: ToggleStyle {
                         .background(isHighlighted ? activeColor : Color.clear)
                     Image("checkmark")
                         .colorMultiply(.black)
+                        .accessibility(label: Text("checkmark"))
                         .opacity(isHighlighted ? 1 : 0)
-                    
                     
                 }
                 .frame(width: 16, height: 16)
@@ -36,15 +36,8 @@ struct SquareToggleStyle: ToggleStyle {
                     .foregroundColor(.white)
             }
         }
-        
-        
-        
     }
-    
 }
-
-
-
 
 struct SquareToggleStyle_Previews: PreviewProvider {
     @State static var isOn: Bool = true
@@ -52,10 +45,9 @@ struct SquareToggleStyle_Previews: PreviewProvider {
         ZStack {
             ZcashBackground()
             Toggle(isOn: $isOn) {
-                Text("includes reply to")
+                Text("label_replyto")
             }
             .toggleStyle(SquareToggleStyle(isHighlighted: $isOn))
-            //            .frame(width: 16, height: 16)
             
         }
     }
