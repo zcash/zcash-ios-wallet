@@ -59,7 +59,7 @@ struct DisplayAddress: View {
                         }
                     }
                     
-                }.padding([.horizontal], 30)
+                }.padding([.horizontal], 15)
             }.alert(item: self.$copyItemModel) { (p) -> Alert in
                 PasteboardAlertHelper.alert(for: p)
             }
