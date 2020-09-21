@@ -31,7 +31,7 @@ extension UserFacingErrors {
         switch self {
             
         case .initalizationFailed:
-            return "This wallet has not been initialized correctly! Perhaps an error occurred during install.\n\nThis can be fixed with a reset. First, locate your backup seed phrase, then \"Nuke Wallet\" and reimport it."
+            return "This wallet has not been initialized correctly! Perhaps an error occurred during install. If you just created a new wallet close the app and retry.\n\n If this is an existing wallet, it can be fixed with a reset. First, locate your backup seed phrase, then \"Nuke Wallet\" and reimport it."
         case .synchronizerError:
             return "An error ocurred while syncing the blockchain. If the problem persists, back up your seed phrase and restore your wallet."
         case .connectionFailed:
