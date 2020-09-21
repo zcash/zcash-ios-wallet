@@ -139,8 +139,9 @@ final class ZECCWalletEnvironment: ObservableObject {
     }
     
     static func mapError(error: Error) -> WalletError {
-        
-        if let rustError = error as? RustWeldingError {
+        if let walletError = error as? WalletError {
+            return walletError
+        } else if let rustError = error as? RustWeldingError {
             switch rustError {
             case .genericError(let message):
                 return WalletError.genericErrorWithMessage(message: message)
