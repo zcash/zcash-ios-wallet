@@ -780,7 +780,6 @@
 			buildConfigurationList = 0DCDFFE324B6722B000F6999 /* Build configuration list for PBXNativeTarget "ECC-Wallet-no-logging" */;
 			buildPhases = (
 				0DCDFF9424B6722B000F6999 /* [CP] Check Pods Manifest.lock */,
-				0DF67CB3250AC9720091C763 /* ShellScript */,
 				0DCDFF9624B6722B000F6999 /* Sources */,
 				0DCDFFD724B6722B000F6999 /* Frameworks */,
 				0DCDFFD924B6722B000F6999 /* Resources */,
@@ -972,23 +971,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ECC-Wallet-no-logging/Pods-ECC-Wallet-no-logging-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		0DF67CB3250AC9720091C763 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "source ${SRCROOT}/env-vars.sh\nsh ${PROJECT_DIR}/Scripts/generate_constants.sh\n";
 		};
 		70CEA1A652FAED2ACEFBD6EA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
