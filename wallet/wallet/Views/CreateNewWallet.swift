@@ -25,7 +25,17 @@ struct CreateNewWallet: View {
     var body: some View {
 
         ZStack {
-            
+            NavigationLink(destination:
+                LazyView (
+                    BackupWallet().environmentObject(self.appEnvironment)
+                    .navigationBarHidden(true)
+                ),
+                           tag: Destinations.createNew,
+                           selection: $destination
+                
+            ) {
+              EmptyView()
+            }
             ZcashBackground()
             
             VStack(alignment: .center, spacing: self.itemSpacing) {
@@ -60,18 +70,7 @@ struct CreateNewWallet: View {
                                           
                                           .frame(height: self.buttonHeight)
                 }
-                NavigationLink(destination:
-                    LazyView (
-                        BackupWallet().environmentObject(self.appEnvironment)
-                        .navigationBarHidden(true)
-                    ),
-                               tag: Destinations.createNew,
-                               selection: $destination
-                    
-                ) {
-                  EmptyView()
-  
-                }
+                
                 
                 #if DEBUG
                 Button(action: {
