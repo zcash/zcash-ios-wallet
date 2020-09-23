@@ -85,7 +85,7 @@ struct WalletDetails: View {
                     },
                    trailingItem: { EmptyView() }
                 )
-                    .padding(.horizontal, 10)
+                .padding(.horizontal, 10)
 
                 List {
                     WalletDetailsHeader(zAddress: zAddress)
@@ -113,8 +113,6 @@ struct WalletDetails: View {
                 )
                 .padding()
                 
-                Spacer()
-                
             }
         }
         .onAppear() {
@@ -128,12 +126,11 @@ struct WalletDetails: View {
             UITableView.appearance().separatorStyle = .singleLine
 
         }
-        .edgesIgnoringSafeArea([.bottom])
         .navigationBarHidden(true)
         .alert(isPresented: self.$viewModel.showError) {
-            Alert(title: Text("Error".localized()),
-                  message: Text("an error ocurred".localized()),
-                  dismissButton: .default(Text("button_close".localized())))
+            Alert(title: Text("Error"),
+                  message: Text("an error ocurred"),
+                  dismissButton: .default(Text("button_close")))
         }
     }
 }
