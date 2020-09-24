@@ -1496,6 +1496,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 727FE4974F8832ED9217E96A /* Pods-ECC-Wallet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 57;
@@ -1522,6 +1523,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D1B51D8DC0F8B49AD8EAE6C4 /* Pods-ECC-Wallet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 57;
@@ -1547,7 +1549,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 027E3A71136B5B4D796FE4D9 /* Pods-ECC-WalletTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1570,7 +1572,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0394897B71FCB571DCBA2B04 /* Pods-ECC-WalletTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6J82A38BF9;
