@@ -93,7 +93,28 @@ struct WalletDetails: View {
                         .frame(height: 100)
                         .padding([.trailing], 24)
                     ForEach(self.viewModel.items, id: \.id) { row in
-                        NavigationLink(destination: LazyView(TransactionDetails(detail: row, selectedId: self.$selectedId)), tag: row.id, selection: self.$selectedId) {
+                        NavigationLink(destination: LazyView(
+                                        TransactionDetails(detail: row)
+                                            .zcashNavigationBar(leadingItem: {
+                                                Button(action: {
+                                                    self.selectedId = nil
+                                                }) {
+                                                    Image("Back")
+                                                        .renderingMode(.original)
+                                                        .accessibility(label: Text("button_back"))
+                                                }
+                                            }, headerItem: {
+                                                HStack{
+                                                    Text("Transaction Details")
+                                                        .font(.title)
+                                                        .foregroundColor(.white)
+                                                        .frame(alignment: Alignment.center)
+                                                }
+                                            }, trailingItem: {
+                                                EmptyView()
+                                            })
+
+                        ), tag: row.id, selection: self.$selectedId) {
                             DetailCard(model: row, backgroundColor: .zDarkGray2)
                         }
                         .isDetailLink(false)
