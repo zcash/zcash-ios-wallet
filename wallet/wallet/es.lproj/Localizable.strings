@@ -28,7 +28,7 @@
 "balance_available" = "Disponible";
 "expecting" = "esperando";
 "Create new Wallet" = "Crea nueva Wallet";
-"Done" = "Listo";
+"button_done" = "Listo";
 "button_backup" = "Respaldar Wallet";
 "Press and hold\nto send ZEC" = "Mantén presionada\npara enviar ZEC";
 "from %@" = "de %@";
@@ -49,7 +49,7 @@
 
 // WalletDetailsHeader
 "screen_wallethistory" = "Historial de tu Wallet";
-"wallet_history_sent" = "Sent";
+"wallet_history_sent" = "Se nt";
 "wallet_history_received" = "Received";
 "Shielded address:" = "Dirección Blindada:";
 
@@ -60,6 +60,7 @@
 "feedback_default" = "Escribe una direccion blindada de Zcash";
 "feedback_shieldedaddress" = "Esta es una dirección blindada válida";
 "feedback_transparentaddress" = "Esta es una dirección transparente válida";
+"feedback_addresscopied" = "¡Dirección Copiada!";
 "feedback_invalidaddress" = "¡Cuidado, esta dirección no es válida!";
 "feedback_sameaddress" = "¡Cuidado, parece que esta es tu propia dirección!";
 "send_onclipboard" = "On Clipboard";
@@ -84,7 +85,6 @@
 "an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
 "label_unabletosend" = "No se pudo enviar a";
 "button_seedetails" = "See Details";
-"label_includesmemo" = "Incluir memo";
 
 //CreateNewWallet
 "Create New" = "Crear nueva";

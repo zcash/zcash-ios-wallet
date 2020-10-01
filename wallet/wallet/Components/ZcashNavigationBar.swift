@@ -15,8 +15,8 @@ struct ZcashNavigationBar<LeadingContent: View, HeadingContent: View, TrailingCo
     var trailingItem: TrailingContent
     
     init(@ViewBuilder leadingItem: () -> LeadingContent,
-         @ViewBuilder headerItem: () -> HeadingContent,
-         @ViewBuilder trailingItem: () -> TrailingContent) {
+                      @ViewBuilder headerItem: () -> HeadingContent,
+                      @ViewBuilder trailingItem: () -> TrailingContent) {
         self.leadingItem = leadingItem()
         self.headerItem = headerItem()
         self.trailingItem = trailingItem()
@@ -29,6 +29,47 @@ struct ZcashNavigationBar<LeadingContent: View, HeadingContent: View, TrailingCo
             headerItem
             Spacer()
             trailingItem
+        }
+    }
+}
+
+extension View {
+    func zcashNavigationBar<LeadingContent: View,
+                            HeadingContent: View,
+                            TrailingContent: View>(
+                                                    @ViewBuilder leadingItem: () -> LeadingContent,
+                                                    @ViewBuilder headerItem: () -> HeadingContent,
+                                                    @ViewBuilder trailingItem: () -> TrailingContent) -> some View {
+        self.modifier(ZcashNavigationBarModifier(leadingItem:
+                                                    leadingItem,
+                                                 headerItem: headerItem,
+                                                 trailingItem: trailingItem)
+        )
+    }
+}
+struct ZcashNavigationBarModifier<LeadingContent: View, HeadingContent: View, TrailingContent: View>: ViewModifier {
+    var leadingItem: LeadingContent
+    var headerItem: HeadingContent
+    var trailingItem: TrailingContent
+    
+    init(@ViewBuilder leadingItem: () -> LeadingContent,
+         @ViewBuilder headerItem: () -> HeadingContent,
+         @ViewBuilder trailingItem: () -> TrailingContent) {
+        self.leadingItem = leadingItem()
+        self.headerItem = headerItem()
+        self.trailingItem = trailingItem()
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            ZcashBackground()
+            VStack(alignment: .center, spacing: 0) {
+                ZcashNavigationBar(leadingItem: { leadingItem },
+                                   headerItem: { headerItem },
+                                   trailingItem: { trailingItem } )
+                    .padding(.horizontal, 10)
+                content
+            }
         }
     }
 }

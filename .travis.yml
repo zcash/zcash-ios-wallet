@@ -14,7 +14,6 @@ env:
   - ZCASH_NETWORK_ENVIRONMENT: TESTNET
 install:
   - ${TRAVIS_BUILD_DIR}/Scripts/travis/rust_setup.sh
-  - sh ${TRAVIS_BUILD_DIR}/Scripts/generate_constants.sh
   - WALLET_DIR=${TRAVIS_BUILD_DIR}/wallet
   - WALLET_WALLET_DIR=${WALLET_DIR}/wallet
   - cp ${WALLET_DIR}/env-vars.sh.example ${WALLET_DIR}/env-vars.sh
@@ -24,4 +23,4 @@ install:
 
 
 script:
-  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/ECC-Wallet.xcworkspace -scheme ECC-Wallet-no-logging -destination platform\=iOS\ Simulator,OS\=14.0,name\=iPhone\ 8 test
+  - travis_wait 60 xcodebuild -quiet -workspace ${TRAVIS_BUILD_DIR}/wallet/ECC-Wallet.xcworkspace -scheme ECC-Wallet-no-logging -destination platform\=iOS\ Simulator,OS\=14.0,name\=iPhone\ 8 build

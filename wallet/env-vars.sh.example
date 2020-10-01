@@ -1,3 +1,4 @@
 export LIGHTWALLETD_ADDRESS="localhost%3a9067"
 
-# export MIXPANEL_TOKEN="deadbeef"  #use this or inject via environment variable on CI 
+export MIXPANEL_TOKEN="CEST_NE_PAS_A_TOKEN"
+export BUGSNAG_API_KEY="CEST_NE_PAS_A_TOKEN"

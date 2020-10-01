@@ -25,23 +25,26 @@ struct BackupWallet: View {
             ZcashBackground()
             VStack(alignment: .center, spacing: itemSpacing) {
                 Spacer()
-                ZcashLogo()
-                
-                Text("feedback_walletbackupstatus")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .font(.system(size: 18))
-                    .padding(.horizontal, 48)
-                
-                Text(String(format: NSLocalizedString("balance_syncing", comment: ""),"\(Int(self.progress * 100))"))
-                    .foregroundColor(.white)
-                    .font(.system(size: 20))
-                    .padding(.horizontal, 48)
-                    .opacity(self.progress > 0 ? 1.0 : 0)
-                    .onReceive(ZECCWalletEnvironment.shared.synchronizer.progress, perform: { progress in
-                        self.progress = progress
-                    })
-  
+                VStack(spacing: itemSpacing){
+                    ZcashLogo()
+                    
+                    Text("feedback_walletbackupstatus")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .font(.system(size: 18))
+                        .padding(.horizontal, 48)
+                    
+                    Text(String(format: NSLocalizedString("balance_syncing", comment: ""),"\(Int(self.progress * 100))"))
+                        .foregroundColor(.white)
+                        .font(.system(size: 20))
+                        .padding(.horizontal, 48)
+                        .opacity(self.progress > 0 ? 1.0 : 0)
+                        .onReceive(ZECCWalletEnvironment.shared.synchronizer.progress, perform: { progress in
+                            self.progress = progress
+                        })
+                }
+                .padding(0)
+                Spacer()
                 NavigationLink(destination: SeedBackup(proceedsToHome: true).environmentObject(appEnvironment)){
                     Text("button_backup")
                         .font(.system(size: 20, weight: .regular, design: .default))

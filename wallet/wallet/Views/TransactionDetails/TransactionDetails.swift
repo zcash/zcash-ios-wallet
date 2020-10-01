@@ -9,14 +9,18 @@
 import SwiftUI
 
 struct TransactionDetails: View {
+    
+    enum Alerts {
+        case explorerNotice
+        case copiedItem(item: PasteboardItemModel)
+    }
     var detail: DetailModel
     @State var expandMemo = false
-    @State var explorerAlert = false
-    @Binding var selectedId: String?
-    @State var copiedItem: PasteboardItemModel?
+    
+    @State var alertItem: Alerts?
     var exploreButton: some View {
         Button(action: {
-            self.explorerAlert = true
+            self.alertItem = .explorerNotice
         }) {
             HStack {
                 Spacer()
@@ -39,77 +43,57 @@ struct TransactionDetails: View {
     
     var body: some View {
         
-        ZStack {
-            ZcashBackground()
-            VStack {
-                ZcashNavigationBar(leadingItem: {
-                    Button(action: {
-                        self.selectedId = nil
-                    }) {
-                        Image("Back")
-                            .renderingMode(.original)
-                    }
-                }, headerItem: {
-                    HStack{
-                        Text("Transaction Details")
-                            .font(.title)
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                }, trailingItem: {
-                    EmptyView()
-                })
-                ScrollView {
-                    VStack(spacing: 30) {
-                        VStack {
-                            DateAndHeight(date: detail.date,
-                                          formatterBlock: formatDateDetail,
-                                          height: detail.minedHeight)
-                            HeaderFooterFactory.header(for: detail)
-                            SubwayPathBuilder.buildSubway(detail: detail, expandMemo: self.$expandMemo)
-                                .padding(.leading, 32)
-                                .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
-                                    self.copiedItem = p
-                                }
-                            HeaderFooterFactory.footer(for: detail)
-                            
+        ScrollView {
+            VStack(spacing: 30) {
+                VStack {
+                    DateAndHeight(date: detail.date,
+                                  formatterBlock: formatDateDetail,
+                                  height: detail.minedHeight)
+                    HeaderFooterFactory.header(for: detail)
+                    SubwayPathBuilder.buildSubway(detail: detail, expandMemo: self.$expandMemo)
+                        .padding(.leading, 32)
+                        .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
+                            self.alertItem = .copiedItem(item: p)
                         }
-                        
-                        if detail.isMined {
-                            exploreButton
-                        }
-                    }
-                    .padding()
-                }
-                .padding()
-                .alert(isPresented: self.$explorerAlert) {
-                    Alert(title: Text("You are exiting your wallet"),
-                          message: Text("While usually an acceptable risk, you will possibly exposing your behavior and interest in this transaction by going online. OH NOES! What will you do?"),
-                          primaryButton: .cancel(Text("NEVERMIND")),
-                          secondaryButton: .default(Text("SEE TX ONLINE"), action: {
-                            
-                            guard let url = UrlHandler.blockExplorerURL(for: self.detail.id) else {
-                                return
-                            }
-                            
-                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                          }))
+                    HeaderFooterFactory.footer(for: detail)
+                    
                 }
                 
+                if detail.isMined {
+                    exploreButton
+                }
             }
-            .alert(item: self.$copiedItem) { (p) -> Alert in
-                PasteboardAlertHelper.alert(for: p)
+            .padding()
+        }
+        .padding(.vertical,0)
+        .padding(.horizontal, 8)
+        .alert(item: self.$alertItem) { item -> Alert in
+            switch item {
+            case .copiedItem(let p):
+                return PasteboardAlertHelper.alert(for: p)
+            case .explorerNotice:
+                return Alert(title: Text("You are exiting your wallet"),
+                             message: Text("While usually an acceptable risk, you will possibly exposing your behavior and interest in this transaction by going online. OH NOES! What will you do?"),
+                             primaryButton: .cancel(Text("NEVERMIND")),
+                             secondaryButton: .default(Text("SEE TX ONLINE"), action: {
+                                
+                                guard let url = UrlHandler.blockExplorerURL(for: self.detail.id) else {
+                                    return
+                                }
+                                
+                                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                             }))
             }
         }
         .navigationBarTitle("", displayMode: .inline)
-        .navigationBarHidden(true)        
+        .navigationBarHidden(true)
     }
 }
 
 struct SubwayPathBuilder {
     static func buildSubway(detail: DetailModel, expandMemo: Binding<Bool>) -> some View {
         var views = [AnyView]()
-     
+        
         views.append(
             Text("+0.0001 network fee")
                 .font(.body)
@@ -131,7 +115,7 @@ struct SubwayPathBuilder {
                     .foregroundColor(.gray)
                     .eraseToAnyView()
             )
-
+            
         }
         
         if let memo = detail.memo {
@@ -147,10 +131,10 @@ struct SubwayPathBuilder {
                         tracker.track(.tap(action: .copyAddress), properties: [:])
                     }) {
                         Text("includes reply-to")
-                        .font(.body)
-                        .foregroundColor(.gray)
+                            .font(.body)
+                            .foregroundColor(.gray)
                     }
-                        .eraseToAnyView()
+                    .eraseToAnyView()
                 )
             }
         }
@@ -160,15 +144,15 @@ struct SubwayPathBuilder {
                 
                 Button(action:{
                     PasteboardAlertHelper.shared.copyToPasteBoard(value: fullAddr, notify: "feedback_addresscopied".localized())
-                                   }){
-                (Text("to ")
-                    .font(.body)
-                    .foregroundColor(.white) +
-                    Text(toAddr)
+                }){
+                    (Text("to ")
+                        .font(.body)
+                        .foregroundColor(.white) +
+                        Text(toAddr)
                         .font(.body)
                         .foregroundColor(.gray))
                 }
-                    .eraseToAnyView()
+                .eraseToAnyView()
             )
         }
         
@@ -198,16 +182,16 @@ struct SubwayPathBuilder {
 extension DetailModel {
     
     func makeStatusText(latestHeight: Int) -> String {
-         guard !self.isConfirmed(latestHeight: latestHeight) else {
-             return "Confirmed"
-         }
-         
-         guard minedHeight > 0, latestHeight > 0 else {
+        guard !self.isConfirmed(latestHeight: latestHeight) else {
+            return "Confirmed"
+        }
+        
+        guard minedHeight > 0, latestHeight > 0 else {
             return "Pending confirmation"
-         }
-         
-         return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
-     }
+        }
+        
+        return "\(abs(latestHeight - minedHeight)) \("of 10 Confirmations".localized())"
+    }
     
     func isConfirmed(latestHeight: Int) -> Bool {
         guard self.isMined, latestHeight > 0 else { return false }
@@ -255,18 +239,18 @@ extension String {
     
     var replyToAddress: String? {
         guard let keywordRange = self.range(of: Self.memoReplyToString),
-                  keywordRange.upperBound < self.endIndex else {
-                  return nil
-              }
-              
+              keywordRange.upperBound < self.endIndex else {
+            return nil
+        }
+        
         let addressSlice = self[keywordRange.upperBound ..< self.endIndex]
-      
+        
         let afterReplyToString = String(addressSlice)
         
         guard afterReplyToString.isValidShieldedAddress else { return nil }
         
         return afterReplyToString
-            
+        
     }
 }
 
@@ -305,9 +289,19 @@ struct TransactionDetails_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ZcashBackground()
-            TransactionDetails(detail: DetailModel(id: "fasdfasdf", date: Date(), zecAmount: 4.32, status: .received, subtitle: "fasdfasd"), selectedId: .constant(nil))
+            TransactionDetails(detail: DetailModel(id: "fasdfasdf", date: Date(), zecAmount: 4.32, status: .received, subtitle: "fasdfasd"))
         }
     }
 }
 
 
+extension TransactionDetails.Alerts: Identifiable {
+    var id: Int {
+        switch self {
+        case .copiedItem(_):
+            return 1
+        default:
+            return 2
+        }
+    }
+}

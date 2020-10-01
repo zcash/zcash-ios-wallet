@@ -19,7 +19,6 @@
 "Enter Shielded Address" = "Enter Shielded Address";
 "Error" = "Error";
 "an error ocurred" = "an error ocurred";
-"feedback_addresscopied" = "Address Copied!";
 "button_close" = "Close";
 "Pending confirmation" = "Pending confirmation";
 "of 10 Confirmations" = "of 10 Confirmations";
@@ -41,12 +40,13 @@
 "feedback_default" = "Enter a shielded Zcash address";
 "feedback_shieldedaddress" = "This is a valid shielded address";
 "feedback_transparentaddress" = "This is a valid transparent address";
+"feedback_addresscopied" = "Address Copied!";
 "feedback_invalidaddress" = "Warning, this address is not valid!";
 "feedback_sameaddress" = "Warning, this appears to be your address!";
 "label_replyto" = "include reply-to";
-"send_onclipboard" = "En Portapapeles";
-"send_lastused" = "Última Utilizada";
-"send_unknown" = "Desconocido";
+"send_onclipboard" = "On Clipboard";
+"send_lastused" = "last used";
+"send_unknown" = "Unknown";
 "label_memo" = "Memo";
 "label_to" = "To";
 "label_charactercount" = "%@ chars";
@@ -64,7 +64,6 @@
 "an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
 "label_unabletosend" = "Unable to send to";
 "button_seedetails" = "See Details";
-"label_includesmemo" = "Includes memo";
 
 //CreateNewWallet
 "Create New" = "Create New";

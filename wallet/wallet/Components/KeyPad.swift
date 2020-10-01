@@ -12,7 +12,7 @@ struct KeyPad: View {
     
     let keySize: CGFloat = 60
     let hSpacing: CGFloat = 50
-    let vSpacing: CGFloat = 20
+    let vSpacing: CGFloat = 16
     
     var viewModel: KeyPadViewModel
     

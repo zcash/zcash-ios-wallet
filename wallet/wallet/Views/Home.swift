@@ -352,11 +352,11 @@ struct Home: View {
                     }.isDetailLink(false)
                 }
                 
-//                if viewModel.isSyncing {
-//                    //Warning: This exists for the purpose of not having a link in the screen while syncing. LazyLoading breaks the UITableView underneath list for some reason and refreshing wallet history polls the database which can't happen while syncing.
-//                    walletDetails
-//
-//                } else {
+                if viewModel.isSyncing {
+                    //Warning: This exists for the purpose of not having a link in the screen while syncing. LazyLoading breaks the UITableView underneath list for some reason and refreshing wallet history polls the database which can't happen while syncing.
+                    walletDetails
+
+                } else {
                     NavigationLink(
                         destination:
                         WalletDetails(isActive: $showHistory)
@@ -369,7 +369,7 @@ struct Home: View {
                     }.isDetailLink(false)
                         .opacity(viewModel.isSyncing ? 0.4 : 1.0)
                         .disabled(viewModel.isSyncing)
-//                }
+                }
             }
             .padding([.bottom], 20)
         }
