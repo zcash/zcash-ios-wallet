@@ -70,12 +70,12 @@ struct Sending: View {
                     
                 }
                 Spacer()
-                if self.flow.isDone {
+                if self.flow.isDone && self.flow.pendingTx != nil {
                     Button(action: {
                         guard let pendingTx = self.flow.pendingTx  else {
                             
                             tracker.track(.error(severity: .warning), properties: [ErrorSeverity.messageKey : "Attempt to open transaction details in sending screen with no pending transaction in send flow"])
-                         
+                            self.flow.close() // close this so it does not get stuck here
                             return
                         }
                         

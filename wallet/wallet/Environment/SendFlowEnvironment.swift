@@ -148,7 +148,7 @@ final class SendFlowEnvironment: ObservableObject {
                     self.error = error
                     self.showError = true
                     tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : "\(ZECCWalletEnvironment.mapError(error: error))"])
-                    SendFlow.end()
+                    
                 }
                 // fix me:                
                 self.isDone = true
