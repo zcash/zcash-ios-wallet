@@ -21,7 +21,7 @@ struct ZcashActionableTextField: View {
     var onCommit: () -> Void
     var onEditingChanged: (Bool) -> Void
     var inactiveColor: Color = .zGray2
-    var activeColor: Color = .zAmberGradient2
+    var activeColor: Color
     
     @Binding var text: String
     
@@ -82,6 +82,7 @@ struct ZcashActionableTextField: View {
          binding: Binding<String>,
          action: (() -> Void)? = nil,
          accessoryIcon: Image? = nil,
+         activeColor: Color = .zAmberGradient2,
          onEditingChanged: @escaping (Bool) -> Void,
          onCommit: @escaping () -> Void) {
         
@@ -98,6 +99,7 @@ struct ZcashActionableTextField: View {
         self._text = binding
         self.onCommit = onCommit
         self.onEditingChanged = onEditingChanged
+        self.activeColor = activeColor
     }
     
 }

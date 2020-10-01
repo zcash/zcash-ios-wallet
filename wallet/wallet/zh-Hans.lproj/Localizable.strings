@@ -73,7 +73,6 @@
 "button_back" = "返回";
 "label_add_memo" = "Add Memo Here (optional)";
 "scan_invalidQR" = "This QR Code does not contain a Zcash valid address!";
-"label_includesmemo" = "Includes Memo";
 "label_unabletosend" = "Unable to send";
 // Wallet History
 "screen_wallethistory" = "您的钱包历史";

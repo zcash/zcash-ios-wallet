@@ -83,6 +83,16 @@ struct SendTransaction: View {
         }
         return ZECCWalletEnvironment.memoLengthLimit
     }
+    var recipientActiveColor: Color {
+        let address = flow.address
+        if ZECCWalletEnvironment.shared.isValidShieldedAddress(address) {
+            return Color.zYellow
+        } else if ZECCWalletEnvironment.shared.isValidTransparentAddress(address) {
+            return Color.zTransparentBlue
+        } else {
+            return Color.zGray2
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -136,6 +146,7 @@ struct SendTransaction: View {
                 },
                     accessoryIcon: Image("QRCodeIcon")
                         .renderingMode(.original),
+                    activeColor: recipientActiveColor,
                     onEditingChanged: { _ in },
                     onCommit: {
                         tracker.track(.tap(action: .sendAddressDoneAddress), properties: [:])
@@ -158,11 +169,16 @@ struct SendTransaction: View {
                             )
                         }
                 }
-                ZcashMemoTextField(text: $flow.memo,
+                if !ZECCWalletEnvironment.shared.isValidTransparentAddress(flow.address) {
+                    
+                
+                    ZcashMemoTextField(text: $flow.memo,
                                    includesReplyTo: $flow.includeSendingAddress,
                                    charLimit: .constant(charLimit))
                 
-                
+                } else {
+                    Spacer()
+                }
                 addressInBuffer
                     .onReceive(NotificationCenter.default.publisher(for: .addressSelection)) { (notification) in
                         let address = (notification.userInfo?["value"] as? String) ?? ""

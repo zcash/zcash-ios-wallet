@@ -84,7 +84,6 @@
 "an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
 "label_unabletosend" = "No se pudo enviar a";
 "button_seedetails" = "See Details";
-"label_includesmemo" = "Incluir memo";
 
 //CreateNewWallet
 "Create New" = "Crear nueva";

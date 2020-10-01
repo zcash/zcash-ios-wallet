@@ -104,7 +104,6 @@
 "button_seedetails" = "Vedi i dettagli";
 "button_back" = "ritornare";
 "label_add_memo" = "Aggiungi un Memo";
-"label_includesmemo" = "Memo Aggiunto";
 "label_unabletosend" = "Unable to send";
 // Wallet History
 "screen_wallethistory" = "Storia del tuo Wallet";

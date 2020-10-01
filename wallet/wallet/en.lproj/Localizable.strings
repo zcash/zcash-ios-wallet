@@ -44,9 +44,9 @@
 "feedback_invalidaddress" = "Warning, this address is not valid!";
 "feedback_sameaddress" = "Warning, this appears to be your address!";
 "label_replyto" = "include reply-to";
-"send_onclipboard" = "En Portapapeles";
-"send_lastused" = "Última Utilizada";
-"send_unknown" = "Desconocido";
+"send_onclipboard" = "On Clipboard";
+"send_lastused" = "last used";
+"send_unknown" = "Unknown";
 "label_memo" = "Memo";
 "label_to" = "To";
 "label_charactercount" = "%@ chars";
@@ -64,7 +64,6 @@
 "an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
 "label_unabletosend" = "Unable to send to";
 "button_seedetails" = "See Details";
-"label_includesmemo" = "Includes memo";
 
 //CreateNewWallet
 "Create New" = "Create New";

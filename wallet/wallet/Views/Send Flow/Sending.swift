@@ -50,19 +50,6 @@ struct Sending: View {
         return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString("send_sending", comment: ""), flow.amount))
     }
     
-    var includesMemoView: AnyView {
-        guard flow.includesMemo else { return AnyView(EmptyView()) }
-        return  AnyView(
-            HStack {
-                ZcashCheckCircle(isChecked: .constant(flow.includesMemo),externalRingColor: .clear, backgroundColor: .black)
-                    .disabled(true)
-                Text("label_includesmemo")
-                    .foregroundColor(.black)
-                    .font(.footnote)
-            }
-        )
-    }
-    
     var body: some View {
         ZStack {
             ZcashBackground.amberGradient
@@ -76,7 +63,7 @@ struct Sending: View {
                     .foregroundColor(.black)
                     .font(.title)
                     .lineLimit(1)
-                includesMemoView
+                
                 if !flow.isDone {
                     loading
                         .frame(height: 48)
