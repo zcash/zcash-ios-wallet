@@ -109,7 +109,7 @@ final class SeedManager {
 }
 
 extension SeedManager: SeedProvider {
-    func seed() -> [UInt8] {
-        (try? exportSeed()) ?? []
+    func seed() throws -> [UInt8] {
+        try exportSeed()
     }
 }
