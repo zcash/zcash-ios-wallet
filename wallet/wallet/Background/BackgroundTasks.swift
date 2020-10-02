@@ -17,14 +17,17 @@ class BackgroundTaskSyncronizing {
     
     func handleBackgroundAppRefreshTask(_ task: BGAppRefreshTask) {
         logger.debug("initalizing task: \(task.identifier)")
+        tracker.track(.tap(action: .backgroundAppRefreshStart), properties: [:])
         ZECCWalletEnvironment.shared.synchronizer.stop()
         ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
         ZECCWalletEnvironment.shared.synchronizer.status.sink { (status) in
             switch status {
             case .synced:
                 task.setTaskCompleted(success: true)
+                tracker.track(.tap(action: .backgroundAppRefreshEnd), properties: ["completion": "true"])
             case .disconnected, .stopped:
                 task.setTaskCompleted(success: false)
+                tracker.track(.tap(action: .backgroundAppRefreshEnd), properties: ["completion": "false"])
             default:
                 break
             }
@@ -36,9 +39,10 @@ class BackgroundTaskSyncronizing {
             switch status {
             case .synced:
                 task.setTaskCompleted(success: true)
-            
+                tracker.track(.tap(action: .backgroundAppRefreshEnd), properties: ["completion": "true"])
             default:
                 task.setTaskCompleted(success: false)
+                tracker.track(.tap(action: .backgroundAppRefreshEnd), properties: ["completion": "false"])
             }
             ZECCWalletEnvironment.shared.synchronizer.stop()
             
@@ -48,14 +52,17 @@ class BackgroundTaskSyncronizing {
     // TODO: Handle this better ideally this backgroudn processing task will  be executed when there are a lot of blocks to download and process
     func handleBackgroundProcessingTask(_ task: BGProcessingTask) {
         logger.debug("initalizing task: \(task.identifier)")
+        tracker.track(.tap(action: .backgroundProcessingStart), properties: [:])
         ZECCWalletEnvironment.shared.synchronizer.stop()
         ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
         ZECCWalletEnvironment.shared.synchronizer.status.sink { (status) in
             switch status {
             case .synced:
                 task.setTaskCompleted(success: true)
+                tracker.track(.tap(action: .backgroundProcessingEnd), properties: ["completion": "true"])
             case .disconnected, .stopped:
                 task.setTaskCompleted(success: false)
+                tracker.track(.tap(action: .backgroundProcessingEnd), properties: ["completion": "false"])
             default:
                 break
             }
@@ -70,6 +77,7 @@ class BackgroundTaskSyncronizing {
             
             default:
                 task.setTaskCompleted(success: false)
+                tracker.track(.tap(action: .backgroundProcessingEnd), properties: ["completion": "false"])
             }
             ZECCWalletEnvironment.shared.synchronizer.stop()
             

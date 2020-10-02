@@ -69,6 +69,10 @@ enum Action: String {
     case profileNuke = "profile.nuke"
     case profileBackup = "profile.backup"
     case copyAddress = "copy.address"
+    case backgroundAppRefreshStart = "background.apprefresh.start"
+    case backgroundAppRefreshEnd = "background.apprefresh.end"
+    case backgroundProcessingStart = "background.processing.start"
+    case backgroundProcessingEnd = "background.processing.end"
 }
 enum LogEvent: Equatable {
     case screen(screen: Screen)
