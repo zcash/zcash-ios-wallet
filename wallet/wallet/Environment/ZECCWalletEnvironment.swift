@@ -86,9 +86,9 @@ final class ZECCWalletEnvironment: ObservableObject {
         
         do {
             let randomPhrase = try MnemonicSeedProvider.default.randomMnemonic()
-            let randomSeed = try MnemonicSeedProvider.default.toSeed(mnemonic: randomPhrase)
+            
             let birthday = WalletBirthday.birthday(with: BlockHeight.max)
-            try SeedManager.default.importSeed(randomSeed)
+            
             try SeedManager.default.importBirthday(birthday.height)
             try SeedManager.default.importPhrase(bip39: randomPhrase)
             try self.initialize()
