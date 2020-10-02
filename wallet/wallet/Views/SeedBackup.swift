@@ -19,10 +19,22 @@ struct SeedBackup: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
     var seed: String {
+        var phrase = ""
         do {
-            return try SeedManager.default.exportPhrase()
+            phrase = try SeedManager.default.exportPhrase()
+            
         } catch {
             return "there was an error retrieving your seed: \(error)"
+        }
+        
+        do {
+            try MnemonicSeedProvider.default.isValid(mnemonic: phrase)
+            return phrase
+        } catch {
+            return  """
+                    the stored seed is not valid.
+                    Error: \(error)
+                    """
         }
     }
     
@@ -92,6 +104,13 @@ struct SeedBackup: View {
              
                 Button(action: {
                     tracker.track(.tap(action: .copyAddress), properties: [:])
+                    do {
+                        try MnemonicSeedProvider.default.isValid(mnemonic: seed)
+                    } catch {
+                        self.error = ZECCWalletEnvironment.mapError(error: error)
+                        self.showError = true
+                        return
+                    }
                     PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "feedback_addresscopied".localized())
                 }) {
                     Text("button_copytoclipboard")
