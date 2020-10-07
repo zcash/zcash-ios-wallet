@@ -62,8 +62,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        scheduleAppRefresh()
-        scheduleDatabaseCleaningIfNeeded()
+        BackgroundTaskSyncronizing.default.scheduleAppRefresh()
+        BackgroundTaskSyncronizing.default.scheduleBackgroundProcessing()
     }
     
     static var shared: SceneDelegate {
@@ -72,7 +72,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var createNewWallet: some View {
         CreateNewWallet()
-       
     }
     
     func firstView() -> AnyView {
@@ -97,33 +96,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
        
     }
-    
-    func scheduleAppRefresh() {
-        let request = BGAppRefreshTaskRequest(identifier: BackgroundTaskSyncronizing.backgroundAppRefreshTaskIdentifier)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // Fetch no earlier than 15 minutes from now
-        
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            logger.error("Could not schedule app refresh: \(error)")
-            tracker.track(.error(severity: .warning), properties: [ErrorSeverity.messageKey : "Could not schedule app refresh",
-                                                                   ErrorSeverity.underlyingError : "\(error)"])
-        }
-    }
-    
-    func scheduleDatabaseCleaningIfNeeded() {
-        // TODO: improve this to make it run a processing task 
-        let request = BGProcessingTaskRequest(identifier: BackgroundTaskSyncronizing.backgroundProcessingTaskIdentifier)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 60) // Fetch no earlier than 1 hour from now
-        request.requiresNetworkConnectivity = true
-        request.requiresExternalPower = true
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            logger.error("Could not schedule app refresh: \(error)")
-            tracker.track(.error(severity: .warning), properties: [ErrorSeverity.messageKey : "Could not schedule app refresh",
-                                                                   ErrorSeverity.underlyingError : "\(error)"])
-        }
-    }
-    
+  
 }
