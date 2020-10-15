@@ -39,15 +39,9 @@ final class SeedManager {
         return value
     }
     
-    func importSeed(_ seed: [UInt8]) throws {
-        guard keychain.get(Self.zECCWalletSeedKey) == nil else { throw SeedManagerError.alreadyImported }
-        keychain.set(Data(seed), forKey: Self.zECCWalletSeedKey)
-        
-    }
-    
     func exportSeed() throws -> [UInt8] {
-        guard let seedData = keychain.getData(Self.zECCWalletSeedKey) else { throw SeedManagerError.uninitializedWallet }
-        return [UInt8](seedData)
+        guard let phrase = keychain.get(Self.zECCWalletPhrase) else { throw SeedManagerError.uninitializedWallet }
+        return try MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
     }
     
     func importPhrase(bip39 phrase: String) throws {
@@ -69,7 +63,7 @@ final class SeedManager {
     }
     
     /**
-     
+     Use carefully: Deletes the seed phrase from the keychain
      */
     func nukePhrase() {
         keychain.delete(Self.zECCWalletPhrase)
@@ -109,7 +103,7 @@ final class SeedManager {
 }
 
 extension SeedManager: SeedProvider {
-    func seed() -> [UInt8] {
-        (try? exportSeed()) ?? []
+    func seed() throws -> [UInt8] {
+        try exportSeed()
     }
 }

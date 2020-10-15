@@ -56,10 +56,6 @@ struct RestoreWallet: View {
             throw WalletError.createFailed(underlying: MnemonicError.invalidSeed)
         }
         
-        let seedBytes =
-            try MnemonicSeedProvider.default.toSeed(mnemonic: trimmedSeedPhrase)
-        
-        try SeedManager.default.importSeed(seedBytes)
         try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
     }
     
@@ -124,6 +120,7 @@ struct RestoreWallet: View {
                         logger.error("\(error)")
                         tracker.track(.error(severity: .critical), properties: [
                             ErrorSeverity.underlyingError : "\(error)"])
+                        self.showError = true
                         return
                     }
                     tracker.track(.tap(action: .walletImport), properties: [:])

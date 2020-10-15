@@ -110,6 +110,9 @@ final class SendFlowEnvironment: ObservableObject {
             let message = "attempt to send tx twice"
             logger.error(message)
             tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : message])
+            self.error = FlowError.duplicateSent
+            self.showError = true
+            self.isDone = true
             return
         }
         let environment = ZECCWalletEnvironment.shared
