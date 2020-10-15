@@ -101,9 +101,3 @@ final class SeedManager {
         nukeBirthday()
     }
 }
-
-extension SeedManager: SeedProvider {
-    func seed() throws -> [UInt8] {
-        try exportSeed()
-    }
-}
