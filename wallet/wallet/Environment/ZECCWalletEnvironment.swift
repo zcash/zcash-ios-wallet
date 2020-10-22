@@ -39,7 +39,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     var cancellables = [AnyCancellable]()
     
     static func getInitialState() -> WalletState {
-        guard let keys = SeedManager.default.getKeys(), keys.count > 0 else {
+        guard (try? SeedManager.default.exportPhrase()) != nil else {
             return .uninitialized
         }
         return .initalized
