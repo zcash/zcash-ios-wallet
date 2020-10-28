@@ -49,14 +49,6 @@ final class SeedManager {
         return seed
     }
     
-    func saveKeys(_ keys: [String]) {
-        keychain.set(keys.joined(separator: ";"), forKey: Self.zECCWalletKeys)
-    }
-    
-    func getKeys() -> [String]? {
-        keychain.get(Self.zECCWalletKeys)?.split(separator: ";").map{String($0)}
-    }
-    
     /**
      Use carefully: Deletes the seed phrase from the keychain
      */
