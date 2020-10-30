@@ -1,0 +1,129 @@
+/*
+  Localizable.strings
+  wallet
+
+  Copyright © 2020 Francisco Gindre. All rights reserved.
+*/
+
+// COMPONENTS:
+"button_back" = "Go Back";
+"Paste" = "Paste";
+"balance_available" = "Available";
+"expecting " = "expecting";
+"Create new Wallet" = "Create new Wallet";
+"button_done" = "Done";
+"button_backup" = "Backup Wallet";
+"Press and hold\nto send ZEC" = "Press and hold\nto send ZEC";
+"Add Memo Here" = "Add Memo Here";
+"Tap\nto send ZEC" = "Tap\nto send ZEC";
+"Enter Shielded Address" = "Enter Shielded Address";
+"Error" = "Error";
+"an error ocurred" = "an error ocurred";
+"button_close" = "Close";
+"Pending confirmation" = "Pending confirmation";
+"of 10 Confirmations" = "of 10 Confirmations";
+"button_share_address" = "Share Address";
+
+
+"ECC Wallet" =  "ECC ";
+"loadingtext" = "로딩";
+"welcometext" = "환영";
+
+// Seed Backup/Restore
+"title_backupseed" = "당신의 백업 시드";
+"copy_backupseed" = "종이 백업과 비밀번호 보관소를 권장합니다.";
+"feedback_walletbackupstatus" = "지갑을 백업해야합니다";
+"seed_verify" = "백업 확인";
+"seed_verifytext" = "누락 된 시드 단어를 입력하여 백업을 확인하십시오.";
+"seed_restore" = "백업에서 복원";
+"seed_restoretext" = "24 개의 시드 단어를 모두 순서대로 입력해야합니다.";
+"seed_reminder" = "당신의 자금이 위험에 처해 있습니다";
+"seed_remindertext" = "Zcash에서 당신은 은행이라는 것을 기억하십시오. 시드 문구가있는 사람은 누구나 지갑에 액세스 할 수 있습니다.";
+"seed_remindertext2" = "다른 사람이 대신 백업 할 수 없으므로 즉시 백업해야합니다.";
+"seed_accepted" = "시드 수락, 지금 스캔!";
+"seed_birthdaytext" = "지갑에 대한 거래를 위해 블록 체인을 스캔하고 있습니다. 이 지갑의 생일 날짜를 제공 할 수 있다면 동기화 속도를 높일 수 있습니다.";
+"seed_enterdate" = "날짜 입력";
+"seed_birthday" = "생일";
+"button_dontknow" = "몰라";
+"button_backup" = "백업";
+"button_skip" = "일단은 스킵";
+"button_share_address" = "";
+
+// Balance Screen
+"balance_screen" = "밸런스 화면";
+"balance_amounttosend" = "보낼 금액 입력";
+"balance_expecting" = "기대 XX ZEC";
+"balance_available" = "사용 가능";
+"balance_nofunds" = "사용할 수있는 자금 없습니다";
+"balance_syncing" = "동기화";
+"balance_scanning" = "스캐닝";
+"button_sendamount" = "보내는 금액";
+"button_wallethistory" = "지갑 내역";
+
+// Address Screen
+"address_screen" = "당신의 주소";
+"address_shielded" = "당신의 쉴드된 주소";
+"address_transparent" = "당신의 투명 주소";
+"feedback_addresscopied" = "주소 복사";
+"Request ZEC" = "ZEC 부탁";
+"receive_title" = "ZEC 받기";
+"button_copytoclipboard" = "클립 보드에 복사";
+
+// Profile Screen
+"profile_screen" = "쉴드된 사용자";
+"button_feedback" = "피드백 보내기";
+"button_backup" = "지갑 백업";
+"button_applicationlogs" = "애플리케이션 로그보기";
+"button_close" = "닫기";
+
+// Send Screen
+"send_screen" = "보내는 화면";
+"button_send" = "보내기";
+"send_fromshielded" = "쉴드된 지갑에서";
+"send_fromtransparent" = "투명한 지갑에서";
+"send_fromboth" = "두 지갑에서";
+"label_to" = "에";
+"feedback_default" = "유효한 zcash 주소를 입력하십시오";
+"feedback_shieldedaddress" = "유효한 쉴드된 주소입니다.";
+"feedback_transparentaddress" = "유효한 투명 주소입니다.";
+"feedback_sameaddress" = "경고, 이것은 귀하의 주소 인 것 같습니다!";
+"feedback_invalidaddress" = "경고,이 주소는 유효하지 않습니다!";
+"label_memo" = "메모";
+"label_charactercount" = "문자";
+"label_replyto" = "회신 포함";
+"send_onclipboard" = "클립 보드에서";
+"send_lastused" = "마지막 사용";
+"send_unknown" = "알 수 없는";
+"send_scanQR" = "수신자 주소 스캔";
+"send_securityauth" = "보내기 인증";
+"send_securityauth2" = "XX ZEC를 보낼 것인지 확인하십시오.";
+"send_sending" = "XX ZEC를 보내기";
+"send_cancelled" = "취소되었습니다";
+"send_sent" = "보냈습니다!";
+"button_done" = "끝";
+"button_seedetails" = "세부 사항보기";
+"button_back" = "돌아가기";
+"label_add_memo" = "Aggiungi un Memo";
+"label_unabletosend" = "Unable to send";
+// Wallet History
+"screen_wallethistory" = "지갑 내역";
+"wallet_history_sent" = "Sent";
+
+
+//NukeWarning
+
+
+"nuke_title" = "You are about to NUKE your wallet";
+"nuke_nukewarning" = "Remember, with Zcash YOU are the bank. Anyone with your seed phrase has access to your wallet.";
+"nuke_nukewarning2" = "Make sure you backed up your wallet before proceeding.";
+"nuke_nukewarning3" = "If you nuke  your wallet without backing up your seed, there's no way to recover it";
+"nuke_nukeButton" = "NUKE WALLET";
+"nuke_backupbutton" = "Backup Now!";
+"nuke_alerttitle" = "Delete Wallet?";
+"nuke_alertmessage" = "You are about to nuke your wallet. Are you sure you want to proceed?";
+"nuke_alertcancel" = "I'm not sure";
+"nuke_alertconfirm" = "NUKE WALLET!";
+
+//FeedBackForm
+"Feedback Sent!" = "Feedback Sent!";
+"Thanks for your feedback!" = "Thanks for your feedback!";
