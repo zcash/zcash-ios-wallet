@@ -68,7 +68,27 @@ class CombineSynchronizer {
             }
         }
     }
-        
+    
+    var latestHeight: Future<BlockHeight,Error> {
+        Future<BlockHeight,Error>() {
+            [weak self ] promise in
+            
+            guard let self = self else { return }
+            self.synchronizer.latestHeight { (result) in
+                switch result {
+                case .success(let height):
+                    promise(.success(height))
+                case .failure(let error):
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+    
+    func latestDownloadedHeight() throws -> BlockHeight {
+        try self.synchronizer.latestDownloadedHeight()
+    }
+    
     init(initializer: Initializer) throws {
         self.walletDetailsBuffer = CurrentValueSubject([DetailModel]())
         self.synchronizer = try SDKSynchronizer(initializer: initializer)

@@ -106,12 +106,12 @@ class walletTests: XCTestCase {
                
         XCTAssertEqual(seed.hexString, hex)
         
-        try! SeedManager.default.importSeed(seed)
-        try! SeedManager.default.importPhrase(bip39: phrase)
-        let accounts = try! ZECCWalletEnvironment.shared.initializer.initialize(seedProvider: SeedManager.default, walletBirthdayHeight: 692345)
         
-        XCTAssertEqual(SeedManager.default.seed(), seed)
-        XCTAssertNotNil(accounts)
+        try! SeedManager.default.importPhrase(bip39: phrase)
+        try! ZECCWalletEnvironment.shared.initializer.initialize(viewingKeys: DerivationTool.default.deriveViewingKeys(seed: seed, numberOfAccounts: 0), walletBirthday: 692345)
+        
+//        XCTAssertEqual(SeedManager.default.seed(), seed)
+        
         guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else {
             XCTFail()
             return

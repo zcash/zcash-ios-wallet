@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import BackgroundTasks
 #if targetEnvironment(simulator)
 var logger = SimpleLogger(logLevel: .debug, type: SimpleLogger.LoggerType.printerLog)
 #else
@@ -29,6 +29,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if ENABLE_LOGGING
         Bugsnag.start(withApiKey: Constants.bugsnagApiKey)
         #endif
+        
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundAppRefreshTaskIdentifier,
+          using: nil) { (task) in
+            
+            BackgroundTaskSyncronizing.default.handleBackgroundAppRefreshTask(task as! BGAppRefreshTask)
+        }
+        
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundProcessingTaskIdentifier,
+          using: nil) { (task) in
+            BackgroundTaskSyncronizing.default.handleBackgroundProcessingTask(task as! BGProcessingTask)
+        }
+        
+        
         let environment = ZECCWalletEnvironment.shared
         switch environment.state {
         case .initalized,

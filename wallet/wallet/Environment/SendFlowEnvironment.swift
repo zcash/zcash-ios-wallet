@@ -118,7 +118,9 @@ final class SendFlowEnvironment: ObservableObject {
         let environment = ZECCWalletEnvironment.shared
         guard let zatoshi = doubleAmount?.toZatoshi(),
             environment.isValidAddress(self.address),
-            let spendingKey = SeedManager.default.getKeys()?.first,
+            let phrase = try? SeedManager.default.exportPhrase(),
+            let seedBytes = try? MnemonicSeedProvider.default.toSeed(mnemonic: phrase),
+            let spendingKey = try? DerivationTool.default.deriveSpendingKeys(seed: seedBytes, numberOfAccounts: 1).first,
             let replyToAddress = environment.initializer.getAddress() else {
                 self.error = FlowError.invalidEnvironment
                 self.showError = true
