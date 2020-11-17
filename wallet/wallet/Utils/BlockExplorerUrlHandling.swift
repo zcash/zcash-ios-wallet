@@ -11,15 +11,25 @@ import ZcashLightClientKit
 class UrlHandler {
     
     static func blockExplorerURL(for txId: String) -> URL? {
-        blockExplorerURL(for: txId, mainnet: ZcashSDK.isMainnet)
+        ZcashSDK.isMainnet ? blockExplorerURLMainnet(for: txId) : blockExplorerURLTestnet(for: txId)
     }
     
-    static func blockExplorerURL(for txId: String, mainnet: Bool = false) -> URL? {
+    // blockchair does not support testnet zcash
+    static func blockExplorerURLTestnet(for txId: String) -> URL? {
         var urlComponents = URLComponents()
-        let baseURL = mainnet ? "explorer.z.cash" : "explorer.testnet.z.cash"
-        urlComponents.host = baseURL
+
+        urlComponents.host = "explorer.testnet.z.cash"
         urlComponents.scheme = "https"
         urlComponents.path = "/tx"
+        
+        return urlComponents.url?.appendingPathComponent(txId)
+    }
+    
+    static func blockExplorerURLMainnet(for txId: String) -> URL? {
+        var urlComponents = URLComponents()
+        urlComponents.host = "blockchair.com"
+        urlComponents.scheme = "https"
+        urlComponents.path = "/zcash/transaction"
         
         return urlComponents.url?.appendingPathComponent(txId)
     }
