@@ -181,7 +181,7 @@ class KeyPadViewModel: ObservableObject {
         
         guard !text.contains(KeyPadViewModel.formatter.currencyDecimalSeparator) else { return }
         
-        let newText = text + KeyPadViewModel.formatter.currencyDecimalSeparator
+        let newText = (text.isEmpty ? "0" : text) + KeyPadViewModel.formatter.currencyDecimalSeparator
         
         guard let newValue = doubleFromText(newText) else {
             return
