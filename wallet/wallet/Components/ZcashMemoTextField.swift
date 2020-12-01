@@ -31,6 +31,24 @@ struct ZcashMemoTextField: View {
     var body: some View {
         ZStack{
             ZStack(alignment: .bottom){
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text("\("label_memo".localized()):")
+                            .foregroundColor(isHighlighted ? inactiveColor : .white)
+                        Text("label_add_memo")
+                            .foregroundColor(inactiveColor)
+                            .opacity(self.text.isEmpty ? 1 : 0)
+                            .allowsHitTesting(false)
+                        
+                        Spacer()
+                        }
+
+                
+                    Spacer()
+                        .frame(height: textHeight)
+                     
+                }
+                .edgesIgnoringSafeArea(.all)
                 VStack(alignment: .trailing, spacing: 0) {
                     TextView(placeholder: "",
                              text: $text,
@@ -56,26 +74,9 @@ struct ZcashMemoTextField: View {
                         }
                     .toggleStyle(SquareToggleStyle(isHighlighted: $includesReplyTo))
                     }
-                        .padding(4)
+                    .padding(4)
                 }
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text("\("label_memo".localized()):")
-                            .foregroundColor(isHighlighted ? inactiveColor : .white)
-                        Text("label_add_memo")
-                            .foregroundColor(inactiveColor)
-                            .opacity(self.text.isEmpty ? 1 : 0)
-                            .allowsHitTesting(false)
-                        
-                        Spacer()
-                        }
-
                 
-                    Spacer()
-                        .frame(height: textHeight)
-                     
-                }
-                .edgesIgnoringSafeArea(.all)
                 }
             .padding(0)
         }
