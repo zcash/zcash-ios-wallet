@@ -28,15 +28,28 @@ struct KeyPad: View {
                     HStack(alignment: .center, spacing: self.hSpacing) {
                         ForEach(row, id: \.self) { pad in
                             HStack {
-                            Button(action: {
-                                self.viewModel.valuePressed(pad)
-                            }) {
-                                    Text(pad)
-                                    .font(.title)
+                                if pad == "<" {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
 
-                            }
-                            .buttonStyle(KeyPadButtonStyle(size: self.keySize))
-//                                .cornerRadius(self.keySize/2)
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                    .simultaneousGesture(LongPressGesture().onEnded { _ in
+                                        self.viewModel.clear()
+                                    })
+                                } else {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
+
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                }
                             }
                         }
                     }
