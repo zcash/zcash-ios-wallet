@@ -111,7 +111,7 @@ struct SeedBackup: View {
                         self.showError = true
                         return
                     }
-                    PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "feedback_addresscopied".localized())
+                    PasteboardAlertHelper.shared.copyToPasteBoard(value: self.copyText, notify: "send_onclipboard".localized())
                 }) {
                     Text("button_copytoclipboard")
                         .font(.system(size: 20))

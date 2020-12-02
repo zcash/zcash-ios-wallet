@@ -120,14 +120,19 @@ struct SubwayPathBuilder {
         
         if let memo = detail.memo {
             views.append(
-                WithAMemoView(expanded: expandMemo, memo: detail.memo ?? "")
+                Button(action: {
+                    PasteboardAlertHelper.shared.copyToPasteBoard(value: memo, notify: "feedback_addresscopied".localized())
+                }) {
+                    WithAMemoView(expanded: expandMemo, memo: detail.memo ?? "")
+                    
+                }
                     .eraseToAnyView()
             )
             
-            if memo.includesReplyTo {
+            if memo.extractValidAddress() != nil {
                 views.append(
                     Button(action: {
-                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.replyToAddress ?? "", notify: "feedback_addresscopied".localized())
+                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.extractValidAddress() ?? "", notify: "feedback_addresscopied".localized())
                         tracker.track(.tap(action: .copyAddress), properties: [:])
                     }) {
                         Text("includes reply-to")
@@ -223,36 +228,6 @@ extension DetailModel {
     }
 }
 
-extension String {
-    static let memoReplyToString = "Reply-To: "
-    
-    var includesReplyTo: Bool {
-        self.replyToAddress != nil
-    }
-    
-    var removingReplyTo: String {
-        guard let keywordRange = self.range(of: Self.memoReplyToString) else {
-            return self
-        }
-        return String(self[self.startIndex ..< self.index(before: keywordRange.lowerBound)])
-    }
-    
-    var replyToAddress: String? {
-        guard let keywordRange = self.range(of: Self.memoReplyToString),
-              keywordRange.upperBound < self.endIndex else {
-            return nil
-        }
-        
-        let addressSlice = self[keywordRange.upperBound ..< self.endIndex]
-        
-        let afterReplyToString = String(addressSlice)
-        
-        guard afterReplyToString.isValidShieldedAddress else { return nil }
-        
-        return afterReplyToString
-        
-    }
-}
 
 fileprivate func formatAmount(_ amount: Double) -> String {
     abs(amount).toZecAmount()
