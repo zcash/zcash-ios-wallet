@@ -63,6 +63,9 @@ struct DisplayAddress: View {
             }.alert(item: self.$copyItemModel) { (p) -> Alert in
                 PasteboardAlertHelper.alert(for: p)
             }
+            .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
+                self.copyItemModel = p 
+            }
             
             Spacer()
             
