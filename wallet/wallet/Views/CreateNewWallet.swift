@@ -84,10 +84,10 @@ struct CreateNewWallet: View {
                 }
                 #endif
                 NavigationLink(
-                    destination: LazyView (
-                        RestoreWallet()
-                            .environmentObject(self.appEnvironment)
-                        )
+                    destination: RestoreWallet()
+                                    .environmentObject(self.appEnvironment),
+                               tag: Destinations.restoreWallet,
+                               selection: $destination
                         
                 ) {
                     Text("Restore".localized())
