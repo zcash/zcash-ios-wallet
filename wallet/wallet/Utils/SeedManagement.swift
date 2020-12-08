@@ -86,5 +86,10 @@ final class SeedManager {
         nukeSeed()
         nukePhrase()
         nukeBirthday()
+        
+        // Fix: retrocompatibility with old wallets, previous to IVK Synchronizer updates 
+        for key in keychain.allKeys {
+            keychain.delete(key)
+        }
     }
 }
