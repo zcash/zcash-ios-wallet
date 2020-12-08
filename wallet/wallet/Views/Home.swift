@@ -178,7 +178,7 @@ struct Home: View {
     }
     
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.verifiedBalance.value > 0
+        appEnvironment.synchronizer.status.value != .syncing && appEnvironment.synchronizer.verifiedBalance.value > 0
     }
     
     func startSendFlow() {
