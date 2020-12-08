@@ -145,7 +145,7 @@ final class HomeViewModel: ObservableObject {
                         secondaryButton: .default(Text("Retry"),
                                                      action: {
                                                         self.clearError()
-                                                        ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+                                                        try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
                                                         })
                            )
             } else {

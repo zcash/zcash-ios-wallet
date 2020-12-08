@@ -87,7 +87,8 @@ final class ZECCWalletEnvironment: ObservableObject {
         let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
         let viewingKeys = try DerivationTool.default.deriveViewingKeys(seed: seedBytes, numberOfAccounts: 1)
         try self.initializer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
-        self.synchronizer.start()
+        self.subscribeToApplicationNotificationsPublishers()
+        try self.synchronizer.start()
     }
     
     /**
@@ -192,6 +193,85 @@ final class ZECCWalletEnvironment: ObservableObject {
         }
     }
     
+    
+    // Mark: handle background activity
+    
+    var appCycleCancellables = [AnyCancellable]()
+    
+    var taskIdentifier: UIBackgroundTaskIdentifier = .invalid
+    
+    private var isBackgroundAllowed: Bool {
+        switch UIApplication.shared.backgroundRefreshStatus {
+        case .available:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    private var isSubscribedToAppDelegateEvents = false
+    
+    private func registerBackgroundActivity() {
+        if self.taskIdentifier == .invalid {
+            self.taskIdentifier = UIApplication.shared.beginBackgroundTask(withName: "ZcashLightClientKit.SDKSynchronizer", expirationHandler: { [weak self, weak logger] in
+                logger?.info("BackgroundTask Expiration Handler Called")
+                guard let self = self else { return }
+                self.invalidateBackgroundActivity()
+                self.synchronizer.stop()
+            })
+        }
+    }
+    
+    private func invalidateBackgroundActivity() {
+        guard self.taskIdentifier != .invalid else {
+            return
+        }
+        UIApplication.shared.endBackgroundTask(self.taskIdentifier)
+        self.taskIdentifier = .invalid
+    }
+    
+    func subscribeToApplicationNotificationsPublishers() {
+        self.isSubscribedToAppDelegateEvents = true
+        let center = NotificationCenter.default
+        
+        center.publisher(for: UIApplication.willEnterForegroundNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak self, weak logger] _ in
+                
+                logger?.debug("applicationWillEnterForeground")
+                guard let self = self else { return }
+                
+                self.invalidateBackgroundActivity()
+                do {
+                    try self.synchronizer.start()
+                } catch {
+                    logger?.debug("applicationWillEnterForeground --> Error restarting: \(error)")
+                }
+                
+            }
+            .store(in: &appCycleCancellables)
+        
+        center.publisher(for: UIApplication.willResignActiveNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak self, weak logger] _ in
+                self?.registerBackgroundActivity()
+                logger?.debug("applicationWillResignActive")
+            }
+            .store(in: &appCycleCancellables)
+        
+        center.publisher(for: UIApplication.willTerminateNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.synchronizer.stop()
+            }
+            .store(in: &appCycleCancellables)
+        
+    }
+    
+    func unsubscribeFromApplicationNotificationsPublishers() {
+        self.isSubscribedToAppDelegateEvents = false
+        self.appCycleCancellables.forEach { $0.cancel() }
+    }
 }
 
 extension ZECCWalletEnvironment {

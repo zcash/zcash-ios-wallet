@@ -47,7 +47,13 @@ class BackgroundTaskSyncronizing {
             ZECCWalletEnvironment.shared.synchronizer.stop()
         }
         
-        ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+        do {
+            try ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+        } catch {
+            tracker.track(.error(severity: .noncritical), properties: [
+                            ErrorSeverity.messageKey : "error starting background refresh",
+                            ErrorSeverity.underlyingError : "\(error)"])
+        }
     }
 
     func handleBackgroundProcessingTask(_ task: BGProcessingTask) {
@@ -80,7 +86,13 @@ class BackgroundTaskSyncronizing {
             }
             ZECCWalletEnvironment.shared.synchronizer.stop()
         }
-        ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+        do {
+            try ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+        } catch {
+            tracker.track(.error(severity: .noncritical), properties: [
+                            ErrorSeverity.messageKey : "error starting background refresh",
+                            ErrorSeverity.underlyingError : "\(error)"])
+        }
     }
     
     func scheduleAppRefresh() {
