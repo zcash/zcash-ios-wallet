@@ -66,7 +66,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.22.0)
   - SwiftProtobuf (1.12.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.7.2):
+  - ZcashLightClientKit (0.8.0):
     - gRPC-Swift (= 1.0.0-alpha.19)
     - SQLite.swift (~> 0.12.2)
 
@@ -122,7 +122,7 @@ CHECKOUT OPTIONS:
     :commit: f1377b9321b23401ffb0052cbb74741fa8dd9898
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :commit: 24837bb2098abae5d5ee4ae4f0bae70cedee4f39
+    :commit: 940695354d48c8adc3680728d9fcdd8ec6d09630
     :git: https://github.com/zcash/ZcashLightClientKit.git
 
 SPEC CHECKSUMS:
@@ -153,7 +153,7 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: 801923921fbecdcde1e1c1ff38e812167d01ead1
   SwiftProtobuf: 4ef85479c18ca85b5482b343df9c319c62bda699
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: bfdadb8e91b62edd0b15d972db4147dbceb16b42
+  ZcashLightClientKit: 82c225b8ebe4bb44983acc6fb47e043d68a01651
 
 PODFILE CHECKSUM: d4f916caef56008f8fca85399c0e256d941c6e19
 
