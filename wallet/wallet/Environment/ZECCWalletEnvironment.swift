@@ -64,23 +64,6 @@ final class ZECCWalletEnvironment: ObservableObject {
             
             loggerProxy: logger)
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        cancellables.append(
-            self.synchronizer.status.map({
-                status -> WalletState in
-                switch status {
-                case .synced:
-                    return WalletState.synced
-                case .syncing:
-                    return WalletState.syncing
-                default:
-                    return Self.getInitialState()
-                    
-                }
-            }).sink(receiveValue: { status  in
-                self.state = status
-            })
-        )
-        
     }
     
     func createNewWallet() throws {
