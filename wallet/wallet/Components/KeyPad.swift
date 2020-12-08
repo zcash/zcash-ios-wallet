@@ -28,15 +28,28 @@ struct KeyPad: View {
                     HStack(alignment: .center, spacing: self.hSpacing) {
                         ForEach(row, id: \.self) { pad in
                             HStack {
-                            Button(action: {
-                                self.viewModel.valuePressed(pad)
-                            }) {
-                                    Text(pad)
-                                    .font(.title)
+                                if pad == "<" {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
 
-                            }
-                            .buttonStyle(KeyPadButtonStyle(size: self.keySize))
-//                                .cornerRadius(self.keySize/2)
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                    .simultaneousGesture(LongPressGesture().onEnded { _ in
+                                        self.viewModel.clear()
+                                    })
+                                } else {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
+
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                }
                             }
                         }
                     }
@@ -181,7 +194,7 @@ class KeyPadViewModel: ObservableObject {
         
         guard !text.contains(KeyPadViewModel.formatter.currencyDecimalSeparator) else { return }
         
-        let newText = text + KeyPadViewModel.formatter.currencyDecimalSeparator
+        let newText = (text.isEmpty ? "0" : text) + KeyPadViewModel.formatter.currencyDecimalSeparator
         
         guard let newValue = doubleFromText(newText) else {
             return

@@ -14,6 +14,7 @@ class CombineSynchronizer {
     var initializer: Initializer {
         synchronizer.initializer
     }
+    
     private var synchronizer: SDKSynchronizer
     
     var walletDetailsBuffer: CurrentValueSubject<[DetailModel],Never>
@@ -98,26 +99,34 @@ class CombineSynchronizer {
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
-        NotificationCenter.default.publisher(for: .synchronizerSynced).sink(receiveValue: { [weak self] _ in
+        
+        // Subscribe to SDKSynchronizer notifications
+        
+        NotificationCenter.default.publisher(for: .synchronizerSynced)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
             guard let self = self else { return }
-            self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
-            self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
+                self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
+                self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
+                self.status.send(.synced)
+                self.walletDetails.sink(receiveCompletion: { _ in
+                    }) { [weak self] (details) in
+                        guard !details.isEmpty else { return }
+                        self?.walletDetailsBuffer.send(details)
+                }
+                .store(in: &self.cancellables)
         }).store(in: &cancellables)
         
-        NotificationCenter.default.publisher(for: .synchronizerSynced).sink(receiveValue: { [weak self] _ in
-            guard let self = self else { return }
-            self.walletDetails.sink(receiveCompletion: { _ in
-            }) { [weak self] (details) in
-                guard !details.isEmpty else { return }
-                self?.walletDetailsBuffer.send(details)
-            }
-            .store(in: &self.cancellables)
-        }).store(in: &cancellables)
-        NotificationCenter.default.publisher(for: .synchronizerStarted).sink { [weak self] _ in
+
+        NotificationCenter.default.publisher(for: .synchronizerStarted)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
             self?.status.send(.syncing)
         }.store(in: &cancellables)
         
-        NotificationCenter.default.publisher(for: .synchronizerProgressUpdated).receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] (progressNotification) in
+        NotificationCenter.default.publisher(for: .synchronizerProgressUpdated)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] (progressNotification) in
             guard let self = self else { return }
             guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
             self.progress.send(newProgress)
@@ -126,13 +135,17 @@ class CombineSynchronizer {
             self.syncBlockHeight.send(blockHeight)
         }).store(in: &cancellables)
         
-        NotificationCenter.default.publisher(for: .synchronizerMinedTransaction).sink(receiveValue: { [weak self] minedNotification in
+        NotificationCenter.default.publisher(for: .synchronizerMinedTransaction)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] minedNotification in
             guard let self = self else { return }
             guard let minedTx = minedNotification.userInfo?[SDKSynchronizer.NotificationKeys.minedTransaction] as? PendingTransactionEntity else { return }
             self.minedTransaction.send(minedTx)
         }).store(in: &cancellables)
         
-        NotificationCenter.default.publisher(for: .synchronizerFailed).sink {[weak self] (notification) in
+        NotificationCenter.default.publisher(for: .synchronizerFailed)
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] (notification) in
             
             guard let self = self else { return }
             
@@ -144,9 +157,29 @@ class CombineSynchronizer {
             self.errorPublisher.send(error)
         }.store(in: &cancellables)
         
+        NotificationCenter.default.publisher(for: .synchronizerStopped)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.status.send(.stopped)
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .synchronizerDisconnected)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.status.send(.disconnected)
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .synchronizerSyncing)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.status.send(.syncing)
+            }
+            .store(in: &cancellables)
     }
     
-    func start(retry: Bool = false){
+    func start(retry: Bool = false) throws {
         
         do {
             if retry {
@@ -155,7 +188,7 @@ class CombineSynchronizer {
             try synchronizer.start(retry: retry)
         } catch {
             logger.error("error starting \(error)")
-            self.errorPublisher.send(error)
+            throw error
         }
     }
     

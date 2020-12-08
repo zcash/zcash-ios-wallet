@@ -95,6 +95,17 @@ class KeyPadViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.text, "1")
     }
     
+    func testDotLeadingDecimal() {
+        let viewModel = KeyPadViewModel()
+        viewModel.dotTapped()
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.text, "0.00001")
+    }
+    
     func testZeroLeadingDecimals() {
         let viewModel = KeyPadViewModel()
         viewModel.numberTapped("0")

@@ -71,6 +71,9 @@
 		0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */; };
 		0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */; };
 		0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */; };
+		0D562FD4257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
+		0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
+		0D562FDB257852A700E843DD /* TestMemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FDA257852A700E843DD /* TestMemoUtils.swift */; };
 		0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0D5E4AA72527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
@@ -313,6 +316,8 @@
 		0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCheckCircle.swift; sourceTree = "<group>"; };
 		0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTests.swift; sourceTree = "<group>"; };
+		0D562FD3257841FD00E843DD /* MemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoUtils.swift; sourceTree = "<group>"; };
+		0D562FDA257852A700E843DD /* TestMemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMemoUtils.swift; sourceTree = "<group>"; };
 		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
 		0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-spend.params"; sourceTree = "<group>"; };
 		0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTasks.swift; sourceTree = "<group>"; };
@@ -503,6 +508,7 @@
 				0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */,
 				0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */,
 				0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */,
+				0D562FD3257841FD00E843DD /* MemoUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -569,6 +575,7 @@
 		0D12511823B557E60014EE3A /* walletTests */ = {
 			isa = PBXGroup;
 			children = (
+				0D562FDA257852A700E843DD /* TestMemoUtils.swift */,
 				0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */,
 				0D12511923B557E60014EE3A /* walletTests.swift */,
 				0D12511B23B557E60014EE3A /* Info.plist */,
@@ -1179,6 +1186,7 @@
 				0D2D5C1924CF8031001A58AD /* ZcashActionableTextField.swift in Sources */,
 				0DFC0CF123C7787F0009DD7E /* ZcashHoldToSendButton.swift in Sources */,
 				0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */,
+				0D562FD4257841FD00E843DD /* MemoUtils.swift in Sources */,
 				0D0AAE0F2410237A009CD8F9 /* LottieAnimation.swift in Sources */,
 				0DC0847924BE583400F498A5 /* RateComponent.swift in Sources */,
 				0DFC0CF323C8EA1C0009DD7E /* ZcashCloseButton.swift in Sources */,
@@ -1227,6 +1235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D1B6D7A24243F46004C75DB /* NumberTests.swift in Sources */,
+				0D562FDB257852A700E843DD /* TestMemoUtils.swift in Sources */,
 				0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */,
 				0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */,
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
@@ -1327,6 +1336,7 @@
 				0DCDFFCC24B6722B000F6999 /* Ring.swift in Sources */,
 				0DCDFFCD24B6722B000F6999 /* QRCodeScannerView.swift in Sources */,
 				0DCDFFCE24B6722B000F6999 /* SceneDelegate.swift in Sources */,
+				0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */,
 				0DCDFFCF24B6722B000F6999 /* QRCodeContainer.swift in Sources */,
 				0DCDFFD024B6722B000F6999 /* TransactionDetail.swift in Sources */,
 				0DC0847A24BE583400F498A5 /* RateComponent.swift in Sources */,
@@ -1518,7 +1528,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
@@ -1529,7 +1539,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -1545,7 +1555,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
@@ -1555,7 +1565,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -1658,7 +1668,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
@@ -1669,7 +1679,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				SWIFT_VERSION = 5.0;
@@ -1683,7 +1693,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				ENABLE_BITCODE = NO;
@@ -1693,7 +1703,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				SWIFT_VERSION = 5.0;

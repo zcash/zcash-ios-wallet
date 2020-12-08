@@ -45,12 +45,14 @@ final class HomeViewModel: ObservableObject {
         showReceiveFunds = false
         let environment = ZECCWalletEnvironment.shared
         
-        environment.synchronizer.balance.receive(on: DispatchQueue.main)
+        environment.synchronizer.balance
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: {
                 self.balance = $0
             })
             .store(in: &cancellable)
-        environment.synchronizer.progress.receive(on: DispatchQueue.main)
+        environment.synchronizer.progress
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
                 guard let self = self else { return }
                 self.isSyncing = false
@@ -62,7 +64,8 @@ final class HomeViewModel: ObservableObject {
             })
             .store(in: &cancellable)
         
-        environment.synchronizer.errorPublisher.receive(on: DispatchQueue.main)
+        environment.synchronizer.errorPublisher
+            .receive(on: DispatchQueue.main)
             .map( ZECCWalletEnvironment.mapError )
             .map(trackError)
             .map(mapToUserFacingError)
@@ -74,13 +77,17 @@ final class HomeViewModel: ObservableObject {
         .store(in: &cancellable)
         
         
-        environment.synchronizer.pendingTransactions.sink(receiveCompletion: { (completion) in
+        environment.synchronizer.pendingTransactions
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
             
         }) { [weak self] (pendingTransactions) in
             self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
                 .map( { DetailModel(pendingTransaction: $0)})
         }.store(in: &cancellable)
-        environment.synchronizer.status.sink(receiveValue: { [weak self] status in
+        environment.synchronizer.status
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] status in
             
             guard let self = self else { return }
             switch status {
@@ -138,7 +145,7 @@ final class HomeViewModel: ObservableObject {
                         secondaryButton: .default(Text("Retry"),
                                                      action: {
                                                         self.clearError()
-                                                        ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+                                                        try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
                                                         })
                            )
             } else {
@@ -171,7 +178,7 @@ struct Home: View {
     }
     
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.verifiedBalance.value > 0
+        appEnvironment.synchronizer.status.value != .syncing && appEnvironment.synchronizer.verifiedBalance.value > 0
     }
     
     func startSendFlow() {
