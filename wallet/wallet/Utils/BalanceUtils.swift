@@ -21,7 +21,7 @@ extension Int64 {
 extension Double {
     
     
-    static var defaultNetworkFee: Double = Int64(ZcashSDK.MINERS_FEE_ZATOSHI).asHumanReadableZecBalance()
+    static var defaultNetworkFee: Double = ZcashSDK.defaultFee().asHumanReadableZecBalance()
     
     func toZatoshi() -> Int64 {
         var decimal = Decimal(self) * Decimal(ZcashSDK.ZATOSHI_PER_ZEC)

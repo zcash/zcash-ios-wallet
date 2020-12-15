@@ -22,6 +22,7 @@ struct DetailModel: Identifiable {
     var shielded: Bool = true
     var memo: String? = nil
     var minedHeight: Int = -1
+    var expirationHeight: Int = -1
     var title: String {
 
         switch status {
@@ -233,7 +234,7 @@ extension DetailModel {
         self.id = pendingTransaction.rawTransactionId?.toHexStringTxId() ?? String(pendingTransaction.createTime)
         self.shielded = pendingTransaction.toAddress.isValidShieldedAddress
         self.status = .paid(success: submitSuccess)
-        
+        self.expirationHeight = pendingTransaction.expiryHeight
         self.subtitle = DetailModel.subtitle(isPending: isPending,
                                              isSubmitSuccess: submitSuccess,
                                              minedHeight: pendingTransaction.minedHeight,

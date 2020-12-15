@@ -298,9 +298,9 @@ extension ZECCWalletEnvironment {
         return sufficientFunds(availableBalance: self.initializer.getVerifiedBalance(), zatoshiToSend: amount.toZatoshi())
     }
     private func sufficientFunds(availableBalance: Int64, zatoshiToSend: Int64) -> Bool {
-        availableBalance - zatoshiToSend  - Int64(ZcashSDK.MINERS_FEE_ZATOSHI) >= 0
+        availableBalance - zatoshiToSend  - Int64(ZcashSDK.defaultFee()) >= 0
     }
     static var minerFee: Double {
-        Int64(ZcashSDK.MINERS_FEE_ZATOSHI).asHumanReadableZecBalance()
+        Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
     }
 }
