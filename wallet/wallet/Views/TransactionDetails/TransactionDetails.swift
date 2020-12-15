@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+import ZcashLightClientKit
 struct TransactionDetails: View {
     
     enum Alerts {
@@ -90,12 +90,17 @@ struct TransactionDetails: View {
     }
 }
 
+extension DetailModel {
+    var defaultFee: Int64 {
+        ZcashSDK.defaultFee(for: self.minedHeight > 0 ? self.minedHeight : (self.expirationHeight > 0 ? self.expirationHeight : BlockHeight.max))
+    }
+}
 struct SubwayPathBuilder {
     static func buildSubway(detail: DetailModel, expandMemo: Binding<Bool>) -> some View {
         var views = [AnyView]()
         
         views.append(
-            Text("+0.0001 network fee")
+            Text("\(detail.defaultFee.asHumanReadableZecBalance()) network fee")
                 .font(.body)
                 .foregroundColor(.gray)
                 .eraseToAnyView()
