@@ -39,10 +39,18 @@ final class ZECCWalletEnvironment: ObservableObject {
     var cancellables = [AnyCancellable]()
     
     static func getInitialState() -> WalletState {
-        guard (try? SeedManager.default.exportPhrase()) != nil else {
+        let fileManager = FileManager()
+        do {
+            let dataDbURL = try URL.dataDbURL()
+            let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
+            return attrs.count > 0 ? .initalized : .uninitialized
+        } catch {
+            tracker.track(.error(severity: .critical), properties: [
+                            ErrorSeverity.underlyingError : "error",
+                            ErrorSeverity.messageKey : "exception thrown when getting initial state"
+            ])
             return .uninitialized
         }
-        return .initalized
     }
     
     private init() throws {
