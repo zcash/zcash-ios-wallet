@@ -19,11 +19,12 @@ final class HomeViewModel: ObservableObject {
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
-    var lastError:  UserFacingErrors?
+    var lastError: UserFacingErrors?
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
+    private var environmentCancellables = [AnyCancellable]()
     var view: Home? {
         didSet {
             guard let home = view else { return }
@@ -43,6 +44,26 @@ final class HomeViewModel: ObservableObject {
         sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
+        bindToEnvironmentEvents()
+        
+        NotificationCenter.default.publisher(for: .sendFlowStarted)
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.unbindSubcribedEnvironmentEvents()
+            }
+        ).store(in: &cancellable)
+        
+        NotificationCenter.default.publisher(for: .sendFlowClosed)
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.view?.keypad.viewModel.clear()
+                self?.sendingPushed = false
+                self?.bindToEnvironmentEvents()
+            }
+        ).store(in: &cancellable)
+    }
+    
+    func bindToEnvironmentEvents() {
         let environment = ZECCWalletEnvironment.shared
         
         environment.synchronizer.balance
@@ -50,7 +71,7 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveValue: {
                 self.balance = $0
             })
-            .store(in: &cancellable)
+            .store(in: &environmentCancellables)
         environment.synchronizer.progress
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
@@ -62,7 +83,7 @@ final class HomeViewModel: ObservableObject {
                     self.isSyncing = $0 < 1.0 && $0 > 0
                     self.progress.send($0)
             })
-            .store(in: &cancellable)
+            .store(in: &environmentCancellables)
         
         environment.synchronizer.errorPublisher
             .receive(on: DispatchQueue.main)
@@ -74,7 +95,7 @@ final class HomeViewModel: ObservableObject {
                 
                 self.show(error: error)
         }
-        .store(in: &cancellable)
+        .store(in: &environmentCancellables)
         
         
         environment.synchronizer.pendingTransactions
@@ -96,19 +117,18 @@ final class HomeViewModel: ObservableObject {
             default:
                 self.isSyncing = false
             }
-        }).store(in: &cancellable)
-        
-        NotificationCenter.default.publisher(for: .sendFlowClosed)
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { _ in
-                self.view?.keypad.viewModel.clear()
-                self.sendingPushed = false
-            }
-        ).store(in: &cancellable)
+        }).store(in: &environmentCancellables)
+       
+    }
+    
+    func unbindSubcribedEnvironmentEvents() {
+        environmentCancellables.forEach { $0.cancel() }
+        environmentCancellables.removeAll()
     }
     
     deinit {
-        cancellable.forEach{ $0.cancel() }
+        unbindSubcribedEnvironmentEvents()
+        cancellable.forEach { $0.cancel() }
     }
     
     func show(error: UserFacingErrors) {
@@ -168,7 +188,6 @@ struct Home: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     
     var syncingButton: SyncingButton
-    var disposables: Set<AnyCancellable> = []
     
     init(amount: Double, verifiedBalance: Double) {
         self.viewModel = HomeViewModel(amount: amount, balance: verifiedBalance)
@@ -190,6 +209,7 @@ struct Home: View {
     
     func endSendFlow() {
         SendFlow.end()
+        self.sendingPushed = false
     }
     
     var enterAddressButton: some View {
@@ -204,7 +224,7 @@ struct Home: View {
                 .padding([.leading, .trailing], buttonPadding)
                 .opacity(isSendingEnabled ? 1.0 : 0.3 ) // validate this
             
-        }    .disabled(!isSendingEnabled)
+        }.disabled(!isSendingEnabled)
     }
     
     var isAmountValid: Bool {
@@ -412,5 +432,21 @@ struct Home_Previews: PreviewProvider {
 extension BlockHeight {
     static var unmined: BlockHeight {
         -1
+    }
+}
+
+
+
+extension ZECCWalletEnvironment {
+    func stopSynchronizer() {
+        synchronizer.stop()
+    }
+    
+    func startSynchronizerIfNeeded() {
+        let status = synchronizer.status.value
+        guard status == .stopped || status == .disconnected || status == .synced else {
+            return
+        }
+        _ = try? synchronizer.start()
     }
 }
