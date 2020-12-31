@@ -20,7 +20,7 @@ class SendFlow {
             return
         }
         
-        current.isActive = false
+        current.close()
         
         Self.current = nil
     }
@@ -33,6 +33,7 @@ class SendFlow {
                                        verifiedBalance: appEnviroment.initializer.getVerifiedBalance().asHumanReadableZecBalance(),
                                        isActive: isActive)
         Self.current = flow
+        NotificationCenter.default.post(name: .sendFlowStarted, object: nil)
         return flow
     }
 }
@@ -221,4 +222,5 @@ final class SendFlowEnvironment: ObservableObject {
 
 extension Notification.Name {
     static let sendFlowClosed = Notification.Name("sendFlowClosed")
+    static let sendFlowStarted = Notification.Name("sendFlowStarted")
 }
