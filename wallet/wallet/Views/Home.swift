@@ -252,19 +252,6 @@ struct Home: View {
             .frame(height: 48)
     }
     
-    var detailCard: AnyView {
-        guard self.showPending, let model = self.viewModel.pendingTransactions.first else { return AnyView(EmptyView()) }
-        
-        return AnyView (
-            DetailCard(model: model)
-                .frame(height: 50)
-                .padding(.horizontal, buttonPadding)
-                .onTapGesture() {
-                    self.showPending = false
-            }
-        )
-    }
-    
     var amountOpacity: Double {
         self.isSendingEnabled ? self.$viewModel.sendZecAmount.wrappedValue > 0 ? 1.0 : 0.6 : 0.3
     }
@@ -432,21 +419,5 @@ struct Home_Previews: PreviewProvider {
 extension BlockHeight {
     static var unmined: BlockHeight {
         -1
-    }
-}
-
-
-
-extension ZECCWalletEnvironment {
-    func stopSynchronizer() {
-        synchronizer.stop()
-    }
-    
-    func startSynchronizerIfNeeded() {
-        let status = synchronizer.status.value
-        guard status == .stopped || status == .disconnected || status == .synced else {
-            return
-        }
-        _ = try? synchronizer.start()
     }
 }
