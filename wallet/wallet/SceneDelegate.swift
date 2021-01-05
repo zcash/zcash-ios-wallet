@@ -87,7 +87,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     Home(
                         amount: walletEnvironment.initializer.getBalance().asHumanReadableZecBalance(),
                         verifiedBalance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()
-                    ).environmentObject(walletEnvironment)
+                    ).environmentObject(HomeViewModel(amount: 0, balance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()))
                 )
             case .uninitialized:
                 return AnyView(

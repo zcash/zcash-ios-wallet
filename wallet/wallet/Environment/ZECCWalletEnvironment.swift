@@ -312,3 +312,26 @@ extension ZECCWalletEnvironment {
         Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
     }
 }
+
+
+fileprivate struct WalletEnvironmentKey: EnvironmentKey {
+    static let defaultValue: ZECCWalletEnvironment = ZECCWalletEnvironment.shared
+}
+
+extension EnvironmentValues {
+    var walletEnvironment: ZECCWalletEnvironment  {
+        get {
+            self[WalletEnvironmentKey.self]
+        }
+        set {
+            self[WalletEnvironmentKey.self] = newValue
+        }
+    }
+}
+
+extension View {
+    func walletEnvironment(_ env: ZECCWalletEnvironment) -> some View {
+        environment(\.walletEnvironment, env)
+    }
+}
+ 
