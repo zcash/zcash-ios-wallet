@@ -25,21 +25,7 @@ final class HomeViewModel: ObservableObject {
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
     private var environmentCancellables = [AnyCancellable]()
-    var view: Home? {
-        didSet {
-            guard let home = view else { return }
-            home.keypad.viewModel.$value.receive(on: DispatchQueue.main)
-                .assign(to: \.sendZecAmount, on: self)
-                .store(in: &cancellable)
-            home.keypad.viewModel.$text.receive(on: DispatchQueue.main)
-                .map({ (amount) -> String in
-                    amount.isEmpty ? "0" : amount
-                })
-                .assign(to: \.sendZecAmountText, on: self)
-                .store(in: &cancellable)
-            
-        }
-    }
+    
     init(amount: Double = 0, balance: Double = 0) {
         sendZecAmount = amount
         showProfile = false
@@ -56,7 +42,7 @@ final class HomeViewModel: ObservableObject {
         NotificationCenter.default.publisher(for: .sendFlowClosed)
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] _ in
-                self?.view?.keypad.viewModel.clear()
+                self?.sendZecAmountText = ""
                 self?.sendingPushed = false
                 self?.bindToEnvironmentEvents()
             }
@@ -180,20 +166,15 @@ final class HomeViewModel: ObservableObject {
 struct Home: View {
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
-    var keypad: KeyPad
     @State var sendingPushed = false
-    @State var showPending = true
     @State var showHistory = false
-    @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @EnvironmentObject var viewModel: HomeViewModel
+    @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
     var syncingButton: SyncingButton
     
     init(amount: Double, verifiedBalance: Double) {
-        self.viewModel = HomeViewModel(amount: amount, balance: verifiedBalance)
-        self.keypad = KeyPad()
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
-        viewModel.view = self
     }
     
     var isSendingEnabled: Bool {
@@ -245,11 +226,15 @@ struct Home: View {
     }
     
     var walletDetails: some View {
-        Text("button_wallethistory")
-            .foregroundColor(.white)
-            .font(.body)
-            .opacity(0.6)
-            .frame(height: 48)
+        Button(action: {
+            self.showHistory = true
+        }, label: {
+            Text("button_wallethistory")
+                .foregroundColor(.white)
+                .font(.body)
+                .opacity(0.6)
+                .frame(height: 48)
+        })
     }
     
     var amountOpacity: Double {
@@ -325,7 +310,7 @@ struct Home: View {
                 
                 Spacer()
                 
-                self.keypad
+                KeyPad(value: $viewModel.sendZecAmountText)
                     .frame(alignment: .center)
                     .padding(.horizontal, buttonPadding)
                     .opacity(self.isSendingEnabled ? 1.0 : 0.3)
