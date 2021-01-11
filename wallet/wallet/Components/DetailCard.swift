@@ -37,6 +37,12 @@ struct DetailModel: Identifiable {
     
 }
 
+extension DetailModel: Equatable {
+    static func == (lhs: DetailModel, rhs: DetailModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 struct DetailCard: View {
  
     var model: DetailModel

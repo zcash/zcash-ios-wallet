@@ -12,22 +12,24 @@ import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
-    @Published var sendZecAmount: Double
+    var sendZecAmount: Double {
+        zecAmountFormatter.number(from: sendZecAmountText)?.doubleValue ?? 0.0
+    }
     @Published var sendZecAmountText: String = "0"
     @Published var showReceiveFunds: Bool
     @Published var showProfile: Bool
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
+    @Published var showHistory = false
     var lastError: UserFacingErrors?
     @Published var balance: Double = 0
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
     private var environmentCancellables = [AnyCancellable]()
-    
+    private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
     init(amount: Double = 0, balance: Double = 0) {
-        sendZecAmount = amount
         showProfile = false
         showReceiveFunds = false
         bindToEnvironmentEvents()
@@ -167,7 +169,6 @@ struct Home: View {
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
-    @State var showHistory = false
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
@@ -209,7 +210,7 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        self.$viewModel.sendZecAmount.wrappedValue > 0 && self.$viewModel.sendZecAmount.wrappedValue < appEnvironment.synchronizer.verifiedBalance.value
+        self.viewModel.sendZecAmount > 0 && self.viewModel.sendZecAmount < appEnvironment.synchronizer.verifiedBalance.value
         
     }
     
@@ -227,7 +228,7 @@ struct Home: View {
     
     var walletDetails: some View {
         Button(action: {
-            self.showHistory = true
+            self.viewModel.showHistory = true
         }, label: {
             Text("button_wallethistory")
                 .foregroundColor(.white)
@@ -238,7 +239,7 @@ struct Home: View {
     }
     
     var amountOpacity: Double {
-        self.isSendingEnabled ? self.$viewModel.sendZecAmount.wrappedValue > 0 ? 1.0 : 0.6 : 0.3
+        self.isSendingEnabled ? self.viewModel.sendZecAmount > 0 ? 1.0 : 0.6 : 0.3
     }
     
     var body: some View {
@@ -351,31 +352,26 @@ struct Home: View {
                     }.isDetailLink(false)
                 }
                 
-                if viewModel.isSyncing {
-                    //Warning: This exists for the purpose of not having a link in the screen while syncing. LazyLoading breaks the UITableView underneath list for some reason and refreshing wallet history polls the database which can't happen while syncing.
-                    walletDetails
-
-                } else {
+               
                     NavigationLink(
                         destination:
-                        WalletDetails(isActive: $showHistory)
+                            LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle(Text(""), displayMode: .inline)
-                            .navigationBarHidden(true)
+                            .navigationBarHidden(true))
                         
-                    ,isActive: $showHistory) {
+                        ,isActive: self.$viewModel.showHistory) {
                         walletDetails
                     }.isDetailLink(false)
                         .opacity(viewModel.isSyncing ? 0.4 : 1.0)
                         .disabled(viewModel.isSyncing)
-                }
+                
             }
             .padding([.bottom], 20)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
-            
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
         }

@@ -11,32 +11,42 @@ import Combine
 class WalletDetailsViewModel: ObservableObject {
     // look at before changing https://stackoverflow.com/questions/60956270/swiftui-view-not-updating-based-on-observedobject
     @Published var items = [DetailModel]()
+
     var showError = false
     var balance: Double = 0
-    private var cancellables = Set<AnyCancellable>()
-    
+    private var synchronizerEvents = Set<AnyCancellable>()
+    private var internalEvents = Set<AnyCancellable>()
     init(){
+        subscribeToSynchonizerEvents()
+    }
+    
+    deinit {
+        unsubscribeFromSynchonizerEvents()
+    }
+
+    
+    func subscribeToSynchonizerEvents() {
         ZECCWalletEnvironment.shared.synchronizer.walletDetailsBuffer
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] (d) in
                 self?.items = d
             })
-            .store(in: &cancellables)
+            .store(in: &synchronizerEvents)
         
         ZECCWalletEnvironment.shared.synchronizer.balance
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] (b) in
                 self?.balance = b
             })
-            .store(in: &cancellables)
-        
-    }
-    deinit {
-        cancellables.forEach { (c) in
-            c.cancel()
-        }
+            .store(in: &synchronizerEvents)
     }
     
+    func unsubscribeFromSynchonizerEvents() {
+        synchronizerEvents.forEach { (c) in
+            c.cancel()
+        }
+        synchronizerEvents.removeAll()
+    }
     var balanceStatus: BalanceStatus {
         let status = ZECCWalletEnvironment.shared.balanceStatus
         switch status {
@@ -54,8 +64,9 @@ class WalletDetailsViewModel: ObservableObject {
 
 struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
-    @State var selectedId: String? = nil
+    @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     @Binding var isActive: Bool
+    @State var selectedModel: DetailModel? = nil
     var zAddress: String {
         viewModel.zAddress
     }
@@ -77,15 +88,18 @@ struct WalletDetails: View {
                             Image("Back")
                                 .renderingMode(.original)
                         }
+                        
                     },
                    headerItem: {
                         BalanceDetail(
-                            availableZec: ZECCWalletEnvironment.shared.synchronizer.verifiedBalance.value,
+                            availableZec: appEnvironment.synchronizer.verifiedBalance.value,
                             status: status)
+                            
                     },
                    trailingItem: { EmptyView() }
                 )
                 .padding(.horizontal, 10)
+                
 
                 List {
                     WalletDetailsHeader(zAddress: zAddress)
@@ -93,37 +107,19 @@ struct WalletDetails: View {
                         .frame(height: 100)
                         .padding([.trailing], 24)
                     ForEach(self.viewModel.items, id: \.id) { row in
-                        NavigationLink(destination: LazyView(
-                                        TransactionDetails(detail: row)
-                                            .zcashNavigationBar(leadingItem: {
-                                                Button(action: {
-                                                    self.selectedId = nil
-                                                }) {
-                                                    Image("Back")
-                                                        .renderingMode(.original)
-                                                        .accessibility(label: Text("button_back"))
-                                                }
-                                            }, headerItem: {
-                                                HStack{
-                                                    Text("Transaction Details")
-                                                        .font(.title)
-                                                        .foregroundColor(.white)
-                                                        .frame(alignment: Alignment.center)
-                                                }
-                                            }, trailingItem: {
-                                                EmptyView()
-                                            })
-
-                        ), tag: row.id, selection: self.$selectedId) {
+                       
+                        Button(action: {
+                            self.selectedModel = row
+                        }) {
                             DetailCard(model: row, backgroundColor: .zDarkGray2)
                         }
-                        .isDetailLink(false)
                         .listRowBackground(Color.zDarkGray2)
                         .frame(height: 69)
                         .padding(.horizontal, 16)
                         .cornerRadius(0)
                         .border(Color.zGray, width: 1)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            
                     }
                 }
                 .listStyle(PlainListStyle())
@@ -143,16 +139,21 @@ struct WalletDetails: View {
             tracker.track(.screen(screen: .history), properties: [:])
 
         }
-        .onDisappear() {
-            UITableView.appearance().separatorStyle = .singleLine
-
-        }
-        .navigationBarHidden(true)
         .alert(isPresented: self.$viewModel.showError) {
             Alert(title: Text("Error"),
                   message: Text("an error ocurred"),
                   dismissButton: .default(Text("button_close")))
         }
+        .onDisappear() {
+            UITableView.appearance().separatorStyle = .singleLine
+        }
+        .navigationBarHidden(true)
+        .sheet(item: self.$selectedModel, onDismiss: {
+            self.selectedModel = nil
+        }) { (row)  in
+            TxDetailsWrapper(row: row, isActive:  self.$selectedModel)
+        }
+
     }
 }
 
