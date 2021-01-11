@@ -142,7 +142,7 @@ class MixPanelLogger: EventLogging {
         }
     }
     
-    var cancellables = [AnyCancellable]()
+    var synchronizerEvents = [AnyCancellable]()
     var scheduler = DispatchQueue.global()
     
     /// Attempts to log to console logger if true
@@ -165,7 +165,7 @@ class MixPanelLogger: EventLogging {
             .sink { (event) in
                 self.trackEvent(event)
         }
-        .store(in: &cancellables)
+        .store(in: &synchronizerEvents)
     }
 }
 

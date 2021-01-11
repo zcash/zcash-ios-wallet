@@ -45,6 +45,8 @@
 		0D1C2F25240D8655001AA427 /* ZcashSeedWordPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */; };
 		0D1C2F27240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */; };
 		0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1C2F28240DB948001AA427 /* UILogicTests.swift */; };
+		0D24DA0625A64A8200504F29 /* TxDetailWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */; };
+		0D24DA0725A64A8200504F29 /* TxDetailWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */; };
 		0D2607D724F42C46006FDC36 /* PasteboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */; };
 		0D2607D824F42C46006FDC36 /* PasteboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */; };
 		0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
@@ -297,6 +299,7 @@
 		0D1C2F24240D8655001AA427 /* ZcashSeedWordPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedWordPill.swift; sourceTree = "<group>"; };
 		0D1C2F26240DAFE9001AA427 /* ZcashSeedPhraseGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashSeedPhraseGrid.swift; sourceTree = "<group>"; };
 		0D1C2F28240DB948001AA427 /* UILogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogicTests.swift; sourceTree = "<group>"; };
+		0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxDetailWrapper.swift; sourceTree = "<group>"; };
 		0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardHelper.swift; sourceTree = "<group>"; };
 		0D27C4A823C4C4640044B48E /* ZcashTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTextField.swift; sourceTree = "<group>"; };
 		0D2BCF5E23E8A59D0076C5B0 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
@@ -471,6 +474,7 @@
 				0DBAA0902419A77500B08BC7 /* NukeWarning.swift */,
 				0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */,
 				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
+				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1211,6 +1215,7 @@
 				0D2BCF5F23E8A59D0076C5B0 /* QRCodeGenerator.swift in Sources */,
 				0D11C23123BF966C001CF6F7 /* ScanAddress.swift in Sources */,
 				0DBA1E2124CB6951009C654E /* AddressFragment.swift in Sources */,
+				0D24DA0625A64A8200504F29 /* TxDetailWrapper.swift in Sources */,
 				0D7D5DDB24BFAC7C0028083C /* KeyboardResponder.swift in Sources */,
 				0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */,
 				0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */,
@@ -1282,6 +1287,7 @@
 				0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */,
 				0D4B91DB24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
 				0DCDFFA924B6722B000F6999 /* ShareScreen.swift in Sources */,
+				0D24DA0725A64A8200504F29 /* TxDetailWrapper.swift in Sources */,
 				0DC37D7724D3834E00ACFE12 /* AddressValidator.swift in Sources */,
 				0DCDFFAB24B6722B000F6999 /* BalanceDetail.swift in Sources */,
 				0D4B91DE24CA395100A0E024 /* UIResponder+Current.swift in Sources */,
