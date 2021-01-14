@@ -15,9 +15,22 @@ struct CreateNewWallet: View {
         case restoreWallet
     }
     
+    enum AlertType: Identifiable {
+        case feedback(destination: Destinations, cause: Error)
+        case error(cause:Error)
+        var id: Int {
+            switch self {
+            case .error:
+                return 0
+            case .feedback:
+                return 1
+            }
+        }
+    }
+    
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var error: UserFacingErrors?
-    @State var showError = false
+    @State var showError: AlertType?
     @State var destination: Destinations?
     let itemSpacing: CGFloat = 24
     let buttonPadding: CGFloat = 24
@@ -46,29 +59,26 @@ struct CreateNewWallet: View {
                 Spacer()
                 Button(action: {
                     do {
-                         /// TODO: change previous navigation link to button to capture action
-                         tracker.track(.tap(action: .landingBackupWallet), properties: [:])
-                         try self.appEnvironment.createNewWallet()
+                        tracker.track(.tap(action: .landingBackupWallet), properties: [:])
+                        try self.appEnvironment.createNewWallet()
                         self.destination = Destinations.createNew
-                     } catch {
-                         let message = "could not create new wallet:"
-                         logger.error("\(message) \(error)")
-                         tracker.track(.error(severity: .critical),
-                                       properties: [
-                                         ErrorSeverity.messageKey : message,
-                                         ErrorSeverity.underlyingError : "\(error)"
-                                         ])
-                        self.error = mapToUserFacingError(ZECCWalletEnvironment.mapError(error: error))
-                        self.showError = true
-                     }
+                    } catch WalletError.createFailed(let e) {
+                        if case SeedManager.SeedManagerError.alreadyImported = e {
+                            self.showError = AlertType.feedback(destination: .createNew, cause: e)
+                        } else {
+                            fail(WalletError.createFailed(underlying: e))
+                        }
+                    } catch {
+                        fail(error)
+                    }
 
                 }) {
                     Text("Create New".localized())
-                                          .font(.system(size: 20))
-                                          .foregroundColor(Color.black)
-                                          .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
-                                          
-                                          .frame(height: self.buttonHeight)
+                      .font(.system(size: 20))
+                      .foregroundColor(Color.black)
+                      .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
+                      
+                      .frame(height: self.buttonHeight)
                 }
                 
                 
@@ -90,32 +100,107 @@ struct CreateNewWallet: View {
                                selection: $destination
                         
                 ) {
-                    Text("Restore".localized())
-                        .foregroundColor(Color.zDarkGray3)
-                        .font(.system(size: 20))
-                        .frame(height: self.buttonHeight)
-                    
+                    Button(action: {
+                        guard !ZECCWalletEnvironment.shared.credentialsAlreadyPresent() else {
+                            self.showError = .feedback(destination: .restoreWallet, cause: SeedManager.SeedManagerError.alreadyImported)
+                            return
+                        }
+                        self.destination = .restoreWallet
+                    }) {
+                        Text("Restore".localized())
+                            .foregroundColor(Color.zDarkGray3)
+                            .font(.system(size: 20))
+                            .frame(height: self.buttonHeight)
+                    }
                 }
-                
             }
             .padding([.horizontal, .bottom], self.buttonPadding)
         }
         .onAppear {
             tracker.track(.screen(screen: .landing), properties: [ : ])
         }
-        .alert(isPresented: $showError) {
-            guard let e = error else {
-                return Alert(title: Text("Error Initializing Wallet"),
-                             message: Text("There was a problem initializing the wallet"),
-                             dismissButton: .default(Text("button_close")))
+        .alert(item: self.$showError) { (alertType) -> Alert in
+            switch alertType {
+            case .error(let cause):
+                let userFacingError = mapToUserFacingError(ZECCWalletEnvironment.mapError(error: cause))
+                return Alert(title: Text(userFacingError.title),
+                             message: Text(userFacingError.message),
+                dismissButton: .default(Text("button_close")))
+            case .feedback(let destination, let cause):
+                if let feedbackCause = cause as? SeedManager.SeedManagerError,
+                   case SeedManager.SeedManagerError.alreadyImported = feedbackCause {
+                    return existingCredentialsFound(originalDestination: destination)
+                } else {
+                    return defaultAlert(cause)
+                }
+
             }
-            let userFacingError = mapToUserFacingError(ZECCWalletEnvironment.mapError(error: e))
-            return Alert(title: Text(userFacingError.title),
-                         message: Text(userFacingError.title),
-            dismissButton: .default(Text("button_close")))
         }
     }
     
+    func fail(_ error: Error) {
+        let message = "could not create new wallet:"
+        logger.error("\(message) \(error)")
+        tracker.track(.error(severity: .critical),
+                      properties: [
+                        ErrorSeverity.messageKey : message,
+                        ErrorSeverity.underlyingError : "\(error)"
+                        ])
+       
+       self.showError = .error(cause: mapToUserFacingError(ZECCWalletEnvironment.mapError(error: error)))
+        
+    }
+    
+    func existingCredentialsFound(originalDestination: Destinations) -> Alert {
+        Alert(title: Text("Existing keys found!"),
+              message: Text("it appears that this device already has keys stored on it. What do you want to do?"),
+              primaryButton: .default(Text("Restore existing keys"),
+                                      action: {
+                                        do {
+                                            try ZECCWalletEnvironment.shared.initialize()
+                                            self.destination = .createNew
+                                        } catch {
+                                            DispatchQueue.main.async {
+                                                self.fail(error)
+                                            }
+                                        }
+                                      }),
+              secondaryButton: .destructive(Text("Discard them and continue"),
+                                            action: {
+                                                
+                                                ZECCWalletEnvironment.shared.nuke(abortApplication: false)
+                                                ZECCWalletEnvironment.reset()
+                                                switch destination {
+                                                case .createNew:
+                                                    do {
+                                                        try self.appEnvironment.createNewWallet()
+                                                        self.destination = originalDestination
+                                                    } catch {
+                                                        DispatchQueue.main.async {
+                                                            self.fail(error)
+                                                        }
+                                                    }
+                                                case .restoreWallet:
+                                                    self.destination = originalDestination
+                                                case .none:
+                                                    break
+                                                }
+                                            }))
+    }
+    
+    
+    func defaultAlert(_ error: Error? = nil) -> Alert {
+        guard let e = error else {
+            return Alert(title: Text("Error Initializing Wallet"),
+                 message: Text("There was a problem initializing the wallet"),
+                 dismissButton: .default(Text("button_close")))
+        }
+        
+        return Alert(title: Text("Error"),
+                     message: Text(mapToUserFacingError(ZECCWalletEnvironment.mapError(error: e)).message),
+                     dismissButton: .default(Text("button_close")))
+        
+    }
 }
 
 struct CreateNewWallet_Previews: PreviewProvider {

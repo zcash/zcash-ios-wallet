@@ -74,6 +74,12 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
     }
     
+    
+    // Warning: Use with care
+    static func reset() {
+        Self.shared = try! ZECCWalletEnvironment()
+    }
+    
     func createNewWallet() throws {
         
         do {
@@ -310,6 +316,10 @@ extension ZECCWalletEnvironment {
     }
     static var minerFee: Double {
         Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
+    }
+    
+    func credentialsAlreadyPresent() -> Bool {
+        (try? SeedManager.default.exportPhrase()) != nil
     }
 }
 
