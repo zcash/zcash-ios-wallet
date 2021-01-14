@@ -120,6 +120,7 @@ struct Sending: View {
                         self.details = nil
                     })
                 })
+                .padding(.top, 20)
         }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert

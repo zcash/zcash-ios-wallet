@@ -32,6 +32,7 @@ struct TxDetailsWrapper: View {
                             }).frame(width: 30, height: 30)
                     })
             }
+            .padding(.top, 20)
         }
     }
 }
