@@ -99,12 +99,14 @@ struct SubwayPathBuilder {
     static func buildSubway(detail: DetailModel, expandMemo: Binding<Bool>) -> some View {
         var views = [AnyView]()
         
-        views.append(
-            Text("\(detail.defaultFee.asHumanReadableZecBalance()) network fee")
-                .font(.body)
-                .foregroundColor(.gray)
-                .eraseToAnyView()
-        )
+        if detail.isOutbound {
+            views.append(
+                Text("\(detail.defaultFee.asHumanReadableZecBalance()) network fee")
+                    .font(.body)
+                    .foregroundColor(.gray)
+                    .eraseToAnyView()
+            )
+        }
         
         if detail.isOutbound {
             views.append(
