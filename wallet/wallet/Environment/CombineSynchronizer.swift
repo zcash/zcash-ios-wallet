@@ -201,6 +201,7 @@ class CombineSynchronizer {
     }
     
     deinit {
+        synchronizer.stop()
         for c in cancellables {
             c.cancel()
         }

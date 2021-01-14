@@ -169,21 +169,23 @@ struct CreateNewWallet: View {
                                             action: {
                                                 
                                                 ZECCWalletEnvironment.shared.nuke(abortApplication: false)
-                                                ZECCWalletEnvironment.reset()
-                                                switch destination {
+                                                do {
+                                                    try ZECCWalletEnvironment.shared.reset()
+                                                } catch {
+                                                    self.fail(error)
+                                                    return
+                                                }
+                                                switch originalDestination {
                                                 case .createNew:
                                                     do {
                                                         try self.appEnvironment.createNewWallet()
                                                         self.destination = originalDestination
                                                     } catch {
-                                                        DispatchQueue.main.async {
                                                             self.fail(error)
-                                                        }
                                                     }
                                                 case .restoreWallet:
                                                     self.destination = originalDestination
-                                                case .none:
-                                                    break
+                                                
                                                 }
                                             }))
     }
@@ -210,6 +212,4 @@ struct CreateNewWallet_Previews: PreviewProvider {
     }
 }
 
-extension CreateNewWallet.Destinations: Hashable {
-    
-}
+extension CreateNewWallet.Destinations: Hashable {}

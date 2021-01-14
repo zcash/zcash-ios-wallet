@@ -74,10 +74,22 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
     }
     
-    
     // Warning: Use with care
-    static func reset() {
-        Self.shared = try! ZECCWalletEnvironment()
+    func reset() throws {
+        self.synchronizer.stop()
+        self.state = Self.getInitialState()
+        
+        let initializer = Initializer(
+            cacheDbURL: self.cacheDbURL,
+            dataDbURL: self.dataDbURL,
+            pendingDbURL: self.pendingDbURL,
+            endpoint: endpoint,
+            spendParamsURL: self.spendParamsURL,
+            outputParamsURL: self.outputParamsURL,
+            
+            loggerProxy: logger)
+        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
     }
     
     func createNewWallet() throws {
