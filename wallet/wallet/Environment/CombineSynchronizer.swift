@@ -99,6 +99,9 @@ class CombineSynchronizer {
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
+        // BUGFIX: transactions history empty when synchronizer fails to connect to server
+        // fill with initial values
+        self.updatePublishers()
         
         // Subscribe to SDKSynchronizer notifications
         
@@ -106,15 +109,7 @@ class CombineSynchronizer {
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
             guard let self = self else { return }
-                self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
-                self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
-                self.status.send(.synced)
-                self.walletDetails.sink(receiveCompletion: { _ in
-                    }) { [weak self] (details) in
-                        guard !details.isEmpty else { return }
-                        self?.walletDetailsBuffer.send(details)
-                }
-                .store(in: &self.cancellables)
+                self.updatePublishers()
         }).store(in: &cancellables)
         
 
@@ -154,6 +149,7 @@ class CombineSynchronizer {
                 )
                 return
             }
+                
             self.errorPublisher.send(error)
         }.store(in: &cancellables)
         
@@ -198,6 +194,18 @@ class CombineSynchronizer {
     
     func cancel(pendingTransaction: PendingTransactionEntity) -> Bool {
         synchronizer.cancelSpend(transaction: pendingTransaction)
+    }
+    
+    func updatePublishers() {
+        self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
+        self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
+        self.status.send(.synced)
+        self.walletDetails.sink(receiveCompletion: { _ in
+            }) { [weak self] (details) in
+                guard !details.isEmpty else { return }
+                self?.walletDetailsBuffer.send(details)
+        }
+        .store(in: &self.cancellables)
     }
     
     deinit {
