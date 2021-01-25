@@ -136,10 +136,10 @@ struct SubwayPathBuilder {
                     .eraseToAnyView()
             )
             
-            if memo.extractValidAddress() != nil {
+            if let validReplyToAddress = memo.extractValidAddress() {
                 views.append(
                     Button(action: {
-                        PasteboardAlertHelper.shared.copyToPasteBoard(value: memo.extractValidAddress() ?? "", notify: "feedback_addresscopied".localized())
+                        PasteboardAlertHelper.shared.copyToPasteBoard(value: validReplyToAddress, notify: "feedback_addresscopied".localized())
                         tracker.track(.tap(action: .copyAddress), properties: [:])
                     }) {
                         Text("includes reply-to")
