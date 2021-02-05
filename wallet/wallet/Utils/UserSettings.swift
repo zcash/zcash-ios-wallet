@@ -29,6 +29,14 @@ class UserSettings {
         }
     }
     
+    var userEverShielded: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: Keys.everShielded)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Keys.everShielded)
+        }
+    }
     
     var didRescanPendingFix: Bool {
         get {
