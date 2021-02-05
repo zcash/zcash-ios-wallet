@@ -24,9 +24,9 @@ struct DisplayAddress: View {
     var chips: [String]
     let qrSize: CGFloat = 200
     
-    init(address: String) {
+    init(address: String, chips: Int = 8) {
         self.address = address
-        self.chips = address.slice(into: 8)
+        self.chips = address.slice(into: chips)
     }
     
     var body: some View {

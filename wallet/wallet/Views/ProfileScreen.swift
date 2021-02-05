@@ -19,13 +19,24 @@ struct ProfileScreen: View {
     @State var alertItem: AlertItem?
     @State var shareItem: ShareItem? = nil
     @State var isFeedbackActive = false
+    @State var isAwesomeMenuActive = false
     var body: some View {
         NavigationView {
             ZStack {
+                NavigationLink(destination: LazyView(AwesomeMenu()
+                                                        .environmentObject(AwesomeViewModel(isActive: $isAwesomeMenuActive))
+                                                        ), isActive: $isAwesomeMenuActive) {
+                    EmptyView()
+                }
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
-                    Image("zebra_profile")
-                        .accessibility(label: Text("A Zebra"))
+                    Image(UserSettings.shared.userEverShielded ? "profile_yellowzebra" : "profile_zebra")
+                        .accentColor(.zYellow)
+                        .accessibility(label: Text(UserSettings.shared.userEverShielded ? "A Golden zebra" : "A Zebra"))
+                        .onLongPressGesture {
+                            isAwesomeMenuActive = true
+                        }
+                        
                     VStack {
                         Text("profile_screen")
                             .font(.system(size: 18))
