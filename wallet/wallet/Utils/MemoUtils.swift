@@ -34,7 +34,7 @@ extension String  {
             
             let addressSlice = self[keywordRange.upperBound ..< self.endIndex]
             
-            let afterReplyToString = String(addressSlice).trimmingCharacters(in: .whitespacesAndNewlines)
+            let afterReplyToString = String(addressSlice).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(.controlCharacters))
             
             guard afterReplyToString.isValidAddress else {
                 return nil
