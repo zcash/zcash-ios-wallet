@@ -45,7 +45,7 @@ struct FundsAtRisk: View {
                         .frame(height: buttonHeight)
                 }.isDetailLink(false)
                 
-                NavigationLink(destination: LazyView( Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance()).environmentObject(appEnvironment))) {
+                NavigationLink(destination: LazyView( Home(amount: 0, verifiedBalance: appEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()).environmentObject(HomeViewModel(amount: 0, balance: appEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance())))) {
                     Text("button_skip".localized())
                         .foregroundColor(Color.zDarkGray3)
                         .font(.system(size: 20, weight: .regular, design: .default))

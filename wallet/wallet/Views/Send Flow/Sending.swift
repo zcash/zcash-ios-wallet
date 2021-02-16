@@ -105,21 +105,7 @@ struct Sending: View {
             .padding([.horizontal, .bottom], 40)
         }
         .sheet(item: $details, onDismiss: { self.flow.close() }){ item in
-            TransactionDetails(detail: item)
-                .zcashNavigationBar(leadingItem: {
-                  EmptyView()
-                }, headerItem: {
-                    HStack{
-                        Text("Transaction Details")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .frame(alignment: Alignment.center)
-                    }
-                }, trailingItem: {
-                    ZcashCloseButton(action: {
-                        self.details = nil
-                    })
-                })
+            TxDetailsWrapper(row: item, isActive: self.$details)
         }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert

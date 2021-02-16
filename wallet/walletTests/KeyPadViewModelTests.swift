@@ -8,179 +8,196 @@
 
 import XCTest
 import Combine
+import SwiftUI
 @testable import ECC_Wallet_no_logs
 class KeyPadViewModelTests: XCTestCase {
     
     
     
     func testInitializer() {
-        let value: Double = 1.234
-        let textValue = "1.234"
-        let viewModel = KeyPadViewModel(initialValue: value)
+        var _value = "1.234"
+        var viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
         
-        XCTAssertEqual(viewModel.value, value)
-        XCTAssertEqual(viewModel.text, textValue)
+        XCTAssertEqual(viewModel.value, _value)
         
+        _value = ""
+        viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+        
+        XCTAssertEqual(viewModel.value, "0")
     }
     
     func testDelete() {
-        let value: Double = 1.234
-        let viewModel = KeyPadViewModel(initialValue: value)
+        var _value = "1.234"
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
         
         viewModel.deleteTapped()
-        XCTAssertEqual("1.23", viewModel.text)
-        XCTAssertEqual(1.23, viewModel.value)
+        XCTAssertEqual("1.23", viewModel.value)
+        
         
         viewModel.deleteTapped()
-        XCTAssertEqual("1.2", viewModel.text)
-        XCTAssertEqual(1.2, viewModel.value)
+        XCTAssertEqual("1.2", viewModel.value)
+
         
         viewModel.deleteTapped()
-        XCTAssertEqual("1.", viewModel.text)
-        XCTAssertEqual(1, viewModel.value)
+        XCTAssertEqual("1.", viewModel.value)
+
         
         viewModel.deleteTapped()
-        XCTAssertEqual("1", viewModel.text)
-        XCTAssertEqual(1, viewModel.value)
+        XCTAssertEqual("1", viewModel.value)
+
         
         viewModel.deleteTapped()
-        XCTAssertEqual("", viewModel.text)
-        XCTAssertEqual(0, viewModel.value)
-        
+        XCTAssertEqual("0", viewModel.value)
+                
     }
     
     func testInteger() {
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
         
-        let viewModel = KeyPadViewModel()
+        // make sure that initial value is zero
+        XCTAssertEqual(_value, "0")
         
         viewModel.numberTapped("1")
-        
-        XCTAssertEqual("1", viewModel.text)
-        XCTAssertEqual(Double(1), viewModel.value)
-        
+
+        XCTAssertEqual("1", viewModel.value)
+
         viewModel.dotTapped()
-        XCTAssertEqual("1.", viewModel.text)
-        XCTAssertEqual(Double(1), viewModel.value)
-        
+        XCTAssertEqual("1.", viewModel.value)
+
         viewModel.numberTapped("2")
-        XCTAssertEqual("1.2", viewModel.text)
-        XCTAssertEqual(Double(1.2), viewModel.value)
-        
+        XCTAssertEqual("1.2", viewModel.value)
+
         viewModel.numberTapped("3")
-        XCTAssertEqual("1.23", viewModel.text)
-        XCTAssertEqual(Double(1.23), viewModel.value)
-        
+        XCTAssertEqual("1.23", viewModel.value)
+
         viewModel.numberTapped("4")
-        XCTAssertEqual("1.234", viewModel.text)
-        XCTAssertEqual(Double(1.234), viewModel.value)
-        
+        XCTAssertEqual("1.234", viewModel.value)
+
         viewModel.numberTapped("5")
-        XCTAssertEqual("1.2345", viewModel.text)
-        XCTAssertEqual(Double(1.2345), viewModel.value)
-        
+        XCTAssertEqual("1.2345", viewModel.value)
+
         viewModel.numberTapped("6")
-        XCTAssertEqual("1.23456", viewModel.text)
-        XCTAssertEqual(Double(1.23456), viewModel.value)
-        
+        XCTAssertEqual("1.23456", viewModel.value)
+
         viewModel.numberTapped("7")
-        XCTAssertEqual("1.234567", viewModel.text)
-        XCTAssertEqual(Double(1.234567), viewModel.value)
-        
+        XCTAssertEqual("1.234567", viewModel.value)
+
     }
-    
+
     func testNoLeadingZero() {
-        let viewModel = KeyPadViewModel()
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("1")
-        XCTAssertEqual(viewModel.text, "1")
-    }
-    
-    func testDotLeadingDecimal() {
-        let viewModel = KeyPadViewModel()
-        viewModel.dotTapped()
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("1")
-        XCTAssertEqual(viewModel.text, "0.00001")
-    }
-    
-    func testZeroLeadingDecimals() {
-        let viewModel = KeyPadViewModel()
-        viewModel.numberTapped("0")
-        viewModel.dotTapped()
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("0")
-        viewModel.numberTapped("1")
-        XCTAssertEqual(viewModel.text, "0.00001")
-    }
-    
-    func dotStressing() {
-        let viewModel = KeyPadViewModel()
         
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.value, "1")
+    }
+
+    func testDotLeadingDecimal() {
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+        viewModel.dotTapped()
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.value, "0.00001")
+    }
+
+    func testZeroLeadingDecimals() {
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+        viewModel.numberTapped("0")
+        viewModel.dotTapped()
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("0")
+        viewModel.numberTapped("1")
+        XCTAssertEqual(viewModel.value, "0.00001")
+    }
+
+    func dotStressing() {
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+
         tapKey(".", times: 5, on: viewModel)
         viewModel.numberTapped("1")
-        
-        XCTAssertEqual(".1", viewModel.text)
-        XCTAssertEqual(Double(0.1), viewModel.value)
-        
+
+        XCTAssertEqual(".1", viewModel.value)
+
         tapKey(".", times: Int.random(in: 1 ..< 3), on: viewModel)
-        XCTAssertEqual(".1", viewModel.text)
-        XCTAssertEqual(Double(0.1), viewModel.value)
-        
+        XCTAssertEqual(".1", viewModel.value)
+
         viewModel.numberTapped("0")
         viewModel.numberTapped("1")
-        XCTAssertEqual(".101", viewModel.text)
-        XCTAssertEqual(Double(0.101), viewModel.value)
-        
+        XCTAssertEqual(".101", viewModel.value)
+
     }
-    
+
     func regretDecimal() {
-        
-        let viewModel = KeyPadViewModel()
-        
+
+        var _value = ""
+        let viewModel = KeyPadViewModel(value: Binding(get: {
+            _value
+        }, set: { (v) in
+            _value = v
+        }))
+
         viewModel.valuePressed("9")
         viewModel.valuePressed("9")
         viewModel.valuePressed(".")
         viewModel.valuePressed("5")
-        
-        XCTAssertEqual("99.5", viewModel.text)
-        XCTAssertEqual(Double(99.5), viewModel.value)
-        
+
+        XCTAssertEqual("99.5", viewModel.value)
+
         viewModel.deleteTapped()
         viewModel.deleteTapped()
-        
-        XCTAssertEqual("99", viewModel.text)
-        XCTAssertEqual(Double(99), viewModel.value)
-        
+
+        XCTAssertEqual("99", viewModel.value)
+
         viewModel.dotTapped()
         viewModel.dotTapped()
-        
-        XCTAssertEqual("99.9", viewModel.text)
-        XCTAssertEqual(Double(99.9), viewModel.value)
-        
+
+        XCTAssertEqual("99.9", viewModel.value)
+
     }
-    
-    func testUpdates() {
-        let viewModel = KeyPadViewModel()
-        let expect = XCTestExpectation(description: self.description)
-        _ = viewModel.$value.sink(receiveValue: { value in
-            expect.fulfill()
-            XCTAssertEqual(0.0, value)
-        })
-        
-        viewModel.valuePressed("1")
-        _ = viewModel.$value.sink(receiveValue: { value in
-            expect.fulfill()
-            XCTAssertEqual(1.0, value)
-        })
-        wait(for: [expect], timeout: 1)
-        
-        
-    }
+
     func tapKey(_ key: String, times: Int, on viewModel: KeyPadViewModel) {
         for _ in 0 ..< times {
             viewModel.valuePressed(key)

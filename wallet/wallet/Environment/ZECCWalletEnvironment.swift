@@ -74,6 +74,24 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
     }
     
+    // Warning: Use with care
+    func reset() throws {
+        self.synchronizer.stop()
+        self.state = Self.getInitialState()
+        
+        let initializer = Initializer(
+            cacheDbURL: self.cacheDbURL,
+            dataDbURL: self.dataDbURL,
+            pendingDbURL: self.pendingDbURL,
+            endpoint: endpoint,
+            spendParamsURL: self.spendParamsURL,
+            outputParamsURL: self.outputParamsURL,
+            
+            loggerProxy: logger)
+        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
+    }
+    
     func createNewWallet() throws {
         
         do {
@@ -311,4 +329,31 @@ extension ZECCWalletEnvironment {
     static var minerFee: Double {
         Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
     }
+    
+    func credentialsAlreadyPresent() -> Bool {
+        (try? SeedManager.default.exportPhrase()) != nil
+    }
 }
+
+
+fileprivate struct WalletEnvironmentKey: EnvironmentKey {
+    static let defaultValue: ZECCWalletEnvironment = ZECCWalletEnvironment.shared
+}
+
+extension EnvironmentValues {
+    var walletEnvironment: ZECCWalletEnvironment  {
+        get {
+            self[WalletEnvironmentKey.self]
+        }
+        set {
+            self[WalletEnvironmentKey.self] = newValue
+        }
+    }
+}
+
+extension View {
+    func walletEnvironment(_ env: ZECCWalletEnvironment) -> some View {
+        environment(\.walletEnvironment, env)
+    }
+}
+ 

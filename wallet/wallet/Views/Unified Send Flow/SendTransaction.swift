@@ -69,12 +69,21 @@ struct SendTransaction: View {
     
     var addressInBuffer: AnyView {
         
-        guard let clipboard = UIPasteboard.general.string,
+        if let clipboard = UIPasteboard.general.string,
             ZECCWalletEnvironment.shared.isValidAddress(clipboard),
-            clipboard.shortZaddress != nil else {
-                return AnyView(EmptyView())
+            clipboard.shortZaddress != nil {
+                
+            if let lastUsed = UserSettings.shared.lastUsedAddress {
+                return AddressHelperView(selection: $addressHelperSelection, mode: .both(clipboard: clipboard, lastUsed: lastUsed)).eraseToAnyView()
+            } else {
+                return AddressHelperView(selection: $addressHelperSelection, mode: .clipboard(address: clipboard)).eraseToAnyView()
+            }
+        } else if let lastUsed = UserSettings.shared.lastUsedAddress {
+            return AddressHelperView(selection: $addressHelperSelection, mode: .lastUsed(address: lastUsed)).eraseToAnyView()
+        } else {
+            return AnyView(EmptyView())
         }
-        return AddressHelperView(selection: $addressHelperSelection, mode: .clipboard(address: clipboard)).eraseToAnyView()
+        
         
     }
     var charLimit: Int {
