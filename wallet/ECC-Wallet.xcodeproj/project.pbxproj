@@ -82,6 +82,8 @@
 		0D5E4AA82527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
 		0D60F2ED23BE1BC9006F5FAD /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
+		0D64DF5125DC0E7F00669906 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D64DF5025DC0E7E00669906 /* UserSettings.swift */; };
+		0D64DF5225DC0E7F00669906 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D64DF5025DC0E7E00669906 /* UserSettings.swift */; };
 		0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */; };
 		0D72330823E9CFE40004B6D1 /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */; };
 		0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D75ECD82416D13800244CE4 /* SimpleLogger.swift */; };
@@ -325,6 +327,7 @@
 		0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTasks.swift; sourceTree = "<group>"; };
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashBackground.swift; sourceTree = "<group>"; };
+		0D64DF5025DC0E7E00669906 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessHelper.swift; sourceTree = "<group>"; };
 		0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		0D75ECD82416D13800244CE4 /* SimpleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
@@ -482,6 +485,7 @@
 		0D100EDC23BA92970089DB22 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0D64DF5025DC0E7E00669906 /* UserSettings.swift */,
 				0D100EDD23BA92A50089DB22 /* Colors.swift */,
 				0DE51DAD23BEB0E500709636 /* Fonts.swift */,
 				0D11C23223BFA810001CF6F7 /* HostingController.swift */,
@@ -1165,6 +1169,7 @@
 				0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */,
 				0D0565DD24EC89C200B6AAE8 /* HeaderFooterTxDetailView.swift in Sources */,
 				0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */,
+				0D64DF5125DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
@@ -1281,6 +1286,7 @@
 				0DF26E2224D1F75300F32978 /* ZcashMemoTextField.swift in Sources */,
 				0DCDFFA524B6722B000F6999 /* WalletDetails.swift in Sources */,
 				0DCDFFA624B6722B000F6999 /* BalanceUtils.swift in Sources */,
+				0D64DF5225DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
 				0DCDFFA824B6722B000F6999 /* LazyView.swift in Sources */,

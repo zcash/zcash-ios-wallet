@@ -128,7 +128,8 @@ final class SendFlowEnvironment: ObservableObject {
                 self.isDone = true
                 return
         }
-
+        
+        UserSettings.shared.lastUsedAddress = self.address
         environment.synchronizer.send(
             with: spendingKey,
             zatoshi: zatoshi,
@@ -156,7 +157,7 @@ final class SendFlowEnvironment: ObservableObject {
                     tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : "\(ZECCWalletEnvironment.mapError(error: error))"])
                     
                 }
-                // fix me:                
+                // fix me:
                 self.isDone = true
                 
             }) { [weak self] (transaction) in
@@ -224,3 +225,4 @@ extension Notification.Name {
     static let sendFlowClosed = Notification.Name("sendFlowClosed")
     static let sendFlowStarted = Notification.Name("sendFlowStarted")
 }
+
