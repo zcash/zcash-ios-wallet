@@ -17,13 +17,21 @@ struct ProfileScreen: View {
     @State var copiedValue: PasteboardItemModel?
     @Binding var isShown: Bool
     @State var isFeedbackActive = false
+    @State var isViewingKeyMenuActive = false
     var body: some View {
         NavigationView {
             ZStack {
+                NavigationLink(destination: LazyView(ShareViewingKey()
+                                                        ), isActive: $isViewingKeyMenuActive) {
+                    EmptyView()
+                }
                 ZcashBackground()
                 VStack(alignment: .center, spacing: 16) {
                     Image("zebra_profile")
                         .accessibility(label: Text("A Zebra"))
+                        .onLongPressGesture {
+                            isViewingKeyMenuActive = true
+                        }
                     VStack {
                         Text("profile_screen")
                             .font(.system(size: 18))

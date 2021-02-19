@@ -73,6 +73,8 @@
 		0D4C100123C52A9B00CD2854 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */; };
 		0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */; };
 		0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */; };
+		0D50511E25DFFC8D00E7A697 /* ShareViewingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D50511D25DFFC8D00E7A697 /* ShareViewingKey.swift */; };
+		0D50511F25DFFC8D00E7A697 /* ShareViewingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D50511D25DFFC8D00E7A697 /* ShareViewingKey.swift */; };
 		0D562FD4257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FDB257852A700E843DD /* TestMemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FDA257852A700E843DD /* TestMemoUtils.swift */; };
@@ -320,6 +322,7 @@
 		0D4C100023C52A9B00CD2854 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		0D4C100623C542D800CD2854 /* ZcashCheckCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashCheckCircle.swift; sourceTree = "<group>"; };
 		0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTests.swift; sourceTree = "<group>"; };
+		0D50511D25DFFC8D00E7A697 /* ShareViewingKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewingKey.swift; sourceTree = "<group>"; };
 		0D562FD3257841FD00E843DD /* MemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoUtils.swift; sourceTree = "<group>"; };
 		0D562FDA257852A700E843DD /* TestMemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMemoUtils.swift; sourceTree = "<group>"; };
 		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
@@ -478,6 +481,7 @@
 				0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */,
 				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
+				0D50511D25DFFC8D00E7A697 /* ShareViewingKey.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1178,6 +1182,7 @@
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
 				0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */,
 				0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */,
+				0D50511E25DFFC8D00E7A697 /* ShareViewingKey.swift in Sources */,
 				0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */,
 				0DDF876723DB5400002BF158 /* URL+Zcash.swift in Sources */,
 				0DDAF3A924098D1000EA9427 /* MnemonicSeedPhraseProvider.swift in Sources */,
@@ -1339,6 +1344,7 @@
 				0DF26E2824D1F88100F32978 /* Baseline.swift in Sources */,
 				0DCDFFC924B6722B000F6999 /* QRCodeGenerator.swift in Sources */,
 				0DCDFFCA24B6722B000F6999 /* ScanAddress.swift in Sources */,
+				0D50511F25DFFC8D00E7A697 /* ShareViewingKey.swift in Sources */,
 				0D0565DA24EC89C200B6AAE8 /* DetailListing.swift in Sources */,
 				0DBA1E2224CB6951009C654E /* AddressFragment.swift in Sources */,
 				0D0565DE24EC89C200B6AAE8 /* HeaderFooterTxDetailView.swift in Sources */,
