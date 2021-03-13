@@ -17,12 +17,19 @@ let tracker = MixPanelLogger(token: Constants.mixpanelProject)
 let logger = SimpleFileLogger(logsDirectory: try! URL.logsDirectory(), alsoPrint: true, level: .debug)
 #else
 let tracker = NullLogger()
+let logger = SimpleLogger(logLevel: .debug)
 #endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {  
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        #if targetEnvironment(simulator)
+        if ProcessInfo.processInfo.environment["isTest"] != nil {
+            return true
+        }
+        #endif
         // Override point for customization after application launch.
         #if ENABLE_LOGGING
         Bugsnag.start(withApiKey: Constants.bugsnagApiKey)

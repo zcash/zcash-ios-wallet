@@ -7,6 +7,31 @@
 //
 
 import SwiftUI
+
+enum ShareItem: Identifiable {
+    
+    case text(text: String)
+    case file(fileUrl: URL)
+    
+    var id: String {
+        switch self {
+        case .file:
+            return "file"
+        case .text:
+            return "text"
+        }
+    }
+    
+    var activityItem: Any {
+        switch self {
+        case .file(let fileUrl):
+            return fileUrl
+        case .text(let text):
+            return text
+        }
+    }
+}
+
 struct ShareSheet: UIViewControllerRepresentable {
     typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
     
