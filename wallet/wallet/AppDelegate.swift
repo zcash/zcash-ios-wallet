@@ -8,15 +8,13 @@
 
 import UIKit
 import BackgroundTasks
-#if targetEnvironment(simulator)
-var logger = SimpleLogger(logLevel: .debug, type: SimpleLogger.LoggerType.printerLog)
-#else
-var logger = SimpleLogger(logLevel: .debug)
-#endif
+
 
 #if ENABLE_LOGGING
 import Bugsnag
+import zealous_logger
 let tracker = MixPanelLogger(token: Constants.mixpanelProject)
+let logger = SimpleFileLogger(logsDirectory: try! URL.logsDirectory(), alsoPrint: true, level: .debug)
 #else
 let tracker = NullLogger()
 #endif

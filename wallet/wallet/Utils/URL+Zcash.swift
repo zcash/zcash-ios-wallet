@@ -15,7 +15,11 @@ extension URL {
     static func documentsDirectory() throws -> URL {
         try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
-
+    
+    static func logsDirectory() throws -> URL {
+        try documentsDirectory().appendingPathComponent("logs",isDirectory: true)
+    }
+    
     static func cacheDbURL() throws -> URL {
         try documentsDirectory().appendingPathComponent(ZcashSDK.DEFAULT_DB_NAME_PREFIX+ZcashSDK.DEFAULT_CACHES_DB_NAME, isDirectory: false)
     }
