@@ -66,7 +66,6 @@ class SimpleLogger: ZcashLightClientKit.Logger {
         case .printerLog:
             print("[\(level)] \(fileName) - \(function) - line: \(line) -> \(message)")
         default:
-//            os_log("[%@] %@ - %@ - Line: %d -> %@", log: Self.oslog, type: .debug, level, fileName, function, line, message)
             os_log("[%{public}@] %{public}@ - %{public}@ - Line: %{public}d -> %{public}@", level, fileName, String(describing: function), line, message)
         }
     }
@@ -77,6 +76,7 @@ class SimpleLogger: ZcashLightClientKit.Logger {
 
 import zealous_logger
 class SimpleFileLogger: ZcashLightClientKit.Logger {
+    
     let logger: zealous_logger.Logger
     
     init(logsDirectory: URL, alsoPrint: Bool = true, level: LogLevel = .debug) {
