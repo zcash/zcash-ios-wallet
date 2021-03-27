@@ -114,6 +114,8 @@ final class ZECCWalletEnvironment: ObservableObject {
         let viewingKeys = try DerivationTool.default.deriveViewingKeys(seed: seedBytes, numberOfAccounts: 1)
         try self.initializer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
         self.subscribeToApplicationNotificationsPublishers()
+        
+        fixPendingTransactionsIfNeeded()
         try self.synchronizer.start()
     }
     
@@ -186,6 +188,10 @@ final class ZECCWalletEnvironment: ObservableObject {
                 return WalletError.criticalError
             case .parameterMissing(let underlyingError):
                 return WalletError.sendFailed(error: underlyingError)
+            case .rewindError(let underlyingError):
+                return WalletError.genericErrorWithError(error: underlyingError)
+            case .rewindErrorUnknownArchorHeight:
+                return WalletError.genericErrorWithMessage(message: "unable to rescan to specified height")
             }
         } else if let serviceError = error as? LightWalletServiceError {
             switch serviceError {
@@ -357,3 +363,59 @@ extension View {
     }
 }
  
+
+extension ZECCWalletEnvironment {
+    func fixPendingTransactionsIfNeeded() {
+        guard !UserSettings.shared.didRescanPendingFix else {
+            return
+        }
+        logger.debug("Starting to pending transaction fix")
+        tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "Starting to pending transaction fix"])
+        
+        do {
+            
+            let txs = try synchronizer.synchronizer.allPendingTransactions()
+            guard !txs.isEmpty else {
+                logger.debug("no pending txs. saving settings")
+                UserSettings.shared.didRescanPendingFix = true
+                return
+            }
+            logger.debug("found pending transactions")
+            tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "found pending transactions"])
+            
+            guard let firstUnmined = txs.filter({ !$0.isMined }).first?.transactionEntity else {
+                logger.debug("no unmined txs. saving settings")
+                tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "no unmined txs. saving settings"])
+                UserSettings.shared.didRescanPendingFix = true
+                return
+            }
+            
+            logger.debug("found unmined pending transactions with expiry height: \(String(describing: firstUnmined.expiryHeight))")
+            tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "found unmined pending transactions with expiry : \(String(describing: firstUnmined.expiryHeight))"])
+            
+            try self.synchronizer.rewind(.transaction(firstUnmined))
+            UserSettings.shared.didRescanPendingFix = true
+            logger.debug("rewind successfull. saving settings")
+            tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successfull. saving settings"])
+            
+            
+
+        } catch {
+            logger.error("attempt to fix pending transactions failed with error: \(error)")
+            tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
+            
+        }
+        
+        do {
+            let latestDownloadedHeight = try self.synchronizer.synchronizer.latestDownloadedHeight()
+            
+            logger.debug("rewound to height \(latestDownloadedHeight)")
+            tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successfull. saving settings"])
+        } catch {
+            logger.debug("call to latestDownloadedHeight failed with error \(error)")
+            tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "call to latestDownloadedHeight failed with error \(error)"])
+            
+        }
+    }
+}
+

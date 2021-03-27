@@ -15,7 +15,7 @@ class CombineSynchronizer {
         synchronizer.initializer
     }
     
-    private var synchronizer: SDKSynchronizer
+    private(set) var synchronizer: SDKSynchronizer
     
     var walletDetailsBuffer: CurrentValueSubject<[DetailModel],Never>
     var status: CurrentValueSubject<Status,Never>
@@ -194,6 +194,10 @@ class CombineSynchronizer {
     
     func cancel(pendingTransaction: PendingTransactionEntity) -> Bool {
         synchronizer.cancelSpend(transaction: pendingTransaction)
+    }
+    
+    func rewind(_ policy: RewindPolicy) throws {
+        try synchronizer.rewind(policy)
     }
     
     func updatePublishers() {
