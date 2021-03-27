@@ -83,7 +83,7 @@ DEPENDENCIES:
   - Mixpanel-swift
   - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
-  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit`, branch `master`)
+  - ZcashLightClientKit (~> 0.10.0)
   - zealous-logger (from `https://github.com/zcash-hackworks/zealous-logger`, branch `master`)
 
 SPEC REPOS:
@@ -115,14 +115,12 @@ SPEC REPOS:
     - SwiftNIOTransportServices
     - SwiftProtobuf
     - TinyQRScanner
+    - ZcashLightClientKit
 
 EXTERNAL SOURCES:
   MnemonicSwift:
     :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
-  ZcashLightClientKit:
-    :branch: master
-    :git: https://github.com/zcash/ZcashLightClientKit
   zealous-logger:
     :branch: master
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -131,9 +129,6 @@ CHECKOUT OPTIONS:
   MnemonicSwift:
     :commit: f1377b9321b23401ffb0052cbb74741fa8dd9898
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
-  ZcashLightClientKit:
-    :commit: 9488fbbf439ef675213cb202e21566b4a6311251
-    :git: https://github.com/zcash/ZcashLightClientKit
   zealous-logger:
     :commit: c9f8d8d9f74a456094b9143616da3b4eba91ddcf
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -170,6 +165,6 @@ SPEC CHECKSUMS:
   ZcashLightClientKit: a1a36be74ca95e2802ba3d6bcc40e9b2753eb0da
   zealous-logger: 2f33820d7d7e723796dabc51d60942b51b9ab024
 
-PODFILE CHECKSUM: a8057227a9e6799695515bc813dffb647c6d0c8a
+PODFILE CHECKSUM: 431838fec936e4d829014e4e91958ad16e758a74
 
 COCOAPODS: 1.10.1
