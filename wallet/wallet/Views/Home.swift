@@ -163,6 +163,11 @@ final class HomeViewModel: ObservableObject {
             return defaultAlert
         }
     }
+    
+    func setAmount(_ zecAmount: Double) {
+        guard let value = self.zecAmountFormatter.string(for: zecAmount - ZcashSDK.defaultFee().asHumanReadableZecBalance()) else { return }
+        self.sendZecAmountText = value
+    }
 }
 
 struct Home: View {
@@ -304,6 +309,9 @@ struct Home: View {
                 if self.isSendingEnabled {
                   
                     BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
+                        .onLongPressGesture {
+                            self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
+                        }
                 } else {
                     Spacer()
                     self.balanceView.padding([.horizontal], self.buttonPadding)

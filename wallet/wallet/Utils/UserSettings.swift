@@ -17,6 +17,7 @@ class UserSettings {
     struct Keys {
         static let lastUsedAddress = "lastUsedAddress"
         static let everShielded = "everShielded"
+        static let rescanPendingFix = "rescanPendingFix"
     }
     
     var lastUsedAddress: String? {
@@ -25,6 +26,16 @@ class UserSettings {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Keys.lastUsedAddress)
+        }
+    }
+    
+    
+    var didRescanPendingFix: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: Keys.rescanPendingFix)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey:Keys.rescanPendingFix)
         }
     }
     
