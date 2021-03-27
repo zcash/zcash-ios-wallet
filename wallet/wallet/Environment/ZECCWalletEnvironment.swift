@@ -366,6 +366,7 @@ extension View {
 
 extension ZECCWalletEnvironment {
     func fixPendingTransactionsIfNeeded() {
+        // check if we need to perform the fix or leave
         guard !UserSettings.shared.didRescanPendingFix else {
             return
         }
@@ -373,16 +374,18 @@ extension ZECCWalletEnvironment {
         tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "Starting to pending transaction fix"])
         
         do {
-            
+            // get all the pending transactions
             let txs = try synchronizer.synchronizer.allPendingTransactions()
             guard !txs.isEmpty else {
                 logger.debug("no pending txs. saving settings")
                 UserSettings.shared.didRescanPendingFix = true
                 return
             }
+            
             logger.debug("found pending transactions")
             tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "found pending transactions"])
             
+            // fetch the first one that's reported to be unmined
             guard let firstUnmined = txs.filter({ !$0.isMined }).first?.transactionEntity else {
                 logger.debug("no unmined txs. saving settings")
                 tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "no unmined txs. saving settings"])
@@ -398,8 +401,6 @@ extension ZECCWalletEnvironment {
             logger.debug("rewind successfull. saving settings")
             tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successfull. saving settings"])
             
-            
-
         } catch {
             logger.error("attempt to fix pending transactions failed with error: \(error)")
             tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
