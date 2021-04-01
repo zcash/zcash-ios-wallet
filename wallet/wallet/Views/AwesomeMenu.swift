@@ -13,16 +13,15 @@ import ZcashLightClientKit
 import TinyQRScanner
 final class AwesomeViewModel: ObservableObject {
     
-    
     enum Status {
-        
         case idle
         case shielding
         case failed(error: Error)
         case finished
     }
+    
     @Published var status: Status = .idle
-    @Published var unshieldedBalance: UnshieldedBalance = TransparentBalance.zero
+    @Published var unshieldedBalance: WalletBalance = TransparentBalance.zero
     @Published var alertType: AwesomeMenu.AlertType? = nil
     @Binding var isActive: Bool
     var appEnvironment = ZECCWalletEnvironment.shared
@@ -92,23 +91,23 @@ final class AwesomeViewModel: ObservableObject {
     var isShieldingButtonEnabled: Bool {
         switch status {
         case .idle:
-            return unshieldedBalance.confirmed >= ZcashSDK.shieldingThreshold
+            return unshieldedBalance.verified >= ZcashSDK.shieldingThreshold
         default:
             return false
         }
     }
+    
     func shieldConfirmedFunds() {
-        
         self.shieldEnvironment.shield()
     }
 }
 
-struct TransparentBalance: UnshieldedBalance{
-    var confirmed: Int64
-    var unconfirmed: Int64
+struct TransparentBalance: WalletBalance{
+    var verified: Int64
+    var total: Int64
     
     static var zero: TransparentBalance {
-        TransparentBalance(confirmed: 0, unconfirmed: 0)
+        TransparentBalance(verified: 0, total: 0)
     }
 }
 
@@ -155,7 +154,6 @@ struct AwesomeMenu: View {
                         }
                 } else {
                     
-               
                 Text("Your Transparent Address")
                     .foregroundColor(.white)
                     .font(.title)
@@ -183,8 +181,8 @@ struct AwesomeMenu: View {
                 Spacer()
                 Text("""
                         Balance:
-                            Confirmed: \(self.viewModel.unshieldedBalance.confirmed.asHumanReadableZecBalance())
-                            Unconfirmed: \(self.viewModel.unshieldedBalance.unconfirmed.asHumanReadableZecBalance())
+                            Confirmed: \(self.viewModel.unshieldedBalance.verified.asHumanReadableZecBalance())
+                            Unconfirmed: \((self.viewModel.unshieldedBalance.total - self.viewModel.unshieldedBalance.verified).asHumanReadableZecBalance())
                     """)
                     .foregroundColor(.white)
             

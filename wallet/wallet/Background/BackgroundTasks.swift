@@ -111,7 +111,11 @@ class BackgroundTaskSyncronizing {
     func scheduleBackgroundProcessing() {
         
         do {
-            let synchronizer = ZECCWalletEnvironment.shared.synchronizer
+            guard let synchronizer = ZECCWalletEnvironment.shared.synchronizer else {
+                logger.error("could not schedule background processing. synchronizer NIL")
+                tracker.track(.error(severity: .critical), properties: [ErrorSeverity.messageKey : "could not schedule background processing. synchronizer NIL"])
+                return
+            }
             
             let downloadedHeight = try synchronizer.latestDownloadedHeight()
             

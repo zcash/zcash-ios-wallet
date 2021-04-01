@@ -175,6 +175,10 @@ class CombineSynchronizer {
             .store(in: &cancellables)
     }
     
+    func initialize(viewingKeys: [String], walletBirthday: BlockHeight) throws {
+        try self.synchronizer.initialize(viewingKeys: viewingKeys, walletBirthday: walletBirthday)
+    }
+    
     func start(retry: Bool = false) throws {
         
         do {
@@ -203,7 +207,7 @@ class CombineSynchronizer {
     func updatePublishers() {
         self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
         self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
-        self.status.send(.synced)
+        self.status.send(synchronizer.status)
         self.walletDetails.sink(receiveCompletion: { _ in
             }) { [weak self] (details) in
                 guard !details.isEmpty else { return }
@@ -220,15 +224,67 @@ class CombineSynchronizer {
     }
     
     func send(with spendingKey: String, zatoshi: Int64, to recipientAddress: String, memo: String?,from account: Int) -> Future<PendingTransactionEntity,Error>  {
-        Future<PendingTransactionEntity, Error>() {
+        Future<PendingTransactionEntity, Error>() { [weak self]
             promise in
-            self.synchronizer.sendToAddress(spendingKey: spendingKey, zatoshi: zatoshi, toAddress: recipientAddress, memo: memo, from: account) { (result) in
+            self?.synchronizer.sendToAddress(spendingKey: spendingKey, zatoshi: zatoshi, toAddress: recipientAddress, memo: memo, from: account) { [weak self](result) in
+                self?.updatePublishers()
                 switch result {
                 case .failure(let error):
                     promise(.failure(error))
                 case .success(let pendingTx):
                     promise(.success(pendingTx))
                 }
+            }
+        }
+    }
+    
+    public func shieldFunds(spendingKey: String, transparentSecretKey: String, memo: String?, from accountIndex: Int) -> Future<PendingTransactionEntity, Error> {
+        Future<PendingTransactionEntity, Error>() { [weak self]
+            promise in
+            self?.synchronizer.shieldFunds(spendingKey: spendingKey, transparentSecretKey: transparentSecretKey, memo: memo, from: accountIndex) {[weak self] (result) in
+                self?.updatePublishers()
+                switch result {
+                case .failure(let error):
+                    promise(.failure(error))
+                case .success(let pendingTx):
+                    promise(.success(pendingTx))
+                }
+            }
+        }
+    }
+    
+    func unshieldedBalance(for tAddress: String) -> Future<WalletBalance,Error> {
+        Future<WalletBalance,Error>() { [weak self]
+            promise in
+            
+            guard let self = self else { return }
+            
+            let walletBirthday = (try? SeedManager.default.exportBirthday()) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+            
+            self.synchronizer.refreshUTXOs(address: tAddress, from: walletBirthday, result: { [weak self] (r) in
+                guard let self = self else { return }
+                switch r {
+                case .success:
+                    do {
+                        let balance = try self.synchronizer.getTransparentBalance(address: tAddress)
+                        promise(.success(balance))
+                    } catch {
+                        promise(.failure(error))
+                    }
+                case .failure(let error):
+                    promise(.failure(error))
+                }
+            })
+        }
+    }
+    
+    func cachedUnshieldedBalance(for tAddress: String) -> Future<WalletBalance,Error>  {
+        Future<WalletBalance,Error>() { [weak self] promise in
+            guard let self = self else { return }
+            do {
+                promise(.success(try self.synchronizer.getTransparentBalance(address: tAddress)))
+            } catch {
+                promise(.failure(error))
             }
         }
     }

@@ -29,7 +29,7 @@ final class HomeViewModel: ObservableObject {
     private var cancellable = [AnyCancellable]()
     private var environmentCancellables = [AnyCancellable]()
     private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
-    init(amount: Double = 0, balance: Double = 0) {
+    init() {
         showProfile = false
         showReceiveFunds = false
         bindToEnvironmentEvents()
@@ -179,7 +179,7 @@ struct Home: View {
     
     var syncingButton: SyncingButton
     
-    init(amount: Double, verifiedBalance: Double) {
+    init() {
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
     }
     
@@ -220,9 +220,10 @@ struct Home: View {
     }
     
     var balanceView: AnyView {
-        if appEnvironment.initializer.getBalance() > 0 {
+        let verifiedBalance = appEnvironment.getShieldedVerifiedBalance()
+        if verifiedBalance > 0 {
             return AnyView (
-                BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
+                BalanceDetail(availableZec: verifiedBalance.asHumanReadableZecBalance(), status: appEnvironment.balanceStatus)
             )
         } else {
             return AnyView(
@@ -272,7 +273,7 @@ struct Home: View {
                             
                         }
                         .sheet(isPresented: $viewModel.showReceiveFunds){
-                            ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
+                            ReceiveFunds(address: self.appEnvironment.getShieldedAddress() ?? "",
                                          isShown:  self.$viewModel.showReceiveFunds)
                                 .environmentObject(self.appEnvironment)
                         }
@@ -390,15 +391,15 @@ struct Home: View {
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
+            Home().environmentObject(ZECCWalletEnvironment.shared)
                 .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                 .previewDisplayName("iPhone SE")
             
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
+            Home().environmentObject(ZECCWalletEnvironment.shared)
                 .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
                 .previewDisplayName("iPhone 8")
             
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
+            Home().environmentObject(ZECCWalletEnvironment.shared)
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
         }

@@ -44,10 +44,10 @@ struct ProfileScreen: View {
                         Button(action: {
                             tracker.track(.tap(action: .copyAddress),
                                           properties: [:])
-                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.initializer.getAddress() ?? "", notify: "feedback_addresscopied".localized())
+                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.getShieldedAddress() ?? "", notify: "feedback_addresscopied".localized())
 
                         }) {
-                            Text(appEnvironment.initializer.getAddress() ?? "")
+                            Text(self.appEnvironment.getShieldedAddress() ?? "")
                             .lineLimit(3)
                                 .multilineTextAlignment(.center)
                                 .font(.system(size: 15))

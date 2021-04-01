@@ -30,7 +30,7 @@ class SendFlow {
                       amount: Double) -> SendFlowEnvironment {
 
         let flow = SendFlowEnvironment(amount: amount,
-                                       verifiedBalance: appEnviroment.initializer.getVerifiedBalance().asHumanReadableZecBalance(),
+                                       verifiedBalance: appEnviroment.getShieldedVerifiedBalance().asHumanReadableZecBalance(),
                                        isActive: isActive)
         Self.current = flow
         NotificationCenter.default.post(name: .sendFlowStarted, object: nil)
@@ -122,7 +122,7 @@ final class SendFlowEnvironment: ObservableObject {
             let phrase = try? SeedManager.default.exportPhrase(),
             let seedBytes = try? MnemonicSeedProvider.default.toSeed(mnemonic: phrase),
             let spendingKey = try? DerivationTool.default.deriveSpendingKeys(seed: seedBytes, numberOfAccounts: 1).first,
-            let replyToAddress = environment.initializer.getAddress() else {
+            let replyToAddress = environment.getShieldedAddress() else {
                 self.error = FlowError.invalidEnvironment
                 self.showError = true
                 self.isDone = true

@@ -84,10 +84,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                  .synced:
     
                 return AnyView(
-                    Home(
-                        amount: walletEnvironment.initializer.getBalance().asHumanReadableZecBalance(),
-                        verifiedBalance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()
-                    ).environmentObject(HomeViewModel(amount: 0, balance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()))
+                    Home().environmentObject(HomeViewModel())
                 )
             case .uninitialized:
                 return AnyView(

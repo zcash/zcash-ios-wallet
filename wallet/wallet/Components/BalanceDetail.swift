@@ -88,8 +88,8 @@ struct BalanceDetail_Previews: PreviewProvider {
 
 extension ZECCWalletEnvironment {
     var balanceStatus: BalanceStatus {
-        let verifiedBalance = self.initializer.getVerifiedBalance().asHumanReadableZecBalance()
-        let balance = self.initializer.getBalance().asHumanReadableZecBalance()
+        let verifiedBalance = self.getShieldedVerifiedBalance().asHumanReadableZecBalance()
+        let balance = self.getShieldedBalance().asHumanReadableZecBalance()
         
         let difference = verifiedBalance - balance
         if difference.isZero {

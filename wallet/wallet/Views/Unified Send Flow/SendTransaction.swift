@@ -29,7 +29,7 @@ struct SendTransaction: View {
             return "feedback_shieldedaddress".localized()
         } else if environment.isValidTransparentAddress(flow.address) {
             return "feedback_transparentaddress".localized()
-        } else if (environment.initializer.getAddress() ?? "") == flow.address {
+        } else if (environment.getShieldedAddress() ?? "") == flow.address {
             return "feedback_sameaddress".localized()
         } else {
             return "feedback_invalidaddress".localized()
@@ -88,7 +88,7 @@ struct SendTransaction: View {
     }
     var charLimit: Int {
         if flow.includeSendingAddress {
-            return ZECCWalletEnvironment.memoLengthLimit - SendFlowEnvironment.replyToAddress((ZECCWalletEnvironment.shared.initializer.getAddress() ?? "")).count
+            return ZECCWalletEnvironment.memoLengthLimit - SendFlowEnvironment.replyToAddress((ZECCWalletEnvironment.shared.getShieldedAddress() ?? "")).count
         }
         return ZECCWalletEnvironment.memoLengthLimit
     }

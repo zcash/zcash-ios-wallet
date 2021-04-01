@@ -58,7 +58,7 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     var zAddress: String {
-        ZECCWalletEnvironment.shared.initializer.getAddress() ?? ""
+        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
     }
 }
 

@@ -13,7 +13,7 @@ import ZcashLightClientKit
 
 protocol ShieldingPowers {
     var status: CurrentValueSubject<ShieldFlow.Status,Error> { get set }
-    var unshieldedBalance: CurrentValueSubject<UnshieldedBalance,Never> {get set}
+    var unshieldedBalance: CurrentValueSubject<WalletBalance,Never> {get set}
     func shield()
 }
 
@@ -25,7 +25,7 @@ final class ShieldFlow: ShieldingPowers {
         case ended
     }
     
-    var unshieldedBalance: CurrentValueSubject<UnshieldedBalance,Never>
+    var unshieldedBalance: CurrentValueSubject<WalletBalance,Never>
     var status: CurrentValueSubject<ShieldFlow.Status, Error>
     var cancellables = [AnyCancellable]()
     private var synchronizer: CombineSynchronizer = ZECCWalletEnvironment.shared.synchronizer
@@ -52,8 +52,7 @@ final class ShieldFlow: ShieldingPowers {
             .sink { (_) in
                 
             } receiveValue: { [weak self] (tBalance) in
-                
-                self?.unshieldedBalance.send(TransparentBalance(confirmed: tBalance.confirmed, unconfirmed: tBalance.unconfirmed))
+                self?.unshieldedBalance.send(tBalance)
                 
             }
             .store(in: &cancellables)
@@ -105,7 +104,6 @@ final class ShieldFlow: ShieldingPowers {
                 }
                 .store(in: &cancellables)
 
-    
         } catch {
             self.status.send(completion: .failure(error))
         }
@@ -134,7 +132,7 @@ extension EnvironmentValues {
 
 
 final class MockFailingShieldFlow: ShieldingPowers {
-    var unshieldedBalance: CurrentValueSubject<UnshieldedBalance, Never> = CurrentValueSubject(TransparentBalance(confirmed: 60000, unconfirmed: 23000))
+    var unshieldedBalance: CurrentValueSubject<WalletBalance, Never> = CurrentValueSubject(TransparentBalance(verified: 60000, total: 23000))
     
     var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
     
@@ -148,7 +146,7 @@ final class MockFailingShieldFlow: ShieldingPowers {
 
 final class MockSuccessShieldFlow: ShieldingPowers {
     var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    var unshieldedBalance: CurrentValueSubject<UnshieldedBalance, Never> = CurrentValueSubject(TransparentBalance(confirmed: 60000, unconfirmed: 23000))
+    var unshieldedBalance: CurrentValueSubject<WalletBalance, Never> = CurrentValueSubject(TransparentBalance(verified: 60000, total: 23000))
     func shield() {
         status.send(.shielding)
         DispatchQueue.global().asyncAfter(deadline: .now() + 10) { [weak self] in

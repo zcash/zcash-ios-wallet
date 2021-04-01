@@ -32,10 +32,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     var pendingDbURL: URL
     var outputParamsURL: URL
     var spendParamsURL: URL
-    var initializer: Initializer {
-        synchronizer.initializer
-    }
-    var synchronizer: CombineSynchronizer
+    var synchronizer: CombineSynchronizer!
     var cancellables = [AnyCancellable]()
     
     static func getInitialState() -> WalletState {
@@ -62,16 +59,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         
         self.state = Self.getInitialState()
         
-        let initializer = Initializer(
-            cacheDbURL: self.cacheDbURL,
-            dataDbURL: self.dataDbURL,
-            pendingDbURL: self.pendingDbURL,
-            endpoint: endpoint,
-            spendParamsURL: self.spendParamsURL,
-            outputParamsURL: self.outputParamsURL,
-            
-            loggerProxy: logger)
-        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
     }
     
     // Warning: Use with care
@@ -111,11 +99,26 @@ final class ZECCWalletEnvironment: ObservableObject {
     func initialize() throws {
         let seedPhrase = try SeedManager.default.exportPhrase()
         let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
-        let viewingKeys = try DerivationTool.default.deriveViewingKeys(seed: seedBytes, numberOfAccounts: 1)
-        try self.initializer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
+        
+        let initializer = Initializer(
+            cacheDbURL: self.cacheDbURL,
+            dataDbURL: self.dataDbURL,
+            pendingDbURL: self.pendingDbURL,
+            endpoint: endpoint,
+            spendParamsURL: self.spendParamsURL,
+            outputParamsURL: self.outputParamsURL,
+            walletBirthday: try SeedManager.default.exportBirthday(),
+            loggerProxy: logger)
+        
+        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
+        _ = try self.synchronizer.initializer.initialize(seedBytes: seedBytes, numberOfAccounts: 1)
+//        try self.synchronizer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
+        
         self.subscribeToApplicationNotificationsPublishers()
         
         fixPendingTransactionsIfNeeded()
+        
         try self.synchronizer.start()
     }
     
@@ -316,28 +319,42 @@ extension ZECCWalletEnvironment {
     }
     
     func isValidShieldedAddress(_ address: String) -> Bool {
-        self.initializer.isValidShieldedAddress(address)
+        address.isValidShieldedAddress
     }
     
     func isValidTransparentAddress(_ address: String) -> Bool {
-        self.initializer.isValidTransparentAddress(address)
+        address.isValidTransparentAddress
     }
     
     func isValidAddress(_ address: String) -> Bool {
-        self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
+        address.isValidAddress
     }
     func sufficientFundsToSend(amount: Double) -> Bool {
-        return sufficientFunds(availableBalance: self.initializer.getVerifiedBalance(), zatoshiToSend: amount.toZatoshi())
+        return sufficientFunds(availableBalance: getShieldedBalance(), zatoshiToSend: amount.toZatoshi())
     }
+    
     private func sufficientFunds(availableBalance: Int64, zatoshiToSend: Int64) -> Bool {
         availableBalance - zatoshiToSend  - Int64(ZcashSDK.defaultFee()) >= 0
     }
+    
     static var minerFee: Double {
         Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
     }
     
     func credentialsAlreadyPresent() -> Bool {
         (try? SeedManager.default.exportPhrase()) != nil
+    }
+    
+    func getShieldedVerifiedBalance() -> Int64 {
+        self.synchronizer.initializer.getVerifiedBalance()
+    }
+    
+    func getShieldedBalance() -> Int64 {
+        self.synchronizer.initializer.getBalance()
+    }
+    
+    func getShieldedAddress() -> String? {
+        self.synchronizer.initializer.getAddress()
     }
 }
 
