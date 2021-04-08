@@ -332,3 +332,24 @@ extension CombineSynchronizer {
         }
     }
 }
+
+extension CombineSynchronizer {
+    func fullRescan() {
+        do {
+            try self.rewind(.birthday)
+            try self.start(retry: true)
+        } catch {
+            logger.error("Full rescan failed \(error)")
+        }
+    }
+    
+    func quickRescan() {
+        do {
+            let rewindHeight = max(try self.latestDownloadedHeight() - 10_000, try SeedManager.default.exportBirthday())
+            try self.rewind(.height(blockheight: rewindHeight))
+            try self.start(retry: true)
+        } catch {
+            logger.error("Quick rescan failed \(error)")
+        }
+    }
+}
