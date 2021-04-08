@@ -175,8 +175,8 @@ class CombineSynchronizer {
             .store(in: &cancellables)
     }
     
-    func initialize(viewingKeys: [String], walletBirthday: BlockHeight) throws {
-        try self.synchronizer.initialize(viewingKeys: viewingKeys, walletBirthday: walletBirthday)
+    func initialize(unifiedViewingKeys: [UnifiedViewingKey], walletBirthday: BlockHeight) throws {
+        try self.synchronizer.initialize(unifiedViewingKeys: unifiedViewingKeys, walletBirthday: walletBirthday)
     }
     
     func start(retry: Bool = false) throws {

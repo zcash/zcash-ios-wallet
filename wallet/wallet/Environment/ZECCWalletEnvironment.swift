@@ -195,6 +195,8 @@ final class ZECCWalletEnvironment: ObservableObject {
                 return WalletError.genericErrorWithError(error: underlyingError)
             case .rewindErrorUnknownArchorHeight:
                 return WalletError.genericErrorWithMessage(message: "unable to rescan to specified height")
+            case .invalidAccount:
+                return WalletError.genericErrorWithMessage(message: "your wallet asked a balance for an account index that is not derived. This is probably a programming mistake.")
             }
         } else if let serviceError = error as? LightWalletServiceError {
             switch serviceError {
