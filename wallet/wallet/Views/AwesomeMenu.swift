@@ -20,10 +20,27 @@ final class AwesomeViewModel: ObservableObject {
         case finished
     }
     
+    enum AlertType: Identifiable {
+        case pasteBoardItem(item: PasteboardItemModel)
+        case feedback(message: Text)
+        case error(title: Text, message: Text)
+        
+        var id: Int {
+            switch self {
+            case .pasteBoardItem:
+                return 0
+            case .feedback:
+                return 1
+            case .error:
+                return 2
+            }
+        }
+    }
+    
     @Published var status: Status = .idle
     @Published var unshieldedBalance: WalletBalance = TransparentBalance.zero
-    @Published var alertType: AwesomeMenu.AlertType? = nil
-    @Binding var isActive: Bool
+    @Published var alertType: AlertType? = nil
+    
     var appEnvironment = ZECCWalletEnvironment.shared
     var shieldEnvironment = ShieldFlow.current
     var cancellables = [AnyCancellable]()
@@ -31,8 +48,7 @@ final class AwesomeViewModel: ObservableObject {
     var chips: [String]
     var qrImage: CGImage?
     var lottie = LottieAnimation(filename: "lottie_shield")
-    init(isActive: Binding<Bool>) {
-        self._isActive = isActive
+    init() {
         var tAddr: String!
         
         do {
@@ -111,26 +127,9 @@ struct TransparentBalance: WalletBalance{
     }
 }
 
-struct AwesomeMenu: View {
+struct AwesomeMenu<Dismissal: Hashable>: View {
     
-    enum AlertType: Identifiable {
-        case pasteBoardItem(item: PasteboardItemModel)
-        case feedback(message: Text)
-        case error(title: Text, message: Text)
-        
-        var id: Int {
-            switch self {
-            case .pasteBoardItem:
-                return 0
-            case .feedback:
-                return 1
-            case .error:
-                return 2
-            }
-        }
-    }
-    
-    
+    @Binding var isActive: Dismissal?
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     @EnvironmentObject var viewModel: AwesomeViewModel
     
@@ -217,7 +216,7 @@ struct AwesomeMenu: View {
             }
         }
         .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
-            self.viewModel.alertType = AlertType.pasteBoardItem(item: p)
+            self.viewModel.alertType = AwesomeViewModel.AlertType.pasteBoardItem(item: p)
         }
         .navigationBarTitle(Text("🛡Fund Guardian🛡"))
         .onAppear() {
@@ -230,12 +229,12 @@ struct AwesomeMenu: View {
     }
     func closeThisAwesomeThing() {
         ShieldFlow.endFlow()
-        self.viewModel.isActive = false
+        self.isActive = nil
     }
 }
-
-struct AwesomeMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        AwesomeMenu()
-    }
-}
+//
+//struct AwesomeMenu_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AwesomeMenu()
+//    }
+//}

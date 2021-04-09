@@ -9,24 +9,38 @@
 import SwiftUI
 import ZcashLightClientKit
 
-struct ProfileScreen: View {
-    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @State var nukePressed = false
+fileprivate struct ScreenConstants {
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(30)
+}
+
+struct ProfileScreen<Dismissal: Identifiable>: View {
+    enum Destination: Int, Identifiable, Hashable {
+        case feedback
+        case seedBackup
+        case nuke
+        case awesomeMenu
+        var id: Int {
+            return self.rawValue
+        }
+    }
+    
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @State var nukePressed = false
+    
     @State var copiedValue: PasteboardItemModel?
-    @Binding var isShown: Bool
+    @Binding var isShown: Dismissal?
     @State var alertItem: AlertItem?
     @State var showingSheet: Bool = false
     @State var shareItem: ShareItem? = nil
-    @State var isFeedbackActive = false
-    @State var isAwesomeMenuActive = false
+    @State var destination: Destination?
+    
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: LazyView(AwesomeMenu()
-                                                        .environmentObject(AwesomeViewModel(isActive: $isAwesomeMenuActive))
-                                                        ), isActive: $isAwesomeMenuActive) {
+                NavigationLink(destination: LazyView(AwesomeMenu(isActive: $destination)
+                                                        .environmentObject(AwesomeViewModel())
+                ), tag: Destination.awesomeMenu, selection: self.$destination) {
                     EmptyView()
                 }
                 ZcashBackground()
@@ -36,7 +50,7 @@ struct ProfileScreen: View {
                             .accentColor(.zYellow)
                             .accessibility(label: Text(UserSettings.shared.userEverShielded ? "A Golden zebra" : "A Zebra"))
                             .onLongPressGesture {
-                                isAwesomeMenuActive = true
+                                self.destination = .awesomeMenu
                             }
                             
                         VStack {
@@ -63,26 +77,25 @@ struct ProfileScreen: View {
                         
                         #if ENABLE_LOGGING
                         NavigationLink(destination: LazyView(
-                            FeedbackForm(isActive: self.$isFeedbackActive)
-                            ),
-                                       isActive: $isFeedbackActive) {
+                            FeedbackForm(isActive: $destination)
+                        ), tag: Destination.feedback, selection: $destination) {
                                         
                                         Text("button_feedback")
                                             .foregroundColor(.black)
                                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
-                                            .frame(height: Self.buttonHeight)
+                                            .frame(height: ScreenConstants.buttonHeight)
                         }
                         #endif
                         
                         NavigationLink(destination: LazyView(
                             SeedBackup(hideNavBar: false)
                                 .environmentObject(self.appEnvironment)
-                            )
+                        ), tag: Destination.seedBackup, selection: $destination
                         ) {
                             Text("button_backup")
                                 .foregroundColor(.white)
                                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
-                                .frame(height: Self.buttonHeight)
+                                .frame(height: ScreenConstants.buttonHeight)
                             
                         }
                         Button(action: {
@@ -91,7 +104,7 @@ struct ProfileScreen: View {
                             Text("Rescan Wallet".localized())
                                 .foregroundColor(.zYellow)
                                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zYellow, lineWidth: 1)))
-                                .frame(height: Self.buttonHeight)
+                                .frame(height: ScreenConstants.buttonHeight)
                         }
                         
                         Button(action: {
@@ -111,7 +124,7 @@ struct ProfileScreen: View {
                                 .font(.system(size: 20))
                                 .foregroundColor(Color.zLightGray)
                                 .opacity(0.6)
-                                .frame(height: Self.buttonHeight)
+                                .frame(height: ScreenConstants.buttonHeight)
                         }
 
                         ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
@@ -124,7 +137,7 @@ struct ProfileScreen: View {
                             Text("NUKE WALLET".localized())
                                 .foregroundColor(.red)
                                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
-                                .frame(height: Self.buttonHeight)
+                                .frame(height: ScreenConstants.buttonHeight)
                         }
                         
                         NavigationLink(destination: LazyView (
@@ -134,7 +147,7 @@ struct ProfileScreen: View {
                                            }.isDetailLink(false)
                         
                     }
-                    .padding(.horizontal, Self.horizontalPadding)
+                    .padding(.horizontal, ScreenConstants.horizontalPadding)
                     .padding(.bottom, 15)
                     .alert(item: self.$copiedValue) { (p) -> Alert in
                         PasteboardAlertHelper.alert(for: p)
@@ -170,14 +183,14 @@ struct ProfileScreen: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .profileClose), properties: [:])
-                self.isShown = false
+                self.isShown = nil
             }).frame(width: 30, height: 30))
         }
     }
 }
 
-struct ProfileScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileScreen(isShown: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
-    }
-}
+//struct ProfileScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileScreen(isShown: .constant(nill)).environmentObject(ZECCWalletEnvironment.shared)
+//    }
+//}

@@ -10,14 +10,32 @@ import SwiftUI
 import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
+    
+    enum ModalDestinations: Identifiable {
+        case profile
+        case receiveFunds
+        case feedback(score: Int)
+        
+        var id: Int {
+            switch self {
+            case .profile:
+                return 0
+            case .receiveFunds:
+                return 1
+            case .feedback:
+                return 2
+            }
+        }
+    }
+    
+    
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
     var sendZecAmount: Double {
         zecAmountFormatter.number(from: sendZecAmountText)?.doubleValue ?? 0.0
     }
+    @Published var destination: ModalDestinations?
     @Published var sendZecAmountText: String = "0"
-    @Published var showReceiveFunds: Bool
-    @Published var showProfile: Bool
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
@@ -30,8 +48,7 @@ final class HomeViewModel: ObservableObject {
     private var environmentCancellables = [AnyCancellable]()
     private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
     init() {
-        showProfile = false
-        showReceiveFunds = false
+        self.destination = nil
         bindToEnvironmentEvents()
         
         NotificationCenter.default.publisher(for: .sendFlowStarted)
@@ -174,6 +191,8 @@ struct Home: View {
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
+    @State var feedbackRating: Int? = nil
+    @State var isOverlayShown = false
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
@@ -263,7 +282,7 @@ struct Home: View {
                 ZcashNavigationBar(
                     leadingItem: {
                         Button(action: {
-                            self.viewModel.showReceiveFunds = true
+                            self.viewModel.destination = .receiveFunds
                             tracker.track(.tap(action: .receive), properties: [:])
                         }) {
                             Image("QRCodeIcon")
@@ -271,11 +290,6 @@ struct Home: View {
                                 .accessibility(label: Text("Receive Funds"))
                                 .scaleEffect(0.5)
                             
-                        }
-                        .sheet(isPresented: $viewModel.showReceiveFunds){
-                            ReceiveFunds(address: self.appEnvironment.getShieldedAddress() ?? "",
-                                         isShown:  self.$viewModel.showReceiveFunds)
-                                .environmentObject(self.appEnvironment)
                         }
                 },
                     headerItem: {
@@ -287,17 +301,13 @@ struct Home: View {
                     trailingItem: {
                         Button(action: {
                             tracker.track(.tap(action: .showProfile), properties: [:])
-                            self.viewModel.showProfile = true
+                            self.viewModel.destination = .profile
                         }) {
                             Image("person_pin-24px")
                                 .renderingMode(.original)
                                 .opacity(0.6)
                                 .accessibility(label: Text("Your Profile"))
                                 .padding()
-                        }
-                        .sheet(isPresented: $viewModel.showProfile){
-                            ProfileScreen(isShown: self.$viewModel.showProfile)
-                                .environmentObject(self.appEnvironment)
                         }
                 })
                     .frame(height: 64)
@@ -360,31 +370,60 @@ struct Home: View {
                         EmptyView()
                     }.isDetailLink(false)
                 }
-                
-               
                     NavigationLink(
                         destination:
                             LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle(Text(""), displayMode: .inline)
                             .navigationBarHidden(true))
-                        
                         ,isActive: self.$viewModel.showHistory) {
                         walletDetails
                     }.isDetailLink(false)
                         .opacity(viewModel.isSyncing ? 0.4 : 1.0)
                         .disabled(viewModel.isSyncing)
-                
             }
             .padding([.bottom], 20)
+        }
+        .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
+            switch item {
+            case .profile:
+                ProfileScreen(isShown: self.$viewModel.destination)
+                    .environmentObject(self.appEnvironment)
+            case .receiveFunds:
+                ReceiveFunds(address: self.appEnvironment.getShieldedAddress() ?? "",
+                             isShown:  self.$viewModel.destination)
+                    .environmentObject(self.appEnvironment)
+            case .feedback(let score):
+                FeedbackForm(selectedRating: score,
+                             isSolicited: true,
+                             isActive: self.$viewModel.destination)
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
+            showFeedbackIfNeeded()
+        }
+        .zOverlay(isOverlayShown: $isOverlayShown) {
+            FeedbackDialog(rating: $feedbackRating) { feedbackResult in
+                self.isOverlayShown = false
+                switch feedbackResult {
+                case .score(let rating):
+                    tracker.track(.feedback, properties: [
+                        "rating" : String(rating),
+                        "solicited" : String(true)
+                    ])
+                case .requestAdditional(let rating):
+                    self.viewModel.destination = .feedback(score: rating)
+                }
+                
+            }
+            .frame(height: 240)
         }
     }
+    
 }
 
 
@@ -409,5 +448,19 @@ struct Home_Previews: PreviewProvider {
 extension BlockHeight {
     static var unmined: BlockHeight {
         -1
+    }
+}
+
+
+extension Home {
+    func showFeedbackIfNeeded() {
+        #if ENABLE_LOGGING
+        if appEnvironment.shouldShowFeedbackDialog {
+            appEnvironment.registerFeedbackSolicitation(on: Date())
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.isOverlayShown = true
+            }
+        }
+        #endif
     }
 }

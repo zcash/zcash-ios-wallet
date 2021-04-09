@@ -91,6 +91,8 @@
 		0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D75ECD82416D13800244CE4 /* SimpleLogger.swift */; };
 		0D7D5DDB24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
 		0D7D5DDC24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
+		0D81D0AF261FA12C003ECF47 /* FeedbackDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */; };
+		0D81D0B0261FA12C003ECF47 /* FeedbackDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */; };
 		0D82F326261279EC0058B05D /* LogfileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D82F325261279EC0058B05D /* LogfileUtils.swift */; };
 		0D82F327261279EC0058B05D /* LogfileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D82F325261279EC0058B05D /* LogfileUtils.swift */; };
 		0D82F32A261284060058B05D /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D82F329261284060058B05D /* Alerts.swift */; };
@@ -343,6 +345,7 @@
 		0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		0D75ECD82416D13800244CE4 /* SimpleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
+		0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDialog.swift; sourceTree = "<group>"; };
 		0D82F325261279EC0058B05D /* LogfileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogfileUtils.swift; sourceTree = "<group>"; };
 		0D82F329261284060058B05D /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		0D87E2CB240ECEC500648C09 /* ZcashButtonBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashButtonBackground.swift; sourceTree = "<group>"; };
@@ -490,7 +493,7 @@
 				0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */,
 				0D0AAE14241048B4009CD8F9 /* FundsAtRisk.swift */,
 				0DBAA0902419A77500B08BC7 /* NukeWarning.swift */,
-				0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */,
+				0D81D0AD261FA0DA003ECF47 /* Feedback */,
 				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 				0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */,
@@ -654,6 +657,15 @@
 				0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */,
 			);
 			path = Background;
+			sourceTree = "<group>";
+		};
+		0D81D0AD261FA0DA003ECF47 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */,
+				0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		0D82F328261284060058B05D /* Models */ = {
@@ -1215,6 +1227,7 @@
 				0D2D5C2024CF85CF001A58AD /* ZecAmountHeader.swift in Sources */,
 				0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */,
 				0D100ED523BA75EE0089DB22 /* ZcashLogo.swift in Sources */,
+				0D81D0AF261FA12C003ECF47 /* FeedbackDialog.swift in Sources */,
 				0D4C100723C542D800CD2854 /* ZcashCheckCircle.swift in Sources */,
 				0DF26E2A24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0D0565D924EC89C200B6AAE8 /* DetailListing.swift in Sources */,
@@ -1326,6 +1339,7 @@
 				0D64DF5225DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
+				0D81D0B0261FA12C003ECF47 /* FeedbackDialog.swift in Sources */,
 				0DCDFFA824B6722B000F6999 /* LazyView.swift in Sources */,
 				0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */,
 				0D4B91DB24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,

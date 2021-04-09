@@ -18,6 +18,7 @@ class UserSettings {
         static let lastUsedAddress = "lastUsedAddress"
         static let everShielded = "everShielded"
         static let rescanPendingFix = "rescanPendingFix"
+        static let lastFeedbackDisplayedOnDate = "lastFeedbackDisplayedOnDate"
     }
     
     var lastUsedAddress: String? {
@@ -47,5 +48,17 @@ class UserSettings {
         }
     }
     
+    var lastFeedbackDisplayedOnDate: Date? {
+        get {
+            guard let timeInterval = UserDefaults.standard.value(forKey: Keys.lastFeedbackDisplayedOnDate) as? TimeInterval else {
+                return nil
+            }
+            
+            return Date(timeIntervalSinceReferenceDate: timeInterval)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue?.timeIntervalSinceReferenceDate, forKey: Keys.lastFeedbackDisplayedOnDate)
+        }
+    }
     
 }

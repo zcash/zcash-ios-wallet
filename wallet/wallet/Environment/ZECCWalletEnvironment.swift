@@ -34,7 +34,9 @@ final class ZECCWalletEnvironment: ObservableObject {
     var spendParamsURL: URL
     var synchronizer: CombineSynchronizer!
     var cancellables = [AnyCancellable]()
-    
+    #if ENABLE_LOGGING
+    var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
+    #endif
     static func getInitialState() -> WalletState {
         let fileManager = FileManager()
         do {
@@ -439,3 +441,24 @@ extension ZECCWalletEnvironment {
     }
 }
 
+
+#if ENABLE_LOGGING
+extension ZECCWalletEnvironment {
+    func shouldShowFeedbackRequest() -> Bool {
+        
+        guard let lastDate = UserSettings.shared.lastFeedbackDisplayedOnDate else {
+            return true
+        }
+        let now = Date()
+        
+        let calendar = Calendar.current
+        
+        return (calendar.dateComponents([.day], from: lastDate, to: now).day ?? 0) > 1
+        
+    }
+    
+    func registerFeedbackSolicitation(on date: Date) {
+        UserSettings.shared.lastFeedbackDisplayedOnDate = date
+    }
+}
+#endif
