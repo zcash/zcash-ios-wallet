@@ -345,7 +345,9 @@ extension CombineSynchronizer {
     
     func quickRescan() {
         do {
-            let rewindHeight = max(try self.latestDownloadedHeight() - 10_000, try SeedManager.default.exportBirthday())
+            let blocksPerDay = 60*60*24/75
+            let oneWeekOfblocks = blocksPerDay * 7      //8064
+            let rewindHeight = max(try self.latestDownloadedHeight() - oneWeekOfblocks, try SeedManager.default.exportBirthday())
             try self.rewind(.height(blockheight: rewindHeight))
             try self.start(retry: true)
         } catch {
