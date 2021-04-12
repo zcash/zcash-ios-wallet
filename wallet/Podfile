@@ -2,7 +2,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 def base_pods
-  pod 'ZcashLightClientKit', '~> 0.10.0'
+  pod 'ZcashLightClientKit', :git => 'https://github.com/zcash/ZcashLightClientKit.git', :branch => 'shield-funds-poc'
   pod 'gRPC-Swift', '= 1.0.0-alpha.19'
   pod 'KeychainSwift', '~> 19.0.0'
   pod 'MnemonicSwift', :git => 'https://github.com/zcash-hackworks/MnemonicSwift.git', :branch => 'master'

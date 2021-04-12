@@ -69,7 +69,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.22.0)
   - SwiftProtobuf (1.12.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.10.0):
+  - ZcashLightClientKit (0.10.1):
     - gRPC-Swift (= 1.0.0-alpha.19)
     - SQLite.swift (~> 0.12.2)
   - zealous-logger (1.0.0):
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - Mixpanel-swift
   - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
-  - ZcashLightClientKit (~> 0.10.0)
+  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, branch `shield-funds-poc`)
   - zealous-logger (from `https://github.com/zcash-hackworks/zealous-logger`, branch `master`)
 
 SPEC REPOS:
@@ -115,12 +115,14 @@ SPEC REPOS:
     - SwiftNIOTransportServices
     - SwiftProtobuf
     - TinyQRScanner
-    - ZcashLightClientKit
 
 EXTERNAL SOURCES:
   MnemonicSwift:
     :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
+  ZcashLightClientKit:
+    :branch: shield-funds-poc
+    :git: https://github.com/zcash/ZcashLightClientKit.git
   zealous-logger:
     :branch: master
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -129,6 +131,9 @@ CHECKOUT OPTIONS:
   MnemonicSwift:
     :commit: f1377b9321b23401ffb0052cbb74741fa8dd9898
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
+  ZcashLightClientKit:
+    :commit: e2f8f066be2e3fa06fbc54607f3bed799f023809
+    :git: https://github.com/zcash/ZcashLightClientKit.git
   zealous-logger:
     :commit: c9f8d8d9f74a456094b9143616da3b4eba91ddcf
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -162,9 +167,9 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: 801923921fbecdcde1e1c1ff38e812167d01ead1
   SwiftProtobuf: 4ef85479c18ca85b5482b343df9c319c62bda699
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: a1a36be74ca95e2802ba3d6bcc40e9b2753eb0da
+  ZcashLightClientKit: d38e30a7c84191526a9aaaca879656654314bae4
   zealous-logger: 2f33820d7d7e723796dabc51d60942b51b9ab024
 
-PODFILE CHECKSUM: 431838fec936e4d829014e4e91958ad16e758a74
+PODFILE CHECKSUM: 7b18915636320eeadb9fca009f945c7b524b92d4
 
 COCOAPODS: 1.10.1
