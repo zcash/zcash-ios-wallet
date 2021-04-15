@@ -53,7 +53,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch environment.state {
         case .initalized,
              .synced:
-            try! environment.initialize()
+            do {
+                try environment.initialize()
+            } catch {
+                logger.error("CANNOT INITIALIZE - \(error)")
+                tracker.track(.error(severity: .critical), properties: [ ErrorSeverity.messageKey : "failed to initialize",
+                                                                         ErrorSeverity.underlyingError : "\(error)"])
+                abort()
+            }
         default:
             break
         }
