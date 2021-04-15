@@ -165,9 +165,11 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                         buttons: [
                             .destructive(Text("Full Re-scan"), action: {
                                 self.appEnvironment.synchronizer.fullRescan()
+                                self.isShown = nil
                             }),
                             .default(Text("Quick Re-Scan"), action: {
                                 self.appEnvironment.synchronizer.quickRescan()
+                                self.isShown = nil
                             }),
                             .default(Text("Dismiss".localized()))
                         ]
