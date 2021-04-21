@@ -202,6 +202,10 @@ struct Home: View {
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
     }
     
+    var isSyncing: Bool {
+        appEnvironment.synchronizer.status.value == .syncing
+    }
+    
     var isSendingEnabled: Bool {
         appEnvironment.synchronizer.status.value != .syncing && appEnvironment.synchronizer.verifiedBalance.value > 0
     }
@@ -240,7 +244,8 @@ struct Home: View {
     
     var balanceView: AnyView {
         let verifiedBalance = appEnvironment.getShieldedVerifiedBalance()
-        if verifiedBalance > 0 {
+        let totalBalance = appEnvironment.getShieldedBalance()
+        if verifiedBalance > 0 || totalBalance > 0 {
             return AnyView (
                 BalanceDetail(availableZec: verifiedBalance.asHumanReadableZecBalance(), status: appEnvironment.balanceStatus)
             )
@@ -316,8 +321,10 @@ struct Home: View {
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
                     .scaledToFit()
-                
-                if self.isSendingEnabled {
+                if self.isSyncing {
+                    ActionableMessage(message: "balance_nofunds".localized())
+                        .padding([.horizontal], self.buttonPadding)
+                } else if self.isSendingEnabled {
                   
                     BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
                         .onLongPressGesture {
