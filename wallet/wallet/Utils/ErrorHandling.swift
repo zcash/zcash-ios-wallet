@@ -19,7 +19,7 @@ enum WalletError: Error {
     case connectionFailedWithError(error: Error)
     case maxRetriesReached(attempts: Int)
     case sendFailed(error: Error)
-    case criticalError
+    case criticalError(error: Error)
 }
 
 func trackError(_ walletError: WalletError) -> WalletError {
@@ -65,10 +65,10 @@ func mapToUserFacingError(_ walletError: WalletError) -> UserFacingErrors {
         return .initalizationFailed(underlyingError: walletError)
     case .synchronizerFailed:
         return .synchronizerError(canRetry: false)
-    case .genericErrorWithMessage:
-        return .internalError
-    case .genericErrorWithError:
-        return .internalError
+    case .genericErrorWithMessage(let message):
+        return .internalErrorWithMessage(message: message)
+    case .genericErrorWithError(let error):
+        return .internalError(error: error)
     case .networkTimeout:
         return .connectionFailed
     case .connectionFailed:
@@ -79,8 +79,8 @@ func mapToUserFacingError(_ walletError: WalletError) -> UserFacingErrors {
         return .synchronizerError(canRetry: true)
     case .sendFailed:
         return .transactionSubmissionError
-    case .criticalError:
-        return .criticalError
+    case .criticalError(let error):
+        return .criticalError(error: error)
     }
 }
 
@@ -89,8 +89,9 @@ enum UserFacingErrors: Error {
     case synchronizerError(canRetry: Bool)
     case connectionFailed
     case transactionSubmissionError
-    case internalError
-    case criticalError
+    case internalErrorWithMessage(message: String)
+    case internalError(error: Error)
+    case criticalError(error: Error?)
 }
 
 
