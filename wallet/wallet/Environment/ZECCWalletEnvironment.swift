@@ -190,7 +190,7 @@ final class ZECCWalletEnvironment: ObservableObject {
             case .uncategorized(let underlyingError):
                 return WalletError.genericErrorWithError(error: underlyingError)
             case .criticalError:
-                return WalletError.criticalError
+                return WalletError.criticalError(error: synchronizerError)
             case .parameterMissing(let underlyingError):
                 return WalletError.sendFailed(error: underlyingError)
             case .rewindError(let underlyingError):
@@ -203,7 +203,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         } else if let serviceError = error as? LightWalletServiceError {
             switch serviceError {
             case .criticalError:
-                return WalletError.criticalError
+                return WalletError.criticalError(error: serviceError)
             case .userCancelled:
                 return WalletError.connectionFailed
             case .unknown:
@@ -290,10 +290,23 @@ final class ZECCWalletEnvironment: ObservableObject {
             }
             .store(in: &appCycleCancellables)
         
-        center.publisher(for: UIApplication.willResignActiveNotification)
+        center.publisher(for: UIApplication.didBecomeActiveNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak logger] _ in
+                logger?.debug("didBecomeActiveNotification")
+            }
+            .store(in: &appCycleCancellables)
+        center.publisher(for: UIApplication.didEnterBackgroundNotification)
             .subscribe(on: DispatchQueue.main)
             .sink { [weak self, weak logger] _ in
                 self?.registerBackgroundActivity()
+                logger?.debug("didEnterBackgroundNotification")
+            }
+            .store(in: &appCycleCancellables)
+        center.publisher(for: UIApplication.willResignActiveNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak logger] _ in
+               
                 logger?.debug("applicationWillResignActive")
             }
             .store(in: &appCycleCancellables)
