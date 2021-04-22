@@ -434,23 +434,23 @@ struct Home: View {
 }
 
 
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            Home().environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("iPhone SE")
-            
-            Home().environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-                .previewDisplayName("iPhone 8")
-            
-            Home().environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-                .previewDisplayName("iPhone 11")
-        }
-    }
-}
+//struct Home_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            Home().environmentObject(ZECCWalletEnvironment.shared)
+//                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+//                .previewDisplayName("iPhone SE")
+//            
+//            Home().environmentObject(ZECCWalletEnvironment.shared)
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+//                .previewDisplayName("iPhone 8")
+//            
+//            Home().environmentObject(ZECCWalletEnvironment.shared)
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+//                .previewDisplayName("iPhone 11")
+//        }
+//    }
+//}
 
 extension BlockHeight {
     static var unmined: BlockHeight {
