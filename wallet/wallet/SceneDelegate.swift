@@ -24,15 +24,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
+            
             window.rootViewController = HostingController(rootView:
                     AnyView(
                         NavigationView {
-                            firstView()
-                        }
+                            firstView(walletEnvironment: ZECCWalletEnvironment.shared)
+                        }.environmentObject(ZECCWalletEnvironment.shared)
                     )
                 )
             self.window = window
+            _zECCWalletNavigationBarLookTweaks()
             window.makeKeyAndVisible()
+            
         }
     }
     
@@ -76,22 +79,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         CreateNewWallet()
     }
     
-    func firstView() -> AnyView {
-        _zECCWalletNavigationBarLookTweaks()
-        let walletEnvironment = ZECCWalletEnvironment.shared
-            
+    @ViewBuilder func firstView(walletEnvironment: ZECCWalletEnvironment) -> some View {            
             switch walletEnvironment.state {
             case .initalized,
                  .syncing,
                  .synced:
     
-                return AnyView(
-                    Home().environmentObject(HomeViewModel())
-                )
+                Home()
+                    .environmentObject(HomeViewModel())
+                    
             case .uninitialized:
-                return AnyView(
-                    self.createNewWallet.environmentObject(walletEnvironment)
-                )
+                CreateNewWallet().environmentObject(walletEnvironment)
+    
             }
        
     }
