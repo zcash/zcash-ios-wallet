@@ -16,7 +16,6 @@ class CombineSynchronizer {
     }
     
     private(set) var synchronizer: SDKSynchronizer
-    
     var walletDetailsBuffer: CurrentValueSubject<[DetailModel],Never>
     var status: CurrentValueSubject<Status,Never>
     var progress: CurrentValueSubject<Float,Never>
@@ -353,5 +352,12 @@ extension CombineSynchronizer {
         } catch {
             logger.error("Quick rescan failed \(error)")
         }
+    }
+    
+    func getTransparentAddress(account: Int = 0) -> TransparentAddress? {
+        self.synchronizer.getTransparentAddress(accountIndex: account)
+    }
+    func getShieldedAddress(account: Int = 0) -> SaplingShieldedAddress? {
+        self.synchronizer.getShieldedAddress(accountIndex: account)
     }
 }

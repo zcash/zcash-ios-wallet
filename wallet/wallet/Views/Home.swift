@@ -395,7 +395,8 @@ struct Home: View {
                 ProfileScreen(isShown: self.$viewModel.destination)
                     .environmentObject(self.appEnvironment)
             case .receiveFunds:
-                ReceiveFunds(address: self.appEnvironment.getShieldedAddress() ?? "",
+                ReceiveFunds(shieldedAddress: self.appEnvironment.synchronizer.getShieldedAddress() ?? "",
+                             transparentAddress: self.appEnvironment.synchronizer.getTransparentAddress() ?? "",
                              isShown:  self.$viewModel.destination)
                     .environmentObject(self.appEnvironment)
             case .feedback(let score):

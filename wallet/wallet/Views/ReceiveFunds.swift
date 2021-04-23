@@ -10,14 +10,43 @@ import SwiftUI
 
 struct ReceiveFunds<Dismissal: Identifiable>: View {
     
-    let address: String
+    let shieldedAddress: String
+    let transparentAddress: String
     @Binding var isShown: Dismissal?
+    @State var selectedTab: Int = 0
     var body: some View {
         NavigationView {
             
             ZStack {
                 ZcashBackground()
-                DisplayAddress(address: address)
+                VStack(alignment: .center, spacing: 10, content: {
+                    TabSelector(tabs: [
+                        (Text("Shielded")
+                            .font(.system(size: 18))
+                            .frame(maxWidth: .infinity, idealHeight: 48)
+                         ,.zYellow),
+                        (Text("Transparent")
+                            .font(.system(size: 18))
+                            .frame(maxWidth: .infinity, minHeight: 48, idealHeight: 48)
+                         ,.zTransparentBlue)
+                            
+                    ], selectedTabIndex: $selectedTab)
+                    .padding([.horizontal], 16)
+                   
+                    if selectedTab == 0 {
+                        DisplayAddress(address: shieldedAddress,
+                                       caption: "address_shielded".localized(),
+                                       badge: Image("QR-zcashlogo"))
+                            .animation(.easeInOut)
+                    } else {
+                        DisplayAddress(address: transparentAddress,
+                                       caption: "address_shielded".localized(),
+                                       chips: 2,
+                                       badge: Image("t-zcash-badge"))
+                            .animation(.easeInOut)
+                    }
+                    
+                })
             }
             .onAppear {
                 tracker.track(.screen(screen: .receive), properties: [:])
