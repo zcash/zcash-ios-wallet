@@ -325,13 +325,11 @@ struct Home: View {
                     ActionableMessage(message: "balance_nofunds".localized())
                         .padding([.horizontal], self.buttonPadding)
                 } else if self.isSendingEnabled {
-                  
                     BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
                         .onLongPressGesture {
                             self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
                         }
                 } else {
-                    Spacer()
                     self.balanceView.padding([.horizontal], self.buttonPadding)
                 }
                 
