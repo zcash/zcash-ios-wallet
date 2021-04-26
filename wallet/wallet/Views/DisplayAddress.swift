@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct DisplayAddress: View {
+struct DisplayAddress<AccesoryContent: View>: View {
     
     @State var copyItemModel: PasteboardItemModel?
     @State var isShareModalDisplayed = false
@@ -21,30 +21,32 @@ struct DisplayAddress: View {
         }
     }
     var badge: Image
-    var caption: String
+    var title: String
     var address: String
     var chips: [String]
     let qrSize: CGFloat = 200
+    var accessoryContent: AccesoryContent
     
-    init(address: String, caption: String, chips: Int = 8, badge: Image) {
+    init(address: String, title: String, chips: Int = 8, badge: Image, @ViewBuilder accessoryContent: (() -> (AccesoryContent))) {
         self.address = address
-        self.caption = caption
+        self.title = title
         self.chips = address.slice(into: chips)
         self.badge = badge
+        self.accessoryContent = accessoryContent()
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            Spacer()
+            Text(title)
+                .foregroundColor(.white)
+                .font(.system(size: 21))
+            
             QRCodeContainer(qrImage: qrImage,
                             badge: badge)
                 .frame(width: qrSize, height: qrSize, alignment: .center)
                 .layoutPriority(1)
             
-            Text(caption)
-                .foregroundColor(.white)
-                .font(.system(size: 18))
-                
+            Spacer()
             
             Button(action: {
                 PasteboardAlertHelper.shared.copyToPasteBoard(value: self.address, notify: "feedback_addresscopied".localized())
@@ -73,12 +75,15 @@ struct DisplayAddress: View {
                     
                 }.padding([.horizontal], 15)
                 .frame(minHeight: 96)
+                
             }.alert(item: self.$copyItemModel) { (p) -> Alert in
                 PasteboardAlertHelper.alert(for: p)
             }
             .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
                 self.copyItemModel = p 
             }
+            
+            self.accessoryContent
             
             Spacer()
             
@@ -92,8 +97,6 @@ struct DisplayAddress: View {
                     .frame(height: 58)
                 
             }
-      
-
         }.padding(30)
             .sheet(isPresented: self.$isShareAddressShown) {
                 ShareSheet(activityItems: [self.address])

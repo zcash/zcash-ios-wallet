@@ -35,14 +35,23 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
                    
                     if selectedTab == 0 {
                         DisplayAddress(address: shieldedAddress,
-                                       caption: "address_shielded".localized(),
-                                       badge: Image("QR-zcashlogo"))
+                                       title: "address_shielded".localized(),
+                                       badge: Image("QR-zcashlogo"),
+                                       accessoryContent: { EmptyView() })
                             .animation(.easeInOut)
                     } else {
                         DisplayAddress(address: transparentAddress,
-                                       caption: "address_shielded".localized(),
+                                       title: "address_transparent".localized(),
                                        chips: 2,
-                                       badge: Image("t-zcash-badge"))
+                                       badge: Image("t-zcash-badge"),
+                                       accessoryContent: {
+                                         Text("""
+                                            This address is for receiving only.
+                                            Any funds received will be auto-shielded.
+                                            """)
+                                            .foregroundColor(.white)
+                                            .font(.system(size: 16))
+                                       })
                             .animation(.easeInOut)
                     }
                     
