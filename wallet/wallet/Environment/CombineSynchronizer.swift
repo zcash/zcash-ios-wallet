@@ -14,14 +14,15 @@ class CombineSynchronizer {
     var initializer: Initializer {
         synchronizer.initializer
     }
-    
+    var unifiedAddress: UnifiedAddress! // FIXMME: There's no sense of a key-less synchronizer
     private(set) var synchronizer: SDKSynchronizer
-    
     var walletDetailsBuffer: CurrentValueSubject<[DetailModel],Never>
     var status: CurrentValueSubject<Status,Never>
     var progress: CurrentValueSubject<Float,Never>
     var syncBlockHeight: CurrentValueSubject<BlockHeight,Never>
     var minedTransaction = PassthroughSubject<PendingTransactionEntity,Never>()
+    var shieldedBalance: CurrentValueSubject<WalletBalance, Never>
+    var transparentBalance: CurrentValueSubject<WalletBalance, Never>
     var balance: CurrentValueSubject<Double,Never>
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
@@ -96,6 +97,8 @@ class CombineSynchronizer {
         self.status = CurrentValueSubject(.disconnected)
         self.progress = CurrentValueSubject(0)
         self.balance = CurrentValueSubject(0)
+        self.shieldedBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
+        self.transparentBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
@@ -175,7 +178,19 @@ class CombineSynchronizer {
             .store(in: &cancellables)
     }
     
+    
+    
     func initialize(unifiedViewingKeys: [UnifiedViewingKey], walletBirthday: BlockHeight) throws {
+        
+        guard let uvk = unifiedViewingKeys.first else {
+            throw SynchronizerError.initFailed(message: "Provided empty keys array. this is a programmin error")
+        }
+        do {
+            self.unifiedAddress = try DerivationTool.default.deriveUnifiedAddressFromUnifiedViewingKey(uvk)
+        } catch {
+            throw SynchronizerError.initFailed(message: "unable to derive unified address: \(error.localizedDescription)")
+        }
+        
         try self.synchronizer.initialize(unifiedViewingKeys: unifiedViewingKeys, walletBirthday: walletBirthday)
     }
     
@@ -205,6 +220,18 @@ class CombineSynchronizer {
     }
     
     func updatePublishers() {
+        if let ua = self.unifiedAddress,
+           let tBalance = try? synchronizer.getTransparentBalance(address: ua.tAddress) {
+            self.transparentBalance.send(tBalance)
+        } else {
+            self.transparentBalance.send(Balance(verified: 0, total: 0))
+        }
+        
+        let shieldedVerifiedBalance = synchronizer.getShieldedVerifiedBalance()
+        let shieldedTotalBalance = synchronizer.getShieldedBalance(accountIndex: 0)
+        
+        self.shieldedBalance.send(Balance(verified: shieldedVerifiedBalance, total: shieldedTotalBalance))
+        
         self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
         self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
         self.status.send(synchronizer.status)
@@ -354,4 +381,17 @@ extension CombineSynchronizer {
             logger.error("Quick rescan failed \(error)")
         }
     }
+    
+    func getTransparentAddress(account: Int = 0) -> TransparentAddress? {
+        self.synchronizer.getTransparentAddress(accountIndex: account)
+    }
+    func getShieldedAddress(account: Int = 0) -> SaplingShieldedAddress? {
+        self.synchronizer.getShieldedAddress(accountIndex: account)
+    }
+}
+
+
+fileprivate struct Balance: WalletBalance {
+    var verified: Int64
+    var total: Int64
 }
