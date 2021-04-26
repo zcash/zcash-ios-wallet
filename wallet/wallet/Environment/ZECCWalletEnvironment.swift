@@ -114,8 +114,8 @@ final class ZECCWalletEnvironment: ObservableObject {
         
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
         
-        _ = try self.synchronizer.initializer.initialize(seedBytes: seedBytes, numberOfAccounts: 1)
-//        try self.synchronizer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
+        let viewingKeys = try DerivationTool.default.deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
+        try self.synchronizer.initialize(unifiedViewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
         
         self.subscribeToApplicationNotificationsPublishers()
         

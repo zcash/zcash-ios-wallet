@@ -80,6 +80,8 @@
 		0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0D5E4AA72527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D5E4AA82527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
+		0D5E9B072637197A00D98569 /* ReadableBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E9B062637197A00D98569 /* ReadableBalance.swift */; };
+		0D5E9B082637197A00D98569 /* ReadableBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E9B062637197A00D98569 /* ReadableBalance.swift */; };
 		0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EA23BE1B87006F5FAD /* Home.swift */; };
 		0D60F2ED23BE1BC9006F5FAD /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
 		0D64DF5125DC0E7F00669906 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D64DF5025DC0E7E00669906 /* UserSettings.swift */; };
@@ -339,6 +341,7 @@
 		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
 		0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-spend.params"; sourceTree = "<group>"; };
 		0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTasks.swift; sourceTree = "<group>"; };
+		0D5E9B062637197A00D98569 /* ReadableBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableBalance.swift; sourceTree = "<group>"; };
 		0D60F2EA23BE1B87006F5FAD /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashBackground.swift; sourceTree = "<group>"; };
 		0D64DF5025DC0E7E00669906 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -675,6 +678,7 @@
 			isa = PBXGroup;
 			children = (
 				0D82F329261284060058B05D /* Alerts.swift */,
+				0D5E9B062637197A00D98569 /* ReadableBalance.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1279,6 +1283,7 @@
 				0D11C22F23BF8181001CF6F7 /* QRCodeContainer.swift in Sources */,
 				0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */,
 				0D1C2F25240D8655001AA427 /* ZcashSeedWordPill.swift in Sources */,
+				0D5E9B072637197A00D98569 /* ReadableBalance.swift in Sources */,
 				0D82F326261279EC0058B05D /* LogfileUtils.swift in Sources */,
 				0D100ED923BA8DE80089DB22 /* CreateNewWallet.swift in Sources */,
 				0D5E4AA72527B440001CB335 /* BackgroundTasks.swift in Sources */,
@@ -1414,6 +1419,7 @@
 				0DCD012424DE245300ED0113 /* ErrorHandling.swift in Sources */,
 				0D0565D824EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
 				0DCDFFD524B6722B000F6999 /* MnemonicSeedPhraseHandling.swift in Sources */,
+				0D5E9B082637197A00D98569 /* ReadableBalance.swift in Sources */,
 				0DCDFFD624B6722B000F6999 /* ZcashBackground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

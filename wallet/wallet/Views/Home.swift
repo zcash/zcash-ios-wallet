@@ -41,7 +41,11 @@ final class HomeViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var showHistory = false
     var lastError: UserFacingErrors?
-    @Published var balance: Double = 0
+    @Published var totalBalance: Double = 0
+    @Published var verifiedBalance: Double = 0
+    @Published var shieldedBalance = ReadableBalance.zero
+    @Published var transparentBalance = ReadableBalance.zero
+    
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
@@ -66,17 +70,24 @@ final class HomeViewModel: ObservableObject {
                 self?.bindToEnvironmentEvents()
             }
         ).store(in: &cancellable)
+        
     }
     
     func bindToEnvironmentEvents() {
         let environment = ZECCWalletEnvironment.shared
         
-        environment.synchronizer.balance
+        environment.synchronizer.transparentBalance
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: {
-                self.balance = $0
-            })
+            .map({ return ReadableBalance(walletBalance: $0) })
+            .assign(to: \.transparentBalance, on: self)
             .store(in: &environmentCancellables)
+        
+        environment.synchronizer.shieldedBalance
+            .receive(on: DispatchQueue.main)
+            .map({ return ReadableBalance(walletBalance: $0) })
+            .assign(to: \.shieldedBalance, on: self)
+            .store(in: &environmentCancellables)
+        
         environment.synchronizer.progress
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
@@ -207,7 +218,7 @@ struct Home: View {
     }
     
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.status.value != .syncing && appEnvironment.synchronizer.verifiedBalance.value > 0
+        appEnvironment.synchronizer.status.value != .syncing && self.viewModel.shieldedBalance.verified > 0
     }
     
     func startSendFlow() {
@@ -238,21 +249,18 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        self.viewModel.sendZecAmount > 0 && self.viewModel.sendZecAmount < appEnvironment.synchronizer.verifiedBalance.value
+        self.viewModel.sendZecAmount > 0 && self.viewModel.sendZecAmount < self.viewModel.shieldedBalance.verified
         
     }
     
-    var balanceView: AnyView {
-        let verifiedBalance = appEnvironment.getShieldedVerifiedBalance()
-        let totalBalance = appEnvironment.getShieldedBalance()
-        if verifiedBalance > 0 || totalBalance > 0 {
-            return AnyView (
-                BalanceDetail(availableZec: verifiedBalance.asHumanReadableZecBalance(), status: appEnvironment.balanceStatus)
-            )
+    @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
+        if shieldedBalance.isThereAnyBalance {
+            BalanceDetail(availableZec: shieldedBalance.verified, status: appEnvironment.balanceStatus)
+                .onLongPressGesture {
+                    self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                }
         } else {
-            return AnyView(
-                ActionableMessage(message: "balance_nofunds".localized())
-            )
+            ActionableMessage(message: "balance_nofunds".localized())
         }
     }
     
@@ -324,13 +332,11 @@ struct Home: View {
                 if self.isSyncing {
                     ActionableMessage(message: "balance_nofunds".localized())
                         .padding([.horizontal], self.buttonPadding)
-                } else if self.isSendingEnabled {
-                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                        .onLongPressGesture {
-                            self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
-                        }
                 } else {
-                    self.balanceView.padding([.horizontal], self.buttonPadding)
+                    self.balanceView(
+                        shieldedBalance: self.viewModel.shieldedBalance,
+                        transparentBalance: self.viewModel.transparentBalance)
+                            .padding([.horizontal], self.buttonPadding)
                 }
                 
                 Spacer()
@@ -395,8 +401,7 @@ struct Home: View {
                 ProfileScreen(isShown: self.$viewModel.destination)
                     .environmentObject(self.appEnvironment)
             case .receiveFunds:
-                ReceiveFunds(shieldedAddress: self.appEnvironment.synchronizer.getShieldedAddress() ?? "",
-                             transparentAddress: self.appEnvironment.synchronizer.getTransparentAddress() ?? "",
+                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,
                              isShown:  self.$viewModel.destination)
                     .environmentObject(self.appEnvironment)
             case .feedback(let score):
@@ -468,5 +473,16 @@ extension Home {
             }
         }
         #endif
+    }
+}
+
+
+extension ReadableBalance {
+    var isThereAnyBalance: Bool {
+        verified > 0 || total > 0
+    }
+    
+    var isSpendable: Bool {
+        verified > 0
     }
 }

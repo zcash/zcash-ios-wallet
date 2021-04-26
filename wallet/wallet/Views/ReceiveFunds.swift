@@ -7,11 +7,11 @@
 //
 
 import SwiftUI
-
+import ZcashLightClientKit
 struct ReceiveFunds<Dismissal: Identifiable>: View {
     
-    let shieldedAddress: String
-    let transparentAddress: String
+    let unifiedAddress: UnifiedAddress
+    
     @Binding var isShown: Dismissal?
     @State var selectedTab: Int = 0
     var body: some View {
@@ -34,13 +34,12 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
                     .padding([.horizontal], 16)
                    
                     if selectedTab == 0 {
-                        DisplayAddress(address: shieldedAddress,
+                        DisplayAddress(address: unifiedAddress.zAddress,
                                        title: "address_shielded".localized(),
                                        badge: Image("QR-zcashlogo"),
                                        accessoryContent: { EmptyView() })
-                            .animation(.easeInOut)
                     } else {
-                        DisplayAddress(address: transparentAddress,
+                        DisplayAddress(address: unifiedAddress.tAddress,
                                        title: "address_transparent".localized(),
                                        chips: 2,
                                        badge: Image("t-zcash-badge"),
@@ -52,9 +51,7 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
                                             .foregroundColor(.white)
                                             .font(.system(size: 16))
                                        })
-                            .animation(.easeInOut)
                     }
-                    
                 })
             }
             .onAppear {
@@ -70,17 +67,3 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
         }
     }
 }
-//
-//struct ReceiveFunds_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-//                .previewDisplayName("iPhone 8")
-//            
-//            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-//                .previewDisplayName("iPhone 11 Pro Max")
-//        }
-//    }
-//}
