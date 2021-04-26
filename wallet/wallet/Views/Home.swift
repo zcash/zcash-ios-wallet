@@ -199,11 +199,14 @@ final class HomeViewModel: ObservableObject {
 }
 
 struct Home: View {
+    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
     @State var feedbackRating: Int? = nil
     @State var isOverlayShown = false
+    @State var transparentBalancePushed = false
+    
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
@@ -256,9 +259,6 @@ struct Home: View {
     @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
         if shieldedBalance.isThereAnyBalance {
             BalanceDetail(availableZec: shieldedBalance.verified, status: appEnvironment.balanceStatus)
-                .onLongPressGesture {
-                    self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
-                }
         } else {
             ActionableMessage(message: "balance_nofunds".localized())
         }
@@ -310,6 +310,9 @@ struct Home: View {
                             .font(.system(size: 14))
                             .foregroundColor(.white)
                             .opacity(self.isSendingEnabled ? 1 : 0.4)
+                            .onLongPressGesture {
+                                self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                            }
                 },
                     trailingItem: {
                         Button(action: {
@@ -325,7 +328,6 @@ struct Home: View {
                 })
                     .frame(height: 64)
                 
-                
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
                     .scaledToFit()
@@ -333,10 +335,16 @@ struct Home: View {
                     ActionableMessage(message: "balance_nofunds".localized())
                         .padding([.horizontal], self.buttonPadding)
                 } else {
-                    self.balanceView(
-                        shieldedBalance: self.viewModel.shieldedBalance,
-                        transparentBalance: self.viewModel.transparentBalance)
-                            .padding([.horizontal], self.buttonPadding)
+                    NavigationLink(
+                        destination: WalletBalanceBreakdown()
+                                        .environmentObject(appEnvironment),
+                        isActive: $transparentBalancePushed,
+                        label: {
+                            self.balanceView(
+                                shieldedBalance: self.viewModel.shieldedBalance,
+                                transparentBalance: self.viewModel.transparentBalance)
+                                .padding([.horizontal], self.buttonPadding)
+                        })
                 }
                 
                 Spacer()

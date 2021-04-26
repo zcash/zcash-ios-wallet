@@ -16,6 +16,7 @@ enum BalanceStatus {
 
 struct BalanceDetail: View {
     var availableZec: Double
+    var transparentFundsAvailable: Bool = false
     var status: BalanceStatus
     
     var available: some View {
@@ -23,6 +24,9 @@ struct BalanceDetail: View {
             .foregroundColor(.zLightGray)
         + Text("balance_available")
             .foregroundColor(Color.zAmberGradient1)
+            + Text(transparentFundsAvailable ? "†" : "")
+                .foregroundColor(.zTransparentBlue)
+                .font(.footnote)
     }
     
     func format(zec: Double) -> String {
