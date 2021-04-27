@@ -413,9 +413,14 @@ struct Home: View {
                              isShown:  self.$viewModel.destination)
                     .environmentObject(self.appEnvironment)
             case .feedback(let score):
+                #if ENABLE_LOGGING
                 FeedbackForm(selectedRating: score,
                              isSolicited: true,
                              isActive: self.$viewModel.destination)
+                #else
+                ProfileScreen(isShown: self.$viewModel.destination)
+                    .environmentObject(self.appEnvironment)
+                #endif
             }
         }
         .navigationBarBackButtonHidden(true)

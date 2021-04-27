@@ -27,6 +27,7 @@ struct BalanceBreakdown: View {
         HStack {
             Image("ic_shieldtick_yellow")
             Text("SHIELDED ZEC")
+                .font(.system(size: 14))
                 .foregroundColor(.zYellow)
         }
     }
@@ -50,7 +51,7 @@ struct BalanceBreakdown: View {
                               backgroundColor: .zBalanceBreakdownItem1)
                 
                 BreakdownItem(title: boringTitle(localizedKey: "= TOTAL"),
-                              amount: model.transparent.total,
+                              amount: model.transparent.total + model.shielded.total,
                               backgroundColor: .zBalanceBreakdownItem2)
                 
             })
@@ -87,17 +88,62 @@ final class AmountBreakdownViewModel: ObservableObject {
     
     init(amount: Double,
          count: Int = 10,
-         formatter: NumberFormatter = NumberFormatter.zecAmountFormatter,
+         formatter: NumberFormatter = NumberFormatter.zecAmountBreakdownFormatter,
          dimLastDecimalPlaces: Int = 5)  {
         self.amount = amount
         self.count = count
         self.formatter = formatter
         self.dimLastDecimalPlaces = dimLastDecimalPlaces
-        self.breakdown = Self.breakAmountDown()
+        self.breakdown = Self.breakAmountDown(value: amount, count: count, formatter: formatter, dimLastDecimalPlaces: dimLastDecimalPlaces)
     }
     
-    static func breakAmountDown() -> (String, String) {
-        ("20.944","31563")
+    static func breakAmountDown(value: Double, count: Int, formatter: NumberFormatter, dimLastDecimalPlaces: Int) -> (String, String) {
+        
+        func pad(_ formattedAmount: String, hasDecimals: Bool ) -> String {
+            if hasDecimals {
+                // this string has fractions. either needs to be padded or trimmed to meet count
+                return formattedAmount.padding(toLength: count + 1, withPad: "0", startingAt: 0 )
+            } else {
+                // does not have a decimal fraction. append a
+                return formattedAmount.appending(formatter.decimalSeparator).padding(toLength: count + 1, withPad: "0", startingAt: 0 )
+            }
+        }
+        
+        guard let formattedAmount = formatter.string(for: value) else {
+            return ("","")
+        }
+        
+        let hasDecimals = formattedAmount.contains(formatter.decimalSeparator)
+        
+        let properlyPaddedFormattedAmount = pad(formattedAmount, hasDecimals: hasDecimals)
+        
+        if dimLastDecimalPlaces >= count {
+            return ("",properlyPaddedFormattedAmount)
+        }
+        
+        guard hasDecimals,
+              let rangeOfDecimalSeparator = properlyPaddedFormattedAmount.range(of: formatter.decimalSeparator)
+        else {
+            return (properlyPaddedFormattedAmount, "")
+        }
+        
+        // split the amount into tuple
+        let startIndex = properlyPaddedFormattedAmount.startIndex
+        let endIndex = properlyPaddedFormattedAmount.endIndex
+        
+        if let lastCharacter = properlyPaddedFormattedAmount.last,
+           String(lastCharacter) == formatter.decimalSeparator {
+            return (String(properlyPaddedFormattedAmount[startIndex ..< properlyPaddedFormattedAmount.index(endIndex, offsetBy: -1)]), "")
+        }
+              
+        
+        var dimIndex = properlyPaddedFormattedAmount.index(endIndex, offsetBy: -dimLastDecimalPlaces)
+        
+        if rangeOfDecimalSeparator.overlaps(dimIndex ..< endIndex) {
+            dimIndex = properlyPaddedFormattedAmount.index(endIndex, offsetBy: -dimLastDecimalPlaces - 1)
+        }
+        
+        return (String(properlyPaddedFormattedAmount[startIndex ..< dimIndex]), String(properlyPaddedFormattedAmount[dimIndex ..< endIndex]))
     }
 }
 
@@ -124,10 +170,10 @@ extension NumberFormatter {
         
         fmt.alwaysShowsDecimalSeparator = false
         fmt.allowsFloats = true
-        fmt.maximumFractionDigits = 8
+        fmt.maximumFractionDigits = 9
         fmt.minimumFractionDigits = 1
         fmt.minimumIntegerDigits = 1
-        fmt.maximumIntegerDigits = 9
+        fmt.maximumIntegerDigits = 10
         fmt.generatesDecimalNumbers = true
         
         return fmt
