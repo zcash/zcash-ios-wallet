@@ -50,6 +50,7 @@ enum Action: String {
     case scanBack = "scan.back"
     case scanReceive = "scan.receive"
     case scanTorch = "scan.torch"
+    case balanceDetail = "home.balance.detail"
     case homeSend = "home.send"
     case sendAddressNext = "send.address.next"
     case sendAddressDoneAddress = "send.address.done.address"

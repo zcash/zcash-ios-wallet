@@ -428,6 +428,7 @@ struct Home: View {
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
+            tracker.track(.tap(action: .balanceDetail), properties: [:])
             showFeedbackIfNeeded()
         }
         .zOverlay(isOverlayShown: $isOverlayShown) {
