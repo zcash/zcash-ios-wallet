@@ -94,4 +94,29 @@ enum UserFacingErrors: Error {
     case criticalError(error: Error?)
 }
 
+enum DeveloperFacingErrors: Error {
+    case thisShouldntBeHappening(error: Error)
+    case unexpectedBehavior(message: String)
+    case programmingError(error: Error)
+    case handledException(error: Error)
+    
+}
 
+extension DeveloperFacingErrors: CustomStringConvertible {
+    public var description: String {
+        return self.localizedDescription
+    }
+
+    public var localizedDescription: String {
+        switch self {
+        case .programmingError(let error):
+            return "This is probably a programming error. \(error). Description: \(error.localizedDescription)"
+        case .unexpectedBehavior(let message):
+            return "Unexpected Behavior - Message: \(message)"
+        case .thisShouldntBeHappening(let error):
+            return "Serious Error - This is something that shouldn't be happening. Probably indicates an inconsistent state or some logic problem that should be revised and corrected. Error: \(error). Description: \(error.localizedDescription)"
+        case .handledException(let error):
+            return "Handled Exception - This is an error that was handled in the app. Error: \(error). Description: \(error.localizedDescription)"
+        }
+    }
+}

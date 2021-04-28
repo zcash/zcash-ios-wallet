@@ -59,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 logger.error("CANNOT INITIALIZE - \(error)")
                 tracker.track(.error(severity: .critical), properties: [ ErrorSeverity.messageKey : "failed to initialize",
                                                                          ErrorSeverity.underlyingError : "\(error)"])
+                tracker.report(handledException: DeveloperFacingErrors.thisShouldntBeHappening(error: error))
                 abort()
             }
         default:

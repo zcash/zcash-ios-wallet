@@ -83,6 +83,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
                     self.alertType = .feedback(message: Text("Your once transparent funds, are now being shielded!"))
                     
                 case .failure(let error):
+                    tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
                     tracker.track(.tap(action: .shieldFundsEnd), properties: ["success" : "false"])
                     self.status = .failed(error: error)
                     self.alertType = .error(title: Text("Error"), message: Text(error.localizedDescription))
@@ -113,6 +114,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     }
     
     func shieldConfirmedFunds() {
+        self.status = .shielding
         self.shieldEnvironment.shield()
     }
 }
@@ -170,7 +172,6 @@ struct WalletBalanceBreakdown: View {
             idleScreen()
         case .shielding:
             shieldingScreen()
-            
         }
     }
     

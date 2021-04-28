@@ -128,7 +128,9 @@ final class ZECCWalletEnvironment: ObservableObject {
      only for internal use
      */
     func nuke(abortApplication: Bool = false) {
-        self.synchronizer.stop()
+        if self.synchronizer != nil {
+            self.synchronizer.stop()
+        }
         
         SeedManager.default.nukeWallet()
         

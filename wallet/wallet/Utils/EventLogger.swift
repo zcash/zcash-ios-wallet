@@ -11,6 +11,7 @@ import Combine
 
 protocol EventLogging {
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>)
+    func report(handledException: Error)
 }
 
 enum Screen: String {
@@ -97,12 +98,15 @@ enum ErrorSeverity: String {
 
 
 class NullLogger: EventLogging {
+    func report(handledException: Error) {
+    }
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {}
 }
 
 
 #if ENABLE_LOGGING
 import Mixpanel
+import Bugsnag
 class MixPanelLogger: EventLogging {
     
     struct TrackingEvent: Equatable {
@@ -112,6 +116,10 @@ class MixPanelLogger: EventLogging {
         var description: String {
             "Event: \(event) - Properties: \(properties ?? [:])"
         }
+    }
+    
+    func report(handledException: Error) {
+        Bugsnag.notifyError(handledException)
     }
     
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {

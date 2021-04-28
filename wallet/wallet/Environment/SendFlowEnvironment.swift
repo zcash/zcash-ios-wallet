@@ -74,6 +74,7 @@ final class SendFlowEnvironment: ObservableObject {
                    .sink(receiveCompletion: { (completion) in
                        switch completion {
                        case .failure(let error):
+                        tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
                            logger.error("error scanning: \(error)")
                            tracker.track(.error(severity: .noncritical), properties:  [ErrorSeverity.messageKey : "\(error)"])
                            self.error = error
@@ -151,6 +152,7 @@ final class SendFlowEnvironment: ObservableObject {
                 case .finished:
                     logger.debug("send flow finished")
                 case .failure(let error):
+                    tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
                     logger.error("\(error)")
                     self.error = error
                     self.showError = true

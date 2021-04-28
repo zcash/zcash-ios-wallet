@@ -257,8 +257,10 @@ struct Home: View {
     }
     
     @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
-        if shieldedBalance.isThereAnyBalance {
-            BalanceDetail(availableZec: shieldedBalance.verified, status: appEnvironment.balanceStatus)
+        if shieldedBalance.isThereAnyBalance || transparentBalance.isThereAnyBalance {
+            BalanceDetail(availableZec: shieldedBalance.verified,
+                          transparentFundsAvailable: transparentBalance.isThereAnyBalance,
+                          status: appEnvironment.balanceStatus)
         } else {
             ActionableMessage(message: "balance_nofunds".localized())
         }
@@ -450,25 +452,6 @@ struct Home: View {
     }
     
 }
-
-
-//struct Home_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-//                .previewDisplayName("iPhone SE")
-//            
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-//                .previewDisplayName("iPhone 8")
-//            
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-//                .previewDisplayName("iPhone 11")
-//        }
-//    }
-//}
 
 extension BlockHeight {
     static var unmined: BlockHeight {

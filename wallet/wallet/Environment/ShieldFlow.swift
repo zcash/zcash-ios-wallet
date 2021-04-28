@@ -40,6 +40,7 @@ final class ShieldFlow: ShieldingPowers {
             tAddr = try DerivationTool.default.deriveTransparentAddress(seed: s)
             
         } catch {
+            tracker.report(handledException: DeveloperFacingErrors.thisShouldntBeHappening(error: error))
             logger.error("unable to derive transaparent address from seed \(error)")
             tAddr = ""
         }
@@ -94,6 +95,7 @@ final class ShieldFlow: ShieldingPowers {
                 .sink { [weak self](completion) in
                     switch completion {
                     case .failure(let e):
+                        tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
                         self?.status.send(completion: .failure(e))
                     case .finished:
                         self?.status.send(completion: .finished)
