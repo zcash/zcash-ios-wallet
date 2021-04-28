@@ -17,6 +17,14 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
         case shielding
         case failed(error: Error)
         case finished
+        var isShielding: Bool {
+            switch self {
+            case .shielding:
+                return true
+            default:
+                return false
+            }
+        }
     }
     
     enum AlertType: Identifiable {
@@ -70,10 +78,12 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
                 case .finished:
                     
                     UserSettings.shared.userEverShielded = true
+                    tracker.track(.tap(action: .shieldFundsEnd), properties: ["success" : "true"])
                     self.status = .finished
                     self.alertType = .feedback(message: Text("Your once transparent funds, are now being shielded!"))
                     
                 case .failure(let error):
+                    tracker.track(.tap(action: .shieldFundsEnd), properties: ["success" : "false"])
                     self.status = .failed(error: error)
                     self.alertType = .error(title: Text("Error"), message: Text(error.localizedDescription))
                 }
@@ -109,30 +119,97 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
 
 struct WalletBalanceBreakdown: View {
     @State var model = WalletBalanceBreakdownViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    
+    @ViewBuilder func idleScreen() -> some View {
+        VStack {
+            BalanceBreakdown(model: BalanceBreakdownViewModel(shielded: model.shieldedBalance, transparent: model.transparentBalance))
+                .frame(height: 270, alignment: .center)
+                .cornerRadius(5)
+            Spacer()
+            if model.unconfirmedFunds > 0 {
+                Text("(\(model.unconfirmedFunds.toZecAmount()) ZEC pending)")
+                    .foregroundColor(.zGray3)
+                Spacer()
+            }
+            
+            Button(action: {
+                tracker.track(.tap(action: .shieldFundsStart), properties: [:])
+                self.model.shieldConfirmedFunds()
+            }) {
+                Text("Shield Transparent Funds")
+                    .foregroundColor(.black)
+                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+                    .frame(height: 48)
+            }
+            .disabled(!model.isShieldingButtonEnabled)
+            .opacity(model.isShieldingButtonEnabled ? 1.0 : 0.4)
+        }
+        .padding([.horizontal, .vertical], 24)
+    }
+    
+    @ViewBuilder func shieldingScreen() -> some View {
+        VStack {
+            Text("Shielding")
+                .foregroundColor(.white)
+                .font(.title)
+            Text("Do not close this screen")
+                .foregroundColor(.white)
+                .font(.caption)
+                .opacity(0.6)
+            self.model.lottie
+                .onAppear() {
+                    self.model.lottie.play(loop: true)
+                }
+        }
+        .padding([.horizontal, .vertical], 24)
+    }
+    @ViewBuilder func viewForState(_ state: WalletBalanceBreakdownViewModel.Status) -> some View {
+        switch state {
+        case .idle, .failed,.finished:
+            idleScreen()
+        case .shielding:
+            shieldingScreen()
+            
+        }
+    }
     
     var body: some View {
         ZStack {
             ZcashBackground()
-            VStack {
-                BalanceBreakdown(model: BalanceBreakdownViewModel(shielded: model.shieldedBalance, transparent: model.transparentBalance))
-                    .frame(height: 270, alignment: .center)
-                    .cornerRadius(5)
-                Spacer()
-                if model.unconfirmedFunds > 0 {
-                    Text("(\(model.unconfirmedFunds.toZecAmount()) ZEC pending")
-                        .foregroundColor(.zGray3)
-                    Spacer()
-                }
-                
-                Text("Shield Transparent Funds")
-                    .foregroundColor(.black)
-                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zYellow)))
-                    .frame(height: 48)
+            viewForState(model.status)
+        }
+        .alert(item: self.$model.alertType) { (p) -> Alert in
+            switch p {
+            case .error(let title, let message):
+                return Alert(title: title, message: message, dismissButton: .default(Text("Ok"), action: {
+                    self.closeThisAwesomeThing()
+                }))
+            case .feedback(let message):
+                return Alert(title: Text(""), message: message, dismissButton: .default(Text("Ok"), action: {
+                    self.closeThisAwesomeThing()
+                }))
+            case .pasteBoardItem(let item):
+                return PasteboardAlertHelper.alert(for: item)
             }
-            .padding([.horizontal, .vertical], 24)
-            
+        }
+        .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
+            self.model.alertType = WalletBalanceBreakdownViewModel.AlertType.pasteBoardItem(item: p)
+        }
+        .onAppear() {
+            tracker.track(.screen(screen: .balance), properties: [:])
+        }
+        .onDisappear() {
+            ShieldFlow.endFlow()
         }
         .navigationBarTitle(Text(""), displayMode: .inline)
+        .navigationBarBackButtonHidden(model.status.isShielding)
+        
+    }
+    
+    func closeThisAwesomeThing() {
+        ShieldFlow.endFlow()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

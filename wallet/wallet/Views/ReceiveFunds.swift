@@ -44,12 +44,16 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
                                        chips: 2,
                                        badge: Image("t-zcash-badge"),
                                        accessoryContent: {
-                                         Text("""
-                                            This address is for receiving only.
-                                            Any funds received will be auto-shielded.
-                                            """)
-                                            .foregroundColor(.white)
-                                            .font(.system(size: 16))
+                                        VStack(alignment: .leading) {
+                                             Text("This address is for receiving only.")
+                                                .lineLimit(nil)
+                                                .foregroundColor(.white)
+                                                .font(.system(size: 14))
+                                            Text("Any funds received will be auto-shielded.")
+                                               .lineLimit(nil)
+                                               .foregroundColor(.white)
+                                               .font(.system(size: 14))
+                                        }
                                        })
                     }
                 })

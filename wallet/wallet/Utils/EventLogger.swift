@@ -28,6 +28,7 @@ enum Screen: String {
     case sendFinal = "send.final"
     case sendMemo = "send.memo"
     case sendTransaction = "send.transaction"
+    case balance
     
 }
 enum Action: String {
@@ -73,6 +74,8 @@ enum Action: String {
     case backgroundAppRefreshEnd = "background.apprefresh.end"
     case backgroundProcessingStart = "background.processing.start"
     case backgroundProcessingEnd = "background.processing.end"
+    case shieldFundsStart = "shield.funds.start"
+    case shieldFundsEnd = "shield.funds.end"
 }
 enum LogEvent: Equatable {
     case screen(screen: Screen)
