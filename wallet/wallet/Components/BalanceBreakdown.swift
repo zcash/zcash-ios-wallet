@@ -83,21 +83,21 @@ final class AmountBreakdownViewModel: ObservableObject {
     let amount: Double
     let count: Int
     let formatter: NumberFormatter
-    let dimLastDecimalPlaces: Int
+    let highlightingDecimals: Int
     let breakdown: (String,String)
     
     init(amount: Double,
          count: Int = 10,
          formatter: NumberFormatter = NumberFormatter.zecAmountBreakdownFormatter,
-         dimLastDecimalPlaces: Int = 5)  {
+         highlightingDecimals: Int = 3)  {
         self.amount = amount
         self.count = count
         self.formatter = formatter
-        self.dimLastDecimalPlaces = dimLastDecimalPlaces
-        self.breakdown = Self.breakAmountDown(value: amount, count: count, formatter: formatter, dimLastDecimalPlaces: dimLastDecimalPlaces)
+        self.highlightingDecimals = highlightingDecimals
+        self.breakdown = Self.breakAmountDown(value: amount, count: count, formatter: formatter, highlightingDecimals: highlightingDecimals)
     }
     
-    static func breakAmountDown(value: Double, count: Int, formatter: NumberFormatter, dimLastDecimalPlaces: Int) -> (String, String) {
+    static func breakAmountDown(value: Double, count: Int, formatter: NumberFormatter, highlightingDecimals: Int) -> (String, String) {
         
         func pad(_ formattedAmount: String, hasDecimals: Bool ) -> String {
             if hasDecimals {
@@ -117,33 +117,37 @@ final class AmountBreakdownViewModel: ObservableObject {
         
         let properlyPaddedFormattedAmount = pad(formattedAmount, hasDecimals: hasDecimals)
         
-        if dimLastDecimalPlaces >= count {
+        if highlightingDecimals >= count {
             return ("",properlyPaddedFormattedAmount)
         }
+
+        let endIndex = properlyPaddedFormattedAmount.endIndex
         
+        
+        // If the number has no decimals or padding got rid of them return the whole string on compoenent 0
         guard hasDecimals,
-              let rangeOfDecimalSeparator = properlyPaddedFormattedAmount.range(of: formatter.decimalSeparator)
+              let rangeOfDecimalSeparator = properlyPaddedFormattedAmount.range(of: formatter.decimalSeparator),
+              rangeOfDecimalSeparator.lowerBound != endIndex
         else {
             return (properlyPaddedFormattedAmount, "")
         }
         
         // split the amount into tuple
         let startIndex = properlyPaddedFormattedAmount.startIndex
-        let endIndex = properlyPaddedFormattedAmount.endIndex
         
-        if let lastCharacter = properlyPaddedFormattedAmount.last,
-           String(lastCharacter) == formatter.decimalSeparator {
-            return (String(properlyPaddedFormattedAmount[startIndex ..< properlyPaddedFormattedAmount.index(endIndex, offsetBy: -1)]), "")
+        // find out how many decimals there are after padding
+        
+        let decimals = properlyPaddedFormattedAmount.distance(from: rangeOfDecimalSeparator.lowerBound, to: endIndex)
+        
+
+        if decimals > highlightingDecimals {
+            let highlightUntilIndex = properlyPaddedFormattedAmount.index(rangeOfDecimalSeparator.upperBound, offsetBy: highlightingDecimals )
+            return (
+                String(properlyPaddedFormattedAmount[startIndex ..< highlightUntilIndex]),
+                String(properlyPaddedFormattedAmount[highlightUntilIndex ..< endIndex]))
+        } else {
+            return (properlyPaddedFormattedAmount, "")
         }
-              
-        
-        var dimIndex = properlyPaddedFormattedAmount.index(endIndex, offsetBy: -dimLastDecimalPlaces)
-        
-        if rangeOfDecimalSeparator.overlaps(dimIndex ..< endIndex) {
-            dimIndex = properlyPaddedFormattedAmount.index(endIndex, offsetBy: -dimLastDecimalPlaces - 1)
-        }
-        
-        return (String(properlyPaddedFormattedAmount[startIndex ..< dimIndex]), String(properlyPaddedFormattedAmount[dimIndex ..< endIndex]))
     }
 }
 
