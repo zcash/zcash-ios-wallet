@@ -108,8 +108,6 @@
 		0D89FF4724ED9E2C008E79DD /* Date+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */; };
 		0D8C3E2D23D8B37900B94438 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */; };
 		0D8C3E2F23D8BA6500B94438 /* String+Zcash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */; };
-		0D8EB6FC25C06E0A00E2A359 /* AwesomeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */; };
-		0D8EB6FD25C06E0A00E2A359 /* AwesomeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */; };
 		0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92967823BEEFFC001518F3 /* BalanceDetail.swift */; };
 		0D92AEBE2422D6F30028AD53 /* ZcashTapToSendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */; };
 		0D93E2FD26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */; };
@@ -232,7 +230,6 @@
 		0DE30354263A158400CF877A /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
 		0DE30355263A158400CF877A /* ZcashButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDA23BA91F70089DB22 /* ZcashButton.swift */; };
 		0DE30356263A158400CF877A /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */; };
-		0DE30357263A158400CF877A /* AwesomeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */; };
 		0DE30358263A158400CF877A /* ZcashTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D27C4A823C4C4640044B48E /* ZcashTextField.swift */; };
 		0DE30359263A158400CF877A /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D73958F24A40E6C00936DE3 /* String+localized.swift */; };
 		0DE3035A263A158400CF877A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D100EDD23BA92A50089DB22 /* Colors.swift */; };
@@ -481,7 +478,6 @@
 		0D89FF4524ED9E2C008E79DD /* Date+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Zcash.swift"; sourceTree = "<group>"; };
 		0D8C3E2C23D8B37900B94438 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		0D8C3E2E23D8BA6500B94438 /* String+Zcash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Zcash.swift"; sourceTree = "<group>"; };
-		0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwesomeMenu.swift; sourceTree = "<group>"; };
 		0D92967823BEEFFC001518F3 /* BalanceDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetail.swift; sourceTree = "<group>"; };
 		0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTapToSendButton.swift; sourceTree = "<group>"; };
 		0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceBreakdownViewModelTests.swift; sourceTree = "<group>"; };
@@ -641,7 +637,6 @@
 				0D81D0AD261FA0DA003ECF47 /* Feedback */,
 				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
-				0D8EB6FB25C06E0A00E2A359 /* AwesomeMenu.swift */,
 				0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */,
 			);
 			path = Views;
@@ -1467,7 +1462,6 @@
 				0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */,
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
-				0D8EB6FC25C06E0A00E2A359 /* AwesomeMenu.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
 				8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
@@ -1594,7 +1588,6 @@
 				0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */,
 				0DCDFF9924B6722B000F6999 /* SeedBackup.swift in Sources */,
 				0DCDFF9A24B6722B000F6999 /* Fonts.swift in Sources */,
-				0D8EB6FD25C06E0A00E2A359 /* AwesomeMenu.swift in Sources */,
 				0DCDFF9B24B6722B000F6999 /* CombineSynchronizer.swift in Sources */,
 				0DCDFF9C24B6722B000F6999 /* SendZecView.swift in Sources */,
 				0DCDFF9D24B6722B000F6999 /* ProfileScreen.swift in Sources */,
@@ -1709,7 +1702,6 @@
 				0DE30354263A158400CF877A /* BlockExplorerUrlHandling.swift in Sources */,
 				0DE30355263A158400CF877A /* ZcashButton.swift in Sources */,
 				0DE30356263A158400CF877A /* KeyboardAdaptive.swift in Sources */,
-				0DE30357263A158400CF877A /* AwesomeMenu.swift in Sources */,
 				0DE30358263A158400CF877A /* ZcashTextField.swift in Sources */,
 				0DE30359263A158400CF877A /* String+localized.swift in Sources */,
 				0DE3035A263A158400CF877A /* Colors.swift in Sources */,

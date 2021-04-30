@@ -19,7 +19,6 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
         case feedback
         case seedBackup
         case nuke
-        case awesomeMenu
         var id: Int {
             return self.rawValue
         }
@@ -27,7 +26,6 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
     
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var nukePressed = false
-    
     @State var copiedValue: PasteboardItemModel?
     @Binding var isShown: Dismissal?
     @State var alertItem: AlertItem?
@@ -38,20 +36,13 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: LazyView(AwesomeMenu(isActive: $destination)
-                                                        .environmentObject(AwesomeViewModel())
-                ), tag: Destination.awesomeMenu, selection: self.$destination) {
-                    EmptyView()
-                }
+              
                 ZcashBackground()
                 ScrollView {
                     VStack(alignment: .center, spacing: 16) {
                         Image(UserSettings.shared.userEverShielded ? "profile_yellowzebra" : "profile_zebra")
                             .accentColor(.zYellow)
                             .accessibility(label: Text(UserSettings.shared.userEverShielded ? "A Golden zebra" : "A Zebra"))
-                            .onLongPressGesture {
-                                self.destination = .awesomeMenu
-                            }
                             
                         VStack {
                             Text("profile_screen")
@@ -60,10 +51,10 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                             Button(action: {
                                 tracker.track(.tap(action: .copyAddress),
                                               properties: [:])
-                                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.getShieldedAddress() ?? "", notify: "feedback_addresscopied".localized())
+                                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.synchronizer.unifiedAddress.zAddress, notify: "feedback_addresscopied".localized())
 
                             }) {
-                                Text(self.appEnvironment.getShieldedAddress() ?? "")
+                                Text(self.appEnvironment.synchronizer.unifiedAddress.zAddress)
                                 .lineLimit(3)
                                     .multilineTextAlignment(.center)
                                     .font(.system(size: 15))
@@ -127,7 +118,7 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                                 .frame(height: ScreenConstants.buttonHeight)
                         }
 
-                        ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                        ActionableMessage(message: "\(appName) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                             .disabled(true)
                         
                         Button(action: {
@@ -187,6 +178,14 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                 tracker.track(.tap(action: .profileClose), properties: [:])
                 self.isShown = nil
             }).frame(width: 30, height: 30))
+        }
+    }
+    
+    var appName: String {
+        if ZcashSDK.isMainnet {
+            return "ECC Wallet".localized()
+        } else {
+            return "ECC Testnet"
         }
     }
 }

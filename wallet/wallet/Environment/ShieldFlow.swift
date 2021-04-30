@@ -13,7 +13,6 @@ import ZcashLightClientKit
 
 protocol ShieldingPowers {
     var status: CurrentValueSubject<ShieldFlow.Status,Error> { get set }
-    var unshieldedBalance: CurrentValueSubject<WalletBalance,Never> {get set}
     func shield()
 }
 
@@ -25,38 +24,12 @@ final class ShieldFlow: ShieldingPowers {
         case ended
     }
     
-    var unshieldedBalance: CurrentValueSubject<WalletBalance,Never>
     var status: CurrentValueSubject<ShieldFlow.Status, Error>
     var cancellables = [AnyCancellable]()
     private var synchronizer: CombineSynchronizer = ZECCWalletEnvironment.shared.synchronizer
     
     private init() {
         self.status = CurrentValueSubject<Status,Error>(.notStarted)
-        self.unshieldedBalance = CurrentValueSubject(TransparentBalance.zero)
-        var tAddr: String!
-        do {
-            let p = try SeedManager.default.exportPhrase()
-            let s = try MnemonicSeedProvider.default.toSeed(mnemonic: p)
-            tAddr = try DerivationTool.default.deriveTransparentAddress(seed: s)
-            
-        } catch {
-            tracker.report(handledException: DeveloperFacingErrors.thisShouldntBeHappening(error: error))
-            logger.error("unable to derive transaparent address from seed \(error)")
-            tAddr = ""
-        }
-        
-        self.synchronizer.unshieldedBalance(for: tAddr)
-            .receive(on: DispatchQueue.main)
-            .tryCatch { _ in
-                self.synchronizer.cachedUnshieldedBalance(for: tAddr)
-            }
-            .sink { (_) in
-                
-            } receiveValue: { [weak self] (tBalance) in
-                self?.unshieldedBalance.send(tBalance)
-                
-            }
-            .store(in: &cancellables)
     }
     
     private static var _currentFlow: ShieldingPowers?
@@ -95,6 +68,7 @@ final class ShieldFlow: ShieldingPowers {
                 .sink { [weak self](completion) in
                     switch completion {
                     case .failure(let e):
+                        logger.error("failed to shield funds \(e.localizedDescription)")
                         tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
                         self?.status.send(completion: .failure(e))
                     case .finished:
@@ -134,7 +108,6 @@ extension EnvironmentValues {
 
 
 final class MockFailingShieldFlow: ShieldingPowers {
-    var unshieldedBalance: CurrentValueSubject<WalletBalance, Never> = CurrentValueSubject(TransparentBalance(verified: 60000, total: 23000))
     
     var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
     
@@ -148,7 +121,7 @@ final class MockFailingShieldFlow: ShieldingPowers {
 
 final class MockSuccessShieldFlow: ShieldingPowers {
     var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    var unshieldedBalance: CurrentValueSubject<WalletBalance, Never> = CurrentValueSubject(TransparentBalance(verified: 60000, total: 23000))
+    
     func shield() {
         status.send(.shielding)
         DispatchQueue.global().asyncAfter(deadline: .now() + 10) { [weak self] in
