@@ -408,11 +408,10 @@ struct Home: View {
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
             switch item {
             case .profile:
-                ProfileScreen(isShown: self.$viewModel.destination)
+                ProfileScreen()
                     .environmentObject(self.appEnvironment)
             case .receiveFunds:
-                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,
-                             isShown:  self.$viewModel.destination)
+                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress)
                     .environmentObject(self.appEnvironment)
             case .feedback(let score):
                 #if ENABLE_LOGGING

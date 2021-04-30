@@ -8,11 +8,10 @@
 
 import SwiftUI
 import ZcashLightClientKit
-struct ReceiveFunds<Dismissal: Identifiable>: View {
+struct ReceiveFunds: View {
     
     let unifiedAddress: UnifiedAddress
-    
-    @Binding var isShown: Dismissal?
+    @Environment(\.presentationMode) var presentationMode
     @State var selectedTab: Int = 0
     var body: some View {
         NavigationView {
@@ -66,7 +65,7 @@ struct ReceiveFunds<Dismissal: Identifiable>: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .receiveBack), properties: [:])
-                self.isShown = nil
+                presentationMode.wrappedValue.dismiss()
                 }).frame(width: 30, height: 30))
         }
     }

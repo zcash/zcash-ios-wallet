@@ -14,7 +14,7 @@ fileprivate struct ScreenConstants {
     static let horizontalPadding = CGFloat(30)
 }
 
-struct ProfileScreen<Dismissal: Identifiable>: View {
+struct ProfileScreen: View {
     enum Destination: Int, Identifiable, Hashable {
         case feedback
         case seedBackup
@@ -25,9 +25,9 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
     }
     
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @Environment(\.presentationMode) var presentationMode
     @State var nukePressed = false
     @State var copiedValue: PasteboardItemModel?
-    @Binding var isShown: Dismissal?
     @State var alertItem: AlertItem?
     @State var showingSheet: Bool = false
     @State var shareItem: ShareItem? = nil
@@ -156,11 +156,11 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                         buttons: [
                             .destructive(Text("Full Re-scan"), action: {
                                 self.appEnvironment.synchronizer.fullRescan()
-                                self.isShown = nil
+                                self.presentationMode.wrappedValue.dismiss()
                             }),
                             .default(Text("Quick Re-Scan"), action: {
                                 self.appEnvironment.synchronizer.quickRescan()
-                                self.isShown = nil
+                                self.presentationMode.wrappedValue.dismiss()
                             }),
                             .default(Text("Dismiss".localized()))
                         ]
@@ -176,7 +176,7 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .profileClose), properties: [:])
-                self.isShown = nil
+                self.presentationMode.wrappedValue.dismiss()
             }).frame(width: 30, height: 30))
         }
     }

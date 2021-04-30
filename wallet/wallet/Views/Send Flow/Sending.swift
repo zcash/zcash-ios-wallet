@@ -105,7 +105,7 @@ struct Sending: View {
             .padding([.horizontal, .bottom], 40)
         }
         .sheet(item: $details, onDismiss: { self.flow.close() }){ item in
-            TxDetailsWrapper(row: item, isActive: self.$details)
+            TxDetailsWrapper(row: item)
         }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert
