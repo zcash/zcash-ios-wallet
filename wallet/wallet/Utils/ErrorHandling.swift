@@ -102,11 +102,67 @@ enum DeveloperFacingErrors: Error {
     
 }
 
+extension DeveloperFacingErrors {
+    var asNSError: NSError {
+        NSError(domain: self.domain, code: self.errorCode, userInfo: self.errorUserInfo)
+    }
+}
+
+extension DeveloperFacingErrors: CustomNSError {
+    var domain: String {
+        switch self {
+        case .handledException:
+            return "DeveloperFacingErrors.handledException"
+        case .thisShouldntBeHappening:
+            return "DeveloperFacingErrors.thisShouldntBeHappening"
+        case .unexpectedBehavior:
+            return "DeveloperFacingErrors.unexpectedBehavior"
+        case .programmingError:
+            return "DeveloperFacingErrors.programmingError"
+        }
+    }
+    
+    var errorCode: Int {
+        switch  self {
+        case .thisShouldntBeHappening:
+            return 0
+        case .unexpectedBehavior:
+            return 1
+        case .programmingError:
+            return 2
+        case .handledException:
+            return 3
+        }
+    }
+    
+    var underlyingError: Error {
+        switch self {
+        case .handledException(let error):
+            return error
+        case .programmingError(let error):
+            return error
+        case .thisShouldntBeHappening(let error):
+            return error
+        case .unexpectedBehavior:
+            return self
+        }
+    }
+    var errorUserInfo: [String : Any] {
+        
+        return [
+            NSLocalizedDescriptionKey : self.localizedDescription,
+            NSUnderlyingErrorKey : self.underlyingError,
+            NSLocalizedFailureReasonErrorKey : self.localizedDescription,
+        ]
+    }
+}
+
 extension DeveloperFacingErrors: CustomStringConvertible {
     public var description: String {
         return self.localizedDescription
     }
-
+    
+    
     public var localizedDescription: String {
         switch self {
         case .programmingError(let error):

@@ -117,9 +117,14 @@ class MixPanelLogger: EventLogging {
             "Event: \(event) - Properties: \(properties ?? [:])"
         }
     }
-    
+    /**
+     Ideally use DeveloperFacingErrors error types to they print fine on bugsnag
+     */
     func report(handledException: Error) {
-        Bugsnag.notifyError(handledException)
+        guard let error = handledException as? DeveloperFacingErrors else {
+            return Bugsnag.notifyError(handledException)
+        }
+        Bugsnag.notifyError(error.asNSError)
     }
     
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {
