@@ -44,6 +44,10 @@ final class SendFlowEnvironment: ObservableObject {
     enum FlowError: Error {
         case invalidEnvironment
         case duplicateSent
+        case invalidAmount(message: String)
+        case derivationFailed(error: Error)
+        case derivationFailed(message: String)
+        case invalidDestinationAddress(address: String)
     }
     
     @Published var showScanView = false
@@ -106,71 +110,85 @@ final class SendFlowEnvironment: ObservableObject {
         self.includesMemo = false
     }
 
-
+    func fail(_ error: Error) {
+        self.error = error
+        self.showError = true
+        self.isDone = true
+    }
+    
     func send() {
         guard !txSent else {
             let message = "attempt to send tx twice"
             logger.error(message)
             tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : message])
-            self.error = FlowError.duplicateSent
-            self.showError = true
-            self.isDone = true
+            fail(FlowError.duplicateSent)
             return
         }
         let environment = ZECCWalletEnvironment.shared
-        guard let zatoshi = doubleAmount?.toZatoshi(),
-            environment.isValidAddress(self.address),
-            let phrase = try? SeedManager.default.exportPhrase(),
-            let seedBytes = try? MnemonicSeedProvider.default.toSeed(mnemonic: phrase),
-            let spendingKey = try? DerivationTool.default.deriveSpendingKeys(seed: seedBytes, numberOfAccounts: 1).first,
-            let replyToAddress = environment.getShieldedAddress() else {
-                self.error = FlowError.invalidEnvironment
-                self.showError = true
-                self.isDone = true
-                return
+        guard let zatoshi = doubleAmount?.toZatoshi() else {
+            let message = "invalid zatoshi amount: \(String(describing: doubleAmount))"
+            logger.error(message)
+            fail(FlowError.invalidAmount(message: message))
+            return
         }
-        
-        UserSettings.shared.lastUsedAddress = self.address
-        environment.synchronizer.send(
-            with: spendingKey,
-            zatoshi: zatoshi,
-            to: self.address,
-            memo: Self.buildMemo(
-                memo: self.memo,
-                includesMemo: self.includesMemo,
-                replyToAddress: self.includeSendingAddress ? replyToAddress : nil
-            ),
-            from: 0
-        )
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] (completion) in
-                guard let self = self else {
-                    return
-                }
-                
-                switch completion {
-                case .finished:
-                    logger.debug("send flow finished")
-                case .failure(let error):
-                    tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
-                    logger.error("\(error)")
-                    self.error = error
-                    self.showError = true
-                    tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : "\(ZECCWalletEnvironment.mapError(error: error))"])
+            
+        do {
+            let phrase = try SeedManager.default.exportPhrase()
+            let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
+            guard let spendingKey = try DerivationTool.default.deriveSpendingKeys(seed: seedBytes, numberOfAccounts: 1).first else {
+                let message = "no spending key for account 1"
+                logger.error(message)
+                self.fail(FlowError.derivationFailed(message: "no spending key for account 1"))
+                return
+            }
+            let replyToAddress = try DerivationTool.default.deriveViewingKey(spendingKey: spendingKey)
+    
+            UserSettings.shared.lastUsedAddress = self.address
+            environment.synchronizer.send(
+                with: spendingKey,
+                zatoshi: zatoshi,
+                to: self.address,
+                memo: Self.buildMemo(
+                    memo: self.memo,
+                    includesMemo: self.includesMemo,
+                    replyToAddress: self.includeSendingAddress ? replyToAddress : nil
+                ),
+                from: 0
+            )
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { [weak self] (completion) in
+                    guard let self = self else {
+                        return
+                    }
                     
-                }
-                // fix me:
-                self.isDone = true
+                    switch completion {
+                    case .finished:
+                        logger.debug("send flow finished")
+                    case .failure(let error):
+                        tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
+                        logger.error("\(error)")
+                        self.error = error
+                        self.showError = true
+                        tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : "\(ZECCWalletEnvironment.mapError(error: error))"])
+                        
+                    }
+                    // fix me:
+                    self.isDone = true
+                    
+                }) { [weak self] (transaction) in
+                    guard let self = self else {
+                        return
+                    }
+                        self.pendingTx = transaction
+                }.store(in: &diposables)
+            
                 
-            }) { [weak self] (transaction) in
-                guard let self = self else {
-                    return
-                }
-                    self.pendingTx = transaction
-            }.store(in: &diposables)
-        
-        self.txSent = true
-
+            self.txSent = true
+            
+        } catch {
+            logger.error("failed to send: \(error)")
+            self.fail(error)
+        }
     }
     
     var hasErrors: Bool {
