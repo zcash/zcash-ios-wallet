@@ -60,6 +60,7 @@
 //Sending
 "thing is that we really don't know what just went down, sorry!" = "thing is that we really don't know what just went down, sorry!";
 "send_sending" = "Sending %@ ZEC to";
+"send_sending_taz" = "Sending %@ TAZ to";
 "send_sent" = "Sent!";
 "an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
 "label_unabletosend" = "Unable to send to";

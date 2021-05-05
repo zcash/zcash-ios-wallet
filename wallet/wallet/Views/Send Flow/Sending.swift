@@ -47,7 +47,7 @@ struct Sending: View {
             return Text("label_unabletosend")
         }
         
-        return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString("send_sending", comment: ""), flow.amount))
+        return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString(ZcashSDK.isMainnet ? "send_sending" : "send_sending_taz", comment: ""), flow.amount))
     }
     
     var body: some View {
