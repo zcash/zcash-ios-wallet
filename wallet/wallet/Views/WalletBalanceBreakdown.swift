@@ -120,7 +120,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
 }
 
 struct WalletBalanceBreakdown: View {
-    @State var model = WalletBalanceBreakdownViewModel()
+    @EnvironmentObject var model: WalletBalanceBreakdownViewModel
     @Environment(\.presentationMode) var presentationMode
     
     @ViewBuilder func idleScreen() -> some View {

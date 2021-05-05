@@ -339,7 +339,7 @@ struct Home: View {
                 } else {
                     NavigationLink(
                         destination: WalletBalanceBreakdown()
-                                        .environmentObject(appEnvironment),
+                                        .environmentObject(WalletBalanceBreakdownViewModel()),
                         isActive: $transparentBalancePushed,
                         label: {
                             self.balanceView(
