@@ -35,7 +35,6 @@
 		0D11C23723BFB666001CF6F7 /* ShareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11C23623BFB666001CF6F7 /* ShareScreen.swift */; };
 		0D12510323B557E40014EE3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510223B557E40014EE3A /* AppDelegate.swift */; };
 		0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12510423B557E40014EE3A /* SceneDelegate.swift */; };
-		0D12510923B557E60014EE3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
 		0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
 		0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
 		0D12511A23B557E60014EE3A /* walletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12511923B557E60014EE3A /* walletTests.swift */; };
@@ -65,6 +64,9 @@
 		0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */; };
 		0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF923C66B7500E5E55E /* Sending.swift */; };
 		0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AFE23C67DCE00E5E55E /* DetailCard.swift */; };
+		0D4332862644A36F005B5B8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
+		0D4332872644A370005B5B8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
+		0D4332882644A38A005B5B8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
 		0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4364C623CCF4CC008B7DAC /* SendFlowEnvironment.swift */; };
 		0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */; };
 		0D4B91DB24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B91D924CA390B00A0E024 /* KeyboardAdaptive.swift */; };
@@ -206,7 +208,6 @@
 		0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
 		0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
-		0DCDFFE124B6722B000F6999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
 		0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */; };
 		0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
 		0DD1C2CE24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
@@ -329,7 +330,6 @@
 		0DE303BB263A158400CF877A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
 		0DE303BC263A158400CF877A /* lottie_sending.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075224DB4A440080B0CF /* lottie_sending.json */; };
 		0DE303BD263A158400CF877A /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
-		0DE303C7263A1D6F00CF877A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510823B557E60014EE3A /* Assets.xcassets */; };
 		0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAD23BEB0E500709636 /* Fonts.swift */; };
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
@@ -1090,6 +1090,7 @@
 			files = (
 				0DC1430225C47880001D8E55 /* lottie_shield.json in Resources */,
 				0DF3075624DB4A440080B0CF /* lottie_success.json in Resources */,
+				0D4332862644A36F005B5B8E /* Assets.xcassets in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
 				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
@@ -1098,7 +1099,6 @@
 				8D3F362524A40FCF0087687A /* Localizable.strings in Resources */,
 				0DF3075424DB4A440080B0CF /* lottie_sending.json in Resources */,
 				0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */,
-				0D12510923B557E60014EE3A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1122,6 +1122,7 @@
 			files = (
 				0DC1430325C47880001D8E55 /* lottie_shield.json in Resources */,
 				0DF3075724DB4A440080B0CF /* lottie_success.json in Resources */,
+				0D4332872644A370005B5B8E /* Assets.xcassets in Resources */,
 				0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */,
 				0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */,
 				0D2D5C1724CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
@@ -1130,7 +1131,6 @@
 				0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */,
 				0DF3075524DB4A440080B0CF /* lottie_sending.json in Resources */,
 				0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */,
-				0DCDFFE124B6722B000F6999 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1140,7 +1140,7 @@
 			files = (
 				0DE303B4263A158400CF877A /* lottie_shield.json in Resources */,
 				0DE303B5263A158400CF877A /* lottie_success.json in Resources */,
-				0DE303C7263A1D6F00CF877A /* Assets.xcassets in Resources */,
+				0D4332882644A38A005B5B8E /* Assets.xcassets in Resources */,
 				0DE303B6263A158400CF877A /* LaunchScreen.storyboard in Resources */,
 				0DE303B7263A158400CF877A /* sapling-spend.params in Resources */,
 				0DE303B8263A158400CF877A /* lottie_button_loading_new.json in Resources */,
@@ -2160,7 +2160,7 @@
 			baseConfigurationReference = DEB820D2BC402B8C0D71048C /* Pods-ECC-Wallet-Testnet.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 105;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2187,7 +2187,7 @@
 			baseConfigurationReference = 59E7CA9AC34A57106C045D01 /* Pods-ECC-Wallet-Testnet.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 105;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
