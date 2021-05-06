@@ -102,9 +102,7 @@ class CombineSynchronizer {
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
-        // BUGFIX: transactions history empty when synchronizer fails to connect to server
-        // fill with initial values
-        self.updatePublishers()
+        
         
         // Subscribe to SDKSynchronizer notifications
         
@@ -190,7 +188,12 @@ class CombineSynchronizer {
             throw SynchronizerError.initFailed(message: "unable to derive unified address: \(error.localizedDescription)")
         }
         
+        
         try self.synchronizer.prepare()
+        
+        // BUGFIX: transactions history empty when synchronizer fails to connect to server
+        // fill with initial values
+        self.updatePublishers()
     }
     
     func start(retry: Bool = false) throws {
