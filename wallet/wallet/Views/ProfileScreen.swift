@@ -14,22 +14,20 @@ fileprivate struct ScreenConstants {
     static let horizontalPadding = CGFloat(30)
 }
 
-struct ProfileScreen<Dismissal: Identifiable>: View {
+struct ProfileScreen: View {
     enum Destination: Int, Identifiable, Hashable {
         case feedback
         case seedBackup
         case nuke
-        case awesomeMenu
         var id: Int {
             return self.rawValue
         }
     }
     
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @Environment(\.presentationMode) var presentationMode
     @State var nukePressed = false
-    
     @State var copiedValue: PasteboardItemModel?
-    @Binding var isShown: Dismissal?
     @State var alertItem: AlertItem?
     @State var showingSheet: Bool = false
     @State var shareItem: ShareItem? = nil
@@ -38,20 +36,13 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: LazyView(AwesomeMenu(isActive: $destination)
-                                                        .environmentObject(AwesomeViewModel())
-                ), tag: Destination.awesomeMenu, selection: self.$destination) {
-                    EmptyView()
-                }
+              
                 ZcashBackground()
                 ScrollView {
                     VStack(alignment: .center, spacing: 16) {
                         Image(UserSettings.shared.userEverShielded ? "profile_yellowzebra" : "profile_zebra")
                             .accentColor(.zYellow)
                             .accessibility(label: Text(UserSettings.shared.userEverShielded ? "A Golden zebra" : "A Zebra"))
-                            .onLongPressGesture {
-                                self.destination = .awesomeMenu
-                            }
                             
                         VStack {
                             Text("profile_screen")
@@ -60,10 +51,10 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                             Button(action: {
                                 tracker.track(.tap(action: .copyAddress),
                                               properties: [:])
-                                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.getShieldedAddress() ?? "", notify: "feedback_addresscopied".localized())
+                                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.synchronizer.unifiedAddress.zAddress, notify: "feedback_addresscopied".localized())
 
                             }) {
-                                Text(self.appEnvironment.getShieldedAddress() ?? "")
+                                Text(self.appEnvironment.synchronizer.unifiedAddress.zAddress)
                                 .lineLimit(3)
                                     .multilineTextAlignment(.center)
                                     .font(.system(size: 15))
@@ -127,7 +118,7 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                                 .frame(height: ScreenConstants.buttonHeight)
                         }
 
-                        ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                        ActionableMessage(message: "\(appName) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                             .disabled(true)
                         
                         Button(action: {
@@ -165,11 +156,11 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
                         buttons: [
                             .destructive(Text("Full Re-scan"), action: {
                                 self.appEnvironment.synchronizer.fullRescan()
-                                self.isShown = nil
+                                self.presentationMode.wrappedValue.dismiss()
                             }),
                             .default(Text("Quick Re-Scan"), action: {
                                 self.appEnvironment.synchronizer.quickRescan()
-                                self.isShown = nil
+                                self.presentationMode.wrappedValue.dismiss()
                             }),
                             .default(Text("Dismiss".localized()))
                         ]
@@ -185,8 +176,16 @@ struct ProfileScreen<Dismissal: Identifiable>: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .profileClose), properties: [:])
-                self.isShown = nil
+                self.presentationMode.wrappedValue.dismiss()
             }).frame(width: 30, height: 30))
+        }
+    }
+    
+    var appName: String {
+        if ZcashSDK.isMainnet {
+            return "ECC Wallet".localized()
+        } else {
+            return "ECC Testnet"
         }
     }
 }

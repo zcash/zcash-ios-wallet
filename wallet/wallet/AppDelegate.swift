@@ -25,16 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        
         #if targetEnvironment(simulator)
         if ProcessInfo.processInfo.environment["isTest"] != nil {
             return true
         }
-        #endif
-        // Override point for customization after application launch.
-        #if ENABLE_LOGGING
-        Bugsnag.start(withApiKey: Constants.bugsnagApiKey)
-        #endif
-        
+        #else
+
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundAppRefreshTaskIdentifier,
           using: nil) { (task) in
@@ -47,7 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           using: nil) { (task) in
             BackgroundTaskSyncronizing.default.handleBackgroundProcessingTask(task as! BGProcessingTask)
         }
+        #endif
         
+        #if ENABLE_LOGGING
+        Bugsnag.start(withApiKey: Constants.bugsnagApiKey)
+        #endif
         
         let environment = ZECCWalletEnvironment.shared
         switch environment.state {
@@ -59,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 logger.error("CANNOT INITIALIZE - \(error)")
                 tracker.track(.error(severity: .critical), properties: [ ErrorSeverity.messageKey : "failed to initialize",
                                                                          ErrorSeverity.underlyingError : "\(error)"])
+                tracker.report(handledException: DeveloperFacingErrors.thisShouldntBeHappening(error: error))
                 abort()
             }
         default:

@@ -94,4 +94,85 @@ enum UserFacingErrors: Error {
     case criticalError(error: Error?)
 }
 
+enum DeveloperFacingErrors: Error {
+    case thisShouldntBeHappening(error: Error)
+    case unexpectedBehavior(message: String)
+    case programmingError(error: Error)
+    case handledException(error: Error)
+    
+}
 
+extension DeveloperFacingErrors {
+    var asNSError: NSError {
+        NSError(domain: self.domain, code: self.errorCode, userInfo: self.errorUserInfo)
+    }
+}
+
+extension DeveloperFacingErrors: CustomNSError {
+    var domain: String {
+        switch self {
+        case .handledException:
+            return "DeveloperFacingErrors.handledException"
+        case .thisShouldntBeHappening:
+            return "DeveloperFacingErrors.thisShouldntBeHappening"
+        case .unexpectedBehavior:
+            return "DeveloperFacingErrors.unexpectedBehavior"
+        case .programmingError:
+            return "DeveloperFacingErrors.programmingError"
+        }
+    }
+    
+    var errorCode: Int {
+        switch  self {
+        case .thisShouldntBeHappening:
+            return 0
+        case .unexpectedBehavior:
+            return 1
+        case .programmingError:
+            return 2
+        case .handledException:
+            return 3
+        }
+    }
+    
+    var underlyingError: Error {
+        switch self {
+        case .handledException(let error):
+            return error
+        case .programmingError(let error):
+            return error
+        case .thisShouldntBeHappening(let error):
+            return error
+        case .unexpectedBehavior:
+            return self
+        }
+    }
+    var errorUserInfo: [String : Any] {
+        
+        return [
+            NSLocalizedDescriptionKey : self.localizedDescription,
+            NSUnderlyingErrorKey : self.underlyingError,
+            NSLocalizedFailureReasonErrorKey : self.localizedDescription,
+        ]
+    }
+}
+
+extension DeveloperFacingErrors: CustomStringConvertible {
+    public var description: String {
+        return self.localizedDescription
+    }
+    
+    
+    public var localizedDescription: String {
+        switch self {
+        case .programmingError(let error):
+            return "This is probably a programming error. \(error). Description: \(error.localizedDescription)"
+        case .unexpectedBehavior(let message):
+            return "Unexpected Behavior - Message: \(message)"
+        case .thisShouldntBeHappening(let error):
+            return "Serious Error - This is something that shouldn't be happening. Probably indicates an inconsistent state or some logic problem that should be revised and corrected. Error: \(error). Description: \(error.localizedDescription)"
+        case .handledException(let error):
+            return "Handled Exception - This is an error that was handled in the app. Error: \(error). Description: \(error.localizedDescription)"
+        }
+    }
+}

@@ -68,18 +68,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     func reset() throws {
         self.synchronizer.stop()
         self.state = Self.getInitialState()
-        
-        let initializer = Initializer(
-            cacheDbURL: self.cacheDbURL,
-            dataDbURL: self.dataDbURL,
-            pendingDbURL: self.pendingDbURL,
-            endpoint: endpoint,
-            spendParamsURL: self.spendParamsURL,
-            outputParamsURL: self.outputParamsURL,
-            
-            loggerProxy: logger)
-        self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        
+        self.synchronizer = nil
     }
     
     func createNewWallet() throws {
@@ -101,6 +90,7 @@ final class ZECCWalletEnvironment: ObservableObject {
     func initialize() throws {
         let seedPhrase = try SeedManager.default.exportPhrase()
         let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
+        let viewingKeys = try DerivationTool.default.deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
         
         let initializer = Initializer(
             cacheDbURL: self.cacheDbURL,
@@ -109,13 +99,13 @@ final class ZECCWalletEnvironment: ObservableObject {
             endpoint: endpoint,
             spendParamsURL: self.spendParamsURL,
             outputParamsURL: self.outputParamsURL,
+            viewingKeys: viewingKeys,
             walletBirthday: try SeedManager.default.exportBirthday(),
             loggerProxy: logger)
         
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
         
-        let viewingKeys = try DerivationTool.default.deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
-        try self.synchronizer.initialize(unifiedViewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
+        try self.synchronizer.prepare()
         
         self.subscribeToApplicationNotificationsPublishers()
         
@@ -128,7 +118,9 @@ final class ZECCWalletEnvironment: ObservableObject {
      only for internal use
      */
     func nuke(abortApplication: Bool = false) {
-        self.synchronizer.stop()
+        if self.synchronizer != nil {
+            self.synchronizer.stop()
+        }
         
         SeedManager.default.nukeWallet()
         
@@ -173,6 +165,8 @@ final class ZECCWalletEnvironment: ObservableObject {
             }
         } else if let synchronizerError = error as? SynchronizerError {
             switch synchronizerError {
+            case .notPrepared:
+                return WalletError.initializationFailed(message: "attempt to initialize an unprepared synchronizer")
             case .generalError(let message):
                 return WalletError.genericErrorWithMessage(message: message)
             case .initFailed(let message):

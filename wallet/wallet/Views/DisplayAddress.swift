@@ -61,7 +61,7 @@ struct DisplayAddress<AccesoryContent: View>: View {
                             AddressFragment(number: i + 1, word: self.chips[i])
                                 .frame(height: 24)
                         }
-                        
+                        self.accessoryContent
                     } else {
                         ForEach(stride(from: 0, through: chips.count - 1, by: 2).map({ i in i}), id: \.self) { i in
                             HStack {
@@ -82,8 +82,6 @@ struct DisplayAddress<AccesoryContent: View>: View {
             .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
                 self.copyItemModel = p 
             }
-            
-            self.accessoryContent
             
             Spacer()
             

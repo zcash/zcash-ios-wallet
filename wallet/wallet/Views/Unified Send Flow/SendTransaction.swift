@@ -179,12 +179,9 @@ struct SendTransaction: View {
                         }
                 }
                 if !ZECCWalletEnvironment.shared.isValidTransparentAddress(flow.address) {
-                    
-                
                     ZcashMemoTextField(text: $flow.memo,
                                    includesReplyTo: $flow.includeSendingAddress,
                                    charLimit: .constant(charLimit))
-                
                 } else {
                     Spacer()
                 }

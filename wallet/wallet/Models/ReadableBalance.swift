@@ -22,4 +22,8 @@ extension ReadableBalance {
     static var zero: ReadableBalance {
         ReadableBalance(verified: 0, total: 0)
     }
+    
+    var unconfirmedFunds: Double {
+        total - verified
+    }
 }

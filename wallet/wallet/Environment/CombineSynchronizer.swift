@@ -102,9 +102,7 @@ class CombineSynchronizer {
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         
-        // BUGFIX: transactions history empty when synchronizer fails to connect to server
-        // fill with initial values
-        self.updatePublishers()
+        
         
         // Subscribe to SDKSynchronizer notifications
         
@@ -180,10 +178,9 @@ class CombineSynchronizer {
     
     
     
-    func initialize(unifiedViewingKeys: [UnifiedViewingKey], walletBirthday: BlockHeight) throws {
-        
-        guard let uvk = unifiedViewingKeys.first else {
-            throw SynchronizerError.initFailed(message: "Provided empty keys array. this is a programmin error")
+    func prepare() throws {
+        guard let uvk = self.initializer.viewingKeys.first else {
+            throw SynchronizerError.initFailed(message: "unable to derive unified address. this is probably a programming error")
         }
         do {
             self.unifiedAddress = try DerivationTool.default.deriveUnifiedAddressFromUnifiedViewingKey(uvk)
@@ -191,7 +188,12 @@ class CombineSynchronizer {
             throw SynchronizerError.initFailed(message: "unable to derive unified address: \(error.localizedDescription)")
         }
         
-        try self.synchronizer.initialize(unifiedViewingKeys: unifiedViewingKeys, walletBirthday: walletBirthday)
+        
+        try self.synchronizer.prepare()
+        
+        // BUGFIX: transactions history empty when synchronizer fails to connect to server
+        // fill with initial values
+        self.updatePublishers()
     }
     
     func start(retry: Bool = false) throws {

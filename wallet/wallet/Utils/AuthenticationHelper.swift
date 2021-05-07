@@ -80,8 +80,13 @@ class AuthenticationHelper {
                 
                 return
             }
-            authenticationPublisher.send(.failed(error: .generalError(message: authError.localizedDescription)))
             
+            switch authError.code {
+            case .biometryNotAvailable, .biometryNotEnrolled:
+                authenticationPublisher.send(.success)
+            default:
+                authenticationPublisher.send(.failed(error: .generalError(message: authError.localizedDescription)))
+            }
         }
     }
 }

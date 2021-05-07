@@ -199,11 +199,14 @@ final class HomeViewModel: ObservableObject {
 }
 
 struct Home: View {
+    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
     @State var feedbackRating: Int? = nil
     @State var isOverlayShown = false
+    @State var transparentBalancePushed = false
+    
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
@@ -254,11 +257,10 @@ struct Home: View {
     }
     
     @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
-        if shieldedBalance.isThereAnyBalance {
-            BalanceDetail(availableZec: shieldedBalance.verified, status: appEnvironment.balanceStatus)
-                .onLongPressGesture {
-                    self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
-                }
+        if shieldedBalance.isThereAnyBalance || transparentBalance.isThereAnyBalance {
+            BalanceDetail(availableZec: shieldedBalance.verified,
+                          transparentFundsAvailable: transparentBalance.isThereAnyBalance,
+                          status: appEnvironment.balanceStatus)
         } else {
             ActionableMessage(message: "balance_nofunds".localized())
         }
@@ -310,6 +312,9 @@ struct Home: View {
                             .font(.system(size: 14))
                             .foregroundColor(.white)
                             .opacity(self.isSendingEnabled ? 1 : 0.4)
+                            .onLongPressGesture {
+                                self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                            }
                 },
                     trailingItem: {
                         Button(action: {
@@ -325,7 +330,6 @@ struct Home: View {
                 })
                     .frame(height: 64)
                 
-                
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
                     .scaledToFit()
@@ -333,10 +337,16 @@ struct Home: View {
                     ActionableMessage(message: "balance_nofunds".localized())
                         .padding([.horizontal], self.buttonPadding)
                 } else {
-                    self.balanceView(
-                        shieldedBalance: self.viewModel.shieldedBalance,
-                        transparentBalance: self.viewModel.transparentBalance)
-                            .padding([.horizontal], self.buttonPadding)
+                    NavigationLink(
+                        destination: WalletBalanceBreakdown()
+                                        .environmentObject(WalletBalanceBreakdownViewModel()),
+                        isActive: $transparentBalancePushed,
+                        label: {
+                            self.balanceView(
+                                shieldedBalance: self.viewModel.shieldedBalance,
+                                transparentBalance: self.viewModel.transparentBalance)
+                                .padding([.horizontal], self.buttonPadding)
+                        })
                 }
                 
                 Spacer()
@@ -398,16 +408,20 @@ struct Home: View {
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
             switch item {
             case .profile:
-                ProfileScreen(isShown: self.$viewModel.destination)
+                ProfileScreen()
                     .environmentObject(self.appEnvironment)
             case .receiveFunds:
-                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,
-                             isShown:  self.$viewModel.destination)
+                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress)
                     .environmentObject(self.appEnvironment)
             case .feedback(let score):
+                #if ENABLE_LOGGING
                 FeedbackForm(selectedRating: score,
                              isSolicited: true,
                              isActive: self.$viewModel.destination)
+                #else
+                ProfileScreen(isShown: self.$viewModel.destination)
+                    .environmentObject(self.appEnvironment)
+                #endif
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -415,6 +429,7 @@ struct Home: View {
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
+            tracker.track(.tap(action: .balanceDetail), properties: [:])
             showFeedbackIfNeeded()
         }
         .zOverlay(isOverlayShown: $isOverlayShown) {
@@ -436,25 +451,6 @@ struct Home: View {
     }
     
 }
-
-
-//struct Home_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-//                .previewDisplayName("iPhone SE")
-//            
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-//                .previewDisplayName("iPhone 8")
-//            
-//            Home().environmentObject(ZECCWalletEnvironment.shared)
-//                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-//                .previewDisplayName("iPhone 11")
-//        }
-//    }
-//}
 
 extension BlockHeight {
     static var unmined: BlockHeight {

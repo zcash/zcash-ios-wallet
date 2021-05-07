@@ -25,6 +25,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
+            #if targetEnvironment(simulator)
+            if ProcessInfo.processInfo.environment["isTest"] != nil {
+                window.rootViewController = HostingController(rootView:
+                        AnyView(
+                            NavigationView {
+                                Text("test")
+                            }
+                        )
+                    )
+                self.window = window
+                _zECCWalletNavigationBarLookTweaks()
+                window.makeKeyAndVisible()
+                return
+            }
+            #endif
             window.rootViewController = HostingController(rootView:
                     AnyView(
                         NavigationView {
