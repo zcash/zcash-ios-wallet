@@ -43,8 +43,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = HostingController(rootView:
                     AnyView(
                         NavigationView {
-                            firstView(walletEnvironment: ZECCWalletEnvironment.shared)
-                        }.environmentObject(ZECCWalletEnvironment.shared)
+                            TheNoScreen().environmentObject(ZECCWalletEnvironment.shared)
+                        }
                     )
                 )
             self.window = window
@@ -96,6 +96,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     @ViewBuilder func firstView(walletEnvironment: ZECCWalletEnvironment) -> some View {            
             switch walletEnvironment.state {
+            case .unprepared:
+                TheNoScreen()
             case .initalized,
                  .syncing,
                  .synced:

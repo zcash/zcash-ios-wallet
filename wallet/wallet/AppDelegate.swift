@@ -50,23 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Bugsnag.start(withApiKey: Constants.bugsnagApiKey)
         #endif
         
-        let environment = ZECCWalletEnvironment.shared
-        switch environment.state {
-        case .initalized,
-             .synced:
-            do {
-                try environment.initialize()
-            } catch {
-                logger.error("CANNOT INITIALIZE - \(error)")
-                tracker.track(.error(severity: .critical), properties: [ ErrorSeverity.messageKey : "failed to initialize",
-                                                                         ErrorSeverity.underlyingError : "\(error)"])
-                tracker.report(handledException: DeveloperFacingErrors.thisShouldntBeHappening(error: error))
-                abort()
-            }
-        default:
-            break
-        }
-        
         return true
     }
     

@@ -11,8 +11,9 @@ import SwiftUI
 import ZcashLightClientKit
 import Combine
 enum WalletState {
-    case initalized
     case uninitialized
+    case unprepared
+    case initalized
     case syncing
     case synced
 }
@@ -42,7 +43,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         do {
             let dataDbURL = try URL.dataDbURL()
             let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
-            return attrs.count > 0 ? .initalized : .uninitialized
+            return attrs.count > 0 ? .unprepared : .uninitialized
         } catch {
             tracker.track(.error(severity: .critical), properties: [
                             ErrorSeverity.underlyingError : "error",

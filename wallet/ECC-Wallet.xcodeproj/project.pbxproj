@@ -122,6 +122,9 @@
 		0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */; };
 		0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */; };
 		0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */; };
+		0DB826222645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
+		0DB826232645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
+		0DB826242645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
 		0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1A24CB5D5C009C654E /* ShareView.swift */; };
 		0DBA1E1C24CB5D5C009C654E /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1A24CB5D5C009C654E /* ShareView.swift */; };
 		0DBA1E1E24CB628B009C654E /* DisplayAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */; };
@@ -488,6 +491,7 @@
 		0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
 		0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedManagement.swift; sourceTree = "<group>"; };
 		0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZECCWalletEnvironment.swift; sourceTree = "<group>"; };
+		0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheNoScreen.swift; sourceTree = "<group>"; };
 		0DBA1E1A24CB5D5C009C654E /* ShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAddress.swift; sourceTree = "<group>"; };
 		0DBA1E2024CB6950009C654E /* AddressFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFragment.swift; sourceTree = "<group>"; };
@@ -638,6 +642,7 @@
 				0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */,
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 				0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */,
+				0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1538,6 +1543,7 @@
 				0D72330823E9CFE40004B6D1 /* QRCodeScannerView.swift in Sources */,
 				0D12510523B557E40014EE3A /* SceneDelegate.swift in Sources */,
 				0D11C22F23BF8181001CF6F7 /* QRCodeContainer.swift in Sources */,
+				0DB826222645E9C100CEA2B6 /* TheNoScreen.swift in Sources */,
 				0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */,
 				0D1C2F25240D8655001AA427 /* ZcashSeedWordPill.swift in Sources */,
 				0D5E9B072637197A00D98569 /* ReadableBalance.swift in Sources */,
@@ -1604,6 +1610,7 @@
 				0DCDFFA524B6722B000F6999 /* WalletDetails.swift in Sources */,
 				0D67489525C1CC3B00BE59C4 /* ShieldFlow.swift in Sources */,
 				0DCDFFA624B6722B000F6999 /* BalanceUtils.swift in Sources */,
+				0DB826242645E9C100CEA2B6 /* TheNoScreen.swift in Sources */,
 				0D64DF5225DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
@@ -1778,6 +1785,7 @@
 				0DE303A1263A158400CF877A /* QRCodeScannerView.swift in Sources */,
 				0DE303A2263A158400CF877A /* SceneDelegate.swift in Sources */,
 				0DE303A3263A158400CF877A /* QRCodeContainer.swift in Sources */,
+				0DB826232645E9C100CEA2B6 /* TheNoScreen.swift in Sources */,
 				0DE303A4263A158400CF877A /* TransactionDetail.swift in Sources */,
 				0DE303A5263A158400CF877A /* ZcashSeedWordPill.swift in Sources */,
 				0DE303A6263A158400CF877A /* ReadableBalance.swift in Sources */,
@@ -2111,11 +2119,11 @@
 			baseConfigurationReference = 4561814BA5B2134841DF75E7 /* Pods-ECC-Wallet-no-logging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 105;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = 6J82A38BF9;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
@@ -2126,6 +2134,7 @@
 				MARKETING_VERSION = 0.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2136,10 +2145,10 @@
 			baseConfigurationReference = CA0B4D8E758BD88483D3B5EE /* Pods-ECC-Wallet-no-logging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 105;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = 6J82A38BF9;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
@@ -2150,6 +2159,7 @@
 				MARKETING_VERSION = 0.3.7;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

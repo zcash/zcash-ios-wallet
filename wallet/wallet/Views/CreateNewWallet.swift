@@ -54,7 +54,7 @@ struct CreateNewWallet: View {
             VStack(alignment: .center, spacing: self.itemSpacing) {
                 Spacer()
                 
-                ZcashLogo()
+                ZcashLogo(fillStyle: LinearGradient.amberGradient)
                 
                 Spacer()
                 Button(action: {
