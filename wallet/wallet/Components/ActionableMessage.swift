@@ -19,7 +19,7 @@ struct ActionableMessage: View {
             return AnyView(
                 Button(action: action) {
                     Text(text)
-                        .foregroundColor(Color.zAmberGradient2)
+                    .foregroundColor(Color.zAmberGradient2)
                 }
             )
         } else {
@@ -29,13 +29,12 @@ struct ActionableMessage: View {
         }
     }
     var body: some View {
-        
         HStack {
-            Text(message)
-            .foregroundColor(.white)
-            Spacer()
-            actionView
-            
+            VStack {
+                Text(message)
+                    .foregroundColor(.white)
+                actionView
+            }
         }
         .padding()
         .cornerRadius(cornerRadius)
