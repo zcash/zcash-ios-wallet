@@ -118,7 +118,7 @@ struct ProfileScreen: View {
                                 .frame(height: ScreenConstants.buttonHeight)
                         }
 
-                        ActionableMessage(message: "\(appName) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                        ActionableMessage(message: "\(ZECCWalletEnvironment.appName) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
                             .disabled(true)
                         
                         Button(action: {
@@ -180,14 +180,7 @@ struct ProfileScreen: View {
             }).frame(width: 30, height: 30))
         }
     }
-    
-    var appName: String {
-        if ZcashSDK.isMainnet {
-            return "ECC Wallet".localized()
-        } else {
-            return "ECC Testnet"
-        }
-    }
+
 }
 
 //struct ProfileScreen_Previews: PreviewProvider {

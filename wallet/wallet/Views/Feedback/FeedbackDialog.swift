@@ -30,7 +30,7 @@ struct ScreenOverlay<ForegroundContent: View>: ViewModifier {
                 }
                 .padding(.all, 24)
             }
-            .animation(.easeIn(duration: 0.5))
+            .transition(.opacity)
         } else {
             content
         }

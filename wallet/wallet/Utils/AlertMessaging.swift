@@ -46,3 +46,9 @@ extension UserFacingErrors {
         }
     }
 }
+
+extension UserFacingErrors: LocalizedError {
+    public var errorDescription: String? {
+        self.message
+    }
+}

@@ -11,15 +11,15 @@ import SwiftUI
 
 
 struct TheNoScreen: View {
-    @State var alert: AlertType? = nil
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
    
     @ViewBuilder func theUnscreen() -> some View {
-        ZStack {
+        ZStack(alignment: .center) {
             ZcashBackground.amberSplashScreen
             ZcashLogo(fillStyle: Color.black)
-                .scaleEffect(0.66)
-                
+                .frame(width: 167,
+                       height: 167,
+                       alignment: .center)
         }
         .navigationBarHidden(true)
         .onAppear() {
@@ -28,7 +28,7 @@ struct TheNoScreen: View {
                     try appEnvironment.initialize()
                     appEnvironment.state = .initalized
                 } catch {
-                    self.alert = .error(underlyingError: error)
+                    self.appEnvironment.state = .failure(error: error)
                 }
             }
         }
@@ -47,11 +47,16 @@ struct TheNoScreen: View {
                 
         case .uninitialized:
             CreateNewWallet().environmentObject(appEnvironment)
-
+        
+        case .failure(let error):
+            OhMyScreen().environmentObject(
+                OhMyScreenViewModel(failure: mapToUserFacingError(ZECCWalletEnvironment.mapError(error: error)))
+            )
         }
     }
     var body: some View {
         viewForState(appEnvironment.state)
+            .transition(.opacity)
     }
 }
 

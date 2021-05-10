@@ -16,6 +16,7 @@ enum WalletState {
     case initalized
     case syncing
     case synced
+    case failure(error: Error)
 }
 
 
@@ -322,6 +323,15 @@ final class ZECCWalletEnvironment: ObservableObject {
 }
 
 extension ZECCWalletEnvironment {
+    
+    static var appName: String {
+        if ZcashSDK.isMainnet {
+            return "ECC Wallet".localized()
+        } else {
+            return "ECC Testnet"
+        }
+    }
+    
     static var appBuild: String? {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     }

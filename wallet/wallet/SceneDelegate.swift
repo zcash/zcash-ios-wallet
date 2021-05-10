@@ -89,27 +89,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     static var shared: SceneDelegate {
         UIApplication.shared.windows[0].windowScene?.delegate as! SceneDelegate
     }
-    
-    var createNewWallet: some View {
-        CreateNewWallet()
-    }
-    
-    @ViewBuilder func firstView(walletEnvironment: ZECCWalletEnvironment) -> some View {            
-            switch walletEnvironment.state {
-            case .unprepared:
-                TheNoScreen()
-            case .initalized,
-                 .syncing,
-                 .synced:
-    
-                Home()
-                    .environmentObject(HomeViewModel())
-                    
-            case .uninitialized:
-                CreateNewWallet().environmentObject(walletEnvironment)
-    
-            }
-       
-    }
   
 }

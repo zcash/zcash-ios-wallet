@@ -122,6 +122,9 @@
 		0D9E89BB23DA3A9900AFD118 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */; };
 		0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */; };
 		0D9E89C223DA620E00AFD118 /* ZECCWalletEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */; };
+		0DACBB33264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
+		0DACBB34264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
+		0DACBB35264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
 		0DB826222645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
 		0DB826232645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
 		0DB826242645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
@@ -491,6 +494,7 @@
 		0D9E89BA23DA3A9900AFD118 /* RestoreWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
 		0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedManagement.swift; sourceTree = "<group>"; };
 		0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZECCWalletEnvironment.swift; sourceTree = "<group>"; };
+		0DACBB32264980620085F1CD /* OhMyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OhMyScreen.swift; sourceTree = "<group>"; };
 		0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheNoScreen.swift; sourceTree = "<group>"; };
 		0DBA1E1A24CB5D5C009C654E /* ShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAddress.swift; sourceTree = "<group>"; };
@@ -643,6 +647,7 @@
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 				0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */,
 				0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */,
+				0DACBB32264980620085F1CD /* OhMyScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1468,6 +1473,7 @@
 				0D100EDB23BA91F70089DB22 /* ZcashButton.swift in Sources */,
 				0D4B91DA24CA390B00A0E024 /* KeyboardAdaptive.swift in Sources */,
 				0D27C4A923C4C4640044B48E /* ZcashTextField.swift in Sources */,
+				0DACBB33264980630085F1CD /* OhMyScreen.swift in Sources */,
 				8D73959024A40E6C00936DE3 /* String+localized.swift in Sources */,
 				0D100EDE23BA92A50089DB22 /* Colors.swift in Sources */,
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
@@ -1594,6 +1600,7 @@
 				0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */,
 				0DCDFF9924B6722B000F6999 /* SeedBackup.swift in Sources */,
 				0DCDFF9A24B6722B000F6999 /* Fonts.swift in Sources */,
+				0DACBB35264980630085F1CD /* OhMyScreen.swift in Sources */,
 				0DCDFF9B24B6722B000F6999 /* CombineSynchronizer.swift in Sources */,
 				0DCDFF9C24B6722B000F6999 /* SendZecView.swift in Sources */,
 				0DCDFF9D24B6722B000F6999 /* ProfileScreen.swift in Sources */,
@@ -1710,6 +1717,7 @@
 				0DE30355263A158400CF877A /* ZcashButton.swift in Sources */,
 				0DE30356263A158400CF877A /* KeyboardAdaptive.swift in Sources */,
 				0DE30358263A158400CF877A /* ZcashTextField.swift in Sources */,
+				0DACBB34264980630085F1CD /* OhMyScreen.swift in Sources */,
 				0DE30359263A158400CF877A /* String+localized.swift in Sources */,
 				0DE3035A263A158400CF877A /* Colors.swift in Sources */,
 				0DE3035B263A158400CF877A /* KeyPad.swift in Sources */,
