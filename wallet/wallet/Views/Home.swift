@@ -66,10 +66,10 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.isSyncing = false
                 self.progress.send(0)
-                }, receiveValue: { [weak self] in
-                    guard let self = self else { return }
-                    self.isSyncing = $0 < 1.0 && $0 > 0
-                    self.progress.send($0)
+            }, receiveValue: { [weak self] in
+                guard let self = self else { return }
+                self.isSyncing = $0 < 1.0 && $0 > 0
+                self.progress.send($0)
             })
             .store(in: &environmentCancellables)
         
@@ -82,31 +82,31 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 
                 self.show(error: error)
-        }
-        .store(in: &environmentCancellables)
+            }
+            .store(in: &environmentCancellables)
         
         
         environment.synchronizer.pendingTransactions
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
-            
-        }) { [weak self] (pendingTransactions) in
-            self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
-                .map( { DetailModel(pendingTransaction: $0)})
-        }.store(in: &cancellable)
+                
+            }) { [weak self] (pendingTransactions) in
+                self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
+                    .map( { DetailModel(pendingTransaction: $0)})
+            }.store(in: &cancellable)
         environment.synchronizer.status
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] status in
-            
-            guard let self = self else { return }
-            switch status {
-            case .syncing:
-                self.isSyncing = true
-            default:
-                self.isSyncing = false
-            }
-        }).store(in: &environmentCancellables)
-       
+                
+                guard let self = self else { return }
+                switch status {
+                case .syncing:
+                    self.isSyncing = true
+                default:
+                    self.isSyncing = false
+                }
+            }).store(in: &environmentCancellables)
+        
     }
     
     func unbindSubcribedEnvironmentEvents() {
@@ -140,22 +140,22 @@ final class HomeViewModel: ObservableObject {
         
         
         let defaultAlert = Alert(title: Text(error.title),
-                                message: Text(error.message),
-                                dismissButton: .default(Text("button_close"),
-                                                    action: errorAction))
+                                 message: Text(error.message),
+                                 dismissButton: .default(Text("button_close"),
+                                                         action: errorAction))
         switch error {
         case .synchronizerError(let canRetry):
             if canRetry {
                 return Alert(
-                        title: Text(error.title),
-                        message: Text(error.message),
-                        primaryButton: .default(Text("button_close"),action: errorAction),
-                        secondaryButton: .default(Text("Retry"),
-                                                     action: {
-                                                        self.clearError()
-                                                        try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
-                                                        })
-                           )
+                    title: Text(error.title),
+                    message: Text(error.message),
+                    primaryButton: .default(Text("button_close"),action: errorAction),
+                    secondaryButton: .default(Text("Retry"),
+                                              action: {
+                                                self.clearError()
+                                                try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+                                              })
+                )
             } else {
                 return defaultAlert
             }
@@ -170,7 +170,10 @@ final class HomeViewModel: ObservableObject {
     }
 }
 
+
+
 struct Home: View {
+    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
@@ -249,133 +252,135 @@ struct Home: View {
     
     var body: some View {
         ZStack {
-            
             if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
             }
-            
-            VStack(alignment: .center, spacing: 5) {
-                
-                ZcashNavigationBar(
-                    leadingItem: {
-                        Button(action: {
-                            self.viewModel.showReceiveFunds = true
-                            tracker.track(.tap(action: .receive), properties: [:])
-                        }) {
-                            Image("QRCodeIcon")
-                                .renderingMode(.original)
-                                .accessibility(label: Text("Receive Funds"))
-                                .scaleEffect(0.5)
-                            
-                        }
-                        .sheet(isPresented: $viewModel.showReceiveFunds){
-                            ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
-                                         isShown:  self.$viewModel.showReceiveFunds)
-                                .environmentObject(self.appEnvironment)
-                        }
-                },
-                    headerItem: {
-                        Text("balance_amounttosend")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white)
-                            .opacity(self.isSendingEnabled ? 1 : 0.4)
-                },
-                    trailingItem: {
-                        Button(action: {
-                            tracker.track(.tap(action: .showProfile), properties: [:])
-                            self.viewModel.showProfile = true
-                        }) {
-                            Image("person_pin-24px")
-                                .renderingMode(.original)
-                                .opacity(0.6)
-                                .accessibility(label: Text("Your Profile"))
-                                .padding()
-                        }
-                        .sheet(isPresented: $viewModel.showProfile){
-                            ProfileScreen(isShown: self.$viewModel.showProfile)
-                                .environmentObject(self.appEnvironment)
-                        }
-                })
-                    .frame(height: 64)
-                
-                
-                SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
-                    .opacity(amountOpacity)
-                    .scaledToFit()
-                
-                if self.isSendingEnabled {
-                  
-                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                        .onLongPressGesture {
-                            self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
-                        }
-                } else {
-                    Spacer()
-                    self.balanceView.padding([.horizontal], self.buttonPadding)
-                }
-                
-                Spacer()
-                
-                KeyPad(value: $viewModel.sendZecAmountText)
-                    .frame(alignment: .center)
-                    .padding(.horizontal, buttonPadding)
-                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
-                    .disabled(!self.isSendingEnabled)
-                    .alert(isPresented: self.$viewModel.showError) {
-                        self.viewModel.errorAlert
-                }
-                
-                Spacer()
-                
-                if self.$viewModel.isSyncing.wrappedValue {
-                    self.syncingButton
-                        .frame(height: buttonHeight)
-                        .padding(.horizontal, buttonPadding)
-                } else {
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    ZcashNavigationBar(
+                        leadingItem: {
+                            Button(action: {
+                                self.viewModel.showReceiveFunds = true
+                                tracker.track(.tap(action: .receive), properties: [:])
+                            }) {
+                                Image("QRCodeIcon")
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .accessibility(label: Text("Receive Funds"))
+                                    .frame(width: 24)
+                            }
+                            .sheet(isPresented: $viewModel.showReceiveFunds){
+                                ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
+                                             isShown:  self.$viewModel.showReceiveFunds)
+                                    .environmentObject(self.appEnvironment)
+                            }
+                        },
+                        headerItem: {
+                            Text("balance_amounttosend")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white)
+                                .opacity(self.isSendingEnabled ? 1 : 0.4)
+                        },
+                        trailingItem: {
+                            Button(action: {
+                                tracker.track(.tap(action: .showProfile), properties: [:])
+                                self.viewModel.showProfile = true
+                            }) {
+                                Image("person_pin-24px")
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .opacity(0.6)
+                                    .accessibility(label: Text("Your Profile"))
+                                    .frame(width: 24)
+                            }
+                            .sheet(isPresented: $viewModel.showProfile){
+                                ProfileScreen(isShown: self.$viewModel.showProfile)
+                                    .environmentObject(self.appEnvironment)
+                            }
+                        })
+                        .frame(height: 64)
+                        .padding([.leading, .trailing], 16)
+                        .padding([.top], geo.safeAreaInsets.top-10)
                     
-                    self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
-                        if pushed {
-                            self.startSendFlow()
-                        } else {
-                            self.endSendFlow()
-                        }
+                    SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
+                        .opacity(amountOpacity)
+
+                    if self.isSendingEnabled {
+                        BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
+                            .onLongPressGesture {
+                                self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
+                            }
+                    } else {
+                        self.balanceView.padding(.horizontal, self.buttonPadding)
+                            .scaleEffect(Device.isLarge ? 1 : 0.85)
                     }
-                    .disabled(!isAmountValid)
-                    .opacity(isAmountValid ? 1 : 0.6)
+                    KeyPad(value: $viewModel.sendZecAmountText)
+                        .opacity(self.isSendingEnabled ? 1.0 : 0.3)
+                        .disabled(!self.isSendingEnabled)
+                        .alert(isPresented: self.$viewModel.showError) {
+                            self.viewModel.errorAlert
+                        }
+                        .padding(.horizontal, 40)
+                        .scaleEffect(Device.isLarge ? 1 : 0.75)
                     
-                    NavigationLink(
-                        destination: LazyView(
-                            SendTransaction()
-                                .environmentObject(
-                                    SendFlow.current! //fixme
-                            )
-                                .navigationBarTitle("",displayMode: .inline)
-                                .navigationBarHidden(true)
-                        ), isActive: self.$sendingPushed
-                    ) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                }
-                
-               
+                    if self.$viewModel.isSyncing.wrappedValue {
+                        self.syncingButton
+                            .frame(height: buttonHeight)
+                            .padding(.horizontal, buttonPadding)
+                            .scaleEffect(Device.isLarge ? 1 : 0.75)
+                            .padding(.top, 5)
+                    } else {
+                        self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
+                            if pushed {
+                                self.startSendFlow()
+                            } else {
+                                self.endSendFlow()
+                            }
+                        }
+                        .disabled(!isAmountValid)
+                        .opacity(isAmountValid ? 1 : 0.6)
+                        .scaleEffect(Device.isLarge ? 1 : 0.75)
+                        .padding(.top, 5)
+
+                        NavigationLink(
+                            destination: LazyView(
+                                SendTransaction()
+                                    .environmentObject(
+                                        SendFlow.current! //fixme
+                                    )
+                                    .navigationBarTitle("",displayMode: .inline)
+                                    .navigationBarHidden(true)
+                            ), isActive: self.$sendingPushed
+                        ) {
+                            EmptyView()
+                        }.isDetailLink(false)
+                        .scaleEffect(Device.isLarge ? 1 : 0.75)
+                        .padding(.bottom, 10)
+                    }
+                    
                     NavigationLink(
                         destination:
                             LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
-                            .navigationBarHidden(true))
+                                        .environmentObject(WalletDetailsViewModel())
+                                        .navigationBarTitle(Text(""), displayMode: .inline)
+                                        .navigationBarHidden(true))
                         
                         ,isActive: self.$viewModel.showHistory) {
                         walletDetails
                     }.isDetailLink(false)
-                        .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                        .disabled(viewModel.isSyncing)
-                
+                    .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                    .disabled(viewModel.isSyncing)
+                    .scaleEffect(Device.isLarge ? 1 : 0.85)
+                    .padding(.bottom, 30)
+                }
+                .edgesIgnoringSafeArea([.top, .bottom])
             }
-            .padding([.bottom], 20)
+            
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)

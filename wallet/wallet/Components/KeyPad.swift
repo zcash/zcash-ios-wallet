@@ -10,9 +10,9 @@ import SwiftUI
 
 struct KeyPad: View {
     
-    let keySize: CGFloat = 60
-    let hSpacing: CGFloat = 50
-    let vSpacing: CGFloat = 16
+    let keySize: CGFloat = 50
+    let hSpacing: CGFloat = 10
+    let vSpacing: CGFloat = 5
     
     var viewModel: KeyPadViewModel
     
@@ -21,42 +21,39 @@ struct KeyPad: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack(alignment: .center, spacing: self.vSpacing) {
-                ForEach(self.viewModel.visibleValues, id: \.self) {
-                    row in
-                    HStack(alignment: .center, spacing: self.hSpacing) {
-                        ForEach(row, id: \.self) { pad in
-                            HStack {
-                                if pad == "<" {
-                                    Button(action: {
-                                        self.viewModel.valuePressed(pad)
-                                    }) {
-                                            Text(pad)
-                                            .font(.title)
-
-                                    }
-                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
-                                    .simultaneousGesture(LongPressGesture().onEnded { _ in
-                                        self.viewModel.clear()
-                                    })
-                                } else {
-                                    Button(action: {
-                                        self.viewModel.valuePressed(pad)
-                                    }) {
-                                            Text(pad)
-                                            .font(.title)
-
-                                    }
-                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+        VStack(alignment: .center, spacing: self.vSpacing) {
+            ForEach(self.viewModel.visibleValues, id: \.self) {
+                row in
+                HStack(alignment: .center, spacing: self.hSpacing) {
+                    ForEach(row, id: \.self) { pad in
+                        HStack {
+                            if pad == "<" {
+                                Button(action: {
+                                    self.viewModel.valuePressed(pad)
+                                }) {
+                                    Text(pad)
+                                        .font(.title)
+                                    
                                 }
+                                .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                .simultaneousGesture(LongPressGesture().onEnded { _ in
+                                    self.viewModel.clear()
+                                })
+                            } else {
+                                Button(action: {
+                                    self.viewModel.valuePressed(pad)
+                                }) {
+                                    Text(pad)
+                                        .font(.title)
+                                    
+                                }
+                                .buttonStyle(KeyPadButtonStyle(size: self.keySize))
                             }
                         }
                     }
                 }
             }
-        }
-        
+        }        
     }
 }
 

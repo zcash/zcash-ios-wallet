@@ -18,12 +18,11 @@ struct SendZecView: View {
   
             Text("$\(self.$zatoshi.wrappedValue)")
             .lineLimit(1)
-            .minimumScaleFactor(0.5)
+            .scaleEffect(Device.isLarge ? 1 : 0.85)
             .foregroundColor(.white)
             .font(
-                .custom("Zboto", size: 72)
+                .custom("Zboto", size: Device.isLarge ? 72 : 52)
             )
-
         }
     }
 }
@@ -33,6 +32,25 @@ struct SendZecView_Previews: PreviewProvider {
         ZStack {
             ZcashBackground()
             SendZecView(zatoshi: .constant("12.345"))
+        }
+    }
+}
+
+enum PhoneScreen {
+    case small, large
+}
+
+struct Device {
+    static var isLarge: Bool {
+        return screen == .large
+    }
+    
+    private static var screen: PhoneScreen {
+        switch UIScreen.main.nativeBounds.height {
+        case 1136...1334:
+            return .small
+        default:
+            return .large
         }
     }
 }
