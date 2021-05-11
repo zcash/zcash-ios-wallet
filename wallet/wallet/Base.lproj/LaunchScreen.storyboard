@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,14 +17,14 @@
                         <viewControllerLayoutGuide type="bottom" id="tNq-s4-5B1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="yellow_background" translatesAutoresizingMaskIntoConstraints="NO" id="305-od-47H">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zcash-icon-black" translatesAutoresizingMaskIntoConstraints="NO" id="Bkz-ax-lpJ">
-                                <rect key="frame" x="124" y="264" width="167" height="167"/>
+                                <rect key="frame" x="104" y="220" width="167" height="167"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="167" id="rZH-Ns-97W"/>
                                     <constraint firstAttribute="width" constant="167" id="vLz-x3-HEK"/>
@@ -33,10 +33,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Bkz-ax-lpJ" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="104" id="5He-XQ-Gkv"/>
                             <constraint firstItem="Bkz-ax-lpJ" firstAttribute="top" secondItem="tfP-sC-VkZ" secondAttribute="bottom" constant="220" id="NXV-5A-RjS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Bkz-ax-lpJ" secondAttribute="trailing" constant="103" id="Qah-tO-OMu"/>
                             <constraint firstItem="305-od-47H" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Sj3-bJ-eAU"/>
+                            <constraint firstItem="Bkz-ax-lpJ" firstAttribute="centerX" secondItem="305-od-47H" secondAttribute="centerX" id="jaR-ku-ZlJ"/>
                             <constraint firstAttribute="bottom" secondItem="305-od-47H" secondAttribute="bottom" id="syK-Ug-S9S"/>
                             <constraint firstAttribute="trailing" secondItem="305-od-47H" secondAttribute="trailing" id="vQq-oT-2cV"/>
                             <constraint firstItem="305-od-47H" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="weO-ie-c3g"/>

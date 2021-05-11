@@ -43,8 +43,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = HostingController(rootView:
                     AnyView(
                         NavigationView {
-                            firstView(walletEnvironment: ZECCWalletEnvironment.shared)
-                        }.environmentObject(ZECCWalletEnvironment.shared)
+                            TheNoScreen().environmentObject(ZECCWalletEnvironment.shared)
+                        }
                     )
                 )
             self.window = window
@@ -88,26 +88,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     static var shared: SceneDelegate {
         UIApplication.shared.windows[0].windowScene?.delegate as! SceneDelegate
-    }
-    
-    var createNewWallet: some View {
-        CreateNewWallet()
-    }
-    
-    @ViewBuilder func firstView(walletEnvironment: ZECCWalletEnvironment) -> some View {            
-            switch walletEnvironment.state {
-            case .initalized,
-                 .syncing,
-                 .synced:
-    
-                Home()
-                    .environmentObject(HomeViewModel())
-                    
-            case .uninitialized:
-                CreateNewWallet().environmentObject(walletEnvironment)
-    
-            }
-       
     }
   
 }
