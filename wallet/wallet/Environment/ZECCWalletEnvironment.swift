@@ -39,19 +39,48 @@ final class ZECCWalletEnvironment: ObservableObject {
     #if ENABLE_LOGGING
     var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
     #endif
+    
+    
     static func getInitialState() -> WalletState {
-        let fileManager = FileManager()
+        
         do {
-            let dataDbURL = try URL.dataDbURL()
-            let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
-            return attrs.count > 0 ? .unprepared : .uninitialized
+            // are there any keys?
+            let keysPresent = SeedManager.default.keysPresent
+        
+            let dbFilesPresent = try dbFilesPresent()
+            
+            switch (keysPresent,dbFilesPresent) {
+            case (false, false):
+                return .uninitialized
+            case (false, true):
+                return .failure(error: WalletError.initializationFailed(message: "This wallet has Db Files but no keys."))
+            case (true, false):
+                return .unprepared
+            case (true, true):
+                return .initalized
+            }
         } catch {
             tracker.track(.error(severity: .critical), properties: [
                             ErrorSeverity.underlyingError : "error",
                             ErrorSeverity.messageKey : "exception thrown when getting initial state"
             ])
-            return .uninitialized
+            return .failure(error: error)
         }
+    }
+    
+    static func dbFilesPresent() throws -> Bool  {
+        do {
+            let fileManager = FileManager()
+            
+            let dataDbURL = try URL.dataDbURL()
+            let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
+            return attrs.count > 0 ? true : false
+        } catch  CocoaError.fileNoSuchFile, CocoaError.fileReadNoSuchFile  {
+            return false
+        } catch {
+            throw error
+        }
+        
     }
     
     private init() throws {
@@ -61,7 +90,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.outputParamsURL = try URL.outputParamsURL()
         self.spendParamsURL = try  URL.spendParamsURL()
         
-        self.state = Self.getInitialState()
+        self.state = .unprepared
         
         
     }
@@ -127,25 +156,46 @@ final class ZECCWalletEnvironment: ObservableObject {
         SeedManager.default.nukeWallet()
         
         do {
-            try FileManager.default.removeItem(at: self.dataDbURL)
-        } catch {
-            logger.error("could not nuke wallet: \(error)")
+            try deleteWalletFiles()
         }
-        do {
-            try FileManager.default.removeItem(at: self.cacheDbURL)
-        } catch {
-            logger.error("could not nuke wallet: \(error)")
-        }
-        do {
-            try FileManager.default.removeItem(at: self.pendingDbURL)
-        } catch {
+        catch {
             logger.error("could not nuke wallet: \(error)")
         }
         
         if abortApplication {
             abort()
         }
+        
+        
     }
+    
+    fileprivate func deleteWalletFiles() throws {
+        if self.synchronizer != nil {
+            self.synchronizer.stop()
+        }
+        do {
+            try FileManager.default.removeItem(at: self.dataDbURL)
+            try FileManager.default.removeItem(at: self.cacheDbURL)
+            try FileManager.default.removeItem(at: self.pendingDbURL)
+        } catch {
+            logger.error("could not wipe wallet: \(error)")
+            throw WalletError.criticalError(error: error)
+        }
+    }
+    
+    /**
+     Deletes the wallet's files but keeps the user's keys
+     */
+    func wipe(abortApplication: Bool = true) throws {
+        try deleteWalletFiles()
+        
+        if abortApplication {
+            abort()
+        }
+        
+    }
+    
+    
     
     static func mapError(error: Error) -> WalletError {
         if let walletError = error as? WalletError {

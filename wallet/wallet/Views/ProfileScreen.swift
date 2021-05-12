@@ -101,7 +101,7 @@ struct ProfileScreen: View {
                         Button(action: {
                             do {
                                 guard let latestLogfile = try LogfileHelper.latestLogfile() else {
-                                    self.alertItem = AlertItem(type: .feedback(message: "No logfile found"))
+                                    self.alertItem = AlertItem(type: .feedback(message: "No logfile found", action: nil))
                                     return
                                 }
                                 self.shareItem = ShareItem.file(fileUrl: latestLogfile)
@@ -122,8 +122,7 @@ struct ProfileScreen: View {
                             .disabled(true)
                         
                         Button(action: {
-                            tracker.track(.tap(action: .profileNuke), properties: [:])
-                            self.nukePressed = true
+                            self.nukeWallet()
                         }) {
                             Text("NUKE WALLET".localized())
                                 .foregroundColor(.red)
@@ -154,9 +153,27 @@ struct ProfileScreen: View {
                            title: Text("Do you want to re-scan your wallet?"),
                            message: Text("roll back your local data and sync it again"),
                         buttons: [
-                            .destructive(Text("Full Re-scan"), action: {
-                                self.appEnvironment.synchronizer.fullRescan()
-                                self.presentationMode.wrappedValue.dismiss()
+                            .destructive(Text("Wipe"), action: {
+                                do {
+                                    try self.appEnvironment.wipe(abortApplication: false)
+                                    self.alertItem = AlertItem(type: .feedback(
+                                                                message: "SUCCESS! Wallet data cleared. Please relaunch to rescan!",
+                                                                action: {
+                                        abort()
+                                    }))
+                                } catch {
+                                    self.alertItem = AlertItem(
+                                        type: AlertType.actionable(
+                                                                title: "Wipe Failed",
+                                                                message: "Wipe operation failed with error \(error). You might want to screenshot this. Your app could work properly. You can close it and restart it, or nuke it.",
+                                                                destructiveText: "NUKE WALLET".localized(),
+                                                                destructiveAction: { self.nukeWallet() },
+                                                                dismissText: "Close App",
+                                                                dismissAction: {
+                                                                    abort()
+                                                                })
+                                    )
+                                }
                             }),
                             .default(Text("Quick Re-Scan"), action: {
                                 self.appEnvironment.synchronizer.quickRescan()
@@ -180,7 +197,11 @@ struct ProfileScreen: View {
             }).frame(width: 30, height: 30))
         }
     }
-
+    
+    func nukeWallet() {
+        tracker.track(.tap(action: .profileNuke), properties: [:])
+        self.nukePressed = true
+    }
 }
 
 //struct ProfileScreen_Previews: PreviewProvider {

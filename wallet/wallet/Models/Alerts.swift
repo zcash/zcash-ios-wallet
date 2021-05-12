@@ -11,7 +11,13 @@ import Foundation
 
 enum AlertType {
     case error(underlyingError: Error)
-    case feedback(message: String)
+    case feedback(message: String, action: (() -> Void)?)
+    case actionable(title: String,
+                    message: String,
+                    destructiveText: String,
+                    destructiveAction: (() -> Void),
+                    dismissText: String,
+                    dismissAction:(() -> Void))
 }
 
 
@@ -32,9 +38,26 @@ extension AlertType {
     func asAlert() -> Alert {
         switch self {
         case .error(let underlyingError):
-            return Alert(title: Text("Error"), message: Text("An error occured \(underlyingError.localizedDescription)"), dismissButton: .default(Text("dismiss")))
-        case .feedback(let message):
-            return Alert(title: Text(""),message: Text(message), dismissButton: .default(Text("dismiss")))
+            return Alert(title: Text("Error"),
+                         message: Text("An error occured \(underlyingError.localizedDescription)"),
+                         dismissButton: .default(Text("dismiss")))
+        case .feedback(let message,
+                       let action):
+            return Alert(title: Text(""),
+                         message: Text(message),
+                         dismissButton: .default(Text("dismiss"), action: action))
+        case .actionable(let title,
+                         let message,
+                         let destructiveText,
+                         let destructiveAction,
+                         let dismissText,
+                         let dismissAction):
+            return Alert(title: Text(title),
+                         message: Text(message),
+                         primaryButton: .destructive(Text(destructiveText), action: destructiveAction),
+                         secondaryButton: .default(Text(dismissText), action: dismissAction))
+            
+            
         }
     }
 }
