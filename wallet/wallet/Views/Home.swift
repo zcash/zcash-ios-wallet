@@ -259,128 +259,130 @@ struct Home: View {
                     .edgesIgnoringSafeArea(.all)
             }
             GeometryReader { geo in
-                VStack(spacing: 0) {
-                    ZcashNavigationBar(
-                        leadingItem: {
-                            Button(action: {
-                                self.viewModel.showReceiveFunds = true
-                                tracker.track(.tap(action: .receive), properties: [:])
-                            }) {
-                                Image("QRCodeIcon")
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .accessibility(label: Text("Receive Funds"))
-                                    .frame(width: 24)
-                            }
-                            .sheet(isPresented: $viewModel.showReceiveFunds){
-                                ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
-                                             isShown:  self.$viewModel.showReceiveFunds)
-                                    .environmentObject(self.appEnvironment)
-                            }
-                        },
-                        headerItem: {
-                            Text("balance_amounttosend")
-                                .font(.system(size: 14))
-                                .foregroundColor(.white)
-                                .opacity(self.isSendingEnabled ? 1 : 0.4)
-                        },
-                        trailingItem: {
-                            Button(action: {
-                                tracker.track(.tap(action: .showProfile), properties: [:])
-                                self.viewModel.showProfile = true
-                            }) {
-                                Image("person_pin-24px")
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .opacity(0.6)
-                                    .accessibility(label: Text("Your Profile"))
-                                    .frame(width: 24)
-                            }
-                            .sheet(isPresented: $viewModel.showProfile){
-                                ProfileScreen(isShown: self.$viewModel.showProfile)
-                                    .environmentObject(self.appEnvironment)
-                            }
-                        })
-                        .frame(height: 64)
-                        .padding([.leading, .trailing], 16)
-                        .padding([.top], geo.safeAreaInsets.top-10)
-                    
-                    SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
-                        .opacity(amountOpacity)
-
-                    if self.isSendingEnabled {
-                        BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                            .onLongPressGesture {
-                                self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
-                            }
-                    } else {
-                        self.balanceView.padding(.horizontal, self.buttonPadding)
-                            .scaleEffect(Device.isLarge ? 1 : 0.85)
-                    }
-                    KeyPad(value: $viewModel.sendZecAmountText)
-                        .opacity(self.isSendingEnabled ? 1.0 : 0.3)
-                        .disabled(!self.isSendingEnabled)
-                        .alert(isPresented: self.$viewModel.showError) {
-                            self.viewModel.errorAlert
+               VStack(alignment: .center, spacing: 5) {
+                ZcashNavigationBar(
+                    leadingItem: {
+                        Button(action: {
+                            self.viewModel.showReceiveFunds = true
+                            tracker.track(.tap(action: .receive), properties: [:])
+                        }) {
+                            Image("QRCodeIcon")
+                                .renderingMode(.original)
+                                .frame(width: 24)
+                                .aspectRatio(contentMode: .fit)
+                                .accessibility(label: Text("Receive Funds"))
+                                .frame(width: 24)
+                            
                         }
-                        .padding(.horizontal, 40)
-                        .scaleEffect(Device.isLarge ? 1 : 0.75)
-                    
-                    if self.$viewModel.isSyncing.wrappedValue {
-                        self.syncingButton
-                            .frame(height: buttonHeight)
-                            .padding(.horizontal, buttonPadding)
-                            .scaleEffect(Device.isLarge ? 1 : 0.75)
-                            .padding(.top, 5)
-                    } else {
-                        self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
-                            if pushed {
-                                self.startSendFlow()
-                            } else {
-                                self.endSendFlow()
-                            }
+                        .sheet(isPresented: $viewModel.showReceiveFunds){
+                            ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
+                                         isShown:  self.$viewModel.showReceiveFunds)
+                                .environmentObject(self.appEnvironment)
                         }
-                        .disabled(!isAmountValid)
-                        .opacity(isAmountValid ? 1 : 0.6)
-                        .scaleEffect(Device.isLarge ? 1 : 0.75)
-                        .padding(.top, 5)
-
-                        NavigationLink(
-                            destination: LazyView(
-                                SendTransaction()
-                                    .environmentObject(
-                                        SendFlow.current! //fixme
-                                    )
-                                    .navigationBarTitle("",displayMode: .inline)
-                                    .navigationBarHidden(true)
-                            ), isActive: self.$sendingPushed
-                        ) {
-                            EmptyView()
-                        }.isDetailLink(false)
-                        .scaleEffect(Device.isLarge ? 1 : 0.75)
-                        .padding(.bottom, 10)
-                    }
+                },
+                    headerItem: {
+                        Text("balance_amounttosend")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white)
+                            .opacity(self.isSendingEnabled ? 1 : 0.4)
+                },
+                    trailingItem: {
+                        Button(action: {
+                            tracker.track(.tap(action: .showProfile), properties: [:])
+                            self.viewModel.showProfile = true
+                        }) {
+                            Image("person_pin-24px")
+                                .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .opacity(0.6)
+                                .accessibility(label: Text("Your Profile"))
+                                .frame(width: 24)
+                        }
+                        .sheet(isPresented: $viewModel.showProfile){
+                            ProfileScreen(isShown: self.$viewModel.showProfile)
+                                .environmentObject(self.appEnvironment)
+                        }
+                })
+                    .frame(height: 64)
+                    .padding([.leading, .trailing], 16)
+                    .padding([.top], geo.safeAreaInsets.top-10)
+                
+                SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
+                    .opacity(amountOpacity)
+                
+                if self.isSendingEnabled {
+                  
+                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
+                        .onLongPressGesture {
+                            self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
+                        }
+                } else {
+                    self.balanceView.padding([.horizontal], self.buttonPadding)
+                        .scaleEffect(Device.isLarge ? 1 : 0.85)
+                }
+                
+                Spacer()
+                
+                KeyPad(value: $viewModel.sendZecAmountText)
+                    .frame(alignment: .center)
+                    .padding(.horizontal, buttonPadding)
+                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
+                    .disabled(!self.isSendingEnabled)
+                    .alert(isPresented: self.$viewModel.showError) {
+                        self.viewModel.errorAlert
+                }
+                
+                Spacer()
+                
+                if self.$viewModel.isSyncing.wrappedValue {
+                    self.syncingButton
+                        .frame(height: buttonHeight)
+                        .padding(.horizontal, buttonPadding)
+                } else {
                     
+                    self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
+                        if pushed {
+                            self.startSendFlow()
+                        } else {
+                            self.endSendFlow()
+                        }
+                    }
+                    .disabled(!isAmountValid)
+                    .opacity(isAmountValid ? 1 : 0.6)
+                    
+                    NavigationLink(
+                        destination: LazyView(
+                            SendTransaction()
+                                .environmentObject(
+                                    SendFlow.current! //fixme
+                            )
+                                .navigationBarTitle("",displayMode: .inline)
+                                .navigationBarHidden(true)
+                        ), isActive: self.$sendingPushed
+                    ) {
+                        EmptyView()
+                    }.isDetailLink(false)
+                }
+                
+               
                     NavigationLink(
                         destination:
                             LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                                        .environmentObject(WalletDetailsViewModel())
-                                        .navigationBarTitle(Text(""), displayMode: .inline)
-                                        .navigationBarHidden(true))
+                            .environmentObject(WalletDetailsViewModel())
+                            .navigationBarTitle(Text(""), displayMode: .inline)
+                            .navigationBarHidden(true))
                         
                         ,isActive: self.$viewModel.showHistory) {
                         walletDetails
                     }.isDetailLink(false)
-                    .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                    .disabled(viewModel.isSyncing)
-                    .scaleEffect(Device.isLarge ? 1 : 0.85)
-                    .padding(.bottom, 30)
-                }
-                .edgesIgnoringSafeArea([.top, .bottom])
+                        .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                        .disabled(viewModel.isSyncing)
+                
             }
-            
+               
+            .padding([.bottom], 20)
+          }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)

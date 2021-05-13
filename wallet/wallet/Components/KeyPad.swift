@@ -21,39 +21,40 @@ struct KeyPad: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: self.vSpacing) {
-            ForEach(self.viewModel.visibleValues, id: \.self) {
-                row in
-                HStack(alignment: .center, spacing: self.hSpacing) {
-                    ForEach(row, id: \.self) { pad in
-                        HStack {
-                            if pad == "<" {
-                                Button(action: {
-                                    self.viewModel.valuePressed(pad)
-                                }) {
-                                    Text(pad)
-                                        .font(.title)
-                                    
+            VStack(alignment: .center, spacing: self.vSpacing) {
+                ForEach(self.viewModel.visibleValues, id: \.self) {
+                    row in
+                    HStack(alignment: .center, spacing: self.hSpacing) {
+                        ForEach(row, id: \.self) { pad in
+                            HStack {
+                                if pad == "<" {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
+
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
+                                    .simultaneousGesture(LongPressGesture().onEnded { _ in
+                                        self.viewModel.clear()
+                                    })
+                                } else {
+                                    Button(action: {
+                                        self.viewModel.valuePressed(pad)
+                                    }) {
+                                            Text(pad)
+                                            .font(.title)
+
+                                    }
+                                    .buttonStyle(KeyPadButtonStyle(size: self.keySize))
                                 }
-                                .buttonStyle(KeyPadButtonStyle(size: self.keySize))
-                                .simultaneousGesture(LongPressGesture().onEnded { _ in
-                                    self.viewModel.clear()
-                                })
-                            } else {
-                                Button(action: {
-                                    self.viewModel.valuePressed(pad)
-                                }) {
-                                    Text(pad)
-                                        .font(.title)
-                                    
-                                }
-                                .buttonStyle(KeyPadButtonStyle(size: self.keySize))
                             }
                         }
                     }
                 }
             }
-        }        
+        
     }
 }
 
