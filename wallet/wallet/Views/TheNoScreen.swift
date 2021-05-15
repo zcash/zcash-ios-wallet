@@ -25,8 +25,17 @@ struct TheNoScreen: View {
         .onAppear() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 do {
-                    try appEnvironment.initialize()
-                    appEnvironment.state = .initalized
+                    let initialState = ZECCWalletEnvironment.getInitialState()
+                    switch initialState {
+                    case .unprepared, .initalized:
+                        try appEnvironment.initialize()
+                        appEnvironment.state = .initalized
+                    
+                        
+                    default:
+                        appEnvironment.state = initialState
+                    }
+                    
                 } catch {
                     self.appEnvironment.state = .failure(error: error)
                 }

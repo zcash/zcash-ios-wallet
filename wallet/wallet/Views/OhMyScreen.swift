@@ -84,7 +84,7 @@ struct OhMyScreen: View {
                 Button(action: {
                     do {
                         guard let latestLogfile = try LogfileHelper.latestLogfile() else {
-                            self.alertItem = AlertItem(type: .feedback(message: "No logfile found"))
+                            self.alertItem = AlertItem(type: .feedback(message: "No logfile found", action: nil))
                             return
                         }
                         self.shareItem = ShareItem.file(fileUrl: latestLogfile)
