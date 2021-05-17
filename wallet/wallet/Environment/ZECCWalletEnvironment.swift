@@ -217,6 +217,8 @@ final class ZECCWalletEnvironment: ObservableObject {
             }
         } else if let synchronizerError = error as? SynchronizerError {
             switch synchronizerError {
+            case .lightwalletdValidationFailed(let underlyingError):
+                return WalletError.criticalError(error: underlyingError)
             case .notPrepared:
                 return WalletError.initializationFailed(message: "attempt to initialize an unprepared synchronizer")
             case .generalError(let message):
