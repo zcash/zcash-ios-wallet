@@ -7,8 +7,7 @@
 //
 
 import SwiftUI
-
-
+import ZcashLightClientKit
 
 struct TheNoScreen: View {
     @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
@@ -30,12 +29,11 @@ struct TheNoScreen: View {
                     case .unprepared, .initalized:
                         try appEnvironment.initialize()
                         appEnvironment.state = .initalized
-                    
-                        
+
                     default:
                         appEnvironment.state = initialState
                     }
-                    
+
                 } catch {
                     self.appEnvironment.state = .failure(error: error)
                 }
