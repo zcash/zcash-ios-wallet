@@ -71,7 +71,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.27.0)
   - SwiftProtobuf (1.16.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.11.0-alpha.1):
+  - ZcashLightClientKit (0.11.0):
     - gRPC-Swift (= 1.0.0)
     - SQLite.swift (~> 0.12.2)
   - zealous-logger (1.0.0):
@@ -85,7 +85,7 @@ DEPENDENCIES:
   - Mixpanel-swift
   - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
-  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, branch `shield-funds-poc`)
+  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, branch `master`)
   - zealous-logger (from `https://github.com/zcash-hackworks/zealous-logger`, branch `master`)
 
 SPEC REPOS:
@@ -124,7 +124,7 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :branch: shield-funds-poc
+    :branch: master
     :git: https://github.com/zcash/ZcashLightClientKit.git
   zealous-logger:
     :branch: master
@@ -135,7 +135,7 @@ CHECKOUT OPTIONS:
     :commit: 714cc6e2631ac322fc0067b2302358c1baad9275
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :commit: 90c7a4d755e28ca8dad73e9bc0cf8c0b8c5a43fc
+    :commit: c51db604f3a7cb9a6c1148589f900a9c5185dd6d
     :git: https://github.com/zcash/ZcashLightClientKit.git
   zealous-logger:
     :commit: c9f8d8d9f74a456094b9143616da3b4eba91ddcf
@@ -171,9 +171,9 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: eee29d06a617e6b37c534d8589ae27c31b119f81
   SwiftProtobuf: 4e16842b83c6fda06b10fac50d73b3f1fce8ab7b
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: 1a0943fc5e226818e6b9177d4b13a5ce321d4367
+  ZcashLightClientKit: 4df280350ce629f4a295076ad7891a3faf581a21
   zealous-logger: 2f33820d7d7e723796dabc51d60942b51b9ab024
 
-PODFILE CHECKSUM: db3d160c1d087abc6f914d93384ef1426aff589b
+PODFILE CHECKSUM: 26f8a66d267d7d681ae4a9a3885c80f2203287ab
 
 COCOAPODS: 1.10.1
