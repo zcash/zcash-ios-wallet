@@ -419,7 +419,7 @@ struct Home: View {
                              isSolicited: true,
                              isActive: self.$viewModel.destination)
                 #else
-                ProfileScreen(isShown: self.$viewModel.destination)
+                ProfileScreen()
                     .environmentObject(self.appEnvironment)
                 #endif
             }
