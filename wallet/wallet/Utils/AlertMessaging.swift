@@ -11,7 +11,6 @@ import Foundation
 extension UserFacingErrors {
     var title: String {
         switch self {
-            
         case .initalizationFailed:
             return "Wallet Improperly Initialized"
         case .synchronizerError:
@@ -20,7 +19,7 @@ extension UserFacingErrors {
             return "Connection Error"
         case .transactionSubmissionError:
             return "Failed to Send"
-        case .internalError:
+        case .internalError, .internalErrorWithMessage:
             return "Oops Something happened"
         case .criticalError:
             return "Critical Error"
@@ -38,10 +37,18 @@ extension UserFacingErrors {
             return "We are having problems with the network connection."
         case .transactionSubmissionError:
             return "We were unable to send your transaction. Your funds are safe, we just need to wait until the transaction expires before you can send them again."
-        case .internalError:
-            return "There's an internal error. Probably nothing serious. If this error persists, back up your seed phrase and restore your wallet"
-        case .criticalError:
-            return "If this error persists, back up your seed phrase and restore your wallet"
+        case .internalError(let error):
+            return "We got this error: \(error.localizedDescription). :/"
+        case .criticalError(let error):
+            return "Error Description: \(error.debugDescription)"
+        case .internalErrorWithMessage(let message):
+            return "Hey! this error has something to say: \(message)."
         }
+    }
+}
+
+extension UserFacingErrors: LocalizedError {
+    public var errorDescription: String? {
+        self.message
     }
 }

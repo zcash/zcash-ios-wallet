@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+import ZcashLightClientKit
 enum BalanceStatus {
     case available(showCaption: Bool)
     case expecting(zec: Double)
@@ -16,13 +16,17 @@ enum BalanceStatus {
 
 struct BalanceDetail: View {
     var availableZec: Double
+    var transparentFundsAvailable: Bool = false
     var status: BalanceStatus
     
     var available: some View {
-        Text(format(zec: availableZec) + " ZEC ")
+        Text(format(zec: availableZec) + " \(zec) ")
             .foregroundColor(.zLightGray)
         + Text("balance_available")
             .foregroundColor(Color.zAmberGradient1)
+            + Text(transparentFundsAvailable ? "†" : "")
+                .foregroundColor(.zTransparentBlue)
+                .font(.footnote)
     }
     
     func format(zec: Double) -> String {
@@ -45,7 +49,7 @@ struct BalanceDetail: View {
             Text("+" + format(zec: zec))
                            .font(.body)
                 .foregroundColor(.white)
-            + Text(" ZEC)")
+            + Text(" \(zec))")
                 .font(.body)
                 .foregroundColor(Color.zLightGray)
         
@@ -56,7 +60,7 @@ struct BalanceDetail: View {
                        Text("+" + format(zec: change))
                                       .font(.body)
                            .foregroundColor(.white)
-                       + Text(" ZEC)")
+                       + Text(" \(zec))")
                            .font(.body)
                            .foregroundColor(Color.zLightGray)
             default:
@@ -69,6 +73,14 @@ struct BalanceDetail: View {
             if includeCaption {
                 caption
             }
+        }
+    }
+    
+    var zec: String {
+        if ZcashSDK.isMainnet {
+            return "ZEC"
+        } else {
+            return "TAZ"
         }
     }
 }
@@ -88,8 +100,8 @@ struct BalanceDetail_Previews: PreviewProvider {
 
 extension ZECCWalletEnvironment {
     var balanceStatus: BalanceStatus {
-        let verifiedBalance = self.initializer.getVerifiedBalance().asHumanReadableZecBalance()
-        let balance = self.initializer.getBalance().asHumanReadableZecBalance()
+        let verifiedBalance = self.getShieldedVerifiedBalance().asHumanReadableZecBalance()
+        let balance = self.getShieldedBalance().asHumanReadableZecBalance()
         
         let difference = verifiedBalance - balance
         if difference.isZero {

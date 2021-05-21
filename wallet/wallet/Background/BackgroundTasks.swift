@@ -15,10 +15,42 @@ class BackgroundTaskSyncronizing {
     static let backgroundAppRefreshTaskIdentifier = "co.electriccoin.backgroundAppRefreshTask"
     var cancellables = [AnyCancellable]()
     static let `default` = BackgroundTaskSyncronizing()
-    
+    enum BGTaskError: Error {
+        case uninitialized
+    }
+    func initialize() throws {
+        do {
+            let initialState = ZECCWalletEnvironment.getInitialState()
+            let appEnvironment = ZECCWalletEnvironment.shared
+            switch initialState {
+            case .unprepared, .initalized:
+                try appEnvironment.initialize()
+                appEnvironment.state = .initalized
+            case .uninitialized:
+                throw BGTaskError.uninitialized
+
+            default:
+                appEnvironment.state = initialState
+            }
+
+        } catch {
+            ZECCWalletEnvironment.shared.state = .failure(error: error)
+            throw error
+        }
+    }
     func handleBackgroundAppRefreshTask(_ task: BGAppRefreshTask) {
         logger.debug("initalizing task: \(task.identifier)")
         tracker.track(.tap(action: .backgroundAppRefreshStart), properties: [:])
+        
+        
+        do {
+            try initialize()
+        } catch {
+            BackgroundTaskSyncronizing.trackError(error, message: "Error initializing when handleBackgroundAppRefreshTask")
+            
+            task.setTaskCompleted(success: false)
+            return
+        }
         
         ZECCWalletEnvironment.shared.synchronizer.status.dropFirst(1).sink { (status) in
             switch status {
@@ -53,12 +85,22 @@ class BackgroundTaskSyncronizing {
             tracker.track(.error(severity: .noncritical), properties: [
                             ErrorSeverity.messageKey : "error starting background refresh",
                             ErrorSeverity.underlyingError : "\(error)"])
+            task.setTaskCompleted(success: false)
         }
     }
 
     func handleBackgroundProcessingTask(_ task: BGProcessingTask) {
         logger.debug("initalizing task: \(task.identifier)")
         tracker.track(.tap(action: .backgroundProcessingStart), properties: [:])
+        
+        do {
+            try initialize()
+        } catch {
+            BackgroundTaskSyncronizing.trackError(error, message: "Error initializing when handleBackgroundProcessingTask")
+            
+            task.setTaskCompleted(success: false)
+            return
+        }
         
         ZECCWalletEnvironment.shared.synchronizer.status.sink { (status) in
             switch status {
@@ -92,6 +134,7 @@ class BackgroundTaskSyncronizing {
             tracker.track(.error(severity: .noncritical), properties: [
                             ErrorSeverity.messageKey : "error starting background refresh",
                             ErrorSeverity.underlyingError : "\(error)"])
+            task.setTaskCompleted(success: false)
         }
     }
     
@@ -103,15 +146,18 @@ class BackgroundTaskSyncronizing {
             try BGTaskScheduler.shared.submit(request)
         } catch {
             logger.error("Could not schedule app refresh: \(error)")
-            tracker.track(.error(severity: .warning), properties: [ErrorSeverity.messageKey : "Could not schedule app refresh",
-                                                                   ErrorSeverity.underlyingError : "\(error)"])
+            BackgroundTaskSyncronizing.trackError(ZECCWalletEnvironment.mapError(error: error), message: "Could not schedule app refresh")
         }
     }
     
     func scheduleBackgroundProcessing() {
         
         do {
-            let synchronizer = ZECCWalletEnvironment.shared.synchronizer
+            guard let synchronizer = ZECCWalletEnvironment.shared.synchronizer else {
+                logger.error("could not schedule background processing. synchronizer NIL")
+                tracker.track(.error(severity: .critical), properties: [ErrorSeverity.messageKey : "could not schedule background processing. synchronizer NIL"])
+                return
+            }
             
             let downloadedHeight = try synchronizer.latestDownloadedHeight()
             
@@ -149,6 +195,7 @@ class BackgroundTaskSyncronizing {
         tracker.track(.error(severity: .warning),
                       properties: [ErrorSeverity.messageKey : message,
                                    ErrorSeverity.underlyingError : "\(error)"])
+        tracker.report(handledException: error)
     }
     
     deinit {

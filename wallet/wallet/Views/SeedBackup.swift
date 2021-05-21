@@ -120,13 +120,15 @@ struct SeedBackup: View {
                         .opacity(0.4)
                 }
                 if proceedsToHome {
-                    NavigationLink(destination: LazyView( Home(amount: 0, verifiedBalance: appEnvironment.initializer.getBalance().asHumanReadableZecBalance())).environmentObject(HomeViewModel(amount: 0, balance: self.appEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()))) {
+                    NavigationLink(destination:
+                                    LazyView(
+                                        Home().environmentObject(HomeViewModel())
+                                    )) {
                         Text("button_done")
                             .foregroundColor(.black)
                             .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: LinearGradient.zButtonGradient)))
                             .frame(height: buttonHeight)
-                    }
-                    
+                    }    
                 }
                 
             }.padding([.horizontal, .bottom], 24)

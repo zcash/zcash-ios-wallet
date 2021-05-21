@@ -47,7 +47,7 @@ struct Sending: View {
             return Text("label_unabletosend")
         }
         
-        return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString("send_sending", comment: ""), flow.amount))
+        return flow.isDone ? Text("send_sent") :     Text(String(format: NSLocalizedString(ZcashSDK.isMainnet ? "send_sending" : "send_sending_taz", comment: ""), flow.amount))
     }
     
     var body: some View {
@@ -73,7 +73,7 @@ struct Sending: View {
                 if self.flow.isDone && self.flow.pendingTx != nil {
                     Button(action: {
                         guard let pendingTx = self.flow.pendingTx  else {
-                            
+                            tracker.report(handledException: DeveloperFacingErrors.unexpectedBehavior(message: "Attempt to open transaction details in sending screen with no pending transaction in send flow"))
                             tracker.track(.error(severity: .warning), properties: [ErrorSeverity.messageKey : "Attempt to open transaction details in sending screen with no pending transaction in send flow"])
                             self.flow.close() // close this so it does not get stuck here
                             return
@@ -105,7 +105,7 @@ struct Sending: View {
             .padding([.horizontal, .bottom], 40)
         }
         .sheet(item: $details, onDismiss: { self.flow.close() }){ item in
-            TxDetailsWrapper(row: item, isActive: self.$details)
+            TxDetailsWrapper(row: item)
         }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert

@@ -82,6 +82,7 @@
 //Sending
 "thing is that we really don't know what just went down, sorry!" = "Lo que pasa es que realmente no sabemos qué pasó, lo sentimos.";
 "send_sending" = "Enviando %@ ZEC a";
+"send_sending_taz" = "Enviando %@ TAZ a";
 "an error ocurred while submitting your transaction" = "se produjo un error al enviar su transacción";
 "label_unabletosend" = "No se pudo enviar a";
 "button_seedetails" = "See Details";
@@ -126,6 +127,7 @@
 //ReceiveFunds
 "QR Code for %@" = "Código QR para %@";
 "address_shielded" = "Tu dirección blindada";
+"address_transparent" = "Tu dirección transparente";
 "receive_title" = "Recibir ZEC";
 "label_to" = "Para";
 

@@ -37,7 +37,7 @@
 "send_fromshielded" = "from your shielded wallet";
 "send_fromtransparent" = "from your transparent wallet";
 "send_fromboth" = "from both wallets";
-"feedback_default" = "Enter a shielded Zcash address";
+"feedback_default" = "Enter a valid Zcash address";
 "feedback_shieldedaddress" = "This is a valid shielded address";
 "feedback_transparentaddress" = "This is a valid transparent address";
 "feedback_addresscopied" = "Address Copied!";
@@ -60,6 +60,7 @@
 //Sending
 "thing is that we really don't know what just went down, sorry!" = "thing is that we really don't know what just went down, sorry!";
 "send_sending" = "Sending %@ ZEC to";
+"send_sending_taz" = "Sending %@ TAZ to";
 "send_sent" = "Sent!";
 "an error ocurred while submitting your transaction" = "an error ocurred while submitting your transaction";
 "label_unabletosend" = "Unable to send to";
@@ -111,6 +112,7 @@
 //ReceiveFunds
 "QR Code for %@" = "QR Code for %@";
 "address_shielded" = "Your Shielded Address";
+"address_transparent" = "Your Transparent Address";
 "receive_title" = "Receive ZEC";
 
 //ScanAddress

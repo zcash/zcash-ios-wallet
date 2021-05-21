@@ -7,121 +7,182 @@
 //
 
 import SwiftUI
+import ZcashLightClientKit
 
-
-struct ProfileScreen: View {
-    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @State var nukePressed = false
+fileprivate struct ScreenConstants {
     static let buttonHeight = CGFloat(48)
     static let horizontalPadding = CGFloat(30)
+}
+
+struct ProfileScreen: View {
+    enum Destination: Int, Identifiable, Hashable {
+        case feedback
+        case seedBackup
+        case nuke
+        var id: Int {
+            return self.rawValue
+        }
+    }
+    
+    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
+    @Environment(\.presentationMode) var presentationMode
+    @State var nukePressed = false
     @State var copiedValue: PasteboardItemModel?
-    @Binding var isShown: Bool
     @State var alertItem: AlertItem?
+    @State var showingSheet: Bool = false
     @State var shareItem: ShareItem? = nil
-    @State var isFeedbackActive = false
+    @State var destination: Destination?
+    
     var body: some View {
         NavigationView {
             ZStack {
+              
                 ZcashBackground()
-                VStack(alignment: .center, spacing: 16) {
-                    Image("zebra_profile")
-                        .accessibility(label: Text("A Zebra"))
-                    VStack {
-                        Text("profile_screen")
-                            .font(.system(size: 18))
-                            .foregroundColor(.white)
-                        Button(action: {
-                            tracker.track(.tap(action: .copyAddress),
-                                          properties: [:])
-                            PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.initializer.getAddress() ?? "", notify: "feedback_addresscopied".localized())
-
-                        }) {
-                            Text(appEnvironment.initializer.getAddress() ?? "")
-                            .lineLimit(3)
-                                .multilineTextAlignment(.center)
-                                .font(.system(size: 15))
+                ScrollView {
+                    VStack(alignment: .center, spacing: 16) {
+                        Image(UserSettings.shared.userEverShielded ? "profile_yellowzebra" : "profile_zebra")
+                            .accentColor(.zYellow)
+                            .accessibility(label: Text(UserSettings.shared.userEverShielded ? "A Golden zebra" : "A Zebra"))
+                            
+                        VStack {
+                            Text("profile_screen")
+                                .font(.system(size: 18))
                                 .foregroundColor(.white)
+                            Button(action: {
+                                tracker.track(.tap(action: .copyAddress),
+                                              properties: [:])
+                                PasteboardAlertHelper.shared.copyToPasteBoard(value: self.appEnvironment.synchronizer.unifiedAddress.zAddress, notify: "feedback_addresscopied".localized())
+
+                            }) {
+                                Text(self.appEnvironment.synchronizer.unifiedAddress.zAddress)
+                                .lineLimit(3)
+                                    .multilineTextAlignment(.center)
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.white)
+                            }
+                            .onReceive(PasteboardAlertHelper.shared.publisher) { (item) in
+                                self.copiedValue = item
+                            }
                         }
-                        .onReceive(PasteboardAlertHelper.shared.publisher) { (item) in
-                            self.copiedValue = item
+                        .padding(0)
+                        
+                        #if ENABLE_LOGGING
+                        NavigationLink(destination: LazyView(
+                            FeedbackForm(isActive: $destination)
+                        ), tag: Destination.feedback, selection: $destination) {
+                                        
+                                        Text("button_feedback")
+                                            .foregroundColor(.black)
+                                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
+                                            .frame(height: ScreenConstants.buttonHeight)
                         }
-                    }
-                    .padding(0)
-                    
-                    #if ENABLE_LOGGING
-                    NavigationLink(destination: LazyView(
-                        FeedbackForm(isActive: self.$isFeedbackActive)
-                        ),
-                                   isActive: $isFeedbackActive) {
-                                    
-                                    Text("button_feedback")
-                                        .foregroundColor(.black)
-                                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
-                                        .frame(height: Self.buttonHeight)
-                    }
-                    #endif
-                    
-                    NavigationLink(destination: LazyView(
-                        SeedBackup(hideNavBar: false)
-                            .environmentObject(self.appEnvironment)
-                        )
-                    ) {
-                        Text("button_backup")
-                            .foregroundColor(.white)
-                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
-                            .frame(height: Self.buttonHeight)
+                        #endif
+                        
+                        NavigationLink(destination: LazyView(
+                            SeedBackup(hideNavBar: false)
+                                .environmentObject(self.appEnvironment)
+                        ), tag: Destination.seedBackup, selection: $destination
+                        ) {
+                            Text("button_backup")
+                                .foregroundColor(.white)
+                                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .white, lineWidth: 1)))
+                                .frame(height: ScreenConstants.buttonHeight)
+                            
+                        }
+                        Button(action: {
+                            self.showingSheet = true
+                        }){
+                            Text("Rescan Wallet".localized())
+                                .foregroundColor(.zYellow)
+                                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zYellow, lineWidth: 1)))
+                                .frame(height: ScreenConstants.buttonHeight)
+                        }
+                        
+                        Button(action: {
+                            do {
+                                guard let latestLogfile = try LogfileHelper.latestLogfile() else {
+                                    self.alertItem = AlertItem(type: .feedback(message: "No logfile found", action: nil))
+                                    return
+                                }
+                                self.shareItem = ShareItem.file(fileUrl: latestLogfile)
+                                
+                            } catch {
+                                logger.error("failed to get logfile \(error)")
+                                self.alertItem = AlertItem(type: .error(underlyingError: error))
+                            }
+                        }) {
+                            Text("button_applicationlogs".localized())
+                                .font(.system(size: 20))
+                                .foregroundColor(Color.zLightGray)
+                                .opacity(0.6)
+                                .frame(height: ScreenConstants.buttonHeight)
+                        }
+
+                        ActionableMessage(message: "\(ZECCWalletEnvironment.appName) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
+                            .disabled(true)
+                        
+                        Button(action: {
+                            self.nukeWallet()
+                        }) {
+                            Text("NUKE WALLET".localized())
+                                .foregroundColor(.red)
+                                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
+                                .frame(height: ScreenConstants.buttonHeight)
+                        }
+                        
+                        NavigationLink(destination: LazyView (
+                                               NukeWarning().environmentObject(self.appEnvironment)
+                                           ), isActive: self.$nukePressed) {
+                                               EmptyView()
+                                           }.isDetailLink(false)
                         
                     }
-                    
-                    Button(action: {
-                        do {
-                            guard let latestLogfile = try LogfileHelper.latestLogfile() else {
-                                self.alertItem = AlertItem(type: .feedback(message: "No logfile found"))
-                                return
-                            }
-                            self.shareItem = ShareItem.file(fileUrl: latestLogfile)
-                            
-                        } catch {
-                            logger.error("failed to get logfile \(error)")
-                            self.alertItem = AlertItem(type: .error(underlyingError: error))
-                        }
-                    }) {
-                        Text("button_applicationlogs".localized())
-                            .font(.system(size: 20))
-                            .foregroundColor(Color.zLightGray)
-                            .opacity(0.6)
-                            .frame(height: Self.buttonHeight)
+                    .padding(.horizontal, ScreenConstants.horizontalPadding)
+                    .padding(.bottom, 15)
+                    .alert(item: self.$copiedValue) { (p) -> Alert in
+                        PasteboardAlertHelper.alert(for: p)
                     }
 
-                    ActionableMessage(message: "\("ECC Wallet".localized()) v\(ZECCWalletEnvironment.appVersion ?? "Unknown")", actionText: "Build \(ZECCWalletEnvironment.appBuild ?? "Unknown")", action: {})
-                        .disabled(true)
-                    
-                    Button(action: {
-                        tracker.track(.tap(action: .profileNuke), properties: [:])
-                        self.nukePressed = true
-                    }) {
-                        Text("NUKE WALLET".localized())
-                            .foregroundColor(.red)
-                            .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
-                            .frame(height: Self.buttonHeight)
-                    }
-                    
-                    NavigationLink(destination: LazyView (
-                                           NukeWarning().environmentObject(self.appEnvironment)
-                                       ), isActive: self.$nukePressed) {
-                                           EmptyView()
-                                       }.isDetailLink(false)
-                    
-                }
-                .padding(.horizontal, Self.horizontalPadding)
-                .padding(.bottom, 15)
-                .alert(item: self.$copiedValue) { (p) -> Alert in
-                    PasteboardAlertHelper.alert(for: p)
                 }
             }
             .onAppear {
                 tracker.track(.screen(screen: .profile), properties: [:])
             }
+            .actionSheet(isPresented: $showingSheet) {
+                       ActionSheet(
+                           title: Text("Do you want to re-scan your wallet?"),
+                           message: Text("roll back your local data and sync it again"),
+                        buttons: [
+                            .destructive(Text("Wipe"), action: {
+                                do {
+                                    try self.appEnvironment.wipe(abortApplication: false)
+                                    self.alertItem = AlertItem(type: .feedback(
+                                                                message: "SUCCESS! Wallet data cleared. Please relaunch to rescan!",
+                                                                action: {
+                                        abort()
+                                    }))
+                                } catch {
+                                    self.alertItem = AlertItem(
+                                        type: AlertType.actionable(
+                                                                title: "Wipe Failed",
+                                                                message: "Wipe operation failed with error \(error). You might want to screenshot this. Your app could work properly. You can close it and restart it, or nuke it.",
+                                                                destructiveText: "NUKE WALLET".localized(),
+                                                                destructiveAction: { self.nukeWallet() },
+                                                                dismissText: "Close App",
+                                                                dismissAction: {
+                                                                    abort()
+                                                                })
+                                    )
+                                }
+                            }),
+                            .default(Text("Quick Re-Scan"), action: {
+                                self.appEnvironment.synchronizer.quickRescan()
+                                self.presentationMode.wrappedValue.dismiss()
+                            }),
+                            .default(Text("Dismiss".localized()))
+                        ]
+                       )
+                   }
             .sheet(item: self.$shareItem, content: { item in
                 ShareSheet(activityItems: [item.activityItem])
             })
@@ -132,14 +193,19 @@ struct ProfileScreen: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .profileClose), properties: [:])
-                self.isShown = false
+                self.presentationMode.wrappedValue.dismiss()
             }).frame(width: 30, height: 30))
         }
     }
-}
-
-struct ProfileScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileScreen(isShown: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
+    
+    func nukeWallet() {
+        tracker.track(.tap(action: .profileNuke), properties: [:])
+        self.nukePressed = true
     }
 }
+
+//struct ProfileScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileScreen(isShown: .constant(nill)).environmentObject(ZECCWalletEnvironment.shared)
+//    }
+//}

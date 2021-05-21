@@ -95,32 +95,6 @@ class walletTests: XCTestCase {
         XCTAssertEqual(try MnemonicSeedProvider.default.toSeed(mnemonic: phrase).hexString,expectedSeed)
     }
     
-    func testRestoreZaddress() throws {
-        ZECCWalletEnvironment.shared.nuke()
-        let phrase = "human pulse approve subway climb stairs mind gentle raccoon warfare fog roast sponsor under absorb spirit hurdle animal original honey owner upper empower describe"
-        
-        let expectedAddress = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
-        let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: phrase)
-        
-        let hex = "f4e3d38d9c244da7d0407e19a93c80429614ee82dcf62c141235751c9f1228905d12a1f275f5c22f6fb7fcd9e0a97f1676e0eec53fdeeeafe8ce8aa39639b9fe"
-               
-        XCTAssertEqual(seed.hexString, hex)
-        
-        
-        try! SeedManager.default.importPhrase(bip39: phrase)
-        try! ZECCWalletEnvironment.shared.initializer.initialize(viewingKeys: DerivationTool.default.deriveViewingKeys(seed: seed, numberOfAccounts: 0), walletBirthday: 692345)
-        
-//        XCTAssertEqual(SeedManager.default.seed(), seed)
-        
-        guard let address = ZECCWalletEnvironment.shared.initializer.getAddress() else {
-            XCTFail()
-            return
-        }
-        
-        XCTAssertEqual(address, expectedAddress)
-
-    }
-    
     func testAddressSlicing() {
         let address = "zs1gn2ah0zqhsxnrqwuvwmgxpl5h3ha033qexhsz8tems53fw877f4gug353eefd6z8z3n4zxty65c"
                 

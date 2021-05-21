@@ -96,6 +96,7 @@
 "send_securityauth" = "Accedi per inviare";
 "send_securityauth2" = "Conferma che vuoi inviare %@ ZEC a";
 "send_sending" = "Inviando %@ ZEC a";
+"send_sending_taz" = "Inviando %@ TAZ a";
 "send_cancelled" = "Annullato";
 "send_sent" = "Inviato!";
 "button_done" = "Pronto";

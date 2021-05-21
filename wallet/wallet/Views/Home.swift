@@ -10,28 +10,49 @@ import SwiftUI
 import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
+    
+    enum ModalDestinations: Identifiable {
+        case profile
+        case receiveFunds
+        case feedback(score: Int)
+        
+        var id: Int {
+            switch self {
+            case .profile:
+                return 0
+            case .receiveFunds:
+                return 1
+            case .feedback:
+                return 2
+            }
+        }
+    }
+    
+    
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
     var sendZecAmount: Double {
         zecAmountFormatter.number(from: sendZecAmountText)?.doubleValue ?? 0.0
     }
+    @Published var destination: ModalDestinations?
     @Published var sendZecAmountText: String = "0"
-    @Published var showReceiveFunds: Bool
-    @Published var showProfile: Bool
     @Published var isSyncing: Bool = false
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
     @Published var showHistory = false
     var lastError: UserFacingErrors?
-    @Published var balance: Double = 0
+    @Published var totalBalance: Double = 0
+    @Published var verifiedBalance: Double = 0
+    @Published var shieldedBalance = ReadableBalance.zero
+    @Published var transparentBalance = ReadableBalance.zero
+    
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
     private var environmentCancellables = [AnyCancellable]()
     private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
-    init(amount: Double = 0, balance: Double = 0) {
-        showProfile = false
-        showReceiveFunds = false
+    init() {
+        self.destination = nil
         bindToEnvironmentEvents()
         
         NotificationCenter.default.publisher(for: .sendFlowStarted)
@@ -49,17 +70,24 @@ final class HomeViewModel: ObservableObject {
                 self?.bindToEnvironmentEvents()
             }
         ).store(in: &cancellable)
+        
     }
     
     func bindToEnvironmentEvents() {
         let environment = ZECCWalletEnvironment.shared
         
-        environment.synchronizer.balance
+        environment.synchronizer.transparentBalance
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: {
-                self.balance = $0
-            })
+            .map({ return ReadableBalance(walletBalance: $0) })
+            .assign(to: \.transparentBalance, on: self)
             .store(in: &environmentCancellables)
+        
+        environment.synchronizer.shieldedBalance
+            .receive(on: DispatchQueue.main)
+            .map({ return ReadableBalance(walletBalance: $0) })
+            .assign(to: \.shieldedBalance, on: self)
+            .store(in: &environmentCancellables)
+        
         environment.synchronizer.progress
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
@@ -171,20 +199,29 @@ final class HomeViewModel: ObservableObject {
 }
 
 struct Home: View {
+    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
+    @State var feedbackRating: Int? = nil
+    @State var isOverlayShown = false
+    @State var transparentBalancePushed = false
+    
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
     var syncingButton: SyncingButton
     
-    init(amount: Double, verifiedBalance: Double) {
+    init() {
         self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
     }
     
+    var isSyncing: Bool {
+        appEnvironment.synchronizer.status.value == .syncing
+    }
+    
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.status.value != .syncing && appEnvironment.synchronizer.verifiedBalance.value > 0
+        appEnvironment.synchronizer.status.value != .syncing && self.viewModel.shieldedBalance.verified > 0
     }
     
     func startSendFlow() {
@@ -215,19 +252,17 @@ struct Home: View {
     }
     
     var isAmountValid: Bool {
-        self.viewModel.sendZecAmount > 0 && self.viewModel.sendZecAmount < appEnvironment.synchronizer.verifiedBalance.value
+        self.viewModel.sendZecAmount > 0 && self.viewModel.sendZecAmount < self.viewModel.shieldedBalance.verified
         
     }
     
-    var balanceView: AnyView {
-        if appEnvironment.initializer.getBalance() > 0 {
-            return AnyView (
-                BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-            )
+    @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
+        if shieldedBalance.isThereAnyBalance || transparentBalance.isThereAnyBalance {
+            BalanceDetail(availableZec: shieldedBalance.verified,
+                          transparentFundsAvailable: transparentBalance.isThereAnyBalance,
+                          status: appEnvironment.balanceStatus)
         } else {
-            return AnyView(
-                ActionableMessage(message: "balance_nofunds".localized())
-            )
+            ActionableMessage(message: "balance_nofunds".localized())
         }
     }
     
@@ -262,7 +297,7 @@ struct Home: View {
                 ZcashNavigationBar(
                     leadingItem: {
                         Button(action: {
-                            self.viewModel.showReceiveFunds = true
+                            self.viewModel.destination = .receiveFunds
                             tracker.track(.tap(action: .receive), properties: [:])
                         }) {
                             Image("QRCodeIcon")
@@ -271,22 +306,20 @@ struct Home: View {
                                 .scaleEffect(0.5)
                             
                         }
-                        .sheet(isPresented: $viewModel.showReceiveFunds){
-                            ReceiveFunds(address: self.appEnvironment.initializer.getAddress() ?? "",
-                                         isShown:  self.$viewModel.showReceiveFunds)
-                                .environmentObject(self.appEnvironment)
-                        }
                 },
                     headerItem: {
                         Text("balance_amounttosend")
                             .font(.system(size: 14))
                             .foregroundColor(.white)
                             .opacity(self.isSendingEnabled ? 1 : 0.4)
+                            .onLongPressGesture {
+                                self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                            }
                 },
                     trailingItem: {
                         Button(action: {
                             tracker.track(.tap(action: .showProfile), properties: [:])
-                            self.viewModel.showProfile = true
+                            self.viewModel.destination = .profile
                         }) {
                             Image("person_pin-24px")
                                 .renderingMode(.original)
@@ -294,27 +327,26 @@ struct Home: View {
                                 .accessibility(label: Text("Your Profile"))
                                 .padding()
                         }
-                        .sheet(isPresented: $viewModel.showProfile){
-                            ProfileScreen(isShown: self.$viewModel.showProfile)
-                                .environmentObject(self.appEnvironment)
-                        }
                 })
                     .frame(height: 64)
-                
                 
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
                     .scaledToFit()
-                
-                if self.isSendingEnabled {
-                  
-                    BalanceDetail(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus)
-                        .onLongPressGesture {
-                            self.viewModel.setAmount(appEnvironment.synchronizer.verifiedBalance.value)
-                        }
+                if self.isSyncing {
+                    ActionableMessage(message: "balance_nofunds".localized())
+                        .padding([.horizontal], self.buttonPadding)
                 } else {
-                    Spacer()
-                    self.balanceView.padding([.horizontal], self.buttonPadding)
+                    NavigationLink(
+                        destination: WalletBalanceBreakdown()
+                                        .environmentObject(WalletBalanceBreakdownViewModel()),
+                        isActive: $transparentBalancePushed,
+                        label: {
+                            self.balanceView(
+                                shieldedBalance: self.viewModel.shieldedBalance,
+                                transparentBalance: self.viewModel.transparentBalance)
+                                .padding([.horizontal], self.buttonPadding)
+                        })
                 }
                 
                 Spacer()
@@ -359,54 +391,94 @@ struct Home: View {
                         EmptyView()
                     }.isDetailLink(false)
                 }
-                
-               
                     NavigationLink(
                         destination:
                             LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
                             .environmentObject(WalletDetailsViewModel())
                             .navigationBarTitle(Text(""), displayMode: .inline)
                             .navigationBarHidden(true))
-                        
                         ,isActive: self.$viewModel.showHistory) {
                         walletDetails
                     }.isDetailLink(false)
                         .opacity(viewModel.isSyncing ? 0.4 : 1.0)
                         .disabled(viewModel.isSyncing)
-                
             }
             .padding([.bottom], 20)
+        }
+        .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
+            switch item {
+            case .profile:
+                ProfileScreen()
+                    .environmentObject(self.appEnvironment)
+            case .receiveFunds:
+                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress)
+                    .environmentObject(self.appEnvironment)
+            case .feedback(let score):
+                #if ENABLE_LOGGING
+                FeedbackForm(selectedRating: score,
+                             isSolicited: true,
+                             isActive: self.$viewModel.destination)
+                #else
+                ProfileScreen()
+                    .environmentObject(self.appEnvironment)
+                #endif
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
+            tracker.track(.tap(action: .balanceDetail), properties: [:])
+            showFeedbackIfNeeded()
+        }
+        .zOverlay(isOverlayShown: $isOverlayShown) {
+            FeedbackDialog(rating: $feedbackRating) { feedbackResult in
+                self.isOverlayShown = false
+                switch feedbackResult {
+                case .score(let rating):
+                    tracker.track(.feedback, properties: [
+                        "rating" : String(rating),
+                        "solicited" : String(true)
+                    ])
+                case .requestAdditional(let rating):
+                    self.viewModel.destination = .feedback(score: rating)
+                }
+                
+            }
+            .frame(height: 240)
         }
     }
-}
-
-
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("iPhone SE")
-            
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-                .previewDisplayName("iPhone 8")
-            
-            Home(amount: 1.2345, verifiedBalance: 1.2345).environmentObject(ZECCWalletEnvironment.shared)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-                .previewDisplayName("iPhone 11")
-        }
-    }
+    
 }
 
 extension BlockHeight {
     static var unmined: BlockHeight {
         -1
+    }
+}
+
+
+extension Home {
+    func showFeedbackIfNeeded() {
+        #if ENABLE_LOGGING
+        if appEnvironment.shouldShowFeedbackDialog {
+            appEnvironment.registerFeedbackSolicitation(on: Date())
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.isOverlayShown = true
+            }
+        }
+        #endif
+    }
+}
+
+
+extension ReadableBalance {
+    var isThereAnyBalance: Bool {
+        verified > 0 || total > 0
+    }
+    
+    var isSpendable: Bool {
+        verified > 0
     }
 }
