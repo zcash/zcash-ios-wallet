@@ -66,10 +66,10 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.isSyncing = false
                 self.progress.send(0)
-            }, receiveValue: { [weak self] in
-                guard let self = self else { return }
-                self.isSyncing = $0 < 1.0 && $0 > 0
-                self.progress.send($0)
+                }, receiveValue: { [weak self] in
+                    guard let self = self else { return }
+                    self.isSyncing = $0 < 1.0 && $0 > 0
+                    self.progress.send($0)
             })
             .store(in: &environmentCancellables)
         
@@ -82,31 +82,31 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 
                 self.show(error: error)
-            }
-            .store(in: &environmentCancellables)
+        }
+        .store(in: &environmentCancellables)
         
         
         environment.synchronizer.pendingTransactions
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
-                
-            }) { [weak self] (pendingTransactions) in
-                self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
-                    .map( { DetailModel(pendingTransaction: $0)})
-            }.store(in: &cancellable)
+            
+        }) { [weak self] (pendingTransactions) in
+            self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
+                .map( { DetailModel(pendingTransaction: $0)})
+        }.store(in: &cancellable)
         environment.synchronizer.status
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] status in
-                
-                guard let self = self else { return }
-                switch status {
-                case .syncing:
-                    self.isSyncing = true
-                default:
-                    self.isSyncing = false
-                }
-            }).store(in: &environmentCancellables)
-        
+            
+            guard let self = self else { return }
+            switch status {
+            case .syncing:
+                self.isSyncing = true
+            default:
+                self.isSyncing = false
+            }
+        }).store(in: &environmentCancellables)
+       
     }
     
     func unbindSubcribedEnvironmentEvents() {
@@ -140,22 +140,22 @@ final class HomeViewModel: ObservableObject {
         
         
         let defaultAlert = Alert(title: Text(error.title),
-                                 message: Text(error.message),
-                                 dismissButton: .default(Text("button_close"),
-                                                         action: errorAction))
+                                message: Text(error.message),
+                                dismissButton: .default(Text("button_close"),
+                                                    action: errorAction))
         switch error {
         case .synchronizerError(let canRetry):
             if canRetry {
                 return Alert(
-                    title: Text(error.title),
-                    message: Text(error.message),
-                    primaryButton: .default(Text("button_close"),action: errorAction),
-                    secondaryButton: .default(Text("Retry"),
-                                              action: {
-                                                self.clearError()
-                                                try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
-                                              })
-                )
+                        title: Text(error.title),
+                        message: Text(error.message),
+                        primaryButton: .default(Text("button_close"),action: errorAction),
+                        secondaryButton: .default(Text("Retry"),
+                                                     action: {
+                                                        self.clearError()
+                                                        try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+                                                        })
+                           )
             } else {
                 return defaultAlert
             }
@@ -170,10 +170,7 @@ final class HomeViewModel: ObservableObject {
     }
 }
 
-
-
 struct Home: View {
-    
     let buttonHeight: CGFloat = 64
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
@@ -252,6 +249,7 @@ struct Home: View {
     
     var body: some View {
         ZStack {
+            
             if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
@@ -268,10 +266,10 @@ struct Home: View {
                         }) {
                             Image("QRCodeIcon")
                                 .renderingMode(.original)
-                                .frame(width: 24)
+                                .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .accessibility(label: Text("Receive Funds"))
                                 .frame(width: 24)
+                                .accessibility(label: Text("Receive Funds"))
                             
                         }
                         .sheet(isPresented: $viewModel.showReceiveFunds){
@@ -310,6 +308,7 @@ struct Home: View {
                 
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
+                    .scaledToFit()
                 
                 if self.isSendingEnabled {
                   
@@ -380,7 +379,6 @@ struct Home: View {
                         .disabled(viewModel.isSyncing)
                 
             }
-               
             .padding([.bottom], 20)
           }
         }
