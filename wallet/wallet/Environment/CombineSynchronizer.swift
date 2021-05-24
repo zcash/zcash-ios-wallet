@@ -374,10 +374,7 @@ extension CombineSynchronizer {
     
     func quickRescan() {
         do {
-            let blocksPerDay = 60*60*24/75
-            let oneWeekOfblocks = blocksPerDay * 7      //8064
-            let rewindHeight = max(try self.latestDownloadedHeight() - oneWeekOfblocks, try SeedManager.default.exportBirthday())
-            try self.rewind(.height(blockheight: rewindHeight))
+            try self.rewind(.quick)
             try self.start(retry: true)
         } catch {
             logger.error("Quick rescan failed \(error)")
