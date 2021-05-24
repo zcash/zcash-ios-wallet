@@ -492,6 +492,15 @@ extension ZECCWalletEnvironment {
             logger.debug("rewind successfull. saving settings")
             tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successfull. saving settings"])
             
+        } catch SynchronizerError.rewindErrorUnknownArchorHeight {
+            do {
+                try self.synchronizer.rewind(.quick)
+                UserSettings.shared.didRescanPendingFix = true
+                tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successful after recovering from error SynchronizerError.rewindErrorUnknownArchorHeight. saving settings"])
+            } catch {
+                logger.error("attempt to fix pending transactions failed with error: \(error)")
+                tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
+            }
         } catch {
             logger.error("attempt to fix pending transactions failed with error: \(error)")
             tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
