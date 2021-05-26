@@ -34,7 +34,6 @@ class BackgroundTaskSyncronizing {
             }
 
         } catch {
-            ZECCWalletEnvironment.shared.state = .failure(error: error)
             throw error
         }
     }
