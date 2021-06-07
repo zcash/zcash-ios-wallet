@@ -57,7 +57,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     var shieldEnvironment = ShieldFlow.current
     var cancellables = [AnyCancellable]()
     
-    var lottie = LottieAnimation(filename: "lottie_shield")
+    
     init() {
         self.appEnvironment.synchronizer.transparentBalance.receive(on: DispatchQueue.main)
             .map({ return ReadableBalance(walletBalance: $0)})
@@ -122,7 +122,6 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
 struct WalletBalanceBreakdown: View {
     @EnvironmentObject var model: WalletBalanceBreakdownViewModel
     @Environment(\.presentationMode) var presentationMode
-    
     @ViewBuilder func idleScreen() -> some View {
         VStack {
             BalanceBreakdown(model: BalanceBreakdownViewModel(shielded: model.shieldedBalance, transparent: model.transparentBalance))
@@ -159,10 +158,10 @@ struct WalletBalanceBreakdown: View {
                 .foregroundColor(.white)
                 .font(.caption)
                 .opacity(0.6)
-            self.model.lottie
-                .onAppear() {
-                    self.model.lottie.play(loop: true)
-                }
+            LottieAnimation(isPlaying: true,
+                            filename: "lottie_shield",
+                            animationType: .circularLoop)
+                
         }
         .padding([.horizontal, .vertical], 24)
     }

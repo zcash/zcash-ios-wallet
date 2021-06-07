@@ -32,18 +32,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         #else
 
-        BGTaskScheduler.shared.register(
-            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundAppRefreshTaskIdentifier,
-          using: nil) { (task) in
-            
-            BackgroundTaskSyncronizing.default.handleBackgroundAppRefreshTask(task as! BGAppRefreshTask)
-        }
-        
-        BGTaskScheduler.shared.register(
-            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundProcessingTaskIdentifier,
-          using: nil) { (task) in
-            BackgroundTaskSyncronizing.default.handleBackgroundProcessingTask(task as! BGProcessingTask)
-        }
+//        BGTaskScheduler.shared.register(
+//            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundAppRefreshTaskIdentifier,
+//          using: nil) { (task) in
+//            
+//            BackgroundTaskSyncronizing.default.handleBackgroundAppRefreshTask(task as! BGAppRefreshTask)
+//        }
+//        
+//        BGTaskScheduler.shared.register(
+//            forTaskWithIdentifier: BackgroundTaskSyncronizing.backgroundProcessingTaskIdentifier,
+//          using: nil) { (task) in
+//            BackgroundTaskSyncronizing.default.handleBackgroundProcessingTask(task as! BGProcessingTask)
+//        }
         #endif
         
         #if ENABLE_LOGGING
