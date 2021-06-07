@@ -40,6 +40,7 @@ final class HomeViewModel: ObservableObject {
     @Published var sendingPushed: Bool = false
     @Published var showError: Bool = false
     @Published var showHistory = false
+    @Published var syncStatus: CombineSynchronizer.SyncStatus = .disconnected
     var lastError: UserFacingErrors?
     @Published var totalBalance: Double = 0
     @Published var verifiedBalance: Double = 0
@@ -88,18 +89,6 @@ final class HomeViewModel: ObservableObject {
             .assign(to: \.shieldedBalance, on: self)
             .store(in: &environmentCancellables)
         
-        environment.synchronizer.progress
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] _ in
-                guard let self = self else { return }
-                self.isSyncing = false
-                self.progress.send(0)
-                }, receiveValue: { [weak self] in
-                    guard let self = self else { return }
-                    self.isSyncing = $0 < 1.0 && $0 > 0
-                    self.progress.send($0)
-            })
-            .store(in: &environmentCancellables)
         
         environment.synchronizer.errorPublisher
             .receive(on: DispatchQueue.main)
@@ -113,7 +102,6 @@ final class HomeViewModel: ObservableObject {
         }
         .store(in: &environmentCancellables)
         
-        
         environment.synchronizer.pendingTransactions
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
@@ -122,19 +110,17 @@ final class HomeViewModel: ObservableObject {
             self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
                 .map( { DetailModel(pendingTransaction: $0)})
         }.store(in: &cancellable)
-        environment.synchronizer.status
+        
+        environment.synchronizer.syncStatus
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] status in
-            
-            guard let self = self else { return }
-            switch status {
-            case .syncing:
-                self.isSyncing = true
-            default:
-                self.isSyncing = false
-            }
-        }).store(in: &environmentCancellables)
-       
+            .map({ $0.isSyncing })
+            .assign(to: \.isSyncing, on: self)
+            .store(in: &environmentCancellables)
+        
+        environment.synchronizer.syncStatus
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.syncStatus, on: self)
+            .store(in: &environmentCancellables)
     }
     
     func unbindSubcribedEnvironmentEvents() {
@@ -210,18 +196,88 @@ struct Home: View {
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
-    var syncingButton: SyncingButton
     
-    init() {
-        self.syncingButton = SyncingButton(progressSubject: ZECCWalletEnvironment.shared.synchronizer.progress)
+    @ViewBuilder func buttonFor(syncStatus: CombineSynchronizer.SyncStatus) -> some View {
+        switch syncStatus {
+        case .error:
+            Text("Error")
+                .foregroundColor(.red)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 2)))
+                
+        case .unprepared:
+            Text("Unprepared")
+                .foregroundColor(.red)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zGray2, lineWidth: 2)))
+                
+        case .downloading(let progress):
+            Text("Downloading \(Int(progress.progress))")
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+                
+        case .validating:
+            Text("Validating")
+                .font(.system(size: 15).italic())
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+        case .scanning(let scanProgress):
+            Text("Scanning \(Int(scanProgress.progress))")
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+        case .enhancing(let enhanceProgress):
+            Text("Enhancing \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+        case .fetching:
+            Text("Fetching")
+                .font(.system(size: 15).italic())
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+        case .stopped:
+            Text("Fetching")
+                .font(.system(size: 15).italic())
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray)))
+        case .disconnected:
+            Text("Offline")
+                .font(.system(size: 15).italic())
+                .foregroundColor(.black)
+                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray)))
+        case .synced:
+            ZStack {
+                
+                NavigationLink(
+                    destination: LazyView(
+                        SendTransaction()
+                            .environmentObject(
+                                SendFlow.current! //fixme
+                        )
+                            .navigationBarTitle("",displayMode: .inline)
+                            .navigationBarHidden(true)
+                    ), isActive: self.$sendingPushed
+                ) {
+                    EmptyView()
+                }.isDetailLink(false)
+                
+                self.enterAddressButton
+                    .onReceive(self.viewModel.$sendingPushed) { pushed in
+                        if pushed {
+                            self.startSendFlow()
+                        } else {
+                            self.endSendFlow()
+                        }
+                    }
+                    .disabled(!canSend)
+                    .opacity(canSend ? 1 : 0.6)
+            }
+        }
     }
     
+    
     var isSyncing: Bool {
-        appEnvironment.synchronizer.status.value == .syncing
+        appEnvironment.synchronizer.status.value.isSyncing
     }
     
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.status.value != .syncing && self.viewModel.shieldedBalance.verified > 0
+        !appEnvironment.synchronizer.status.value.isSyncing && self.viewModel.shieldedBalance.verified > 0
     }
     
     func startSendFlow() {
@@ -244,11 +300,7 @@ struct Home: View {
             Text("button_send")
                 .foregroundColor(.black)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: Color.zYellow)))
-                .frame(height: buttonHeight)
-                .padding([.leading, .trailing], buttonPadding)
-                .opacity(isSendingEnabled ? 1.0 : 0.3 ) // validate this
-            
-        }.disabled(!isSendingEnabled)
+        }
     }
     
     var isAmountValid: Bool {
@@ -256,6 +308,9 @@ struct Home: View {
         
     }
     
+    var canSend: Bool {
+        isSendingEnabled && isAmountValid
+    }
     @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
         if shieldedBalance.isThereAnyBalance || transparentBalance.isThereAnyBalance {
             BalanceDetail(availableZec: shieldedBalance.verified,
@@ -362,46 +417,21 @@ struct Home: View {
                 
                 Spacer()
                 
-                if self.$viewModel.isSyncing.wrappedValue {
-                    self.syncingButton
-                        .frame(height: buttonHeight)
-                        .padding(.horizontal, buttonPadding)
-                } else {
-                    
-                    self.enterAddressButton.onReceive(self.viewModel.$sendingPushed) { pushed in
-                        if pushed {
-                            self.startSendFlow()
-                        } else {
-                            self.endSendFlow()
-                        }
-                    }
-                    .disabled(!isAmountValid)
-                    .opacity(isAmountValid ? 1 : 0.6)
-                    
-                    NavigationLink(
-                        destination: LazyView(
-                            SendTransaction()
-                                .environmentObject(
-                                    SendFlow.current! //fixme
-                            )
-                                .navigationBarTitle("",displayMode: .inline)
-                                .navigationBarHidden(true)
-                        ), isActive: self.$sendingPushed
-                    ) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                }
-                    NavigationLink(
-                        destination:
-                            LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                            .environmentObject(WalletDetailsViewModel())
-                            .navigationBarTitle(Text(""), displayMode: .inline)
-                            .navigationBarHidden(true))
-                        ,isActive: self.$viewModel.showHistory) {
-                        walletDetails
-                    }.isDetailLink(false)
-                        .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                        .disabled(viewModel.isSyncing)
+                buttonFor(syncStatus: self.viewModel.syncStatus)
+                    .frame(height: self.buttonHeight)
+                    .padding(.horizontal, buttonPadding)
+                
+                NavigationLink(
+                    destination:
+                        LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
+                        .environmentObject(WalletDetailsViewModel())
+                        .navigationBarTitle(Text(""), displayMode: .inline)
+                        .navigationBarHidden(true))
+                    ,isActive: self.$viewModel.showHistory) {
+                    walletDetails
+                }.isDetailLink(false)
+                    .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                    .disabled(viewModel.isSyncing)
             }
             .padding([.bottom], 20)
         }

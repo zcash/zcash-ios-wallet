@@ -10,7 +10,30 @@ import Foundation
 import Combine
 import ZcashLightClientKit
 class CombineSynchronizer {
-    
+    enum SubscriberErrors: Error {
+        case notifactionMissingValueForKey(_ key: String)
+    }
+    enum SyncStatus {
+        case unprepared
+        case downloading(_ status: BlockProgressReporting)
+        case validating
+        case scanning(_ progress: BlockProgressReporting)
+        case enhancing(_ progress: EnhancementProgress)
+        case fetching
+        case synced
+        case stopped
+        case disconnected
+        case error(_ error: Error)
+        
+        var isSyncing: Bool {
+            switch self {
+            case .downloading, .validating, .scanning, .enhancing, .fetching:
+                return true
+            default:
+                return false
+            }
+        }
+    }
     var initializer: Initializer {
         synchronizer.initializer
     }
@@ -18,7 +41,7 @@ class CombineSynchronizer {
     private(set) var synchronizer: SDKSynchronizer
     var walletDetailsBuffer: CurrentValueSubject<[DetailModel],Never>
     var status: CurrentValueSubject<Status,Never>
-    var progress: CurrentValueSubject<Float,Never>
+    var syncStatus: CurrentValueSubject<SyncStatus,Never>
     var syncBlockHeight: CurrentValueSubject<BlockHeight,Never>
     var minedTransaction = PassthroughSubject<PendingTransactionEntity,Never>()
     var shieldedBalance: CurrentValueSubject<WalletBalance, Never>
@@ -95,7 +118,7 @@ class CombineSynchronizer {
         self.walletDetailsBuffer = CurrentValueSubject([DetailModel]())
         self.synchronizer = try SDKSynchronizer(initializer: initializer)
         self.status = CurrentValueSubject(.disconnected)
-        self.progress = CurrentValueSubject(0)
+        self.syncStatus = CurrentValueSubject(.disconnected)
         self.balance = CurrentValueSubject(0)
         self.shieldedBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
         self.transparentBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
@@ -113,23 +136,6 @@ class CombineSynchronizer {
                 self.updatePublishers()
         }).store(in: &cancellables)
         
-
-        NotificationCenter.default.publisher(for: .synchronizerStarted)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-            self?.status.send(.syncing)
-        }.store(in: &cancellables)
-        
-        NotificationCenter.default.publisher(for: .synchronizerProgressUpdated)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] (progressNotification) in
-            guard let self = self else { return }
-            guard let newProgress = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.progress] as? Float else { return }
-            self.progress.send(newProgress)
-            
-            guard let blockHeight = progressNotification.userInfo?[SDKSynchronizer.NotificationKeys.blockHeight] as? BlockHeight else { return }
-            self.syncBlockHeight.send(blockHeight)
-        }).store(in: &cancellables)
         
         NotificationCenter.default.publisher(for: .synchronizerMinedTransaction)
             .receive(on: DispatchQueue.main)
@@ -168,12 +174,75 @@ class CombineSynchronizer {
             }
             .store(in: &cancellables)
         
-        NotificationCenter.default.publisher(for: .synchronizerSyncing)
+        
+            
+        Publishers.Merge(NotificationCenter.default.publisher(for: .blockProcessorStatusChanged), NotificationCenter.default.publisher(for: .blockProcessorUpdated))
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.status.send(.syncing)
+            .compactMap { n -> SyncStatus? in
+                guard let userInfo = n.userInfo else {
+                    logger.error("error: \(SubscriberErrors.notifactionMissingValueForKey("userInfo"))")
+                    return nil }
+                
+                switch  n.name {
+                case .blockProcessorStatusChanged:
+                    guard let status = userInfo[CompactBlockProcessorNotificationKey.newStatus] as? CompactBlockProcessor.State else {
+                        logger.error("error: \(SubscriberErrors.notifactionMissingValueForKey(CompactBlockProcessorNotificationKey.progress))")
+                        return nil}
+                    return status.syncStatus
+                case .blockProcessorUpdated:
+                    guard let update = userInfo[CompactBlockProcessorNotificationKey.progress] as? CompactBlockProgress else {
+                        logger.error("error: \(SubscriberErrors.notifactionMissingValueForKey(CompactBlockProcessorNotificationKey.progress))")
+                        return nil }
+                    return update.syncStatus
+                default:
+                    return nil
+                }
+                
             }
+            .sink(receiveValue: { [weak self] status in
+                
+                self?.syncStatus.send(status)
+            })
             .store(in: &cancellables)
+            
+            
+        NotificationCenter.default.publisher(for: .blockProcessorUpdated)
+            .receive(on: DispatchQueue.main)
+            .map { notification -> CompactBlockProgress? in
+                
+                guard let progress = notification.userInfo?[CompactBlockProcessorNotificationKey.progress] as? CompactBlockProgress else {
+                    let error = SubscriberErrors.notifactionMissingValueForKey(CompactBlockProcessorNotificationKey.progress)
+                    
+                    tracker.report(handledException: error)
+                    return nil
+                }
+                
+                return progress
+            }
+            
+            .compactMap({ progress -> SyncStatus? in
+                
+                guard let blockProgress = progress else { return nil }
+                
+                switch blockProgress {
+                
+                case .download(let progressReport):
+                    return SyncStatus.downloading(progressReport)
+                case .validate:
+                    return .validating
+                case .scan(let progressReport):
+                    return .scanning(progressReport)
+                case .enhance(let enhancingReport):
+                    return .enhancing(enhancingReport)
+                case .fetch:
+                    return .fetching
+                }
+            })
+            .sink(receiveValue: { [weak self] status in
+                self?.syncStatus.send(status)
+            })
+            .store(in: &cancellables)
+    
     }
     
     
@@ -237,6 +306,7 @@ class CombineSynchronizer {
         self.balance.send(initializer.getBalance().asHumanReadableZecBalance())
         self.verifiedBalance.send(initializer.getVerifiedBalance().asHumanReadableZecBalance())
         self.status.send(synchronizer.status)
+        self.syncStatus.send(synchronizer.status.syncStatus)
         self.walletDetails.sink(receiveCompletion: { _ in
             }) { [weak self] (details) in
                 guard !details.isEmpty else { return }
@@ -393,4 +463,109 @@ extension CombineSynchronizer {
 fileprivate struct Balance: WalletBalance {
     var verified: Int64
     var total: Int64
+}
+
+
+extension CompactBlockProgress {
+    var status: Status {
+        switch self {
+        case .download:
+            return .downloading
+        case .enhance:
+            return .enhancing
+        case .fetch:
+            return .fetching
+        case .scan:
+            return .scanning
+        case .validate:
+            return .validating
+        }
+    }
+}
+
+extension Status {
+    var syncStatus: CombineSynchronizer.SyncStatus {
+        switch self {
+        case .unprepared:
+            return .unprepared
+        case .downloading:
+            return .downloading(NullProgress())
+        case .validating:
+            return .validating
+        case .scanning:
+            return .scanning(NullProgress())
+        case .enhancing:
+            return .enhancing(NullEnhancementProgress())
+        case .fetching:
+            return .fetching
+        case .disconnected:
+            return .disconnected
+        case .stopped:
+            return .stopped
+        case .synced:
+            return .synced
+        }
+    }
+}
+
+extension CompactBlockProcessor.State {
+    var syncStatus: CombineSynchronizer.SyncStatus? {
+        switch self {
+        case .stopped:
+            return .stopped
+        case .downloading:
+            return .downloading(NullProgress())
+        case .error(let e):
+            return .error(e)
+        case .fetching:
+            return .fetching
+        case .synced:
+            return .synced
+        case .scanning:
+            return .scanning(NullProgress())
+        case .validating:
+            return .validating
+        case .enhancing:
+            return nil
+        
+        }
+    }
+}
+
+fileprivate struct NullEnhancementProgress: EnhancementProgress {
+    var totalTransactions: Int { 0 }
+    var enhancedTransactions: Int { 0 }
+    var lastFoundTransaction: ConfirmedTransactionEntity? { nil }
+    var range: CompactBlockRange { 0 ... 0 }
+}
+
+fileprivate struct NullProgress: BlockProgressReporting {
+    var startHeight: BlockHeight {
+        0
+    }
+    
+    var targetHeight: BlockHeight {
+        0
+    }
+    
+    var progressHeight: BlockHeight {
+        0
+    }
+}
+
+extension CompactBlockProgress {
+    var syncStatus: CombineSynchronizer.SyncStatus {
+        switch self {
+        case .download(let progress):
+            return .downloading(progress)
+        case .validate:
+            return .validating
+        case .scan(let progress):
+            return .scanning(progress)
+        case .enhance(let enhanceProgress):
+            return .enhancing(enhanceProgress)
+        case .fetch:
+            return .fetching
+        }
+    }
 }

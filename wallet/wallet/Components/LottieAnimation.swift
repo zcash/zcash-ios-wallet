@@ -14,7 +14,7 @@ protocol LottieAnimatable {
     
     func currentProgress(_ progress: Float)
     func currentFrame(_ frame: Float)
-    func play(from: AnimationFrameTime, to: AnimationFrameTime)
+    func play(from: AnimationFrameTime, to: AnimationFrameTime, loop: Bool)
     func play(loop: Bool)
 }
 
@@ -27,8 +27,8 @@ extension LottieAnimation: LottieAnimatable {
         self.animationView.play(toFrame: AnimationFrameTime(frame))
     }
     
-    func play(from: AnimationFrameTime, to: AnimationFrameTime) {
-        animationView.play(fromFrame: from, toFrame: to, loopMode: .none, completion: nil)
+    func play(from: AnimationFrameTime, to: AnimationFrameTime, loop: Bool = false) {
+        animationView.play(fromFrame: from, toFrame: to, loopMode: loop ? .loop : .none, completion: nil)
     }
     
     func play(loop: Bool = false) {
