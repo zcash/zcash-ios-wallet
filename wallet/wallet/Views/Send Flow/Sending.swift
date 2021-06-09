@@ -64,7 +64,9 @@ struct Sending: View {
                     .lineLimit(1)
                 
                 if !flow.isDone {
-                    LottieAnimation(filename: "lottie_sending", animationType: .circularLoop)
+                    LottieAnimation(isPlaying: true,
+                                    filename: "lottie_sending",
+                                    animationType: .circularLoop)
                         .frame(height: 48)
                     
                 }

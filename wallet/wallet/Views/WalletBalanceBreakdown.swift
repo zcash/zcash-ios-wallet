@@ -158,7 +158,8 @@ struct WalletBalanceBreakdown: View {
                 .foregroundColor(.white)
                 .font(.caption)
                 .opacity(0.6)
-            LottieAnimation(filename: "lottie_shield",
+            LottieAnimation(isPlaying: true,
+                            filename: "lottie_shield",
                             animationType: .circularLoop)
                 
         }
