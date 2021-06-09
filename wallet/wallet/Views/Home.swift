@@ -210,9 +210,10 @@ struct Home: View {
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zGray2, lineWidth: 2)))
                 
         case .downloading(let progress):
-            Text("Downloading \(Int(progress.progress))")
-                .foregroundColor(.black)
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+            SyncingButton(animationType: .frameProgress(startFrame: 0, endFrame: 100, progress: 1.0, loop: true)) {
+                Text("Downloading \(Int(progress.progress * 100))%")
+                    .foregroundColor(.white)
+            }
                 
         case .validating:
             Text("Validating")
@@ -220,19 +221,24 @@ struct Home: View {
                 .foregroundColor(.black)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
         case .scanning(let scanProgress):
-            Text("Scanning \(Int(scanProgress.progress))")
-                .foregroundColor(.black)
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+            SyncingButton(animationType: .frameProgress(startFrame: 101, endFrame: 187,  progress: scanProgress.progress, loop: false)) {
+                Text("Scanning \(Int(scanProgress.progress * 100 ))%")
+                    .foregroundColor(.white)
+            }
         case .enhancing(let enhanceProgress):
-            Text("Enhancing \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+            SyncingButton(animationType: .circularLoop) {
+                Text("Enhancing \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
+                    .foregroundColor(.white)
+            }
+               
         case .fetching:
-            Text("Fetching")
-                .font(.system(size: 15).italic())
-                .foregroundColor(.black)
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient)))
+            SyncingButton(animationType: .circularLoop) {
+                Text("Fetching")
+                    .foregroundColor(.white)
+            }
+            
         case .stopped:
-            Text("Fetching")
+            Text("Stopped")
                 .font(.system(size: 15).italic())
                 .foregroundColor(.black)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray)))
@@ -273,11 +279,11 @@ struct Home: View {
     
     
     var isSyncing: Bool {
-        appEnvironment.synchronizer.status.value.isSyncing
+        appEnvironment.synchronizer.syncStatus.value.isSyncing
     }
     
     var isSendingEnabled: Bool {
-        !appEnvironment.synchronizer.status.value.isSyncing && self.viewModel.shieldedBalance.verified > 0
+        !appEnvironment.synchronizer.syncStatus.value.isSyncing && self.viewModel.shieldedBalance.verified > 0
     }
     
     func startSendFlow() {
@@ -389,7 +395,9 @@ struct Home: View {
                     .opacity(amountOpacity)
                     .scaledToFit()
                 if self.isSyncing {
-                    ActionableMessage(message: "balance_nofunds".localized())
+                    self.balanceView(
+                        shieldedBalance: self.viewModel.shieldedBalance,
+                        transparentBalance: self.viewModel.transparentBalance)
                         .padding([.horizontal], self.buttonPadding)
                 } else {
                     NavigationLink(
