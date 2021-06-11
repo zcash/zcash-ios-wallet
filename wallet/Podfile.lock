@@ -38,6 +38,7 @@ PODS:
     - SwiftNIOConcurrencyHelpers (= 2.27.0)
   - SwiftNIOConcurrencyHelpers (2.27.0):
     - CNIOAtomics (= 2.27.0)
+
   - SwiftNIOExtras (1.8.0):
     - SwiftNIO (< 3, >= 2.9.0)
   - SwiftNIOFoundationCompat (2.27.0):
@@ -50,6 +51,7 @@ PODS:
     - CNIOHTTPParser (= 2.27.0)
     - SwiftNIO (= 2.27.0)
     - SwiftNIOConcurrencyHelpers (= 2.27.0)
+
   - SwiftNIOHTTP2 (1.17.0):
     - SwiftNIO (< 3, >= 2.27.0)
     - SwiftNIOConcurrencyHelpers (< 3, >= 2.27.0)
@@ -161,6 +163,8 @@ SPEC CHECKSUMS:
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftNIO: 81d33ce8c500b7e41b6cdde5f2f12330b9750219
   SwiftNIOConcurrencyHelpers: 23fc68bac541a465162d7225d2c743edd2f1012c
+
+PODFILE CHECKSUM: a8057227a9e6799695515bc813dffb647c6d0c8a
   SwiftNIOExtras: aa561b71020cd6844f722cf4513fb176c577414d
   SwiftNIOFoundationCompat: 0e52ac0e2c9b7b60ff9141eebb64f5a82d974118
   SwiftNIOHPACK: 7b780cf61fa41025042ca34a3918b651c3c9f655

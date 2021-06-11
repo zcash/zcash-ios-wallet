@@ -291,9 +291,8 @@ struct Home: View {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
             }
-            
-            VStack(alignment: .center, spacing: 5) {
-                
+            GeometryReader { geo in
+               VStack(alignment: .center, spacing: 5) {
                 ZcashNavigationBar(
                     leadingItem: {
                         Button(action: {
@@ -302,8 +301,10 @@ struct Home: View {
                         }) {
                             Image("QRCodeIcon")
                                 .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24)
                                 .accessibility(label: Text("Receive Funds"))
-                                .scaleEffect(0.5)
                             
                         }
                 },
@@ -323,12 +324,16 @@ struct Home: View {
                         }) {
                             Image("person_pin-24px")
                                 .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .opacity(0.6)
                                 .accessibility(label: Text("Your Profile"))
-                                .padding()
+                                .frame(width: 24)
                         }
                 })
                     .frame(height: 64)
+                    .padding([.leading, .trailing], 16)
+                    .padding([.top], geo.safeAreaInsets.top-10)
                 
                 SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
                     .opacity(amountOpacity)
@@ -337,6 +342,8 @@ struct Home: View {
                     ActionableMessage(message: "balance_nofunds".localized())
                         .padding([.horizontal], self.buttonPadding)
                 } else {
+                    self.balanceView.padding([.horizontal], self.buttonPadding)
+                        .scaleEffect(Device.isLarge ? 1 : 0.85)
                     NavigationLink(
                         destination: WalletBalanceBreakdown()
                                         .environmentObject(WalletBalanceBreakdownViewModel()),
@@ -404,6 +411,7 @@ struct Home: View {
                         .disabled(viewModel.isSyncing)
             }
             .padding([.bottom], 20)
+          }
         }
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
             switch item {

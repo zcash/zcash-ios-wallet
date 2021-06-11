@@ -10,9 +10,9 @@ import SwiftUI
 
 struct KeyPad: View {
     
-    let keySize: CGFloat = 60
-    let hSpacing: CGFloat = 50
-    let vSpacing: CGFloat = 16
+    let keySize: CGFloat = 50
+    let hSpacing: CGFloat = 10
+    let vSpacing: CGFloat = 5
     
     var viewModel: KeyPadViewModel
     
@@ -21,7 +21,6 @@ struct KeyPad: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
             VStack(alignment: .center, spacing: self.vSpacing) {
                 ForEach(self.viewModel.visibleValues, id: \.self) {
                     row in
@@ -55,7 +54,6 @@ struct KeyPad: View {
                     }
                 }
             }
-        }
         
     }
 }
