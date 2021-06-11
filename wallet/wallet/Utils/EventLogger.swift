@@ -11,6 +11,7 @@ import Combine
 
 protocol EventLogging {
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>)
+    func report(handledException: Error)
 }
 
 enum Screen: String {
@@ -28,6 +29,7 @@ enum Screen: String {
     case sendFinal = "send.final"
     case sendMemo = "send.memo"
     case sendTransaction = "send.transaction"
+    case balance
     
 }
 enum Action: String {
@@ -49,6 +51,7 @@ enum Action: String {
     case scanBack = "scan.back"
     case scanReceive = "scan.receive"
     case scanTorch = "scan.torch"
+    case balanceDetail = "home.balance.detail"
     case homeSend = "home.send"
     case sendAddressNext = "send.address.next"
     case sendAddressDoneAddress = "send.address.done.address"
@@ -73,6 +76,8 @@ enum Action: String {
     case backgroundAppRefreshEnd = "background.apprefresh.end"
     case backgroundProcessingStart = "background.processing.start"
     case backgroundProcessingEnd = "background.processing.end"
+    case shieldFundsStart = "shield.funds.start"
+    case shieldFundsEnd = "shield.funds.end"
 }
 enum LogEvent: Equatable {
     case screen(screen: Screen)
@@ -93,12 +98,15 @@ enum ErrorSeverity: String {
 
 
 class NullLogger: EventLogging {
+    func report(handledException: Error) {
+    }
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {}
 }
 
 
 #if ENABLE_LOGGING
 import Mixpanel
+import Bugsnag
 class MixPanelLogger: EventLogging {
     
     struct TrackingEvent: Equatable {
@@ -108,6 +116,15 @@ class MixPanelLogger: EventLogging {
         var description: String {
             "Event: \(event) - Properties: \(properties ?? [:])"
         }
+    }
+    /**
+     Ideally use DeveloperFacingErrors error types to they print fine on bugsnag
+     */
+    func report(handledException: Error) {
+        guard let error = handledException as? DeveloperFacingErrors else {
+            return Bugsnag.notifyError(handledException)
+        }
+        Bugsnag.notifyError(error.asNSError)
     }
     
     func track(_ event: LogEvent, properties: KeyValuePairs<String, String>) {

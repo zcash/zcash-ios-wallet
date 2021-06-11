@@ -58,13 +58,14 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     var zAddress: String {
-        ZECCWalletEnvironment.shared.initializer.getAddress() ?? ""
+        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
     }
 }
 
 struct WalletDetails: View {
     @EnvironmentObject var viewModel: WalletDetailsViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
+    @Environment(\.presentationMode) var presentationMode
     @Binding var isActive: Bool
     @State var selectedModel: DetailModel? = nil
     var zAddress: String {
@@ -83,7 +84,7 @@ struct WalletDetails: View {
                 ZcashNavigationBar(
                     leadingItem: {
                         Button(action: {
-                            self.isActive.toggle()
+                            presentationMode.wrappedValue.dismiss()
                         }) {
                             Image("Back")
                                 .renderingMode(.original)
@@ -151,7 +152,7 @@ struct WalletDetails: View {
         .sheet(item: self.$selectedModel, onDismiss: {
             self.selectedModel = nil
         }) { (row)  in
-            TxDetailsWrapper(row: row, isActive:  self.$selectedModel)
+            TxDetailsWrapper(row: row)
         }
 
     }

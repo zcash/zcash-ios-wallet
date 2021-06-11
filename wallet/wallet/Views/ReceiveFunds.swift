@@ -7,17 +7,55 @@
 //
 
 import SwiftUI
-
+import ZcashLightClientKit
 struct ReceiveFunds: View {
     
-    let address: String
-    @Binding var isShown: Bool
+    let unifiedAddress: UnifiedAddress
+    @Environment(\.presentationMode) var presentationMode
+    @State var selectedTab: Int = 0
     var body: some View {
         NavigationView {
             
             ZStack {
                 ZcashBackground()
-                DisplayAddress(address: address)
+                VStack(alignment: .center, spacing: 10, content: {
+                    TabSelector(tabs: [
+                        (Text("Shielded")
+                            .font(.system(size: 18))
+                            .frame(maxWidth: .infinity, idealHeight: 48)
+                         ,.zYellow),
+                        (Text("Transparent")
+                            .font(.system(size: 18))
+                            .frame(maxWidth: .infinity, minHeight: 48, idealHeight: 48)
+                         ,.zTransparentBlue)
+                            
+                    ], selectedTabIndex: $selectedTab)
+                    .padding([.horizontal], 16)
+                   
+                    if selectedTab == 0 {
+                        DisplayAddress(address: unifiedAddress.zAddress,
+                                       title: "address_shielded".localized(),
+                                       badge: Image("QR-zcashlogo"),
+                                       accessoryContent: { EmptyView() })
+                    } else {
+                        DisplayAddress(address: unifiedAddress.tAddress,
+                                       title: "address_transparent".localized(),
+                                       chips: 2,
+                                       badge: Image("t-zcash-badge"),
+                                       accessoryContent: {
+                                        VStack(alignment: .leading) {
+                                             Text("This address is for receiving only.")
+                                                .lineLimit(nil)
+                                                .foregroundColor(.white)
+                                                .font(.system(size: 14))
+                                            Text("Any funds received will be auto-shielded.")
+                                               .lineLimit(nil)
+                                               .foregroundColor(.white)
+                                               .font(.system(size: 14))
+                                        }
+                                       })
+                    }
+                })
             }
             .onAppear {
                 tracker.track(.screen(screen: .receive), properties: [:])
@@ -27,22 +65,8 @@ struct ReceiveFunds: View {
             .navigationBarHidden(false)
             .navigationBarItems(trailing: ZcashCloseButton(action: {
                 tracker.track(.tap(action: .receiveBack), properties: [:])
-                self.isShown = false
+                presentationMode.wrappedValue.dismiss()
                 }).frame(width: 30, height: 30))
-        }
-    }
-}
-
-struct ReceiveFunds_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
-                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-                .previewDisplayName("iPhone 8")
-            
-            ReceiveFunds(address: "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6", isShown:  .constant(true))
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-                .previewDisplayName("iPhone 11 Pro Max")
         }
     }
 }

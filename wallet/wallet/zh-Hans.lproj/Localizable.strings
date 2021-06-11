@@ -66,6 +66,7 @@
 "send_securityauth" = "授权发送";
 "send_securityauth2" = "请确认，您现在要发送 %@ ZEC 发送给 ";
 "send_sending" = "正在发送 %@ ZEC 给";
+"send_sending_taz" = "正在发送 %@ TAZ 给";
 "send_cancelled" = "已取消";
 "send_sent" = "已发送！";
 "button_done" = "完成";

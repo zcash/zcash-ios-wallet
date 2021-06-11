@@ -81,7 +81,10 @@ struct RestoreWallet: View {
     }
     var body: some View {
         ZStack {
-            NavigationLink(destination: LazyView(Home(amount: 0, verifiedBalance: self.appEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()).environmentObject(HomeViewModel(amount: 0, balance: self.appEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()))), isActive: $proceed) {
+            NavigationLink(destination:
+                            LazyView(
+                                    Home().environmentObject(HomeViewModel())
+            ), isActive: $proceed) {
                 EmptyView()
             }
             

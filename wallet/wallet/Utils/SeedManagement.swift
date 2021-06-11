@@ -92,4 +92,20 @@ final class SeedManager {
             keychain.delete(key)
         }
     }
+    
+    var keysPresent: Bool {
+        do {
+            _ = try self.exportPhrase()
+            _ = try self.exportBirthday()
+        } catch SeedManagerError.uninitializedWallet {
+            return false
+        } catch {
+            tracker.track(.error(severity: .critical), properties: [
+                            ErrorSeverity.messageKey : "attempted to find if keys were present but failed",
+                            ErrorSeverity.underlyingError : error.localizedDescription])
+            logger.error("attempted to find if keys were present but failed: \(error.localizedDescription)")
+            return false
+        }
+        return true
+    }
 }

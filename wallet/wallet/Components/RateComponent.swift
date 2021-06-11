@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct RateComponent: View {
-    @Binding var selectedIndex: Int
+    @Binding var selectedIndex: Int?
+    var onSelect: ((Int) -> ())?
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
             ForEach(1 ..< 6) { index in
@@ -22,6 +23,7 @@ struct RateComponent: View {
                     padding: 20,
                     action: {
                         self.selectedIndex = index
+                        self.onSelect?(index)
                 })
                 )
                 

@@ -26,7 +26,7 @@ struct BackupWallet: View {
             VStack(alignment: .center, spacing: itemSpacing) {
                 Spacer()
                 VStack(spacing: itemSpacing){
-                    ZcashLogo()
+                    ZcashLogo(fillStyle: LinearGradient.amberGradient)
                     
                     Text("feedback_walletbackupstatus")
                         .multilineTextAlignment(.center)

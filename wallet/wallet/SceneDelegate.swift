@@ -24,15 +24,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
+            
+            #if targetEnvironment(simulator)
+            if ProcessInfo.processInfo.environment["isTest"] != nil {
+                window.rootViewController = HostingController(rootView:
+                        AnyView(
+                            NavigationView {
+                                Text("test")
+                            }
+                        )
+                    )
+                self.window = window
+                _zECCWalletNavigationBarLookTweaks()
+                window.makeKeyAndVisible()
+                return
+            }
+            #endif
             window.rootViewController = HostingController(rootView:
                     AnyView(
                         NavigationView {
-                            firstView()
+                            TheNoScreen().environmentObject(ZECCWalletEnvironment.shared)
                         }
                     )
                 )
             self.window = window
+            _zECCWalletNavigationBarLookTweaks()
             window.makeKeyAndVisible()
+            
         }
     }
     
@@ -62,39 +80,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        BackgroundTaskSyncronizing.default.scheduleAppRefresh()
-        BackgroundTaskSyncronizing.default.scheduleBackgroundProcessing()
+        #if !targetEnvironment(simulator)
+        //FIXME: disable background tasks for the time being 
+//        BackgroundTaskSyncronizing.default.scheduleAppRefresh()
+//        BackgroundTaskSyncronizing.default.scheduleBackgroundProcessing()
+        #endif
     }
     
     static var shared: SceneDelegate {
         UIApplication.shared.windows[0].windowScene?.delegate as! SceneDelegate
-    }
-    
-    var createNewWallet: some View {
-        CreateNewWallet()
-    }
-    
-    func firstView() -> AnyView {
-        _zECCWalletNavigationBarLookTweaks()
-        let walletEnvironment = ZECCWalletEnvironment.shared
-            
-            switch walletEnvironment.state {
-            case .initalized,
-                 .syncing,
-                 .synced:
-    
-                return AnyView(
-                    Home(
-                        amount: walletEnvironment.initializer.getBalance().asHumanReadableZecBalance(),
-                        verifiedBalance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()
-                    ).environmentObject(HomeViewModel(amount: 0, balance: walletEnvironment.initializer.getVerifiedBalance().asHumanReadableZecBalance()))
-                )
-            case .uninitialized:
-                return AnyView(
-                    self.createNewWallet.environmentObject(walletEnvironment)
-                )
-            }
-       
     }
   
 }

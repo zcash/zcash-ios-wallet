@@ -11,10 +11,12 @@ import SwiftUI
 import ZcashLightClientKit
 import Combine
 enum WalletState {
-    case initalized
     case uninitialized
+    case unprepared
+    case initalized
     case syncing
     case synced
+    case failure(error: Error)
 }
 
 
@@ -32,25 +34,53 @@ final class ZECCWalletEnvironment: ObservableObject {
     var pendingDbURL: URL
     var outputParamsURL: URL
     var spendParamsURL: URL
-    var initializer: Initializer {
-        synchronizer.initializer
-    }
-    var synchronizer: CombineSynchronizer
+    var synchronizer: CombineSynchronizer!
     var cancellables = [AnyCancellable]()
+    #if ENABLE_LOGGING
+    var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
+    #endif
+    
     
     static func getInitialState() -> WalletState {
-        let fileManager = FileManager()
+        
         do {
-            let dataDbURL = try URL.dataDbURL()
-            let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
-            return attrs.count > 0 ? .initalized : .uninitialized
+            // are there any keys?
+            let keysPresent = SeedManager.default.keysPresent
+        
+            let dbFilesPresent = try dbFilesPresent()
+            
+            switch (keysPresent,dbFilesPresent) {
+            case (false, false):
+                return .uninitialized
+            case (false, true):
+                return .failure(error: WalletError.initializationFailed(message: "This wallet has Db Files but no keys."))
+            case (true, false):
+                return .unprepared
+            case (true, true):
+                return .initalized
+            }
         } catch {
             tracker.track(.error(severity: .critical), properties: [
                             ErrorSeverity.underlyingError : "error",
                             ErrorSeverity.messageKey : "exception thrown when getting initial state"
             ])
-            return .uninitialized
+            return .failure(error: error)
         }
+    }
+    
+    static func dbFilesPresent() throws -> Bool  {
+        do {
+            let fileManager = FileManager()
+            
+            let dataDbURL = try URL.dataDbURL()
+            let attrs = try fileManager.attributesOfItem(atPath: dataDbURL.path)
+            return attrs.count > 0 ? true : false
+        } catch  CocoaError.fileNoSuchFile, CocoaError.fileReadNoSuchFile  {
+            return false
+        } catch {
+            throw error
+        }
+        
     }
     
     private init() throws {
@@ -60,36 +90,16 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.outputParamsURL = try URL.outputParamsURL()
         self.spendParamsURL = try  URL.spendParamsURL()
         
-        self.state = Self.getInitialState()
+        self.state = .unprepared
         
-        let initializer = Initializer(
-            cacheDbURL: self.cacheDbURL,
-            dataDbURL: self.dataDbURL,
-            pendingDbURL: self.pendingDbURL,
-            endpoint: endpoint,
-            spendParamsURL: self.spendParamsURL,
-            outputParamsURL: self.outputParamsURL,
-            
-            loggerProxy: logger)
-        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
     }
     
     // Warning: Use with care
     func reset() throws {
         self.synchronizer.stop()
         self.state = Self.getInitialState()
-        
-        let initializer = Initializer(
-            cacheDbURL: self.cacheDbURL,
-            dataDbURL: self.dataDbURL,
-            pendingDbURL: self.pendingDbURL,
-            endpoint: endpoint,
-            spendParamsURL: self.spendParamsURL,
-            outputParamsURL: self.outputParamsURL,
-            
-            loggerProxy: logger)
-        self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        
+        self.synchronizer = nil
     }
     
     func createNewWallet() throws {
@@ -111,11 +121,27 @@ final class ZECCWalletEnvironment: ObservableObject {
     func initialize() throws {
         let seedPhrase = try SeedManager.default.exportPhrase()
         let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
-        let viewingKeys = try DerivationTool.default.deriveViewingKeys(seed: seedBytes, numberOfAccounts: 1)
-        try self.initializer.initialize(viewingKeys: viewingKeys, walletBirthday: try SeedManager.default.exportBirthday())
+        let viewingKeys = try DerivationTool.default.deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
+        
+        let initializer = Initializer(
+            cacheDbURL: self.cacheDbURL,
+            dataDbURL: self.dataDbURL,
+            pendingDbURL: self.pendingDbURL,
+            endpoint: endpoint,
+            spendParamsURL: self.spendParamsURL,
+            outputParamsURL: self.outputParamsURL,
+            viewingKeys: viewingKeys,
+            walletBirthday: try SeedManager.default.exportBirthday(),
+            loggerProxy: logger)
+        
+        self.synchronizer = try CombineSynchronizer(initializer: initializer)
+        
+        try self.synchronizer.prepare()
+        
         self.subscribeToApplicationNotificationsPublishers()
         
         fixPendingTransactionsIfNeeded()
+        
         try self.synchronizer.start()
     }
     
@@ -123,30 +149,53 @@ final class ZECCWalletEnvironment: ObservableObject {
      only for internal use
      */
     func nuke(abortApplication: Bool = false) {
-        self.synchronizer.stop()
+        if self.synchronizer != nil {
+            self.synchronizer.stop()
+        }
         
         SeedManager.default.nukeWallet()
         
         do {
-            try FileManager.default.removeItem(at: self.dataDbURL)
-        } catch {
-            logger.error("could not nuke wallet: \(error)")
+            try deleteWalletFiles()
         }
-        do {
-            try FileManager.default.removeItem(at: self.cacheDbURL)
-        } catch {
-            logger.error("could not nuke wallet: \(error)")
-        }
-        do {
-            try FileManager.default.removeItem(at: self.pendingDbURL)
-        } catch {
+        catch {
             logger.error("could not nuke wallet: \(error)")
         }
         
         if abortApplication {
             abort()
         }
+        
+        
     }
+    
+    fileprivate func deleteWalletFiles() throws {
+        if self.synchronizer != nil {
+            self.synchronizer.stop()
+        }
+        do {
+            try FileManager.default.removeItem(at: self.dataDbURL)
+            try FileManager.default.removeItem(at: self.cacheDbURL)
+            try FileManager.default.removeItem(at: self.pendingDbURL)
+        } catch {
+            logger.error("could not wipe wallet: \(error)")
+            throw WalletError.criticalError(error: error)
+        }
+    }
+    
+    /**
+     Deletes the wallet's files but keeps the user's keys
+     */
+    func wipe(abortApplication: Bool = true) throws {
+        try deleteWalletFiles()
+        
+        if abortApplication {
+            abort()
+        }
+        
+    }
+    
+    
     
     static func mapError(error: Error) -> WalletError {
         if let walletError = error as? WalletError {
@@ -168,6 +217,10 @@ final class ZECCWalletEnvironment: ObservableObject {
             }
         } else if let synchronizerError = error as? SynchronizerError {
             switch synchronizerError {
+            case .lightwalletdValidationFailed(let underlyingError):
+                return WalletError.criticalError(error: underlyingError)
+            case .notPrepared:
+                return WalletError.initializationFailed(message: "attempt to initialize an unprepared synchronizer")
             case .generalError(let message):
                 return WalletError.genericErrorWithMessage(message: message)
             case .initFailed(let message):
@@ -185,18 +238,20 @@ final class ZECCWalletEnvironment: ObservableObject {
             case .uncategorized(let underlyingError):
                 return WalletError.genericErrorWithError(error: underlyingError)
             case .criticalError:
-                return WalletError.criticalError
+                return WalletError.criticalError(error: synchronizerError)
             case .parameterMissing(let underlyingError):
                 return WalletError.sendFailed(error: underlyingError)
             case .rewindError(let underlyingError):
                 return WalletError.genericErrorWithError(error: underlyingError)
             case .rewindErrorUnknownArchorHeight:
                 return WalletError.genericErrorWithMessage(message: "unable to rescan to specified height")
+            case .invalidAccount:
+                return WalletError.genericErrorWithMessage(message: "your wallet asked a balance for an account index that is not derived. This is probably a programming mistake.")
             }
         } else if let serviceError = error as? LightWalletServiceError {
             switch serviceError {
             case .criticalError:
-                return WalletError.criticalError
+                return WalletError.criticalError(error: serviceError)
             case .userCancelled:
                 return WalletError.connectionFailed
             case .unknown:
@@ -283,10 +338,23 @@ final class ZECCWalletEnvironment: ObservableObject {
             }
             .store(in: &appCycleCancellables)
         
-        center.publisher(for: UIApplication.willResignActiveNotification)
+        center.publisher(for: UIApplication.didBecomeActiveNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak logger] _ in
+                logger?.debug("didBecomeActiveNotification")
+            }
+            .store(in: &appCycleCancellables)
+        center.publisher(for: UIApplication.didEnterBackgroundNotification)
             .subscribe(on: DispatchQueue.main)
             .sink { [weak self, weak logger] _ in
                 self?.registerBackgroundActivity()
+                logger?.debug("didEnterBackgroundNotification")
+            }
+            .store(in: &appCycleCancellables)
+        center.publisher(for: UIApplication.willResignActiveNotification)
+            .subscribe(on: DispatchQueue.main)
+            .sink { [weak logger] _ in
+               
                 logger?.debug("applicationWillResignActive")
             }
             .store(in: &appCycleCancellables)
@@ -307,6 +375,15 @@ final class ZECCWalletEnvironment: ObservableObject {
 }
 
 extension ZECCWalletEnvironment {
+    
+    static var appName: String {
+        if ZcashSDK.isMainnet {
+            return "ECC Wallet".localized()
+        } else {
+            return "ECC Testnet"
+        }
+    }
+    
     static var appBuild: String? {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     }
@@ -316,28 +393,42 @@ extension ZECCWalletEnvironment {
     }
     
     func isValidShieldedAddress(_ address: String) -> Bool {
-        self.initializer.isValidShieldedAddress(address)
+        address.isValidShieldedAddress
     }
     
     func isValidTransparentAddress(_ address: String) -> Bool {
-        self.initializer.isValidTransparentAddress(address)
+        address.isValidTransparentAddress
     }
     
     func isValidAddress(_ address: String) -> Bool {
-        self.initializer.isValidShieldedAddress(address) || self.initializer.isValidTransparentAddress(address)
+        address.isValidAddress
     }
     func sufficientFundsToSend(amount: Double) -> Bool {
-        return sufficientFunds(availableBalance: self.initializer.getVerifiedBalance(), zatoshiToSend: amount.toZatoshi())
+        return sufficientFunds(availableBalance: getShieldedBalance(), zatoshiToSend: amount.toZatoshi())
     }
+    
     private func sufficientFunds(availableBalance: Int64, zatoshiToSend: Int64) -> Bool {
         availableBalance - zatoshiToSend  - Int64(ZcashSDK.defaultFee()) >= 0
     }
+    
     static var minerFee: Double {
         Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
     }
     
     func credentialsAlreadyPresent() -> Bool {
         (try? SeedManager.default.exportPhrase()) != nil
+    }
+    
+    func getShieldedVerifiedBalance() -> Int64 {
+        self.synchronizer.initializer.getVerifiedBalance()
+    }
+    
+    func getShieldedBalance() -> Int64 {
+        self.synchronizer.initializer.getBalance()
+    }
+    
+    func getShieldedAddress() -> String? {
+        self.synchronizer.initializer.getAddress()
     }
 }
 
@@ -401,6 +492,15 @@ extension ZECCWalletEnvironment {
             logger.debug("rewind successfull. saving settings")
             tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successfull. saving settings"])
             
+        } catch SynchronizerError.rewindErrorUnknownArchorHeight {
+            do {
+                try self.synchronizer.rewind(.quick)
+                UserSettings.shared.didRescanPendingFix = true
+                tracker.track(.screen(screen: .home), properties: ["pendingTxFix" : "rewind successful after recovering from error SynchronizerError.rewindErrorUnknownArchorHeight. saving settings"])
+            } catch {
+                logger.error("attempt to fix pending transactions failed with error: \(error)")
+                tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
+            }
         } catch {
             logger.error("attempt to fix pending transactions failed with error: \(error)")
             tracker.track(.error(severity: .critical), properties: ["pendingTxFix" : "attempt to fix pending transactions failed with error: \(error)"])
@@ -420,3 +520,24 @@ extension ZECCWalletEnvironment {
     }
 }
 
+
+#if ENABLE_LOGGING
+extension ZECCWalletEnvironment {
+    func shouldShowFeedbackRequest() -> Bool {
+        
+        guard let lastDate = UserSettings.shared.lastFeedbackDisplayedOnDate else {
+            return true
+        }
+        let now = Date()
+        
+        let calendar = Calendar.current
+        
+        return (calendar.dateComponents([.day], from: lastDate, to: now).day ?? 0) > 1
+        
+    }
+    
+    func registerFeedbackSolicitation(on date: Date) {
+        UserSettings.shared.lastFeedbackDisplayedOnDate = date
+    }
+}
+#endif

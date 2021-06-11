@@ -69,6 +69,7 @@
 "send_securityauth" = "Подтвердите, чтобы отправить";
 "send_securityauth2" = "Пожалуйста подтвердите, что хотите отправить %@ ZEC на адрес";
 "send_sending" = "Отправка XX ZEC на";
+"send_sending_taz" = "Отправка XX TAZ на";
 "send_cancelled" = "Отменено";
 "send_sent" = "Отправлено!";
 "button_done" = "Готово";

@@ -8,21 +8,20 @@
 
 import SwiftUI
 
-struct FeedbackForm: View {
+struct FeedbackForm<Dismissal: Identifiable>: View {
     @State var details: String = ""
     @State var balance: String = ""
     @State var otherSuggestions: String = ""
-    @State var selectedRating = 3
+    @State var selectedRating: Int?
     @State var showFeedbackSentAlert = false
-    @Binding var isActive: Bool
+    @State var isSolicited = false
+    @Binding var isActive: Dismissal?
     
     var validForm: Bool {
         details.count > 0
     }
     var body: some View {
         ScrollView {
-       
-                
                 VStack(alignment: .center, spacing: 30) {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
@@ -37,7 +36,6 @@ struct FeedbackForm: View {
                         Spacer()
                     }.padding(0)
                     RateComponent(selectedIndex: $selectedRating)
-                    
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Any details to share?")
@@ -65,10 +63,11 @@ struct FeedbackForm: View {
                     }
                     Button(action: {
                         tracker.track(.feedback, properties: [
-                            "rating" : String(self.selectedRating),
+                            "rating" : String(self.selectedRating ?? 0),
                             "question1" : self.details,
                             "question2" : self.balance,
-                            "question3" : self.otherSuggestions
+                            "question3" : self.otherSuggestions,
+                            "solicited" : String(self.isSolicited)
                         ])
                         self.showFeedbackSentAlert = true
                     }) {
@@ -84,8 +83,6 @@ struct FeedbackForm: View {
                 }
                 .padding(.bottom, 20)
                 .padding([.horizontal],30)
-       
-            
         }
         .background(ZcashBackground())
         .keyboardAdaptive()
@@ -101,11 +98,9 @@ struct FeedbackForm: View {
             Alert(title: Text("Feedback Sent!".localized()),
                   message: Text("Thanks for your feedback!".localized()),
                   dismissButton: .default(Text("button_close".localized()),action: {
-                    self.isActive = false
+                    self.isActive = nil
                   }))
         }
-       
-        
     }
 }
 
@@ -121,8 +116,8 @@ struct CustomTextFieldStyle: TextFieldStyle {
     
 }
 
-struct FeedbackForm_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedbackForm(isActive: .constant(true))
-    }
-}
+//struct FeedbackForm_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FeedbackForm(isActive: .constant(true))
+//    }
+//}
