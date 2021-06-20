@@ -1199,6 +1199,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${SRCROOT}/wallet/Generated/Constants.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1216,6 +1217,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${SRCROOT}/wallet/Generated/Constants.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1272,6 +1274,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${SRCROOT}/wallet/Generated/Constants.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
