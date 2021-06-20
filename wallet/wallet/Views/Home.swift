@@ -427,8 +427,6 @@ struct Home: View {
                         transparentBalance: self.viewModel.transparentBalance)
                         .padding([.horizontal], self.buttonPadding)
                 } else {
-                    self.balanceView.padding([.horizontal], self.buttonPadding)
-                        .scaleEffect(Device.isLarge ? 1 : 0.85)
                     NavigationLink(
                         destination: WalletBalanceBreakdown()
                                         .environmentObject(WalletBalanceBreakdownViewModel()),
