@@ -1991,7 +1991,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
@@ -2002,7 +2002,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -2018,7 +2018,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
@@ -2028,7 +2028,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -2131,7 +2131,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -2142,7 +2142,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2157,7 +2157,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
@@ -2167,7 +2167,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2183,7 +2183,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
@@ -2194,7 +2194,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2210,7 +2210,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 112;
+				CURRENT_PROJECT_VERSION = 113;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
@@ -2220,7 +2220,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
