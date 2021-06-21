@@ -8,7 +8,7 @@
 
 import Foundation
 import ZcashLightClientKit
-import os
+
 
 class SimpleLogger: ZcashLightClientKit.Logger {
     enum LogLevel: Int {
@@ -20,20 +20,18 @@ class SimpleLogger: ZcashLightClientKit.Logger {
     }
     
     enum LoggerType {
-        case osLog
         case printerLog
     }
     
     var level: LogLevel
     var loggerType: LoggerType
     
-    init(logLevel: LogLevel, type: LoggerType = .osLog) {
+    init(logLevel: LogLevel, type: LoggerType = .printerLog) {
         self.level = logLevel
         self.loggerType = type
     }
     
     private static let subsystem = Bundle.main.bundleIdentifier!
-    static let oslog = OSLog(subsystem: subsystem, category: "logs")
     
     func debug(_ message: String, file: StaticString = #file, function: StaticString = #function, line: Int = #line) {
         guard level.rawValue == LogLevel.debug.rawValue else { return }
@@ -65,11 +63,8 @@ class SimpleLogger: ZcashLightClientKit.Logger {
         switch loggerType {
         case .printerLog:
             print("[\(level)] \(fileName) - \(function) - line: \(line) -> \(message)")
-        default:
-            os_log("[%{public}@] %{public}@ - %{public}@ - Line: %{public}d -> %{public}@", level, fileName, String(describing: function), line, message)
         }
     }
-    
 }
 
 #if ENABLE_LOGGING
