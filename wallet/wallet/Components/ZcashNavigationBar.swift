@@ -67,6 +67,7 @@ struct ZcashNavigationBarModifier<LeadingContent: View, HeadingContent: View, Tr
                 ZcashNavigationBar(leadingItem: { leadingItem },
                                    headerItem: { headerItem },
                                    trailingItem: { trailingItem } )
+                    .padding(.horizontal, 24)
                 content
             }
         }
