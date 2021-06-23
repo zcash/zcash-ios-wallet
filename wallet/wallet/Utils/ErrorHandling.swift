@@ -99,7 +99,21 @@ enum DeveloperFacingErrors: Error {
     case unexpectedBehavior(message: String)
     case programmingError(error: Error)
     case handledException(error: Error)
+}
+
+extension URLError.Code {
     
+    func asUserFacingError() -> UserFacingErrors {
+        switch self {
+        case .badURL:
+            return UserFacingErrors.internalErrorWithMessage(message: "problem downloading parameters")
+        case .cannotMoveFile:
+            return UserFacingErrors.internalErrorWithMessage(message: "downloaded parameter files but could not move them. Please check that you have 50MB of free space")
+        default:
+            return UserFacingErrors.internalErrorWithMessage(message: "Could not locate parameters needed to create transaction")
+            
+        }
+    }
 }
 
 extension DeveloperFacingErrors {

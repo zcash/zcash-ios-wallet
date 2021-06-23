@@ -231,8 +231,6 @@ class CombineSynchronizer {
             throw SynchronizerError.initFailed(message: "unable to derive unified address: \(error.localizedDescription)")
         }
         
-        tryToCopyParamsToNewLocation()
-        
         try self.synchronizer.prepare()
         
         // BUGFIX: transactions history empty when synchronizer fails to connect to server
@@ -240,32 +238,7 @@ class CombineSynchronizer {
         self.updatePublishers()
     }
     
-    func tryToCopyParamsToNewLocation() {
-
-        do {
-            
-            let manager = FileManager.default
-            
-            let newSpendParamsURL = try URL.spendParamsURL()
-            
-            
-            if let previousSpendParamsURL = URL.bundledSpendParamsURL(),
-               !manager.isFilePresent(newSpendParamsURL) {
-                try? manager.copyItem(at: previousSpendParamsURL, to: newSpendParamsURL)
-            }
-            
-            let newOutputParamsURL = try URL.outputParamsURL()
-            
-            if let previousOutputParamsURL = URL.bundledOutputParamsURL(), !manager.isFilePresent(newOutputParamsURL) {
-                try? manager.copyItem(at: previousOutputParamsURL, to: newOutputParamsURL)
-            }
-            
-        } catch {
-            let message = "attempt to copy parameters from bundle to documents directory failed with error: \(error)"
-            logger.warn(message)
-            trackError(WalletError.genericErrorWithMessage(message: message))
-        }
-    }
+   
     
     func start(retry: Bool = false) throws {
         

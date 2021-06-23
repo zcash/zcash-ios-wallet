@@ -14,6 +14,13 @@ import Combine
 extension SaplingParameterDownloader {
     typealias DownloadResult = (spendingParams: URL, outputParams: URL)
     
+    /**
+     Downloads the spend parameters if not found on the given urls or in the fallback urls for the app
+     returns a DownloadResult or URLError if failed
+      URLError.badURL if bad downloadURLs are provided
+      URLError.cannotOpenFile if fallback URLs cannot be obtained
+      URLError.cannotMoveFile if after downloading the files they can't be moved to their final destination
+     */
     static func downloadParametersIfNeeded(spendParamsDownloadURL: URL? = nil, outputParamsDownloadURL: URL? = nil, spendParamsStoreURL: URL? = nil, outputParamsStoreURL: URL? = nil) -> AnyPublisher<DownloadResult,URLError> {
         do {
             let spendURL = try unwrapOrFallBack(url: spendParamsStoreURL) {

@@ -37,7 +37,7 @@ extension URL {
     }
     
     static func bundledSpendParamsURL() -> URL? {
-        Bundle.main.url(forResource: "sapling-spend", withExtension: ".params")!
+        Bundle.main.url(forResource: "sapling-spend", withExtension: ".params")
     }
 
     static func bundledOutputParamsURL() -> URL? {

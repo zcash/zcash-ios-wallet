@@ -12,9 +12,10 @@ import ZcashLightClientKit
 
 struct Sending: View {
     
+    
     @EnvironmentObject var flow: SendFlowEnvironment
     @State var details: DetailModel? = nil
-    
+    @Environment(\.presentationMode) var presentationMode
     var errorMessage: String {
         guard let e = flow.error else {
             return "thing is that we really don't know what just went down, sorry!"
@@ -96,6 +97,7 @@ struct Sending: View {
                     Button(action: {
                         tracker.track(.tap(action: .sendFinalClose), properties: [:])
                         self.flow.close()
+                        self.presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("button_done")
                             .foregroundColor(.black)
@@ -113,7 +115,7 @@ struct Sending: View {
         }
         .onAppear() {
             tracker.track(.screen(screen: .sendFinal), properties: [:])
-            self.flow.send()
+            self.flow.preSend()
         }
     }
 }

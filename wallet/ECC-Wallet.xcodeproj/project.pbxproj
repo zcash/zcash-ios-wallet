@@ -81,8 +81,6 @@
 		0D562FD4257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FDB257852A700E843DD /* TestMemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FDA257852A700E843DD /* TestMemoUtils.swift */; };
-		0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
-		0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0D5E4AA72527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D5E4AA82527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D5E9B072637197A00D98569 /* ReadableBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E9B062637197A00D98569 /* ReadableBalance.swift */; };
@@ -212,11 +210,9 @@
 		0DCDFFD524B6722B000F6999 /* MnemonicSeedPhraseHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */; };
 		0DCDFFD624B6722B000F6999 /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
 		0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
-		0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
 		0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
-		0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */; };
 		0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
 		0DD1C2CE24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
@@ -332,13 +328,11 @@
 		0DE303B4263A158400CF877A /* lottie_shield.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DC1430125C47880001D8E55 /* lottie_shield.json */; };
 		0DE303B5263A158400CF877A /* lottie_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075324DB4A440080B0CF /* lottie_success.json */; };
 		0DE303B6263A158400CF877A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
-		0DE303B7263A158400CF877A /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0DE303B8263A158400CF877A /* lottie_button_loading_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */; };
 		0DE303B9263A158400CF877A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
 		0DE303BA263A158400CF877A /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DE303BB263A158400CF877A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
 		0DE303BC263A158400CF877A /* lottie_sending.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075224DB4A440080B0CF /* lottie_sending.json */; };
-		0DE303BD263A158400CF877A /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAD23BEB0E500709636 /* Fonts.swift */; };
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
@@ -482,8 +476,6 @@
 		0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTests.swift; sourceTree = "<group>"; };
 		0D562FD3257841FD00E843DD /* MemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoUtils.swift; sourceTree = "<group>"; };
 		0D562FDA257852A700E843DD /* TestMemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMemoUtils.swift; sourceTree = "<group>"; };
-		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
-		0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-spend.params"; sourceTree = "<group>"; };
 		0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTasks.swift; sourceTree = "<group>"; };
 		0D5E9B062637197A00D98569 /* ReadableBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableBalance.swift; sourceTree = "<group>"; };
 		0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceBreakdown.swift; sourceTree = "<group>"; };
@@ -758,8 +750,6 @@
 				0DF3075224DB4A440080B0CF /* lottie_sending.json */,
 				0DC1430125C47880001D8E55 /* lottie_shield.json */,
 				0DF3075324DB4A440080B0CF /* lottie_success.json */,
-				0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */,
-				0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */,
 				0D12511023B557E60014EE3A /* Info.plist */,
 				0DE51DAB23BEB03C00709636 /* Zboto.otf */,
 				0D12510A23B557E60014EE3A /* Preview Content */,
@@ -1126,13 +1116,11 @@
 				0DF3075624DB4A440080B0CF /* lottie_success.json in Resources */,
 				0D4332862644A36F005B5B8E /* Assets.xcassets in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
-				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
 				0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */,
 				8D3F362524A40FCF0087687A /* Localizable.strings in Resources */,
 				0DF3075424DB4A440080B0CF /* lottie_sending.json in Resources */,
-				0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1158,13 +1146,11 @@
 				0DF3075724DB4A440080B0CF /* lottie_success.json in Resources */,
 				0D4332872644A370005B5B8E /* Assets.xcassets in Resources */,
 				0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */,
-				0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */,
 				0D2D5C1724CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */,
 				0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */,
 				0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */,
 				0DF3075524DB4A440080B0CF /* lottie_sending.json in Resources */,
-				0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,13 +1162,11 @@
 				0DE303B5263A158400CF877A /* lottie_success.json in Resources */,
 				0D4332882644A38A005B5B8E /* Assets.xcassets in Resources */,
 				0DE303B6263A158400CF877A /* LaunchScreen.storyboard in Resources */,
-				0DE303B7263A158400CF877A /* sapling-spend.params in Resources */,
 				0DE303B8263A158400CF877A /* lottie_button_loading_new.json in Resources */,
 				0DE303B9263A158400CF877A /* Preview Assets.xcassets in Resources */,
 				0DE303BA263A158400CF877A /* Zboto.otf in Resources */,
 				0DE303BB263A158400CF877A /* Localizable.strings in Resources */,
 				0DE303BC263A158400CF877A /* lottie_sending.json in Resources */,
-				0DE303BD263A158400CF877A /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
