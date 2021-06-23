@@ -18,9 +18,6 @@ install:
   - WALLET_WALLET_DIR=${WALLET_DIR}/wallet
   - cp ${WALLET_DIR}/env-vars.sh.example ${WALLET_DIR}/env-vars.sh
   - cd ${WALLET_DIR} ; pod install ; cd ${TRAVIS_BUILD_DIR}
-  - curl https://download.z.cash/downloads/sapling-output.params > ${WALLET_WALLET_DIR}/sapling-output.params
-  - curl https://download.z.cash/downloads/sapling-spend.params > ${WALLET_WALLET_DIR}/sapling-spend.params
-
 
 script:
   - set -o pipefail && xcodebuild -version
