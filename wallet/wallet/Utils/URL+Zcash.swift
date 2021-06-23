@@ -35,4 +35,12 @@ extension URL {
     static func outputParamsURL() throws -> URL {
         try documentsDirectory().appendingPathComponent("sapling-output.params")
     }
+    
+    static func bundledSpendParamsURL() -> URL? {
+        Bundle.main.url(forResource: "sapling-spend", withExtension: ".params")!
+    }
+
+    static func bundledOutputParamsURL() -> URL? {
+        Bundle.main.url(forResource: "sapling-output", withExtension: ".params")
+    }
 }

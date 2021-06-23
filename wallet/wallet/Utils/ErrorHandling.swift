@@ -22,7 +22,7 @@ enum WalletError: Error {
     case criticalError(error: Error)
 }
 
-func trackError(_ walletError: WalletError) -> WalletError {
+@discardableResult func trackError(_ walletError: WalletError) -> WalletError {
     switch walletError {
     case .criticalError, .createFailed:
         tracker.track(.error(severity: .critical), properties: [ ErrorSeverity.underlyingError : walletError.localizedDescription ])
