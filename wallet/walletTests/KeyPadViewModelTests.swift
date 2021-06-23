@@ -9,7 +9,7 @@
 import XCTest
 import Combine
 import SwiftUI
-@testable import ECC_Wallet_no_logs
+@testable import ECC_Wallet_Testnet
 class KeyPadViewModelTests: XCTestCase {
     
     
