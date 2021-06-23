@@ -72,7 +72,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.27.0)
   - SwiftProtobuf (1.17.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.12.0-alpha.5):
+  - ZcashLightClientKit (0.12.0-alpha.6):
     - gRPC-Swift (= 1.0.0)
     - SQLite.swift (~> 0.12.2)
   - zealous-logger (1.0.0):
@@ -87,7 +87,7 @@ DEPENDENCIES:
   - Mixpanel-swift
   - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
-  - ZcashLightClientKit (from `../../ZcashLightClientKit`)
+  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, tag `0.12.0-alpha.6`)
   - zealous-logger (from `https://github.com/zcash-hackworks/zealous-logger`, branch `master`)
 
 SPEC REPOS:
@@ -127,7 +127,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :path: "../../ZcashLightClientKit"
+    :git: https://github.com/zcash/ZcashLightClientKit.git
+    :tag: 0.12.0-alpha.6
   zealous-logger:
     :branch: master
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -136,6 +137,9 @@ CHECKOUT OPTIONS:
   MnemonicSwift:
     :commit: 714cc6e2631ac322fc0067b2302358c1baad9275
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
+  ZcashLightClientKit:
+    :git: https://github.com/zcash/ZcashLightClientKit.git
+    :tag: 0.12.0-alpha.6
   zealous-logger:
     :commit: c9f8d8d9f74a456094b9143616da3b4eba91ddcf
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -171,9 +175,9 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: eee29d06a617e6b37c534d8589ae27c31b119f81
   SwiftProtobuf: 9c85136c6ba74b0a1b84279dbf0f6db8efb714e0
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: 5c666d944cbd10a1bcd76442fada92b354243ff3
+  ZcashLightClientKit: d76d5457b325c059260e34fcb26fcaf01b466406
   zealous-logger: 2f33820d7d7e723796dabc51d60942b51b9ab024
 
-PODFILE CHECKSUM: c461566a5c50decf1028d4b736572cd224ec5b55
+PODFILE CHECKSUM: 3618cc920805aa0b6c4bc21fb9d15ae9a8955181
 
 COCOAPODS: 1.10.1
