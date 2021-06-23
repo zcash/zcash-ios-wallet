@@ -34,8 +34,7 @@ extension SaplingParameterDownloader {
                     DownloadResult(spendingParams: spend, outputParams: output)
                 }
                 .eraseToAnyPublisher()
-            
-                
+  
         } catch {
             return Fail.init(error: URLError(.cannotOpenFile)).eraseToAnyPublisher()
         }
