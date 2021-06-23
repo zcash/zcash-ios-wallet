@@ -12,6 +12,7 @@ PODS:
   - CocoaLumberjack/Core (3.7.2)
   - CocoaLumberjack/Swift (3.7.2):
     - CocoaLumberjack/Core
+  - CombineUrlSessionDownloader (1.0.0)
   - gRPC-Swift (1.0.0):
     - CGRPCZlib (= 1.0.0)
     - Logging (< 2.0.0, >= 1.4.0)
@@ -71,7 +72,7 @@ PODS:
     - SwiftNIOTLS (< 3, >= 2.27.0)
   - SwiftProtobuf (1.17.0)
   - TinyQRScanner (1.0.1)
-  - ZcashLightClientKit (0.12.0-alpha.4):
+  - ZcashLightClientKit (0.12.0-alpha.5):
     - gRPC-Swift (= 1.0.0)
     - SQLite.swift (~> 0.12.2)
   - zealous-logger (1.0.0):
@@ -79,13 +80,14 @@ PODS:
 
 DEPENDENCIES:
   - Bugsnag
+  - CombineUrlSessionDownloader
   - gRPC-Swift (= 1.0.0)
   - KeychainSwift (~> 19.0.0)
   - lottie-ios
   - Mixpanel-swift
   - MnemonicSwift (from `https://github.com/zcash-hackworks/MnemonicSwift.git`, branch `master`)
   - TinyQRScanner
-  - ZcashLightClientKit (from `https://github.com/zcash/ZcashLightClientKit.git`, tag `0.12.0-alpha.4`)
+  - ZcashLightClientKit (from `../../ZcashLightClientKit`)
   - zealous-logger (from `https://github.com/zcash-hackworks/zealous-logger`, branch `master`)
 
 SPEC REPOS:
@@ -100,6 +102,7 @@ SPEC REPOS:
     - CNIOLinux
     - CNIOWindows
     - CocoaLumberjack
+    - CombineUrlSessionDownloader
     - gRPC-Swift
     - KeychainSwift
     - Logging
@@ -124,8 +127,7 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
   ZcashLightClientKit:
-    :git: https://github.com/zcash/ZcashLightClientKit.git
-    :tag: 0.12.0-alpha.4
+    :path: "../../ZcashLightClientKit"
   zealous-logger:
     :branch: master
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -134,9 +136,6 @@ CHECKOUT OPTIONS:
   MnemonicSwift:
     :commit: 714cc6e2631ac322fc0067b2302358c1baad9275
     :git: https://github.com/zcash-hackworks/MnemonicSwift.git
-  ZcashLightClientKit:
-    :git: https://github.com/zcash/ZcashLightClientKit.git
-    :tag: 0.12.0-alpha.4
   zealous-logger:
     :commit: c9f8d8d9f74a456094b9143616da3b4eba91ddcf
     :git: https://github.com/zcash-hackworks/zealous-logger
@@ -152,6 +151,7 @@ SPEC CHECKSUMS:
   CNIOLinux: 21957f4cd9b4efa7e0b835c41977f6f71647653c
   CNIOWindows: 93ad715b3bb3da30e1843148fe40429de1ed1ae9
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
+  CombineUrlSessionDownloader: 48382df0efb182da6c1117b651d4daf0e8f09cb9
   gRPC-Swift: 77154009a019e97f8c4bd8f2bb75fe9726801157
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
@@ -171,9 +171,9 @@ SPEC CHECKSUMS:
   SwiftNIOTransportServices: eee29d06a617e6b37c534d8589ae27c31b119f81
   SwiftProtobuf: 9c85136c6ba74b0a1b84279dbf0f6db8efb714e0
   TinyQRScanner: 4077088ff2e8d476af79e6035413648c2c7900ef
-  ZcashLightClientKit: 6cba5cc8b51b424266298b63ce04e39773253e9f
+  ZcashLightClientKit: 5c666d944cbd10a1bcd76442fada92b354243ff3
   zealous-logger: 2f33820d7d7e723796dabc51d60942b51b9ab024
 
-PODFILE CHECKSUM: 56c393f477693f624660f3e28a37163933ecd786
+PODFILE CHECKSUM: c461566a5c50decf1028d4b736572cd224ec5b55
 
 COCOAPODS: 1.10.1
