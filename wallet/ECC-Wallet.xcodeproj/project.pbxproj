@@ -61,6 +61,9 @@
 		0D2D5C2324CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */; };
 		0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */; };
 		0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3AAB44244652700010EA3C /* TransactionDetail.swift */; };
+		0D3E6CFE26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
+		0D3E6CFF26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
+		0D3E6D0026814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
 		0D41AF9F23FCAA4700EE4FC0 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */; };
 		0D421AFA23C66B7500E5E55E /* Sending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AF923C66B7500E5E55E /* Sending.swift */; };
 		0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D421AFE23C67DCE00E5E55E /* DetailCard.swift */; };
@@ -78,8 +81,6 @@
 		0D562FD4257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FD3257841FD00E843DD /* MemoUtils.swift */; };
 		0D562FDB257852A700E843DD /* TestMemoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D562FDA257852A700E843DD /* TestMemoUtils.swift */; };
-		0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
-		0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0D5E4AA72527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D5E4AA82527B440001CB335 /* BackgroundTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */; };
 		0D5E9B072637197A00D98569 /* ReadableBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E9B062637197A00D98569 /* ReadableBalance.swift */; };
@@ -209,11 +210,9 @@
 		0DCDFFD524B6722B000F6999 /* MnemonicSeedPhraseHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDAF3A624097D6E00EA9427 /* MnemonicSeedPhraseHandling.swift */; };
 		0DCDFFD624B6722B000F6999 /* ZcashBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D60F2EC23BE1BC9006F5FAD /* ZcashBackground.swift */; };
 		0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
-		0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
 		0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
-		0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0DCF43BE23DF7229007E9B49 /* CombineSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */; };
 		0DD1C2CD24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
 		0DD1C2CE24F04D470042C1E4 /* BlockExplorerUrlHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD1C2CC24F04D470042C1E4 /* BlockExplorerUrlHandling.swift */; };
@@ -329,13 +328,11 @@
 		0DE303B4263A158400CF877A /* lottie_shield.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DC1430125C47880001D8E55 /* lottie_shield.json */; };
 		0DE303B5263A158400CF877A /* lottie_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075324DB4A440080B0CF /* lottie_success.json */; };
 		0DE303B6263A158400CF877A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510D23B557E60014EE3A /* LaunchScreen.storyboard */; };
-		0DE303B7263A158400CF877A /* sapling-spend.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */; };
 		0DE303B8263A158400CF877A /* lottie_button_loading_new.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D5C1524CF3BD4001A58AD /* lottie_button_loading_new.json */; };
 		0DE303B9263A158400CF877A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D12510B23B557E60014EE3A /* Preview Assets.xcassets */; };
 		0DE303BA263A158400CF877A /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DE303BB263A158400CF877A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F362724A40FCF0087687A /* Localizable.strings */; };
 		0DE303BC263A158400CF877A /* lottie_sending.json in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3075224DB4A440080B0CF /* lottie_sending.json */; };
-		0DE303BD263A158400CF877A /* sapling-output.params in Resources */ = {isa = PBXBuildFile; fileRef = 0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */; };
 		0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE51DAB23BEB03C00709636 /* Zboto.otf */; };
 		0DE51DAE23BEB0E500709636 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAD23BEB0E500709636 /* Fonts.swift */; };
 		0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE51DAF23BEBE5100709636 /* KeyPad.swift */; };
@@ -343,6 +340,7 @@
 		0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8668424BCE55400F3B883 /* Constants.generated.swift */; };
 		0DE8668724BD195C00F3B883 /* EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD8B9B724B6898F0031FF42 /* EventLogger.swift */; };
 		0DEC5DF923BD60CF002EFD0D /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEC5DF823BD60CF002EFD0D /* Ring.swift */; };
+		0DEF22DE26825D5400D815C7 /* ParameterDownloadsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF22DD26825D5400D815C7 /* ParameterDownloadsTests.swift */; };
 		0DF210FF23F4733000C31B08 /* zECC+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */; };
 		0DF26E2124D1F75300F32978 /* ZcashMemoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2024D1F75300F32978 /* ZcashMemoTextField.swift */; };
 		0DF26E2224D1F75300F32978 /* ZcashMemoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF26E2024D1F75300F32978 /* ZcashMemoTextField.swift */; };
@@ -383,6 +381,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0D1250FE23B557E40014EE3A;
 			remoteInfo = wallet;
+		};
+		0DEF22DF2682814300D815C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D1250F723B557E40014EE3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DE30345263A158400CF877A;
+			remoteInfo = "ECC-Wallet-Testnet";
+		};
+		0DEF22E12682814A00D815C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D1250F723B557E40014EE3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DE30345263A158400CF877A;
+			remoteInfo = "ECC-Wallet-Testnet";
 		};
 		0DF67CB4250AC9F30091C763 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -452,6 +464,7 @@
 		0D2D5C1F24CF85CF001A58AD /* ZecAmountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZecAmountHeader.swift; sourceTree = "<group>"; };
 		0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashNavigationBar.swift; sourceTree = "<group>"; };
 		0D3AAB44244652700010EA3C /* TransactionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetail.swift; sourceTree = "<group>"; };
+		0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SaplingParameterDownloader+Combine.swift"; sourceTree = "<group>"; };
 		0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0D421AF923C66B7500E5E55E /* Sending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sending.swift; sourceTree = "<group>"; };
 		0D421AFE23C67DCE00E5E55E /* DetailCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCard.swift; sourceTree = "<group>"; };
@@ -463,8 +476,6 @@
 		0D4C504F24C8FDF7007FEC4C /* DetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardTests.swift; sourceTree = "<group>"; };
 		0D562FD3257841FD00E843DD /* MemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoUtils.swift; sourceTree = "<group>"; };
 		0D562FDA257852A700E843DD /* TestMemoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMemoUtils.swift; sourceTree = "<group>"; };
-		0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-output.params"; sourceTree = "<group>"; };
-		0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sapling-spend.params"; sourceTree = "<group>"; };
 		0D5E4AA62527B440001CB335 /* BackgroundTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTasks.swift; sourceTree = "<group>"; };
 		0D5E9B062637197A00D98569 /* ReadableBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableBalance.swift; sourceTree = "<group>"; };
 		0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceBreakdown.swift; sourceTree = "<group>"; };
@@ -531,6 +542,7 @@
 		0DE5274E251567D700387DBF /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0DE8668424BCE55400F3B883 /* Constants.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.generated.swift; sourceTree = "<group>"; };
 		0DEC5DF823BD60CF002EFD0D /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		0DEF22DD26825D5400D815C7 /* ParameterDownloadsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterDownloadsTests.swift; sourceTree = "<group>"; };
 		0DF210FE23F4733000C31B08 /* zECC+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "zECC+SwiftUI.swift"; sourceTree = "<group>"; };
 		0DF26E2024D1F75300F32978 /* ZcashMemoTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZcashMemoTextField.swift; sourceTree = "<group>"; };
 		0DF26E2324D1F75E00F32978 /* SquareToggleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SquareToggleStyle.swift; sourceTree = "<group>"; };
@@ -687,6 +699,7 @@
 				0DD1C2CF24F051EE0042C1E4 /* Foundation+Zcash.swift */,
 				0D2607D624F42C46006FDC36 /* PasteboardHelper.swift */,
 				0D562FD3257841FD00E843DD /* MemoUtils.swift */,
+				0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -737,8 +750,6 @@
 				0DF3075224DB4A440080B0CF /* lottie_sending.json */,
 				0DC1430125C47880001D8E55 /* lottie_shield.json */,
 				0DF3075324DB4A440080B0CF /* lottie_success.json */,
-				0D5BB97E23DB6FE3002BC9CF /* sapling-output.params */,
-				0D5BB97F23DB6FE3002BC9CF /* sapling-spend.params */,
 				0D12511023B557E60014EE3A /* Info.plist */,
 				0DE51DAB23BEB03C00709636 /* Zboto.otf */,
 				0D12510A23B557E60014EE3A /* Preview Content */,
@@ -765,6 +776,7 @@
 				0D1C2F28240DB948001AA427 /* UILogicTests.swift */,
 				0D1B6D7924243F46004C75DB /* NumberTests.swift */,
 				0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */,
+				0DEF22DD26825D5400D815C7 /* ParameterDownloadsTests.swift */,
 			);
 			path = walletTests;
 			sourceTree = "<group>";
@@ -975,6 +987,7 @@
 			dependencies = (
 				0D12511723B557E60014EE3A /* PBXTargetDependency */,
 				0DF67CB5250AC9F30091C763 /* PBXTargetDependency */,
+				0DEF22E02682814300D815C7 /* PBXTargetDependency */,
 			);
 			name = "ECC-WalletTests";
 			productName = walletTests;
@@ -996,6 +1009,7 @@
 			dependencies = (
 				0D12512223B557E60014EE3A /* PBXTargetDependency */,
 				0DF904522502FE4300328C5A /* PBXTargetDependency */,
+				0DEF22E22682814A00D815C7 /* PBXTargetDependency */,
 			);
 			name = "ECC-WalletUITests";
 			productName = walletUITests;
@@ -1058,11 +1072,11 @@
 					};
 					0D12511423B557E60014EE3A = {
 						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 0DCDFF9324B6722B000F6999;
+						TestTargetID = 0DE30345263A158400CF877A;
 					};
 					0D12511F23B557E60014EE3A = {
 						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 0DCDFF9324B6722B000F6999;
+						TestTargetID = 0DE30345263A158400CF877A;
 					};
 				};
 			};
@@ -1102,13 +1116,11 @@
 				0DF3075624DB4A440080B0CF /* lottie_success.json in Resources */,
 				0D4332862644A36F005B5B8E /* Assets.xcassets in Resources */,
 				0D12510F23B557E60014EE3A /* LaunchScreen.storyboard in Resources */,
-				0D5BB98123DB6FE3002BC9CF /* sapling-spend.params in Resources */,
 				0D2D5C1624CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0D12510C23B557E60014EE3A /* Preview Assets.xcassets in Resources */,
 				0DE51DAC23BEB03C00709636 /* Zboto.otf in Resources */,
 				8D3F362524A40FCF0087687A /* Localizable.strings in Resources */,
 				0DF3075424DB4A440080B0CF /* lottie_sending.json in Resources */,
-				0D5BB98023DB6FE3002BC9CF /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,13 +1146,11 @@
 				0DF3075724DB4A440080B0CF /* lottie_success.json in Resources */,
 				0D4332872644A370005B5B8E /* Assets.xcassets in Resources */,
 				0DCDFFDB24B6722B000F6999 /* LaunchScreen.storyboard in Resources */,
-				0DCDFFDC24B6722B000F6999 /* sapling-spend.params in Resources */,
 				0D2D5C1724CF3BD4001A58AD /* lottie_button_loading_new.json in Resources */,
 				0DCDFFDD24B6722B000F6999 /* Preview Assets.xcassets in Resources */,
 				0DCDFFDE24B6722B000F6999 /* Zboto.otf in Resources */,
 				0DCDFFDF24B6722B000F6999 /* Localizable.strings in Resources */,
 				0DF3075524DB4A440080B0CF /* lottie_sending.json in Resources */,
-				0DCDFFE024B6722B000F6999 /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1152,13 +1162,11 @@
 				0DE303B5263A158400CF877A /* lottie_success.json in Resources */,
 				0D4332882644A38A005B5B8E /* Assets.xcassets in Resources */,
 				0DE303B6263A158400CF877A /* LaunchScreen.storyboard in Resources */,
-				0DE303B7263A158400CF877A /* sapling-spend.params in Resources */,
 				0DE303B8263A158400CF877A /* lottie_button_loading_new.json in Resources */,
 				0DE303B9263A158400CF877A /* Preview Assets.xcassets in Resources */,
 				0DE303BA263A158400CF877A /* Zboto.otf in Resources */,
 				0DE303BB263A158400CF877A /* Localizable.strings in Resources */,
 				0DE303BC263A158400CF877A /* lottie_sending.json in Resources */,
-				0DE303BD263A158400CF877A /* sapling-output.params in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1199,6 +1207,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${SRCROOT}/wallet/Generated/Constants.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1272,6 +1281,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1491,6 +1501,7 @@
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
+				0D3E6CFE26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */,
 				0D2607D724F42C46006FDC36 /* PasteboardHelper.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
@@ -1577,6 +1588,7 @@
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
 				0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */,
 				0D93E2FD26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift in Sources */,
+				0DEF22DE26825D5400D815C7 /* ParameterDownloadsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1657,6 +1669,7 @@
 				0DCDFFBE24B6722B000F6999 /* Sending.swift in Sources */,
 				0DCDFFBF24B6722B000F6999 /* String+Zcash.swift in Sources */,
 				0DBA1E1F24CB628B009C654E /* DisplayAddress.swift in Sources */,
+				0D3E6D0026814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DCDFFC024B6722B000F6999 /* UIKit+Extensions.swift in Sources */,
 				0DCDFFC124B6722B000F6999 /* ZcashButtonBackground.swift in Sources */,
 				0DCDFFC224B6722B000F6999 /* ReceiveFunds.swift in Sources */,
@@ -1735,6 +1748,7 @@
 				0DE30367263A158400CF877A /* Home.swift in Sources */,
 				0DE30368263A158400CF877A /* ShareView.swift in Sources */,
 				0DE30369263A158400CF877A /* TransactionDetails.swift in Sources */,
+				0D3E6CFF26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE3036A263A158400CF877A /* Constants.generated.swift in Sources */,
 				0DE3036B263A158400CF877A /* PasteboardHelper.swift in Sources */,
 				0DE3036C263A158400CF877A /* ActionableMessage.swift in Sources */,
@@ -1822,6 +1836,16 @@
 			isa = PBXTargetDependency;
 			target = 0D1250FE23B557E40014EE3A /* ECC-Wallet */;
 			targetProxy = 0D12512123B557E60014EE3A /* PBXContainerItemProxy */;
+		};
+		0DEF22E02682814300D815C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DE30345263A158400CF877A /* ECC-Wallet-Testnet */;
+			targetProxy = 0DEF22DF2682814300D815C7 /* PBXContainerItemProxy */;
+		};
+		0DEF22E22682814A00D815C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DE30345263A158400CF877A /* ECC-Wallet-Testnet */;
+			targetProxy = 0DEF22E12682814A00D815C7 /* PBXContainerItemProxy */;
 		};
 		0DF67CB5250AC9F30091C763 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1915,7 +1939,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1971,7 +1995,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1988,18 +2012,19 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 116;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -2015,17 +2040,18 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = wallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC Wallet";
@@ -2043,7 +2069,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				INFOPLIST_FILE = walletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2053,7 +2079,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-no-logs.app/ECC-Wallet-no-logs";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-Testnet.app/ECC-Wallet-Testnet";
 			};
 			name = Debug;
 		};
@@ -2066,7 +2092,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6J82A38BF9;
 				INFOPLIST_FILE = walletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2076,7 +2102,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-no-logs.app/ECC-Wallet-no-logs";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ECC-Wallet-Testnet.app/ECC-Wallet-Testnet";
 			};
 			name = Release;
 		};
@@ -2097,7 +2123,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "ECC-Wallet-no-logging";
+				TEST_TARGET_NAME = "ECC-Wallet-Testnet";
 			};
 			name = Debug;
 		};
@@ -2118,7 +2144,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "ECC-Wallet-no-logging";
+				TEST_TARGET_NAME = "ECC-Wallet-Testnet";
 			};
 			name = Release;
 		};
@@ -2127,19 +2153,21 @@
 			baseConfigurationReference = 4561814BA5B2134841DF75E7 /* Pods-ECC-Wallet-no-logging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 110;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 116;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2153,18 +2181,20 @@
 			baseConfigurationReference = CA0B4D8E758BD88483D3B5EE /* Pods-ECC-Wallet-no-logging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 110;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "ECC-Wallet-no-logs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet;
 				PRODUCT_NAME = "ECC-Wallet-no-logs";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2180,18 +2210,19 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 116;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ECC-Wallet-Testnet-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2207,17 +2238,18 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Testnet";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet/Preview Content\"";
 				DEVELOPMENT_TEAM = RLPRR8CPQG;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ECC-Wallet-Testnet-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.7;
+				MARKETING_VERSION = 0.4.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_LOGGING";
 				PRODUCT_BUNDLE_IDENTIFIER = co.electriccoin.eccwallet.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";

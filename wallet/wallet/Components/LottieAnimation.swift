@@ -10,85 +10,70 @@ import Foundation
 import SwiftUI
 import Lottie
 
-protocol LottieAnimatable {
-    
-    func currentProgress(_ progress: Float)
-    func currentFrame(_ frame: Float)
-    func play(from: AnimationFrameTime, to: AnimationFrameTime)
-    func play(loop: Bool)
-}
-
-extension LottieAnimation: LottieAnimatable {
-    func currentProgress(_ progress: Float) {
-        self.animationView.currentProgress = AnimationProgressTime(progress)
-    }
-    
-    func currentFrame(_ frame: Float) {
-        self.animationView.play(toFrame: AnimationFrameTime(frame))
-    }
-    
-    func play(from: AnimationFrameTime, to: AnimationFrameTime) {
-        animationView.play(fromFrame: from, toFrame: to, loopMode: .none, completion: nil)
-    }
-    
-    func play(loop: Bool = false) {
-        if loop {
-            animationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop, completion: nil)
-        } else {
-            animationView.play()
-        }
-    }
-}
 
 struct LottieAnimation: UIViewRepresentable {
-    let animationView = AnimationView()
+    
+    enum AnimationType {
+        case progress(progress: Float)
+        case frameProgress(startFrame: Float, endFrame: Float, progress: Float, loop: Bool)
+        case circularLoop
+    }
+    var isPlaying: Bool = false
     var filename: String
-   
-    func makeUIView(context: UIViewRepresentableContext<LottieAnimation>) -> UIView {
-        let view = UIView()
+    var animationType: AnimationType
+    
+    class Coordinator: NSObject {
+        var lastProgress: Float
+        var parent: LottieAnimation
+        
+        init(parent: LottieAnimation) {
+            self.parent = parent
+            
+            if case AnimationType.frameProgress(let startFrame,_,_,_) = self.parent.animationType {
+                self.lastProgress = startFrame
+            } else {
+                self.lastProgress = 0
+            }
+        }
+    }
+    
+    func makeUIView(context: UIViewRepresentableContext<LottieAnimation>) -> AnimationView {
+        let animationView = AnimationView()
+        
         let animation = Lottie.Animation.named(filename)
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.animation = animation
         animationView.contentMode = .scaleAspectFit
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: animationView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: animationView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: animationView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: animationView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0)
-        ])
         
-        return view
+        return animationView
     }
     
-    
-    
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieAnimation>) {
-       
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
     }
     
-}
-
-
-struct PlayLottie: ViewModifier {
-    var loop: Bool = false
-    func body(content: Content) -> some View {
-        play(content: content)
-    }
-    
-    private func play(content: Content) -> some View {
-        guard let lottie = content as? LottieAnimatable else {
-            return content
+    func updateUIView(_ uiView: AnimationView, context: UIViewRepresentableContext<LottieAnimation>) {
+        guard isPlaying else {
+            uiView.stop()
+            return
         }
-        lottie.play(loop: loop)
-        return content
-    }
-    
-}
+        
+        switch self.animationType {
+        
+        case .circularLoop:
+            if !uiView.isAnimationPlaying {
+                uiView.play(fromProgress: 0, toProgress: 1, loopMode: .loop, completion: nil)
+            }
+        case .progress(let progress):
+            uiView.currentProgress = AnimationProgressTime(progress)
+            if !uiView.isAnimationPlaying {
+                uiView.play(fromProgress: 0, toProgress: 1, loopMode: .loop, completion: nil)
+            }
+        case .frameProgress(let startFrame, let endFrame, let progress, let loop):
+            let progressTimeFrame = AnimationFrameTime(startFrame + (progress * (endFrame - startFrame)))
 
-extension View where Self == LottieAnimation {
-    func playAnimation() -> some View {
-        self.modifier(PlayLottie())
+            uiView.play(fromFrame: nil, toFrame: progressTimeFrame, loopMode: loop ? .loop : .none, completion: nil)
+            context.coordinator.lastProgress = progress
+        }
     }
 }

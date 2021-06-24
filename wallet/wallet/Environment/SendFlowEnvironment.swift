@@ -39,7 +39,13 @@ class SendFlow {
 }
 
 final class SendFlowEnvironment: ObservableObject {
-    
+    enum FlowState {
+        case preparing
+        case downloadingParameters
+        case sending
+        case finished
+        case failed(error: UserFacingErrors)
+    }
     static let maxMemoLength: Int = ZECCWalletEnvironment.memoLengthLimit
     enum FlowError: Error {
         case invalidEnvironment
@@ -59,6 +65,7 @@ final class SendFlowEnvironment: ObservableObject {
     @Published var includesMemo = false
     @Published var includeSendingAddress: Bool = false
     @Published var isDone = false
+    @Published var state: FlowState = .preparing
     var txSent = false
 
     var error: Error?
@@ -95,7 +102,6 @@ final class SendFlowEnvironment: ObservableObject {
                        
                }
                .store(in: &diposables)
-        
     }
     
     deinit {
@@ -114,6 +120,35 @@ final class SendFlowEnvironment: ObservableObject {
         self.error = error
         self.showError = true
         self.isDone = true
+        self.state = .failed(error: mapToUserFacingError(ZECCWalletEnvironment.mapError(error: error)))
+    }
+    func preSend() {
+        guard case FlowState.preparing = self.state else {
+            let message = "attempt to start a pre-send stage where status was not .preparing and was \(self.state) instead"
+            logger.error(message)
+            tracker.track(.error(severity: .critical), properties:  [ErrorSeverity.messageKey : message])
+            fail(FlowError.duplicateSent)
+            return
+        }
+        
+        self.state = .downloadingParameters
+        SaplingParameterDownloader.downloadParametersIfNeeded()
+            .receive(on: DispatchQueue.main)
+            
+            .sink { [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    self?.state = .failed(error: error.code.asUserFacingError())
+                    self?.fail(error.code.asUserFacingError())
+                    break
+                case .finished:
+                    break
+                }
+            } receiveValue: { [weak self] _ in
+                self?.send()
+            }
+            .store(in: &self.diposables)
+
     }
     
     func send() {
@@ -124,6 +159,7 @@ final class SendFlowEnvironment: ObservableObject {
             fail(FlowError.duplicateSent)
             return
         }
+        self.state = .sending
         let environment = ZECCWalletEnvironment.shared
         guard let zatoshi = doubleAmount?.toZatoshi() else {
             let message = "invalid zatoshi amount: \(String(describing: doubleAmount))"
@@ -180,6 +216,7 @@ final class SendFlowEnvironment: ObservableObject {
                         return
                     }
                         self.pendingTx = transaction
+                    self.state = .finished
                 }.store(in: &diposables)
             
                 

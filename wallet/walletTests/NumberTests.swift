@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-@testable import ECC_Wallet_no_logs
+@testable import ECC_Wallet_Testnet
 class NumberTests: XCTestCase {
     
     

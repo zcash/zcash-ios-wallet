@@ -57,7 +57,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     var shieldEnvironment = ShieldFlow.current
     var cancellables = [AnyCancellable]()
     
-    var lottie = LottieAnimation(filename: "lottie_shield")
+    
     init() {
         self.appEnvironment.synchronizer.transparentBalance.receive(on: DispatchQueue.main)
             .map({ return ReadableBalance(walletBalance: $0)})
@@ -148,6 +148,19 @@ struct WalletBalanceBreakdown: View {
             .opacity(model.isShieldingButtonEnabled ? 1.0 : 0.4)
         }
         .padding([.horizontal, .vertical], 24)
+        .zcashNavigationBar {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Image("Back")
+                    .renderingMode(.original)
+            }
+        } headerItem: {
+            EmptyView()
+        } trailingItem: {
+            EmptyView()
+        }
+
     }
     
     @ViewBuilder func shieldingScreen() -> some View {
@@ -159,13 +172,21 @@ struct WalletBalanceBreakdown: View {
                 .foregroundColor(.white)
                 .font(.caption)
                 .opacity(0.6)
-            self.model.lottie
-                .onAppear() {
-                    self.model.lottie.play(loop: true)
-                }
+            LottieAnimation(isPlaying: true,
+                            filename: "lottie_shield",
+                            animationType: .circularLoop)
+                
         }
         .padding([.horizontal, .vertical], 24)
+        .zcashNavigationBar {
+            EmptyView()
+        } headerItem: {
+            EmptyView()
+        } trailingItem: {
+            EmptyView()
+        }
     }
+    
     @ViewBuilder func viewForState(_ state: WalletBalanceBreakdownViewModel.Status) -> some View {
         switch state {
         case .idle, .failed,.finished:
@@ -174,6 +195,7 @@ struct WalletBalanceBreakdown: View {
             shieldingScreen()
         }
     }
+    
     
     var body: some View {
         ZStack {
@@ -204,8 +226,7 @@ struct WalletBalanceBreakdown: View {
             ShieldFlow.endFlow()
         }
         .navigationBarTitle(Text(""), displayMode: .inline)
-        .navigationBarBackButtonHidden(model.status.isShielding)
-        
+        .navigationBarBackButtonHidden(true)
     }
     
     func closeThisAwesomeThing() {

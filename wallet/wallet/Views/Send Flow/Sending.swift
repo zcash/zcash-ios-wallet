@@ -12,10 +12,10 @@ import ZcashLightClientKit
 
 struct Sending: View {
     
+    
     @EnvironmentObject var flow: SendFlowEnvironment
     @State var details: DetailModel? = nil
-    
-    var loading = LottieAnimation(filename: "lottie_sending")
+    @Environment(\.presentationMode) var presentationMode
     var errorMessage: String {
         guard let e = flow.error else {
             return "thing is that we really don't know what just went down, sorry!"
@@ -65,7 +65,9 @@ struct Sending: View {
                     .lineLimit(1)
                 
                 if !flow.isDone {
-                    loading
+                    LottieAnimation(isPlaying: true,
+                                    filename: "lottie_sending",
+                                    animationType: .circularLoop)
                         .frame(height: 48)
                     
                 }
@@ -95,6 +97,7 @@ struct Sending: View {
                     Button(action: {
                         tracker.track(.tap(action: .sendFinalClose), properties: [:])
                         self.flow.close()
+                        self.presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("button_done")
                             .foregroundColor(.black)
@@ -112,8 +115,7 @@ struct Sending: View {
         }
         .onAppear() {
             tracker.track(.screen(screen: .sendFinal), properties: [:])
-            self.loading.play(loop: true)
-            self.flow.send()
+            self.flow.preSend()
         }
     }
 }

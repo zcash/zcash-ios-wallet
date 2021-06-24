@@ -303,8 +303,8 @@ final class ZECCWalletEnvironment: ObservableObject {
             self.taskIdentifier = UIApplication.shared.beginBackgroundTask(withName: "ZcashLightClientKit.SDKSynchronizer", expirationHandler: { [weak self, weak logger] in
                 logger?.info("BackgroundTask Expiration Handler Called")
                 guard let self = self else { return }
-                self.invalidateBackgroundActivity()
                 self.synchronizer.stop()
+                self.invalidateBackgroundActivity()
             })
         }
     }
