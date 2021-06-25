@@ -61,6 +61,10 @@
 		0D2D5C2324CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */; };
 		0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */; };
 		0D3AAB45244652700010EA3C /* TransactionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3AAB44244652700010EA3C /* TransactionDetail.swift */; };
+		0D3E3F1D2686714D00784D8F /* AutoShielding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E3F1C2686714D00784D8F /* AutoShielding.swift */; };
+		0D3E3F1E2686714D00784D8F /* AutoShielding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E3F1C2686714D00784D8F /* AutoShielding.swift */; };
+		0D3E3F1F2686714D00784D8F /* AutoShielding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E3F1C2686714D00784D8F /* AutoShielding.swift */; };
+		0D3E3F2126867FDE00784D8F /* AutoShieldingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E3F2026867FDE00784D8F /* AutoShieldingTests.swift */; };
 		0D3E6CFE26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
 		0D3E6CFF26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
 		0D3E6D0026814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */; };
@@ -464,6 +468,8 @@
 		0D2D5C1F24CF85CF001A58AD /* ZecAmountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZecAmountHeader.swift; sourceTree = "<group>"; };
 		0D2D5C2224CF8AB2001A58AD /* ZcashNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashNavigationBar.swift; sourceTree = "<group>"; };
 		0D3AAB44244652700010EA3C /* TransactionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetail.swift; sourceTree = "<group>"; };
+		0D3E3F1C2686714D00784D8F /* AutoShielding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoShielding.swift; sourceTree = "<group>"; };
+		0D3E3F2026867FDE00784D8F /* AutoShieldingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoShieldingTests.swift; sourceTree = "<group>"; };
 		0D3E6CFD26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SaplingParameterDownloader+Combine.swift"; sourceTree = "<group>"; };
 		0D41AF9E23FCAA4700EE4FC0 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0D421AF923C66B7500E5E55E /* Sending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sending.swift; sourceTree = "<group>"; };
@@ -777,6 +783,7 @@
 				0D1B6D7924243F46004C75DB /* NumberTests.swift */,
 				0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */,
 				0DEF22DD26825D5400D815C7 /* ParameterDownloadsTests.swift */,
+				0D3E3F2026867FDE00784D8F /* AutoShieldingTests.swift */,
 			);
 			path = walletTests;
 			sourceTree = "<group>";
@@ -813,6 +820,7 @@
 				0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */,
 				0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */,
 				0D67489325C1CC3B00BE59C4 /* ShieldFlow.swift */,
+				0D3E3F1C2686714D00784D8F /* AutoShielding.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -1500,6 +1508,7 @@
 				0D64DF5125DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
+				0D3E3F1D2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
 				0D3E6CFE26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */,
@@ -1586,6 +1595,7 @@
 				0D4C505024C8FDF7007FEC4C /* DetailCardTests.swift in Sources */,
 				0D040F5923C3ECDD00ACD07E /* KeyPadViewModelTests.swift in Sources */,
 				0D12511A23B557E60014EE3A /* walletTests.swift in Sources */,
+				0D3E3F2126867FDE00784D8F /* AutoShieldingTests.swift in Sources */,
 				0D1C2F29240DB948001AA427 /* UILogicTests.swift in Sources */,
 				0D93E2FD26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift in Sources */,
 				0DEF22DE26825D5400D815C7 /* ParameterDownloadsTests.swift in Sources */,
@@ -1633,6 +1643,7 @@
 				0D64DF5225DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0DF26E2B24D2208A00F32978 /* AuthenticationHelper.swift in Sources */,
 				0DCDFFA724B6722B000F6999 /* FundsAtRisk.swift in Sources */,
+				0D3E3F1F2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0D81D0B0261FA12C003ECF47 /* FeedbackDialog.swift in Sources */,
 				0DCDFFA824B6722B000F6999 /* LazyView.swift in Sources */,
 				0D2D5C2424CF8AB2001A58AD /* ZcashNavigationBar.swift in Sources */,
@@ -1747,6 +1758,7 @@
 				0DE30366263A158400CF877A /* UserSettings.swift in Sources */,
 				0DE30367263A158400CF877A /* Home.swift in Sources */,
 				0DE30368263A158400CF877A /* ShareView.swift in Sources */,
+				0D3E3F1E2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0DE30369263A158400CF877A /* TransactionDetails.swift in Sources */,
 				0D3E6CFF26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE3036A263A158400CF877A /* Constants.generated.swift in Sources */,
