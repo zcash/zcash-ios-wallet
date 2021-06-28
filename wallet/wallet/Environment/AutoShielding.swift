@@ -182,3 +182,26 @@ class AutoShieldingBuilder {
             shielder: shielder)
     }
 }
+
+extension SDKSynchronizer: ShieldingCapable {}
+
+class DefaultShieldingKeyProvider: ShieldingKeyProviding {
+    func getTransparentSecretKey() throws -> PrivateKeyAccountIndexPair {
+        let derivationTool = DerivationTool.default
+        let s = try SeedManager.default.exportPhrase()
+        let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: s)
+        let tsk = try derivationTool.deriveTransparentPrivateKey(seed: seed)
+        return (tsk, 0, 0)
+    }
+    
+    func getSpendingKey() throws -> PrivateKeyAccountIndexPair {
+        let derivationTool = DerivationTool.default
+        let s = try SeedManager.default.exportPhrase()
+        let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: s)
+        let keys = try derivationTool.deriveSpendingKeys(seed: seed, numberOfAccounts: 1)
+        guard let key = keys.first else {
+            throw KeyDerivationErrors.unableToDerive
+        }
+        return (key, 0, 0)
+    }
+}
