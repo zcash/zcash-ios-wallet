@@ -13,7 +13,10 @@ import Combine
 class AutoShieldingTests: XCTestCase {
     var cancellables = [AnyCancellable]()
     func testAutoShield() throws {
-        let mockShielder = MockShielder(strategy: MockSuccessfulManualStrategy())
+        let mockShielder = MockShielder(strategy: MockFailedManualStrategy(),
+                                        shielder: MockSuccessfulShieldingCapable(),
+                                        keyProviding: MockKeyProviding(),
+                                        keyDeriver: MockKeyDeriving())
         
         let expectation = XCTestExpectation(description: "Shield Expectation")
         
@@ -41,7 +44,10 @@ class AutoShieldingTests: XCTestCase {
     }
     
     func testAutoShieldFails() throws {
-        let mockShielder = MockShielder(strategy: MockFailedManualStrategy())
+        let mockShielder = MockShielder(strategy: MockFailedManualStrategy(),
+                                        shielder: MockFailureShieldingCapable(),
+                                        keyProviding: MockKeyProviding(),
+                                        keyDeriver: MockKeyDeriving())
         
         let expectation = XCTestExpectation(description: "Shield Expectation")
         
@@ -74,7 +80,10 @@ class AutoShieldingTests: XCTestCase {
     }
     
     func testAutoShieldNonNeeded() {
-        let mockShielder = MockShielder(strategy: MockShieldNotNeeded())
+        let mockShielder = MockShielder(strategy: MockFailedManualStrategy(),
+                                        shielder: MockSuccessfulShieldingCapable(),
+                                        keyProviding: MockKeyProviding(),
+                                        keyDeriver: MockKeyDeriving())
         
         let expectation = XCTestExpectation(description: "Shield Expectation")
         
@@ -104,15 +113,29 @@ class AutoShieldingTests: XCTestCase {
 
 
 class MockShielder: AutoShielder {
+    var keyDeriver: KeyDeriving
+    var keyProviding: ShieldingKeyProviding
+    var shielder: ShieldingCapable
     var strategy: AutoShieldingStrategy
     
-    init(strategy: AutoShieldingStrategy) {
+    init(strategy: AutoShieldingStrategy,
+         shielder: ShieldingCapable,
+         keyProviding: ShieldingKeyProviding,
+         keyDeriver: KeyDeriving) {
         self.strategy = strategy
+        self.shielder = shielder
+        self.keyProviding = keyProviding
+        self.keyDeriver = keyDeriver
     }
-    
 }
 
 class MockShieldNotNeeded: AutoShieldingStrategy {
+    func shield(autoShielder: AutoShielder) -> Future<AutoShieldingResult, Error> {
+        Future<AutoShieldingResult, Error> { promise in
+            promise(.success(AutoShieldingResult.notNeeded))
+        }
+    }
+    
     var shouldAutoShield: Bool {
         false
     }
@@ -126,32 +149,35 @@ class MockShieldNotNeeded: AutoShieldingStrategy {
     }
 }
 class MockSuccessfulManualStrategy: AutoShieldingStrategy {
-    var shouldAutoShield: Bool {
-        true
-    }
-    
-    func shield() -> Future<AutoShieldingResult, Error> {
+    func shield(autoShielder: AutoShielder) -> Future<AutoShieldingResult, Error> {
         Future<AutoShieldingResult,Error> { promise in
             DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: {
                 promise(.success(.shielded(pendingTx: MockPendingTx())))
             })
         }
+        
     }
-}
-
-class MockFailedManualStrategy: AutoShieldingStrategy {
+    
     var shouldAutoShield: Bool {
         true
     }
+    
+}
+
+class MockFailedManualStrategy: AutoShieldingStrategy {
     /**
      throws ShieldFundsError.insuficientTransparentFunds) after 2 seconds
      */
-    func shield() -> Future<AutoShieldingResult, Error> {
+    func shield(autoShielder: AutoShielder) -> Future<AutoShieldingResult, Error> {
         Future<AutoShieldingResult,Error> { promise in
             DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: {
                 promise(.failure(ShieldFundsError.insuficientTransparentFunds))
             })
         }
+    }
+    
+    var shouldAutoShield: Bool {
+        false
     }
 }
 import ZcashLightClientKit
@@ -191,4 +217,82 @@ struct MockPendingTx: PendingTransactionEntity {
     
     var rawTransactionId: Data? = Data()
     
+}
+
+class MockSuccessfulShieldingCapable: ShieldingCapable {
+    func shieldFunds(spendingKey: String, transparentSecretKey: String, memo: String?, from accountIndex: Int, resultBlock: @escaping (Result<PendingTransactionEntity, Error>) -> Void) {
+        
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 2, execute: {
+            resultBlock(.success(MockPendingTx()))
+        })
+    }
+}
+
+class MockFailureShieldingCapable: ShieldingCapable {
+    func shieldFunds(spendingKey: String, transparentSecretKey: String, memo: String?, from accountIndex: Int, resultBlock: @escaping (Result<PendingTransactionEntity, Error>) -> Void) {
+        
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 2, execute: {
+            resultBlock(.failure(ShieldFundsError.insuficientTransparentFunds))
+        })
+    }
+}
+
+
+class MockKeyProviding: ShieldingKeyProviding {
+    func getTransparentSecretKey() throws -> PrivateKeyAccountIndexPair {
+        ("someFakeKey", 0, 0)
+    }
+    
+    func getSpendingKey() throws -> PrivateKeyAccountIndexPair {
+        ("someFakeSpendingKey", 0, 0)
+    }
+}
+
+enum MockError: Error {
+    case notImplemented
+}
+class MockKeyDeriving: KeyDeriving {
+    func deriveViewingKeys(seed: [UInt8], numberOfAccounts: Int) throws -> [String] {
+        throw MockError.notImplemented
+    }
+    
+    func deriveViewingKey(spendingKey: String) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveSpendingKeys(seed: [UInt8], numberOfAccounts: Int) throws -> [String] {
+        throw MockError.notImplemented
+    }
+    
+    func deriveShieldedAddress(seed: [UInt8], accountIndex: Int) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveShieldedAddress(viewingKey: String) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveTransparentAddress(seed: [UInt8], account: Int, index: Int) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveTransparentPrivateKey(seed: [UInt8], account: Int, index: Int) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveTransparentAddressFromPrivateKey(_ tsk: String) throws -> String {
+        "tMockAddressfldkfjarqwer3oiufal"
+    }
+    
+    func deriveTransparentAddressFromPublicKey(_ pubkey: String) throws -> String {
+        throw MockError.notImplemented
+    }
+    
+    func deriveUnifiedViewingKeysFromSeed(_ seed: [UInt8], numberOfAccounts: Int) throws -> [UnifiedViewingKey] {
+        throw MockError.notImplemented
+    }
+    
+    func deriveUnifiedAddressFromUnifiedViewingKey(_ uvk: UnifiedViewingKey) throws -> UnifiedAddress {
+        throw MockError.notImplemented
+    }
 }
