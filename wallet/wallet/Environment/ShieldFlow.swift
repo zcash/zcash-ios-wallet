@@ -94,29 +94,3 @@ extension EnvironmentValues {
         }
     }
 }
-
-
-
-final class MockFailingShieldFlow: ShieldingPowers {
-    
-    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    
-    func shield() {
-        status.send(.shielding)
-        DispatchQueue.global().asyncAfter(deadline: .now() + 4) { [weak self] in
-            self?.status.send(completion: .failure(SynchronizerError.generalError(message: "Could Not Shield Funds")))
-        }
-    }
-}
-
-final class MockSuccessShieldFlow: ShieldingPowers {
-    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    
-    func shield() {
-        status.send(.shielding)
-        DispatchQueue.global().asyncAfter(deadline: .now() + 10) { [weak self] in
-            self?.status.send(completion: .finished)
-        }
-    }
-}
-
