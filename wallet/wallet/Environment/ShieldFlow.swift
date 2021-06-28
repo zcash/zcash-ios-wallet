@@ -25,11 +25,13 @@ final class ShieldFlow: ShieldingPowers {
     }
     
     var status: CurrentValueSubject<ShieldFlow.Status, Error>
+    var shielder: AutoShielder
     var cancellables = [AnyCancellable]()
     private var synchronizer: CombineSynchronizer = ZECCWalletEnvironment.shared.synchronizer
     
     private init() {
         self.status = CurrentValueSubject<Status,Error>(.notStarted)
+        self.shielder = AutoShieldingBuilder.manualShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: synchronizer.synchronizer)
     }
     
     private static var _currentFlow: ShieldingPowers?
@@ -50,42 +52,30 @@ final class ShieldFlow: ShieldingPowers {
     
     func shield() {
         self.status.send(.shielding)
-        do {
-            let derivationTool = DerivationTool.default
-            let s = try SeedManager.default.exportPhrase()
-            let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: s)
-            let keys = try derivationTool.deriveSpendingKeys(seed: seed, numberOfAccounts: 1)
-            guard let sk = keys.first else {
-                self.status.send(completion: .failure(KeyDerivationErrors.unableToDerive))
-                return }
-            let tsk = try derivationTool.deriveTransparentPrivateKey(seed: seed)
-            
-            self.synchronizer.shieldFunds(spendingKey: sk,
-                                          transparentSecretKey: tsk,
-                                          memo: "Shielding is Fun!",
-                                          from: 0)
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self](completion) in
-                    switch completion {
-                    case .failure(let e):
-                        logger.error("failed to shield funds \(e.localizedDescription)")
-                        tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
-                        self?.status.send(completion: .failure(e))
-                    case .finished:
-                        self?.status.send(completion: .finished)
-                    }
-                } receiveValue: { [weak self](p) in
-                    logger.debug("shielded \(p)")
-                    self?.status.send(.ended)
+        self.shielder.shield()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                switch completion {
+                   case .failure(let e):
+                       logger.error("failed to shield funds \(e.localizedDescription)")
+                       tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
+                       self?.status.send(completion: .failure(e))
+                   case .finished:
+                       self?.status.send(completion: .finished)
+                   }
+            } receiveValue: { [weak self] result in
+                switch result{
+                case .notNeeded:
+                    logger.warn(" -- WARNING -- You manually shielded funds but the result was not needed. This is probably a programming error")
+                case .shielded(let pendingTx):
+                    logger.debug("shielded \(pendingTx)")
                 }
-                .store(in: &cancellables)
-
-        } catch {
-            self.status.send(completion: .failure(error))
-        }
+                self?.status.send(.ended)
+            }
+            .store(in: &cancellables)
     }
-
 }
+
 fileprivate struct ShieldFlowEnvironmentKey: EnvironmentKey {
     static let defaultValue: ShieldingPowers = ShieldFlow.current
 }
@@ -129,3 +119,4 @@ final class MockSuccessShieldFlow: ShieldingPowers {
         }
     }
 }
+
