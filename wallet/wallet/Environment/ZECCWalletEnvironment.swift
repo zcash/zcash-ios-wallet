@@ -35,7 +35,12 @@ final class ZECCWalletEnvironment: ObservableObject {
     var outputParamsURL: URL
     var spendParamsURL: URL
     var synchronizer: CombineSynchronizer!
+    var autoShielding: AutoShielder!
     var cancellables = [AnyCancellable]()
+    var shouldShowAutoShieldingNotice: Bool {
+//        shouldShowAutoShieldingNoticeScreen()
+        true
+    }
     #if ENABLE_LOGGING
     var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
     #endif
@@ -89,10 +94,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.pendingDbURL = try URL.pendingDbURL()
         self.outputParamsURL = try URL.outputParamsURL()
         self.spendParamsURL = try  URL.spendParamsURL()
-        
         self.state = .unprepared
-        
-        
     }
     
     // Warning: Use with care
@@ -135,7 +137,7 @@ final class ZECCWalletEnvironment: ObservableObject {
             loggerProxy: logger)
         
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        
+        self.autoShielding = AutoShieldingBuilder.thresholdAutoShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: self.synchronizer.synchronizer, threshold: 10_000)
         try self.synchronizer.prepare()
         
         self.subscribeToApplicationNotificationsPublishers()
@@ -520,6 +522,15 @@ extension ZECCWalletEnvironment {
     }
 }
 
+extension ZECCWalletEnvironment {
+    func shouldShowAutoShieldingNoticeScreen() -> Bool {
+        return !UserSettings.shared.didShowAutoShieldingNotice
+    }
+    
+    func registerAutoShieldingNoticeScreenShown() {
+        UserSettings.shared.didShowAutoShieldingNotice = true
+    }
+}
 
 #if ENABLE_LOGGING
 extension ZECCWalletEnvironment {

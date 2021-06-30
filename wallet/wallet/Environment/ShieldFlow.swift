@@ -17,7 +17,13 @@ protocol ShieldingPowers {
 }
 
 final class ShieldFlow: ShieldingPowers {
-    
+    enum ShieldErrors: Error {
+        /**
+         Thrown when a shield flow is requested but there's one already in progress
+         */
+        case shieldFlowAlreadyStarted
+        
+    }
     enum Status {
         case notStarted
         case shielding
@@ -36,6 +42,17 @@ final class ShieldFlow: ShieldingPowers {
     
     private static var _currentFlow: ShieldingPowers?
     
+    static func startWithShilderOrFail(_ shielder: AutoShielder) throws -> ShieldingPowers {
+        guard _currentFlow == nil else {
+            throw ShieldErrors.shieldFlowAlreadyStarted
+        }
+        
+        let f = Self.current as! ShieldFlow
+        f.shielder = shielder
+        
+        return f
+    }
+    
     static var current: ShieldingPowers {
         guard let flow = _currentFlow else {
             let f = ShieldFlow()
@@ -52,27 +69,45 @@ final class ShieldFlow: ShieldingPowers {
     
     func shield() {
         self.status.send(.shielding)
-        self.shielder.shield()
+        
+        SaplingParameterDownloader.downloadParametersIfNeeded()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
+            .sink(receiveCompletion: { completion in
                 switch completion {
-                   case .failure(let e):
-                       logger.error("failed to shield funds \(e.localizedDescription)")
-                       tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
-                       self?.status.send(completion: .failure(e))
-                   case .finished:
-                       self?.status.send(completion: .finished)
-                   }
-            } receiveValue: { [weak self] result in
-                switch result{
-                case .notNeeded:
-                    logger.warn(" -- WARNING -- You manually shielded funds but the result was not needed. This is probably a programming error")
-                case .shielded(let pendingTx):
-                    logger.debug("shielded \(pendingTx)")
+                case .failure(let urlError):
+                    self.status.send(completion: .failure(urlError.code.asUserFacingError()))
+                    break
+                case .finished:
+                    break
                 }
-                self?.status.send(.ended)
-            }
+            }, receiveValue: { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                self.shielder.shield()
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] completion in
+                        switch completion {
+                           case .failure(let e):
+                               logger.error("failed to shield funds \(e.localizedDescription)")
+                               tracker.report(handledException: DeveloperFacingErrors.handledException(error: e))
+                               self?.status.send(completion: .failure(e))
+                           case .finished:
+                               self?.status.send(completion: .finished)
+                           }
+                    } receiveValue: { [weak self] result in
+                        switch result{
+                        case .notNeeded:
+                            logger.warn(" -- WARNING -- You shielded funds but the result was not needed. This is probably a programming error")
+                        case .shielded(let pendingTx):
+                            logger.debug("shielded \(pendingTx)")
+                        }
+                        self?.status.send(.ended)
+                    }
+                    .store(in: &self.cancellables)
+            })
             .store(in: &cancellables)
+            
     }
 }
 
@@ -91,6 +126,31 @@ extension EnvironmentValues {
         }
         set {
             self[ShieldFlowEnvironmentKey.self] = newValue
+        }
+    }
+}
+
+
+
+final class MockFailingShieldFlow: ShieldingPowers {
+    
+    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
+    
+    func shield() {
+        status.send(.shielding)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 4) { [weak self] in
+            self?.status.send(completion: .failure(SynchronizerError.generalError(message: "Could Not Shield Funds")))
+        }
+    }
+}
+
+final class MockSuccessShieldFlow: ShieldingPowers {
+    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
+    
+    func shield() {
+        status.send(.shielding)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+            self?.status.send(.ended)
         }
     }
 }

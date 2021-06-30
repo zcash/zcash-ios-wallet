@@ -28,7 +28,7 @@ struct ScreenOverlay<ForegroundContent: View>: ViewModifier {
                 ZStack {
                     foregroundContent
                 }
-                .padding(.all, 24)
+                .padding(.all, 0)
             }
             .transition(.opacity)
         } else {

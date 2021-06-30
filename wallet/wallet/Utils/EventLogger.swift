@@ -30,6 +30,7 @@ enum Screen: String {
     case sendMemo = "send.memo"
     case sendTransaction = "send.transaction"
     case balance
+    case autoShieldNotice = "notice.autoshielding"
     
 }
 enum Action: String {
@@ -78,6 +79,7 @@ enum Action: String {
     case backgroundProcessingEnd = "background.processing.end"
     case shieldFundsStart = "shield.funds.start"
     case shieldFundsEnd = "shield.funds.end"
+    case acceptAutoShieldNotice = "shield.notice.accept"
 }
 enum LogEvent: Equatable {
     case screen(screen: Screen)
