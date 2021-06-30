@@ -10,7 +10,11 @@ import SwiftUI
 import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
-    
+    enum OverlayType {
+        case feedback
+        case autoShieldingNotice
+        case autoShielding
+    }
     enum ModalDestinations: Identifiable {
         case profile
         case receiveFunds
@@ -46,7 +50,8 @@ final class HomeViewModel: ObservableObject {
     @Published var verifiedBalance: Double = 0
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
-    
+    @Published var overlayType: OverlayType? = nil
+    @Published var isOverlayShown = false
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
@@ -121,6 +126,20 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: \.syncStatus, on: self)
             .store(in: &environmentCancellables)
+        
+        environment.synchronizer.syncStatus
+            .filter({ $0 == .synced})
+            .compactMap({ [weak environment] status -> OverlayType? in
+                guard let env = environment,
+                      env.autoShielding.strategy.shouldAutoShield else { return nil }
+                return OverlayType.autoShielding
+            })
+            .receive(on: DispatchQueue.main)
+            .sink { overlay in
+                self.overlayType = overlay
+                self.isOverlayShown = true
+            }
+            .store(in: &cancellable)
     }
     
     func unbindSubcribedEnvironmentEvents() {
@@ -198,9 +217,8 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
     @State var feedbackRating: Int? = nil
-    @State var isOverlayShown = false
     @State var transparentBalancePushed = false
-    
+
     @EnvironmentObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
@@ -495,12 +513,18 @@ struct Home: View {
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
-            tracker.track(.tap(action: .balanceDetail), properties: [:])
             showFeedbackIfNeeded()
         }
-        .zOverlay(isOverlayShown: $isOverlayShown) {
+        .zOverlay(isOverlayShown: $viewModel.isOverlayShown) {
+            feedbackOrNotice()
+        }
+    }
+    
+    @ViewBuilder func feedbackOrNotice() -> some View {
+        switch viewModel.overlayType {
+        case .feedback:
             FeedbackDialog(rating: $feedbackRating) { feedbackResult in
-                self.isOverlayShown = false
+                self.viewModel.isOverlayShown = false
                 switch feedbackResult {
                 case .score(let rating):
                     tracker.track(.feedback, properties: [
@@ -513,9 +537,31 @@ struct Home: View {
                 
             }
             .frame(height: 240)
+            .padding(.horizontal, 24)
+        case .autoShielding:
+            AutoShieldView(isShown: $viewModel.isOverlayShown)
+//                .environmentObject(AutoShieldingViewModel(shieldFlow: try! ShieldFlow.startWithShilderOrFail(appEnvironment.autoShielding)))
+                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shieldFlow: MockSuccessShieldFlow())))
+                
+                
+            
+        default:
+            AutoShieldingNotice {
+                tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
+                
+                self.appEnvironment.registerAutoShieldingNoticeScreenShown()
+                
+//                if appEnvironment.autoShielding.strategy.shouldAutoShield {
+                    self.viewModel.overlayType = .autoShielding
+//                } else {
+//                    self.viewModel.isOverlayShown = false
+//                }
+                
+            }
+        
+        
         }
     }
-    
 }
 
 extension BlockHeight {
@@ -527,11 +573,19 @@ extension BlockHeight {
 
 extension Home {
     func showFeedbackIfNeeded() {
+        if appEnvironment.shouldShowAutoShieldingNotice {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.viewModel.isOverlayShown = true
+                self.viewModel.overlayType = .autoShieldingNotice
+            }
+            return //avoid showing the feedback dialog
+        }
         #if ENABLE_LOGGING
         if appEnvironment.shouldShowFeedbackDialog {
-            appEnvironment.registerFeedbackSolicitation(on: Date())
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.isOverlayShown = true
+                appEnvironment.registerFeedbackSolicitation(on: Date())
+                self.viewModel.isOverlayShown = true
+                self.viewModel.overlayType = .feedback
             }
         }
         #endif

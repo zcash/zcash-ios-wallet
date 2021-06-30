@@ -163,36 +163,21 @@ struct WalletBalanceBreakdown: View {
 
     }
     
-    @ViewBuilder func shieldingScreen() -> some View {
-        VStack {
-            Text("Shielding")
-                .foregroundColor(.white)
-                .font(.title)
-            Text("Do not close this screen")
-                .foregroundColor(.white)
-                .font(.caption)
-                .opacity(0.6)
-            LottieAnimation(isPlaying: true,
-                            filename: "lottie_shield",
-                            animationType: .circularLoop)
-                
-        }
-        .padding([.horizontal, .vertical], 24)
-        .zcashNavigationBar {
-            EmptyView()
-        } headerItem: {
-            EmptyView()
-        } trailingItem: {
-            EmptyView()
-        }
-    }
+    
     
     @ViewBuilder func viewForState(_ state: WalletBalanceBreakdownViewModel.Status) -> some View {
         switch state {
         case .idle, .failed,.finished:
             idleScreen()
         case .shielding:
-            shieldingScreen()
+            AutoShieldView.shieldingScreen()
+                .zcashNavigationBar {
+                    EmptyView()
+                } headerItem: {
+                    EmptyView()
+                } trailingItem: {
+                    EmptyView()
+                }
         }
     }
     

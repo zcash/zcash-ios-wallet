@@ -102,6 +102,9 @@
 		0D6BE0B323EB1348006A71C5 /* CameraAccessHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */; };
 		0D72330823E9CFE40004B6D1 /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */; };
 		0D75ECD92416D13800244CE4 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D75ECD82416D13800244CE4 /* SimpleLogger.swift */; };
+		0D794B6F268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */; };
+		0D794B70268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */; };
+		0D794B71268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */; };
 		0D7D5DDB24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
 		0D7D5DDC24BFAC7C0028083C /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */; };
 		0D81D0AF261FA12C003ECF47 /* FeedbackDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */; };
@@ -130,6 +133,12 @@
 		0DACBB33264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
 		0DACBB34264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
 		0DACBB35264980630085F1CD /* OhMyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACBB32264980620085F1CD /* OhMyScreen.swift */; };
+		0DB020B3268CECA50010ABC4 /* AutoShieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */; };
+		0DB020B4268CECA50010ABC4 /* AutoShieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */; };
+		0DB020B5268CECA50010ABC4 /* AutoShieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */; };
+		0DB020B7268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */; };
+		0DB020B8268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */; };
+		0DB020B9268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */; };
 		0DB826222645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
 		0DB826232645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
 		0DB826242645E9C100CEA2B6 /* TheNoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */; };
@@ -493,6 +502,7 @@
 		0D6BE0B223EB1348006A71C5 /* CameraAccessHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessHelper.swift; sourceTree = "<group>"; };
 		0D72330723E9CFE40004B6D1 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		0D75ECD82416D13800244CE4 /* SimpleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
+		0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShieldingNotice.swift; sourceTree = "<group>"; };
 		0D7D5DDA24BFAC7C0028083C /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		0D81D0AE261FA12C003ECF47 /* FeedbackDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDialog.swift; sourceTree = "<group>"; };
 		0D82F325261279EC0058B05D /* LogfileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogfileUtils.swift; sourceTree = "<group>"; };
@@ -512,6 +522,8 @@
 		0D9E89BC23DA3BD600AFD118 /* SeedManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedManagement.swift; sourceTree = "<group>"; };
 		0D9E89C123DA620E00AFD118 /* ZECCWalletEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZECCWalletEnvironment.swift; sourceTree = "<group>"; };
 		0DACBB32264980620085F1CD /* OhMyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OhMyScreen.swift; sourceTree = "<group>"; };
+		0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoShieldView.swift; sourceTree = "<group>"; };
+		0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFlyWeight.swift; sourceTree = "<group>"; };
 		0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheNoScreen.swift; sourceTree = "<group>"; };
 		0DBA1E1A24CB5D5C009C654E /* ShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAddress.swift; sourceTree = "<group>"; };
@@ -665,7 +677,9 @@
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 				0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */,
 				0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */,
+				0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */,
 				0DACBB32264980620085F1CD /* OhMyScreen.swift */,
+				0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -821,6 +835,7 @@
 				0DCF43BD23DF7229007E9B49 /* CombineSynchronizer.swift */,
 				0D67489325C1CC3B00BE59C4 /* ShieldFlow.swift */,
 				0D3E3F1C2686714D00784D8F /* AutoShielding.swift */,
+				0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -1507,13 +1522,16 @@
 				0D92967923BEEFFC001518F3 /* BalanceDetail.swift in Sources */,
 				0D64DF5125DC0E7F00669906 /* UserSettings.swift in Sources */,
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
+				0DB020B7268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */,
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
 				0D3E3F1D2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
+				0DB020B3268CECA50010ABC4 /* AutoShieldView.swift in Sources */,
 				0D3E6CFE26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE8668524BCE55400F3B883 /* Constants.generated.swift in Sources */,
 				0D2607D724F42C46006FDC36 /* PasteboardHelper.swift in Sources */,
 				0DE51DB223BED85C00709636 /* ActionableMessage.swift in Sources */,
+				0D794B6F268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */,
 				0D421AFF23C67DCF00E5E55E /* DetailCard.swift in Sources */,
 				0D9E89BD23DA3BD600AFD118 /* SeedManagement.swift in Sources */,
 				0D4364C723CCF4CC008B7DAC /* SendFlowEnvironment.swift in Sources */,
@@ -1614,6 +1632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DB020B5268CECA50010ABC4 /* AutoShieldView.swift in Sources */,
 				0D82F327261279EC0058B05D /* LogfileUtils.swift in Sources */,
 				0D0565DC24EC89C200B6AAE8 /* LittleViews.swift in Sources */,
 				0D99079624E1762400743EB9 /* AlertMessaging.swift in Sources */,
@@ -1688,6 +1707,7 @@
 				0D5E4AA82527B440001CB335 /* BackgroundTasks.swift in Sources */,
 				0DCDFFC324B6722B000F6999 /* RestoreWallet.swift in Sources */,
 				0DCDFFC424B6722B000F6999 /* NavigationConfigurator.swift in Sources */,
+				0DB020B9268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */,
 				0DD1C2D124F051EE0042C1E4 /* Foundation+Zcash.swift in Sources */,
 				0DCDFFC524B6722B000F6999 /* ZcashSymbol.swift in Sources */,
 				0DC37D7424D37D7D00ACFE12 /* AddressHelperView.swift in Sources */,
@@ -1706,6 +1726,7 @@
 				0DCDFFCC24B6722B000F6999 /* Ring.swift in Sources */,
 				0DCDFFCD24B6722B000F6999 /* QRCodeScannerView.swift in Sources */,
 				0DCDFFCE24B6722B000F6999 /* SceneDelegate.swift in Sources */,
+				0D794B71268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */,
 				0D562FD5257841FD00E843DD /* MemoUtils.swift in Sources */,
 				0DCDFFCF24B6722B000F6999 /* QRCodeContainer.swift in Sources */,
 				0DCDFFD024B6722B000F6999 /* TransactionDetail.swift in Sources */,
@@ -1757,13 +1778,16 @@
 				0DE30365263A158400CF877A /* BalanceDetail.swift in Sources */,
 				0DE30366263A158400CF877A /* UserSettings.swift in Sources */,
 				0DE30367263A158400CF877A /* Home.swift in Sources */,
+				0DB020B8268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */,
 				0DE30368263A158400CF877A /* ShareView.swift in Sources */,
 				0D3E3F1E2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0DE30369263A158400CF877A /* TransactionDetails.swift in Sources */,
+				0DB020B4268CECA50010ABC4 /* AutoShieldView.swift in Sources */,
 				0D3E6CFF26814E5D000EF685 /* SaplingParameterDownloader+Combine.swift in Sources */,
 				0DE3036A263A158400CF877A /* Constants.generated.swift in Sources */,
 				0DE3036B263A158400CF877A /* PasteboardHelper.swift in Sources */,
 				0DE3036C263A158400CF877A /* ActionableMessage.swift in Sources */,
+				0D794B70268BA74E00A64426 /* AutoShieldingNotice.swift in Sources */,
 				0DE3036D263A158400CF877A /* DetailCard.swift in Sources */,
 				0DE3036E263A158400CF877A /* SeedManagement.swift in Sources */,
 				0DE3036F263A158400CF877A /* SendFlowEnvironment.swift in Sources */,

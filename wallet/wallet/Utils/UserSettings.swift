@@ -19,6 +19,16 @@ class UserSettings {
         static let everShielded = "everShielded"
         static let rescanPendingFix = "rescanPendingFix"
         static let lastFeedbackDisplayedOnDate = "lastFeedbackDisplayedOnDate"
+        static let didShowAutoShieldingNotice = "didShowAutoShieldingNotice"
+    }
+    
+    var didShowAutoShieldingNotice: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: Keys.didShowAutoShieldingNotice)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Keys.didShowAutoShieldingNotice)
+        }
     }
     
     var lastUsedAddress: String? {

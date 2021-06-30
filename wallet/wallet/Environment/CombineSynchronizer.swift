@@ -30,6 +30,8 @@ class CombineSynchronizer {
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
     var errorPublisher = PassthroughSubject<Error, Never>()
+    var autoShielder: AutoShielder
+    
     var receivedTransactions: Future<[ConfirmedTransactionEntity],Never> {
         Future<[ConfirmedTransactionEntity], Never>() {
             promise in
@@ -94,6 +96,7 @@ class CombineSynchronizer {
         try self.synchronizer.latestDownloadedHeight()
     }
     
+    
     init(initializer: Initializer) throws {
         self.walletDetailsBuffer = CurrentValueSubject([DetailModel]())
         self.synchronizer = try SDKSynchronizer(initializer: initializer)
@@ -104,7 +107,7 @@ class CombineSynchronizer {
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         self.connectionState = CurrentValueSubject(self.synchronizer.connectionState)
-        
+        self.autoShielder = AutoShieldingBuilder.thresholdAutoShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: self.synchronizer, threshold: Int64(ZcashSDK.ZATOSHI_PER_ZEC))
         
         // Subscribe to SDKSynchronizer notifications
         
@@ -241,7 +244,6 @@ class CombineSynchronizer {
    
     
     func start(retry: Bool = false) throws {
-        
         do {
             if retry {
                 stop()
