@@ -87,6 +87,7 @@ final class ShieldFlow: ShieldingPowers {
                 self.shielder.shield()
                     .receive(on: DispatchQueue.main)
                     .sink { [weak self] completion in
+                        Session.unique.markAutoShield()
                         switch completion {
                            case .failure(let e):
                                logger.error("failed to shield funds \(e.localizedDescription)")
@@ -96,6 +97,7 @@ final class ShieldFlow: ShieldingPowers {
                                self?.status.send(completion: .finished)
                            }
                     } receiveValue: { [weak self] result in
+                        Session.unique.markAutoShield()
                         switch result{
                         case .notNeeded:
                             logger.warn(" -- WARNING -- You shielded funds but the result was not needed. This is probably a programming error")

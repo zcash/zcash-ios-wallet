@@ -54,7 +54,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
         transparentBalance.unconfirmedFunds + shieldedBalance.unconfirmedFunds
     }
     var appEnvironment = ZECCWalletEnvironment.shared
-    var shieldEnvironment = ShieldFlow.current
+    
     var cancellables = [AnyCancellable]()
     
     
@@ -69,7 +69,24 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
             .assign(to: \.shieldedBalance , on: self)
             .store(in: &cancellables)
         
-        self.shieldEnvironment.status.receive(on: DispatchQueue.main)
+        
+    }
+    
+    var isShieldingButtonEnabled: Bool {
+        switch status {
+        case .idle:
+            return transparentBalance.verified >= ZcashSDK.shieldingThreshold.asHumanReadableZecBalance()
+        default:
+            return false
+        }
+    }
+    
+    func shieldConfirmedFunds() {
+        self.status = .shielding
+        
+        let shieldEnvironment = ShieldFlow.current
+        
+        shieldEnvironment.status.receive(on: DispatchQueue.main)
             .sink { [weak self](completion) in
                 guard let self = self else {
                     return
@@ -102,20 +119,8 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
                     
                 }
             }.store(in: &cancellables)
-    }
-    
-    var isShieldingButtonEnabled: Bool {
-        switch status {
-        case .idle:
-            return transparentBalance.verified >= ZcashSDK.shieldingThreshold.asHumanReadableZecBalance()
-        default:
-            return false
-        }
-    }
-    
-    func shieldConfirmedFunds() {
-        self.status = .shielding
-        self.shieldEnvironment.shield()
+        
+        shieldEnvironment.shield()
     }
 }
 

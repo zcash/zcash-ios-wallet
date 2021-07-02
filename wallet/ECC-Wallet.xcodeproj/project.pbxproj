@@ -149,6 +149,9 @@
 		0DBA1E2124CB6951009C654E /* AddressFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E2024CB6950009C654E /* AddressFragment.swift */; };
 		0DBA1E2224CB6951009C654E /* AddressFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA1E2024CB6950009C654E /* AddressFragment.swift */; };
 		0DBAA0912419A77500B08BC7 /* NukeWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBAA0902419A77500B08BC7 /* NukeWarning.swift */; };
+		0DBE19F6268E666100F92FD9 /* ShieldNowDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBE19F5268E666100F92FD9 /* ShieldNowDialog.swift */; };
+		0DBE19F7268E666100F92FD9 /* ShieldNowDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBE19F5268E666100F92FD9 /* ShieldNowDialog.swift */; };
+		0DBE19F8268E666100F92FD9 /* ShieldNowDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBE19F5268E666100F92FD9 /* ShieldNowDialog.swift */; };
 		0DC0847724BE57BE00F498A5 /* FeedbackForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */; };
 		0DC0847924BE583400F498A5 /* RateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0847824BE583400F498A5 /* RateComponent.swift */; };
 		0DC0847A24BE583400F498A5 /* RateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0847824BE583400F498A5 /* RateComponent.swift */; };
@@ -529,6 +532,7 @@
 		0DBA1E1D24CB628B009C654E /* DisplayAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAddress.swift; sourceTree = "<group>"; };
 		0DBA1E2024CB6950009C654E /* AddressFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFragment.swift; sourceTree = "<group>"; };
 		0DBAA0902419A77500B08BC7 /* NukeWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NukeWarning.swift; sourceTree = "<group>"; };
+		0DBE19F5268E666100F92FD9 /* ShieldNowDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShieldNowDialog.swift; sourceTree = "<group>"; };
 		0DC0847624BE57BE00F498A5 /* FeedbackForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackForm.swift; sourceTree = "<group>"; };
 		0DC0847824BE583400F498A5 /* RateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateComponent.swift; sourceTree = "<group>"; };
 		0DC1430125C47880001D8E55 /* lottie_shield.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottie_shield.json; sourceTree = "<group>"; };
@@ -677,9 +681,8 @@
 				0D24DA0525A64A8200504F29 /* TxDetailWrapper.swift */,
 				0D5E9B092637424C00D98569 /* WalletBalanceBreakdown.swift */,
 				0DB826212645E9C100CEA2B6 /* TheNoScreen.swift */,
-				0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */,
+				0DBE19F4268E664700F92FD9 /* AutoShielding */,
 				0DACBB32264980620085F1CD /* OhMyScreen.swift */,
-				0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -874,6 +877,16 @@
 				0D3AAB44244652700010EA3C /* TransactionDetail.swift */,
 			);
 			path = "Wallet Details";
+			sourceTree = "<group>";
+		};
+		0DBE19F4268E664700F92FD9 /* AutoShielding */ = {
+			isa = PBXGroup;
+			children = (
+				0DBE19F5268E666100F92FD9 /* ShieldNowDialog.swift */,
+				0D794B6E268BA74E00A64426 /* AutoShieldingNotice.swift */,
+				0DB020B2268CECA50010ABC4 /* AutoShieldView.swift */,
+			);
+			path = AutoShielding;
 			sourceTree = "<group>";
 		};
 		0DE8668324BCE52C00F3B883 /* Generated */ = {
@@ -1512,6 +1525,7 @@
 				0DE51DB023BEBE5100709636 /* KeyPad.swift in Sources */,
 				0D92AEBE2422D6F30028AD53 /* ZcashTapToSendButton.swift in Sources */,
 				0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */,
+				0DBE19F6268E666100F92FD9 /* ShieldNowDialog.swift in Sources */,
 				0DC167B123BE37B300332890 /* BalanceUtils.swift in Sources */,
 				0D0AAE15241048B4009CD8F9 /* FundsAtRisk.swift in Sources */,
 				0DBA1E1E24CB628B009C654E /* DisplayAddress.swift in Sources */,
@@ -1656,6 +1670,7 @@
 				0DCDFFA424B6722B000F6999 /* ZcashTapToSendButton.swift in Sources */,
 				0DF26E2224D1F75300F32978 /* ZcashMemoTextField.swift in Sources */,
 				0DCDFFA524B6722B000F6999 /* WalletDetails.swift in Sources */,
+				0DBE19F8268E666100F92FD9 /* ShieldNowDialog.swift in Sources */,
 				0D67489525C1CC3B00BE59C4 /* ShieldFlow.swift in Sources */,
 				0DCDFFA624B6722B000F6999 /* BalanceUtils.swift in Sources */,
 				0DB826242645E9C100CEA2B6 /* TheNoScreen.swift in Sources */,
@@ -1768,6 +1783,7 @@
 				0DE3035B263A158400CF877A /* KeyPad.swift in Sources */,
 				0DE3035C263A158400CF877A /* ZcashTapToSendButton.swift in Sources */,
 				0DE3035D263A158400CF877A /* WalletDetails.swift in Sources */,
+				0DBE19F7268E666100F92FD9 /* ShieldNowDialog.swift in Sources */,
 				0DE3035E263A158400CF877A /* BalanceUtils.swift in Sources */,
 				0DE3035F263A158400CF877A /* FundsAtRisk.swift in Sources */,
 				0DE30360263A158400CF877A /* DisplayAddress.swift in Sources */,
