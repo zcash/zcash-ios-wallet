@@ -45,6 +45,10 @@ protocol ShieldingKeyProviding {
     func getSpendingKey() throws -> PrivateKeyAccountIndexPair
 }
 
+protocol TransparentBalanceProviding {
+    var transparentFunds: WalletBalance { get }
+}
+
 class Session: UserSession {
     
     private init(){}
@@ -132,18 +136,22 @@ class ThresholdDrivenAutoShielding: AutoShieldingStrategy {
     
     var shouldAutoShield: Bool {
         // Shields after first sync, once per session.
-        session.didFirstSync && !session.alreadyAutoShielded && currentBalance() >= threshold
+        let didFirstSync = session.didFirstSync
+        let haventAlreadyAutoshielded = !session.alreadyAutoShielded
+        let overThreshold = transparentBalanceProvider.transparentFunds.verified >= threshold
+        return didFirstSync && haventAlreadyAutoshielded && overThreshold
     }
+    
     var session: UserSession
     var threshold: Int64
-    var currentBalance: () -> Int64
+    var transparentBalanceProvider: TransparentBalanceProviding
 
     init(session: UserSession,
          threshold zatoshiThreshold: Int64,
-         currentBalance: @escaping () -> Int64) {
+         tBalance: TransparentBalanceProviding) {
         self.session = session
         self.threshold = zatoshiThreshold
-        self.currentBalance = currentBalance
+        self.transparentBalanceProvider = tBalance
     }
     
     func shield(autoShielder: AutoShielder) -> Future<AutoShieldingResult, Error> {
@@ -175,12 +183,12 @@ class AutoShieldingBuilder {
     static func thresholdAutoShielder(keyProvider: ShieldingKeyProviding,
                                       shielder: ShieldingCapable,
                                       threshold: Int64,
-                                      balanceProviding: @escaping () -> Int64) -> AutoShielder {
+                                      balanceProviding: TransparentBalanceProviding) -> AutoShielder {
         
         return ConcreteAutoShielder(
             autoShielding: ThresholdDrivenAutoShielding(session: Session.unique,
                                                         threshold: threshold,
-                                                        currentBalance: balanceProviding),
+                                                        tBalance: balanceProviding),
             keyProviding: keyProvider,
             keyDeriver: DerivationTool.default,
             shielder: shielder)
@@ -207,5 +215,11 @@ class DefaultShieldingKeyProvider: ShieldingKeyProviding {
             throw KeyDerivationErrors.unableToDerive
         }
         return (key, 0, 0)
+    }
+}
+
+extension CombineSynchronizer: TransparentBalanceProviding {
+    var transparentFunds: WalletBalance {
+        self.transparentBalance.value
     }
 }
