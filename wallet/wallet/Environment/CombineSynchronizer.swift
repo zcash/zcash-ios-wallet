@@ -30,7 +30,6 @@ class CombineSynchronizer {
     var verifiedBalance: CurrentValueSubject<Double,Never>
     var cancellables = [AnyCancellable]()
     var errorPublisher = PassthroughSubject<Error, Never>()
-    var autoShielder: AutoShielder
     
     var receivedTransactions: Future<[ConfirmedTransactionEntity],Never> {
         Future<[ConfirmedTransactionEntity], Never>() {
@@ -103,11 +102,11 @@ class CombineSynchronizer {
         self.syncStatus = CurrentValueSubject(.disconnected)
         self.balance = CurrentValueSubject(0)
         self.shieldedBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
-        self.transparentBalance = CurrentValueSubject(Balance(verified: 0, total: 0))
+        let transparentSubject = CurrentValueSubject<WalletBalance, Never>(Balance(verified: 0, total: 0))
+        self.transparentBalance = transparentSubject
         self.verifiedBalance = CurrentValueSubject(0)
         self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
         self.connectionState = CurrentValueSubject(self.synchronizer.connectionState)
-        self.autoShielder = AutoShieldingBuilder.thresholdAutoShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: self.synchronizer, threshold: Int64(ZcashSDK.ZATOSHI_PER_ZEC))
         
         // Subscribe to SDKSynchronizer notifications
         

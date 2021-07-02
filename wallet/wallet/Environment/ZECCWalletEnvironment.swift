@@ -35,11 +35,10 @@ final class ZECCWalletEnvironment: ObservableObject {
     var outputParamsURL: URL
     var spendParamsURL: URL
     var synchronizer: CombineSynchronizer!
-    var autoShielding: AutoShielder!
+    var autoShielder: AutoShielder!
     var cancellables = [AnyCancellable]()
     var shouldShowAutoShieldingNotice: Bool {
-//        shouldShowAutoShieldingNoticeScreen()
-        true
+        shouldShowAutoShieldingNoticeScreen()
     }
     #if ENABLE_LOGGING
     var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
@@ -137,7 +136,13 @@ final class ZECCWalletEnvironment: ObservableObject {
             loggerProxy: logger)
         
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        self.autoShielding = AutoShieldingBuilder.thresholdAutoShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: self.synchronizer.synchronizer, threshold: 10_000)
+        self.autoShielder = AutoShieldingBuilder.thresholdAutoShielder(
+            keyProvider: DefaultShieldingKeyProvider(),
+            shielder: self.synchronizer.synchronizer,
+            threshold: 10_000,
+            balanceProviding: { [weak self] in
+                self?.synchronizer.transparentBalance.value.verified ?? 0
+            })
         try self.synchronizer.prepare()
         
         self.subscribeToApplicationNotificationsPublishers()

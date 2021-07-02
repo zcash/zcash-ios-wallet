@@ -13,6 +13,7 @@ final class HomeViewModel: ObservableObject {
     enum OverlayType {
         case feedback
         case autoShieldingNotice
+        case shieldNowDialog
         case autoShielding
     }
     enum ModalDestinations: Identifiable {
@@ -129,10 +130,17 @@ final class HomeViewModel: ObservableObject {
         
         environment.synchronizer.syncStatus
             .filter({ $0 == .synced})
+            .first()
             .compactMap({ [weak environment] status -> OverlayType? in
-                guard let env = environment,
-                      env.autoShielding.strategy.shouldAutoShield else { return nil }
-                return OverlayType.autoShielding
+                Session.unique.markFirstSync()
+                guard let env = environment else { return nil }
+                
+                if env.shouldShowAutoShieldingNotice {
+                    return OverlayType.autoShieldingNotice
+                } else if env.autoShielder.strategy.shouldAutoShield {
+                    return OverlayType.shieldNowDialog
+                }
+                return nil
             })
             .receive(on: DispatchQueue.main)
             .sink { overlay in
@@ -540,26 +548,27 @@ struct Home: View {
             .padding(.horizontal, 24)
         case .autoShielding:
             AutoShieldView(isShown: $viewModel.isOverlayShown)
-//                .environmentObject(AutoShieldingViewModel(shieldFlow: try! ShieldFlow.startWithShilderOrFail(appEnvironment.autoShielding)))
-                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shieldFlow: MockSuccessShieldFlow())))
-                
-                
-            
+                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shielder: self.appEnvironment.autoShielder)))
+        case .shieldNowDialog:
+            ShieldNowDialog {
+                self.viewModel.overlayType = .autoShielding
+            } dismissBlock: {
+                self.viewModel.isOverlayShown = false
+                self.viewModel.overlayType = nil
+                Session.unique.markAutoShield()
+            }
         default:
             AutoShieldingNotice {
                 tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
                 
                 self.appEnvironment.registerAutoShieldingNoticeScreenShown()
                 
-//                if appEnvironment.autoShielding.strategy.shouldAutoShield {
+                if appEnvironment.autoShielder.strategy.shouldAutoShield {
                     self.viewModel.overlayType = .autoShielding
-//                } else {
-//                    self.viewModel.isOverlayShown = false
-//                }
-                
+                } else {
+                    self.viewModel.isOverlayShown = false
+                }
             }
-        
-        
         }
     }
 }
@@ -573,15 +582,8 @@ extension BlockHeight {
 
 extension Home {
     func showFeedbackIfNeeded() {
-        if appEnvironment.shouldShowAutoShieldingNotice {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.viewModel.isOverlayShown = true
-                self.viewModel.overlayType = .autoShieldingNotice
-            }
-            return //avoid showing the feedback dialog
-        }
         #if ENABLE_LOGGING
-        if appEnvironment.shouldShowFeedbackDialog {
+        if !appEnvironment.shouldShowAutoShieldingNotice && appEnvironment.shouldShowFeedbackDialog {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 appEnvironment.registerFeedbackSolicitation(on: Date())
                 self.viewModel.isOverlayShown = true

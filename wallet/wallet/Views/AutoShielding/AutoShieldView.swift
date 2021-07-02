@@ -16,36 +16,45 @@ final class AutoShieldingViewModel: ObservableObject {
     }
     
     @Published var state: State = .shielding
-    var shieldFlow: ShieldingPowers
+    
+    var shielder: AutoShielder
     var cancellables = [AnyCancellable]()
-    init(shieldFlow: ShieldingPowers) {
-        self.shieldFlow = shieldFlow
-        
-        shieldFlow.status
-            .map { status -> State in
-                switch status {
-                case .ended:
-                    return State.success
-                case .notStarted,
-                     .shielding:
-                    return State.shielding
-                }
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.state = State.failed(error: error)
-                }
-            } receiveValue: { [weak self] state in
-                self?.state = state
-            }
-            .store(in: &cancellables)
+    init(shielder: AutoShielder) {
+        self.shielder = shielder
     }
     func shield() {
-        self.shieldFlow.shield()
+        do {
+            ShieldFlow.endFlow()
+            let shieldFlow = try ShieldFlow.startWithShilderOrFail(self.shielder)
+            
+                shieldFlow.status
+                .map { status -> State in
+                    switch status {
+                    case .ended:
+                        return State.success
+                    case .notStarted,
+                         .shielding:
+                        return State.shielding
+                    }
+                }
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self?.state = State.failed(error: error)
+                    }
+                } receiveValue: { [weak self] state in
+                    self?.state = state
+                }
+                .store(in: &cancellables)
+            
+            shieldFlow.shield()
+            
+        } catch {
+            self.state = .failed(error: error)
+        }
     }
 }
 
@@ -60,7 +69,7 @@ struct AutoShieldView: View {
                 .padding()
         }
         .onAppear() {
-            viewModel.shieldFlow.shield()
+            viewModel.shield()
         }
         .onDisappear() {
             ModelFlyWeight.shared.dispose(flyweight: viewModel)

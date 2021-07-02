@@ -132,20 +132,22 @@ class ThresholdDrivenAutoShielding: AutoShieldingStrategy {
     
     var shouldAutoShield: Bool {
         // Shields after first sync, once per session.
-        session.didFirstSync && !session.alreadyAutoShielded
+        session.didFirstSync && !session.alreadyAutoShielded && currentBalance() >= threshold
     }
     var session: UserSession
     var threshold: Int64
+    var currentBalance: () -> Int64
 
     init(session: UserSession,
-         threshold zatoshiThreshold: Int64) {
+         threshold zatoshiThreshold: Int64,
+         currentBalance: @escaping () -> Int64) {
         self.session = session
         self.threshold = zatoshiThreshold
+        self.currentBalance = currentBalance
     }
     
     func shield(autoShielder: AutoShielder) -> Future<AutoShieldingResult, Error> {
         // this strategy attempts to shield once per session, regardless of the result.
-        self.session.markAutoShield()
         return autoShielder.shield()
     }
 }
@@ -172,11 +174,13 @@ class AutoShieldingBuilder {
     
     static func thresholdAutoShielder(keyProvider: ShieldingKeyProviding,
                                       shielder: ShieldingCapable,
-                                      threshold: Int64) -> AutoShielder {
+                                      threshold: Int64,
+                                      balanceProviding: @escaping () -> Int64) -> AutoShielder {
         
         return ConcreteAutoShielder(
             autoShielding: ThresholdDrivenAutoShielding(session: Session.unique,
-                                                        threshold: threshold),
+                                                        threshold: threshold,
+                                                        currentBalance: balanceProviding),
             keyProviding: keyProvider,
             keyDeriver: DerivationTool.default,
             shielder: shielder)
