@@ -139,10 +139,8 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.autoShielder = AutoShieldingBuilder.thresholdAutoShielder(
             keyProvider: DefaultShieldingKeyProvider(),
             shielder: self.synchronizer.synchronizer,
-            threshold: 10_000,
-            balanceProviding: { [weak self] in
-                self?.synchronizer.transparentBalance.value.verified ?? 0
-            })
+            threshold: Int64(ZcashSDK.ZATOSHI_PER_ZEC),
+            balanceProviding: self.synchronizer)
         try self.synchronizer.prepare()
         
         self.subscribeToApplicationNotificationsPublishers()
