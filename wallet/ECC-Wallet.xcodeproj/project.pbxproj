@@ -123,6 +123,9 @@
 		0D93E2FD26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */; };
 		0D99079524E1762400743EB9 /* AlertMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99079424E1762400743EB9 /* AlertMessaging.swift */; };
 		0D99079624E1762400743EB9 /* AlertMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99079424E1762400743EB9 /* AlertMessaging.swift */; };
+		0D9BEEDC269386900057C1E2 /* ECCWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9BEEDB269386900057C1E2 /* ECCWalletApp.swift */; };
+		0D9BEEDD269386900057C1E2 /* ECCWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9BEEDB269386900057C1E2 /* ECCWalletApp.swift */; };
+		0D9BEEDE269386900057C1E2 /* ECCWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9BEEDB269386900057C1E2 /* ECCWalletApp.swift */; };
 		0D9C203D23D77D4B006F1510 /* WalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203C23D77D4B006F1510 /* WalletDetails.swift */; };
 		0D9C203F23D7827F006F1510 /* WalletDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */; };
 		0D9D4E2F26336C0E007FD969 /* TabSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9D4E2E26336C0E007FD969 /* TabSelector.swift */; };
@@ -380,7 +383,6 @@
 		BABBC9CA990303F17A76CAEE /* Pods_ECC_WalletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A27DE1BA307BA79AF558DCBB /* Pods_ECC_WalletUITests.framework */; };
 		D0DE96F2A4EC1243F7B668E2 /* Pods_ECC_Wallet_no_logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F98B8F09503E4B5A2323A3FA /* Pods_ECC_Wallet_no_logging.framework */; };
 		F70B17A1E28C2C93B8A21ECA /* Pods_ECC_WalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36B81DA8FB2A74AD2728DEF5 /* Pods_ECC_WalletTests.framework */; };
-		FE4F2EE5C5DEA5BA37E6F897 /* Pods_ECC_Wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E35EE9E1FF450129E6B39D53 /* Pods_ECC_Wallet.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -518,6 +520,7 @@
 		0D92AEBD2422D6F30028AD53 /* ZcashTapToSendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZcashTapToSendButton.swift; sourceTree = "<group>"; };
 		0D93E2FC26385DA20094BDEF /* BalanceBreakdownViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceBreakdownViewModelTests.swift; sourceTree = "<group>"; };
 		0D99079424E1762400743EB9 /* AlertMessaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessaging.swift; sourceTree = "<group>"; };
+		0D9BEEDB269386900057C1E2 /* ECCWalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCWalletApp.swift; sourceTree = "<group>"; };
 		0D9C203C23D77D4B006F1510 /* WalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetails.swift; sourceTree = "<group>"; };
 		0D9C203E23D7827F006F1510 /* WalletDetailsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailsHeader.swift; sourceTree = "<group>"; };
 		0D9D4E2E26336C0E007FD969 /* TabSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelector.swift; sourceTree = "<group>"; };
@@ -608,7 +611,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D07B40DDE6D1EC3E6412CE1 /* Pods_ECC_Wallet.framework in Frameworks */,
-				FE4F2EE5C5DEA5BA37E6F897 /* Pods_ECC_Wallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,6 +841,7 @@
 				0D67489325C1CC3B00BE59C4 /* ShieldFlow.swift */,
 				0D3E3F1C2686714D00784D8F /* AutoShielding.swift */,
 				0DB020B6268D28A10010ABC4 /* ModelFlyWeight.swift */,
+				0D9BEEDB269386900057C1E2 /* ECCWalletApp.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -1100,7 +1103,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Francisco Gindre";
 				TargetAttributes = {
 					0D1250FE23B557E40014EE3A = {
@@ -1538,6 +1541,7 @@
 				0D60F2EB23BE1B87006F5FAD /* Home.swift in Sources */,
 				0DB020B7268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */,
 				0DBA1E1B24CB5D5C009C654E /* ShareView.swift in Sources */,
+				0D9BEEDC269386900057C1E2 /* ECCWalletApp.swift in Sources */,
 				0D3E3F1D2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0D0565D724EC89C200B6AAE8 /* TransactionDetails.swift in Sources */,
 				0DB020B3268CECA50010ABC4 /* AutoShieldView.swift in Sources */,
@@ -1690,6 +1694,7 @@
 				0D2D5C1E24CF827A001A58AD /* SendTransaction.swift in Sources */,
 				0DCDFFAC24B6722B000F6999 /* Home.swift in Sources */,
 				0DCDFFAD24B6722B000F6999 /* ActionableMessage.swift in Sources */,
+				0D9BEEDE269386900057C1E2 /* ECCWalletApp.swift in Sources */,
 				0DCDFFAE24B6722B000F6999 /* DetailCard.swift in Sources */,
 				0DCDFFAF24B6722B000F6999 /* SeedManagement.swift in Sources */,
 				0DCDFFB024B6722B000F6999 /* SendFlowEnvironment.swift in Sources */,
@@ -1796,6 +1801,7 @@
 				0DE30367263A158400CF877A /* Home.swift in Sources */,
 				0DB020B8268D28A10010ABC4 /* ModelFlyWeight.swift in Sources */,
 				0DE30368263A158400CF877A /* ShareView.swift in Sources */,
+				0D9BEEDD269386900057C1E2 /* ECCWalletApp.swift in Sources */,
 				0D3E3F1E2686714D00784D8F /* AutoShielding.swift in Sources */,
 				0DE30369263A158400CF877A /* TransactionDetails.swift in Sources */,
 				0DB020B4268CECA50010ABC4 /* AutoShieldView.swift in Sources */,

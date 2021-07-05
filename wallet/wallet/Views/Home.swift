@@ -33,6 +33,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    enum PushDestination {
+        case send
+        case history
+        case balance
+    }
+    
     
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
@@ -46,13 +52,14 @@ final class HomeViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var showHistory = false
     @Published var syncStatus: SyncStatus = .disconnected
-    var lastError: UserFacingErrors?
     @Published var totalBalance: Double = 0
     @Published var verifiedBalance: Double = 0
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
     @Published var overlayType: OverlayType? = nil
     @Published var isOverlayShown = false
+    @Published var pushDestination: PushDestination?
+    var lastError: UserFacingErrors?
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
@@ -225,9 +232,9 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
     @State var feedbackRating: Int? = nil
-    @State var transparentBalancePushed = false
     
-    @EnvironmentObject var viewModel: HomeViewModel
+    
+    @StateObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
     
@@ -301,7 +308,9 @@ struct Home: View {
             })
         case .synced:
             ZStack {
-                
+                NavigationLink(destination: EmptyView()) {
+                    EmptyView()
+                }
                 NavigationLink(
                     destination: LazyView(
                         SendTransaction()
@@ -319,9 +328,10 @@ struct Home: View {
                     .onReceive(self.viewModel.$sendingPushed) { pushed in
                         if pushed {
                             self.startSendFlow()
-                        } else {
-                            self.endSendFlow()
                         }
+//                        else {
+//                            self.endSendFlow()
+//                        }
                     }
                     .disabled(!canSend)
                     .opacity(canSend ? 1 : 0.6)
@@ -381,7 +391,7 @@ struct Home: View {
     
     var walletDetails: some View {
         Button(action: {
-            self.viewModel.showHistory = true
+            self.viewModel.pushDestination = .history
         }, label: {
             Text("button_wallethistory")
                 .foregroundColor(.white)
@@ -396,7 +406,25 @@ struct Home: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack {            
+            NavigationLink(
+                destination: WalletBalanceBreakdown()
+                    .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: WalletBalanceBreakdownViewModel())),
+                tag: HomeViewModel.PushDestination.balance,
+                selection: $viewModel.pushDestination,
+                label: { EmptyView()} )
+            
+            
+            NavigationLink(
+                destination:
+                    LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
+                                .environmentObject(WalletDetailsViewModel())
+                                .navigationBarTitle(Text(""), displayMode: .inline)
+                                .navigationBarHidden(true)),
+                tag: HomeViewModel.PushDestination.history,
+                selection: $viewModel.pushDestination,
+                label: { EmptyView() })
+                .isDetailLink(false)
             
             if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
@@ -457,15 +485,13 @@ struct Home: View {
                                 shieldedBalance: self.viewModel.shieldedBalance,
                                 transparentBalance: self.viewModel.transparentBalance)
                         } else {
-                            NavigationLink(
-                                destination: WalletBalanceBreakdown()
-                                    .environmentObject(WalletBalanceBreakdownViewModel()),
-                                isActive: $transparentBalancePushed,
-                                label: {
-                                    self.balanceView(
+                            Button(action: {
+                                self.viewModel.pushDestination = .balance
+                            }, label: {
+                                self.balanceView(
                                         shieldedBalance: self.viewModel.shieldedBalance,
-                                        transparentBalance: self.viewModel.transparentBalance)
-                                })
+                                    transparentBalance: self.viewModel.transparentBalance)
+                            })
                         }
                         
                         Spacer()
@@ -483,19 +509,11 @@ struct Home: View {
                         
                         buttonFor(syncStatus: self.viewModel.syncStatus)
                             .frame(height: self.buttonHeight)
-                        
-                        
-                        NavigationLink(
-                            destination:
-                                LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                                            .environmentObject(WalletDetailsViewModel())
-                                            .navigationBarTitle(Text(""), displayMode: .inline)
-                                            .navigationBarHidden(true))
-                            ,isActive: self.$viewModel.showHistory) {
+                       
                             walletDetails
-                        }.isDetailLink(false)
-                        .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                        .disabled(viewModel.isSyncing)
+                                .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                                .disabled(viewModel.isSyncing)
+                        
                     }
                     .padding([.bottom], 20)
                     .padding(.horizontal, buttonPadding)

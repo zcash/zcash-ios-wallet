@@ -83,7 +83,7 @@ struct RestoreWallet: View {
         ZStack {
             NavigationLink(destination:
                             LazyView(
-                                    Home().environmentObject(HomeViewModel())
+                                Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
             ), isActive: $proceed) {
                 EmptyView()
             }
