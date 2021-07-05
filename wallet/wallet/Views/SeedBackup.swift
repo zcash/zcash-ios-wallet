@@ -122,7 +122,7 @@ struct SeedBackup: View {
                 if proceedsToHome {
                     NavigationLink(destination:
                                     LazyView(
-                                        Home().environmentObject(HomeViewModel())
+                                        Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
                                     )) {
                         Text("button_done")
                             .foregroundColor(.black)
