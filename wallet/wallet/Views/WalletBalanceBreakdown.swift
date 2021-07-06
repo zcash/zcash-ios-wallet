@@ -68,8 +68,6 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
             .map({ return ReadableBalance(walletBalance: $0) })
             .assign(to: \.shieldedBalance , on: self)
             .store(in: &cancellables)
-        
-        
     }
     
     var isShieldingButtonEnabled: Bool {

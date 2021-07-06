@@ -108,7 +108,7 @@ extension AutoShielder {
                     }
                 }
             } catch {
-                promise(.failure(ShieldFundsError.keyDerivationError(underlyingError: error)))
+                promise(.failure(KeyDerivationErrors.derivationError(underlyingError: error)))
             }
         }
     }
