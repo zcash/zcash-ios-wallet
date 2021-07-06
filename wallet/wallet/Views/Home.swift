@@ -426,6 +426,12 @@ struct Home: View {
                 label: { EmptyView() })
                 .isDetailLink(false)
             
+            NavigationLink(
+                destination: EmptyView(),
+                label: {
+                    EmptyView()
+                })
+            
             if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
             } else {
@@ -510,9 +516,9 @@ struct Home: View {
                         buttonFor(syncStatus: self.viewModel.syncStatus)
                             .frame(height: self.buttonHeight)
                        
-                            walletDetails
-                                .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                                .disabled(viewModel.isSyncing)
+                        walletDetails
+                            .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                            .disabled(viewModel.isSyncing)
                         
                     }
                     .padding([.bottom], 20)
