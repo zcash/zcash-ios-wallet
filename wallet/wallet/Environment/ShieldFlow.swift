@@ -27,7 +27,8 @@ final class ShieldFlow: ShieldingPowers {
     enum Status {
         case notStarted
         case shielding
-        case ended
+        case ended(shieldingTx: PendingTransactionEntity)
+        case notNeeded
     }
     
     var status: CurrentValueSubject<ShieldFlow.Status, Error>
@@ -84,7 +85,7 @@ final class ShieldFlow: ShieldingPowers {
                 guard let self = self else {
                     return
                 }
-                self.shielder.shield()
+                    self.shielder.shield()
                     .receive(on: DispatchQueue.main)
                     .sink { [weak self] completion in
                         Session.unique.markAutoShield()
@@ -101,10 +102,11 @@ final class ShieldFlow: ShieldingPowers {
                         switch result{
                         case .notNeeded:
                             logger.warn(" -- WARNING -- You shielded funds but the result was not needed. This is probably a programming error")
+                            self?.status.send(.notNeeded)
                         case .shielded(let pendingTx):
                             logger.debug("shielded \(pendingTx)")
+                            self?.status.send(.ended(shieldingTx: pendingTx))
                         }
-                        self?.status.send(.ended)
                     }
                     .store(in: &self.cancellables)
             })
@@ -134,25 +136,25 @@ extension EnvironmentValues {
 
 
 
-final class MockFailingShieldFlow: ShieldingPowers {
-    
-    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    
-    func shield() {
-        status.send(.shielding)
-        DispatchQueue.global().asyncAfter(deadline: .now() + 4) { [weak self] in
-            self?.status.send(completion: .failure(SynchronizerError.generalError(message: "Could Not Shield Funds")))
-        }
-    }
-}
+//final class MockFailingShieldFlow: ShieldingPowers {
+//    
+//    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
+//    
+//    func shield() {
+//        status.send(.shielding)
+//        DispatchQueue.global().asyncAfter(deadline: .now() + 4) { [weak self] in
+//            self?.status.send(completion: .failure(SynchronizerError.generalError(message: "Could Not Shield Funds")))
+//        }
+//    }
+//}
 
-final class MockSuccessShieldFlow: ShieldingPowers {
-    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
-    
-    func shield() {
-        status.send(.shielding)
-        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
-            self?.status.send(.ended)
-        }
-    }
-}
+//final class MockSuccessShieldFlow: ShieldingPowers {
+//    var status: CurrentValueSubject<ShieldFlow.Status, Error> = CurrentValueSubject(ShieldFlow.Status.notStarted)
+//
+//    func shield() {
+//        status.send(.shielding)
+//        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+//            self?.status.send(.ended)
+//        }
+//    }
+//}

@@ -578,7 +578,8 @@ struct Home: View {
             .frame(height: 240)
             .padding(.horizontal, 24)
         case .autoShielding:
-            AutoShieldView(isShown: $viewModel.isOverlayShown)
+            AutoShieldView(isPresented: self.$viewModel.isOverlayShown)
+                
                 .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shielder: self.appEnvironment.autoShielder)))
         case .shieldNowDialog:
             ShieldNowDialog {

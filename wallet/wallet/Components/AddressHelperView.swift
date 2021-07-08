@@ -24,6 +24,7 @@ struct AddressHelperView: View {
         case none
     }
     @Binding var selection: Selection
+    @Environment(\.walletEnvironment) var appEnvironment
     var mode: Mode
     var body: some View {
         viewFor(mode)
@@ -45,7 +46,7 @@ struct AddressHelperView: View {
         case .lastUsed(let address):
             return VStack(spacing: 0) {
                 AddressHelperViewSection(title: "LAST USED") {
-                    AddrezzHelperViewCell(address: address, shielded: isValidZ(address: address),selected: self.selection == Selection.lastUsedSelection)
+                    AddrezzHelperViewCell(shieldingAddress: appEnvironment.shieldingAddress, address: address, shielded: isValidZ(address: address),selected: self.selection == Selection.lastUsedSelection)
                 }.onTapGesture {
                     self.onTap(selection: Selection.lastUsedSelection, value: address)
                 }
@@ -53,13 +54,13 @@ struct AddressHelperView: View {
         case .both(let clipboard, let lastUsed):
             return VStack(spacing: 0) {
                 AddressHelperViewSection(title: "send_onclipboard".localized()) {
-                    AddrezzHelperViewCell(address: clipboard, shielded: isValidZ(address: clipboard),selected: self.selection == Selection.clipboardSelection)
+                    AddrezzHelperViewCell(shieldingAddress: appEnvironment.shieldingAddress, address: clipboard, shielded: isValidZ(address: clipboard),selected: self.selection == Selection.clipboardSelection)
                 }
                 .onTapGesture {
                     self.onTap(selection: Selection.clipboardSelection, value: clipboard)
                 }
                 AddressHelperViewSection(title: "LAST USED") {
-                    AddrezzHelperViewCell(address: lastUsed, shielded: isValidZ(address: lastUsed   ),selected: self.selection == Selection.lastUsedSelection)
+                    AddrezzHelperViewCell(shieldingAddress: appEnvironment.shieldingAddress, address: lastUsed, shielded: isValidZ(address: lastUsed   ),selected: self.selection == Selection.lastUsedSelection)
                 }
                 .onTapGesture {
                     self.onTap(selection: Selection.lastUsedSelection, value: lastUsed)
@@ -69,7 +70,7 @@ struct AddressHelperView: View {
         case .clipboard(let address):
            return  VStack(spacing: 0) {
             AddressHelperViewSection(title: "send_onclipboard".localized()) {
-                AddrezzHelperViewCell(address: address, shielded: isValidZ(address: address),selected: self.selection == Selection.clipboardSelection)
+                AddrezzHelperViewCell(shieldingAddress: appEnvironment.shieldingAddress, address: address, shielded: isValidZ(address: address),selected: self.selection == Selection.clipboardSelection)
                 }
             .onTapGesture {
                 self.onTap(selection: Selection.clipboardSelection, value: address)
@@ -99,7 +100,6 @@ struct AddressHelperViewSectionHeader:  View {
             }
             .padding(.horizontal, 16)
         }
-//        .border(Color.gray, width: 1)
         .frame(height: 24)
     }
 }
@@ -119,10 +119,10 @@ struct AddressHelperViewSection<Content: View>: View {
             content
                 .padding(.leading, 16)
         }
-        
     }
 }
 struct AddrezzHelperViewCell: View {
+    var shieldingAddress: String
     var address: String
     var shielded: Bool
     var selected: Bool = false
@@ -133,12 +133,12 @@ struct AddrezzHelperViewCell: View {
                     HStack {
                         Image(selected ? "yellow_shield" : "gray_shield")
                         
-                        Text("Unknown")
+                        Text("\(text)")
                             .foregroundColor(selected ? .zYellow : .white)
                             .font(.body)
                     }
                 } else {
-                    Text("Unknown (+)")
+                    Text("\(text) (+)")
                         .foregroundColor(.white)
                         .font(.body)
                 }
@@ -154,6 +154,14 @@ struct AddrezzHelperViewCell: View {
                 .padding(15)
         }
         .padding(.vertical, 16)
+    }
+    
+    var text: String {
+        if address == shieldingAddress {
+            return "Your Auto Shielding Address"
+        } else {
+            return "Unknown"
+        }
     }
 }
 struct AddressHelperView_Previews: PreviewProvider {

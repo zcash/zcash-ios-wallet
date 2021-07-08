@@ -24,15 +24,33 @@ struct SendTransaction: View {
         guard !flow.address.isEmpty else {
             return "feedback_default".localized()
         }
+        let validShielded = environment.isValidShieldedAddress(flow.address)
+        let validTransparent = environment.isValidTransparentAddress(flow.address)
         
-        if environment.isValidShieldedAddress(flow.address) {
-            return "feedback_shieldedaddress".localized()
-        } else if environment.isValidTransparentAddress(flow.address) {
-            return "feedback_transparentaddress".localized()
-        } else if (environment.getShieldedAddress() ?? "") == flow.address {
+        if validShielded {
+            return subtextForValid(shielded: flow.address)
+        }
+        
+        if validTransparent {
+            return subtextForValid(transparent: flow.address)
+        }
+        
+        return "feedback_invalidaddress".localized()
+    }
+    
+    func subtextForValid(shielded address: String) -> String {
+        if ZECCWalletEnvironment.shared.synchronizer.unifiedAddress.zAddress == address {
             return "feedback_sameaddress".localized()
         } else {
-            return "feedback_invalidaddress".localized()
+            return "feedback_shieldedaddress".localized()
+        }
+    }
+    
+    func subtextForValid(transparent address: String) -> String {
+        if ZECCWalletEnvironment.shared.synchronizer.unifiedAddress.tAddress == address {
+            return "This is your Auto Shielding address".localized()
+        } else {
+            return "feedback_transparentaddress".localized()
         }
     }
     

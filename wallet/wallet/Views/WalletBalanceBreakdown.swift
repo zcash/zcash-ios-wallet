@@ -16,7 +16,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
         case idle
         case shielding
         case failed(error: Error)
-        case finished
+        case finished(pendingTx: PendingTransactionEntity)
         var isShielding: Bool {
             switch self {
             case .shielding:
@@ -47,7 +47,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     @Published var status: Status = .idle
     @Published var transparentBalance = ReadableBalance.zero
     @Published var shieldedBalance = ReadableBalance.zero
-    
+    @Published var seeDetailsActive: DetailModel? = nil
     @Published var alertType: AlertType? = nil
     
     var unconfirmedFunds: Double {
@@ -82,7 +82,8 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     func shieldConfirmedFunds() {
         self.status = .shielding
         
-        let shieldEnvironment = ShieldFlow.current
+        do {
+          let shieldEnvironment = try ShieldFlow.startWithShilderOrFail(AutoShieldingBuilder.manualShielder(keyProvider: DefaultShieldingKeyProvider(), shielder: appEnvironment.synchronizer.synchronizer))
         
         shieldEnvironment.status.receive(on: DispatchQueue.main)
             .sink { [weak self](completion) in
@@ -94,8 +95,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
                     
                     UserSettings.shared.userEverShielded = true
                     tracker.track(.tap(action: .shieldFundsEnd), properties: ["success" : "true"])
-                    self.status = .finished
-                    self.alertType = .feedback(message: Text("Your once transparent funds, are now being shielded!"))
+                    
                     
                 case .failure(let error):
                     tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
@@ -108,17 +108,22 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
                     return
                 }
                 switch s {
-                case .ended:
-                    self.status = .finished
-                case .notStarted:
+                case .ended(let shieldingTx):
+                    self.status = .finished(pendingTx: shieldingTx)
+                case .notStarted, .notNeeded:
                     self.status = .idle
                 case .shielding:
                     self.status = .shielding
-                    
+                
                 }
             }.store(in: &cancellables)
         
         shieldEnvironment.shield()
+            
+        } catch {
+            self.status = .failed(error: error)
+            tracker.report(handledException: DeveloperFacingErrors.handledException(error: error))
+        }
     }
 }
 
@@ -165,12 +170,10 @@ struct WalletBalanceBreakdown: View {
         }
 
     }
-    
-    
-    
+
     @ViewBuilder func viewForState(_ state: WalletBalanceBreakdownViewModel.Status) -> some View {
         switch state {
-        case .idle, .failed,.finished:
+        case .idle, .failed:
             idleScreen()
         case .shielding:
             AutoShieldView.shieldingScreen()
@@ -181,6 +184,12 @@ struct WalletBalanceBreakdown: View {
                 } trailingItem: {
                     EmptyView()
                 }
+        case .finished(let shieldingTx):
+            AutoShieldView.success(shieldingTx: DetailModel(pendingTransaction: shieldingTx)) {
+                self.model.seeDetailsActive = DetailModel(pendingTransaction: shieldingTx)
+            } dismissBlock: {
+                self.presentationMode.wrappedValue.dismiss()
+            }
         }
     }
     
@@ -204,6 +213,9 @@ struct WalletBalanceBreakdown: View {
                 return PasteboardAlertHelper.alert(for: item)
             }
         }
+        .sheet(item: self.$model.seeDetailsActive, content: { model in
+            TxDetailsWrapper(row: model)
+        })
         .onReceive(PasteboardAlertHelper.shared.publisher) { (p) in
             self.model.alertType = WalletBalanceBreakdownViewModel.AlertType.pasteBoardItem(item: p)
         }
@@ -212,6 +224,7 @@ struct WalletBalanceBreakdown: View {
         }
         .onDisappear() {
             ShieldFlow.endFlow()
+            ModelFlyWeight.shared.dispose(flyweight: model)
         }
         .navigationBarTitle(Text(""), displayMode: .inline)
         .navigationBarBackButtonHidden(true)

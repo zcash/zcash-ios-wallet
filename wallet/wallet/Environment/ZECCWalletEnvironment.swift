@@ -40,6 +40,9 @@ final class ZECCWalletEnvironment: ObservableObject {
     var shouldShowAutoShieldingNotice: Bool {
         shouldShowAutoShieldingNoticeScreen()
     }
+    var shieldingAddress: String {
+        synchronizer.unifiedAddress.tAddress
+    }
     #if ENABLE_LOGGING
     var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
     #endif
