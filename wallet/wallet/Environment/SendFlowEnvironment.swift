@@ -177,14 +177,20 @@ final class SendFlowEnvironment: ObservableObject {
                 self.fail(FlowError.derivationFailed(message: "no spending key for account 1"))
                 return
             }
-            let replyToAddress = try DerivationTool.default.deriveViewingKey(spendingKey: spendingKey)
+           
+            guard let replyToAddress = environment.getShieldedAddress() else {
+                let message = "could not derive user's own address"
+                logger.error(message)
+                self.fail(FlowError.derivationFailed(message: "could not derive user's own address"))
+                return
+            }
     
             UserSettings.shared.lastUsedAddress = self.address
             environment.synchronizer.send(
                 with: spendingKey,
                 zatoshi: zatoshi,
                 to: self.address,
-                memo: Self.buildMemo(
+                memo: try Self.buildMemo(
                     memo: self.memo,
                     includesMemo: self.includesMemo,
                     replyToAddress: self.includeSendingAddress ? replyToAddress : nil
@@ -250,7 +256,14 @@ final class SendFlowEnvironment: ObservableObject {
         "\nReply-To: \(address)"
     }
     
-    static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) -> String {
+    static func includeReplyTo(address: String, in memo: String, charLimit: Int = SendFlowEnvironment.maxMemoLength) throws -> String {
+        
+        guard let isValidZAddr = try? DerivationTool.default.isValidShieldedAddress(address),
+              isValidZAddr else {
+            let msg = "the provided reply-to address is invalid"
+            logger.error(msg)
+            throw SendFlowEnvironment.FlowError.derivationFailed(message: msg)
+        }
         
         let replyTo = replyToAddress(address)
         
@@ -263,18 +276,19 @@ final class SendFlowEnvironment: ObservableObject {
         
     }
     
-    static func buildMemo(memo: String, includesMemo: Bool, replyToAddress: String?) -> String? {
+    static func buildMemo(memo: String, includesMemo: Bool, replyToAddress: String?) throws -> String? {
         
         guard includesMemo else { return nil }
         
         if let addr = replyToAddress {
-            return includeReplyTo(address: addr, in: memo)
+            return try includeReplyTo(address: addr, in: memo)
         }
         guard !memo.isEmpty else { return nil }
         
         guard !memo.isEmpty else { return nil }
         
         return memo
+       
     }
 }
 
