@@ -507,10 +507,7 @@ struct Home: View {
                             
                             .opacity(self.isSendingEnabled ? 1.0 : 0.3)
                             .disabled(!self.isSendingEnabled)
-                            .alert(isPresented: self.$viewModel.showError) {
-                                self.viewModel.errorAlert
-                            }
-                        
+                            
                         Spacer()
                         
                         buttonFor(syncStatus: self.viewModel.syncStatus)
@@ -528,6 +525,9 @@ struct Home: View {
             .padding(0)
         }
         .padding(0)
+        .alert(isPresented: self.$viewModel.showError) {
+            self.viewModel.errorAlert
+        }
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
             switch item {
             case .profile:

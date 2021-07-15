@@ -173,8 +173,6 @@ final class ZECCWalletEnvironment: ObservableObject {
         if abortApplication {
             abort()
         }
-        
-        
     }
     
     fileprivate func deleteWalletFiles() throws {
@@ -305,13 +303,14 @@ final class ZECCWalletEnvironment: ObservableObject {
     }
     
     private var isSubscribedToAppDelegateEvents = false
-    
+    private var shouldRetryRestart = false
     private func registerBackgroundActivity() {
         if self.taskIdentifier == .invalid {
             self.taskIdentifier = UIApplication.shared.beginBackgroundTask(withName: "ZcashLightClientKit.SDKSynchronizer", expirationHandler: { [weak self, weak logger] in
                 logger?.info("BackgroundTask Expiration Handler Called")
                 guard let self = self else { return }
                 self.synchronizer.stop()
+                self.shouldRetryRestart = true
                 self.invalidateBackgroundActivity()
             })
         }
@@ -338,10 +337,12 @@ final class ZECCWalletEnvironment: ObservableObject {
                 
                 self.invalidateBackgroundActivity()
                 do {
-                    try self.synchronizer.start()
+                    try self.synchronizer.start(retry: self.shouldRetryRestart)
+                    self.shouldRetryRestart = false
                 } catch {
                     logger?.debug("applicationWillEnterForeground --> Error restarting: \(error)")
                 }
+                
                 
             }
             .store(in: &appCycleCancellables)

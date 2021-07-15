@@ -151,7 +151,7 @@ class CombineSynchronizer {
                 switch  n.name {
                 case .blockProcessorStatusChanged:
                     guard let status = userInfo[CompactBlockProcessorNotificationKey.newStatus] as? CompactBlockProcessor.State else {
-                        logger.error("error: \(SubscriberErrors.notifactionMissingValueForKey(CompactBlockProcessorNotificationKey.progress))")
+                        logger.error("error: \(SubscriberErrors.notifactionMissingValueForKey(CompactBlockProcessorNotificationKey.newStatus))")
                         return nil}
                     return status.syncStatus
                 case .blockProcessorUpdated:
