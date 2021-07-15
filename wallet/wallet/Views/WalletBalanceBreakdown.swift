@@ -130,15 +130,29 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
 struct WalletBalanceBreakdown: View {
     @EnvironmentObject var model: WalletBalanceBreakdownViewModel
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.walletEnvironment) var appEnvironment
+    @State var latestHeight: BlockHeight = ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
     
     @ViewBuilder func idleScreen() -> some View {
         VStack {
-            BalanceBreakdown(model: BalanceBreakdownViewModel(shielded: model.shieldedBalance, transparent: model.transparentBalance))
-                .frame(height: 270, alignment: .center)
-                .cornerRadius(5)
+            VStack(alignment: .trailing, spacing: 2) {
+                Text("Block: \(latestHeight)")
+                    .onReceive(appEnvironment.synchronizer.syncBlockHeight, perform: { value in
+                        latestHeight = value
+                    })
+                    .foregroundColor(.zLightGray)
+                    .frame(alignment: .trailing)
+                BalanceBreakdown(model: BalanceBreakdownViewModel(shielded: model.shieldedBalance, transparent: model.transparentBalance))
+                    .frame(height: 270, alignment: .center)
+                    .cornerRadius(5)
+                Text("Auto Shielding Threshold: \(ZECCWalletEnvironment.thresholdInZec) \(.ZEC)")
+                    .foregroundColor(.zLightGray)
+                    .frame(alignment: .trailing)
+                    .font(.caption)
+            }.padding(0)
             Spacer()
             if model.unconfirmedFunds > 0 {
-                Text("(\(model.unconfirmedFunds.toZecAmount()) ZEC pending)")
+                Text("(\(model.unconfirmedFunds.toZecAmount()) \(.ZEC) pending)")
                     .foregroundColor(.zGray3)
                 Spacer()
             }
@@ -234,10 +248,18 @@ struct WalletBalanceBreakdown: View {
         ShieldFlow.endFlow()
         presentationMode.wrappedValue.dismiss()
     }
+    
 }
 
 struct WalletBalanceDetail_Previews: PreviewProvider {
     static var previews: some View {
         WalletBalanceBreakdown()
+    }
+}
+
+
+extension ZECCWalletEnvironment {
+    static var thresholdInZec: String {
+        String(Double(ZECCWalletEnvironment.autoShieldingThresholdInZatoshi) / Double(ZcashSDK.ZATOSHI_PER_ZEC))
     }
 }

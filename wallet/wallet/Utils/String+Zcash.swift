@@ -10,6 +10,10 @@ import Foundation
 import ZcashLightClientKit
 
 extension String {
+    /**
+     network aware ZEC string. When on mainnet it will read ZEC and TAZ when on Testnet
+     */
+    static let ZEC = ZcashSDK.isMainnet ? "ZEC" : "TAZ"
     
     var isValidShieldedAddress: Bool {
         (try? DerivationTool.default.isValidShieldedAddress(self)) ?? false

@@ -11,27 +11,21 @@ import SwiftUI
 struct ShieldNowDialog: View {
     var confirmBlock: () -> ()
     var dismissBlock: () -> ()
-    var threshold: Int64 = 1
+    var threshold: Int64 = ZECCWalletEnvironment.autoShieldingThresholdInZatoshi
     var body: some View {
-        ZStack {
-            
             ZStack {
-                GeometryReader { geo in
-                    Color.zGray
+            
+                Color.zGray
                         .cornerRadius(20)
-                        .frame(height: geo.size.height * 0.7, alignment: .bottom)
-                        .offset(x: 0, y: geo.size.height * 0.1)
+
                 VStack(alignment: .center, spacing: 30) {
                     image
                     title
-                    receivedText(shieldingThreshold: 1, unit: "ZEC")
+                    receivedText(shieldingThreshold: ZECCWalletEnvironment.thresholdInZec, unit: .ZEC)
                     buttons
                 }
-                .padding(.horizontal, 20)
+                .padding(20)
             }
-            .padding()
-        }
-        }
     }
     
     @ViewBuilder var image: some View {
@@ -48,7 +42,7 @@ struct ShieldNowDialog: View {
             .font(.largeTitle)
     }
     
-    @ViewBuilder func receivedText(shieldingThreshold: Int64, unit: String) -> some View {
+    @ViewBuilder func receivedText(shieldingThreshold: String, unit: String) -> some View {
         Text("""
              You've received more than \(shieldingThreshold) \(unit) in transparent funds.
              
@@ -61,7 +55,7 @@ struct ShieldNowDialog: View {
     }
     
     @ViewBuilder var buttons: some View {
-        VStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .center, spacing: 16) {
             Button(action: {
                 confirmBlock()
             }, label: {

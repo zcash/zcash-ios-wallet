@@ -98,7 +98,7 @@ extension AutoShielder {
                 // TODO: add parameters to vary the index and the account to shield from
                 let tAddress = try self.keyDeriver.deriveTransparentAddressFromPrivateKey(tsk)
                 
-                self.shielder.shieldFunds(spendingKey: spendingKey, transparentSecretKey: tsk, memo: "Shielding from your t-address:\(tAddress)", from: fromAccount) { result in
+                self.shielder.shieldFunds(spendingKey: spendingKey, transparentSecretKey: tsk, memo: "Shielding from your t-address: \(tAddress)", from: fromAccount) { result in
                     
                     switch result {
                     case .success(let pendingTx):

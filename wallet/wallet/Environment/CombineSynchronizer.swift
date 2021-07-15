@@ -219,9 +219,17 @@ class CombineSynchronizer {
                 self?.connectionState.send(value)
             })
             .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .blockProcessorFinished)
+            .compactMap { n -> BlockHeight? in
+                n.userInfo?[CompactBlockProcessorNotificationKey.latestScannedBlockHeight] as? BlockHeight
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] value in
+                self?.syncBlockHeight.send(value)
+            })
+            .store(in: &cancellables)
     }
-    
-    
     
     func prepare() throws {
         guard let uvk = self.initializer.viewingKeys.first else {
@@ -239,8 +247,6 @@ class CombineSynchronizer {
         // fill with initial values
         self.updatePublishers()
     }
-    
-   
     
     func start(retry: Bool = false) throws {
         do {

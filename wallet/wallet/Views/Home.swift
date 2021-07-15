@@ -589,6 +589,8 @@ struct Home: View {
                 self.viewModel.overlayType = nil
                 Session.unique.markAutoShield()
             }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 100)
         default:
             AutoShieldingNotice {
                 tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
