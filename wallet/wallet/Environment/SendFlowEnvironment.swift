@@ -148,7 +148,6 @@ final class SendFlowEnvironment: ObservableObject {
                 self?.send()
             }
             .store(in: &self.diposables)
-
     }
     
     func send() {

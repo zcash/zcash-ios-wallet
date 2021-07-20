@@ -21,7 +21,7 @@ enum WalletState {
 
 
 final class ZECCWalletEnvironment: ObservableObject {
-    
+    static let autoShieldingThresholdInZatoshi: Int64 = Int64(ZcashSDK.ZATOSHI_PER_ZEC / 100)
     static let genericErrorMessage = "An error ocurred, please check your device logs"
     static var shared: ZECCWalletEnvironment = try! ZECCWalletEnvironment() // app can't live without this existing.
     static let memoLengthLimit: Int = 512
@@ -35,7 +35,14 @@ final class ZECCWalletEnvironment: ObservableObject {
     var outputParamsURL: URL
     var spendParamsURL: URL
     var synchronizer: CombineSynchronizer!
+    var autoShielder: AutoShielder!
     var cancellables = [AnyCancellable]()
+    var shouldShowAutoShieldingNotice: Bool {
+        shouldShowAutoShieldingNoticeScreen()
+    }
+    var shieldingAddress: String {
+        synchronizer.unifiedAddress.tAddress
+    }
     #if ENABLE_LOGGING
     var shouldShowFeedbackDialog: Bool { shouldShowFeedbackRequest() }
     #endif
@@ -89,10 +96,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         self.pendingDbURL = try URL.pendingDbURL()
         self.outputParamsURL = try URL.outputParamsURL()
         self.spendParamsURL = try  URL.spendParamsURL()
-        
         self.state = .unprepared
-        
-        
     }
     
     // Warning: Use with care
@@ -135,7 +139,11 @@ final class ZECCWalletEnvironment: ObservableObject {
             loggerProxy: logger)
         
         self.synchronizer = try CombineSynchronizer(initializer: initializer)
-        
+        self.autoShielder = AutoShieldingBuilder.thresholdAutoShielder(
+            keyProvider: DefaultShieldingKeyProvider(),
+            shielder: self.synchronizer.synchronizer,
+            threshold: Self.autoShieldingThresholdInZatoshi,
+            balanceProviding: self.synchronizer)
         try self.synchronizer.prepare()
         
         self.subscribeToApplicationNotificationsPublishers()
@@ -165,8 +173,6 @@ final class ZECCWalletEnvironment: ObservableObject {
         if abortApplication {
             abort()
         }
-        
-        
     }
     
     fileprivate func deleteWalletFiles() throws {
@@ -297,13 +303,14 @@ final class ZECCWalletEnvironment: ObservableObject {
     }
     
     private var isSubscribedToAppDelegateEvents = false
-    
+    private var shouldRetryRestart = false
     private func registerBackgroundActivity() {
         if self.taskIdentifier == .invalid {
             self.taskIdentifier = UIApplication.shared.beginBackgroundTask(withName: "ZcashLightClientKit.SDKSynchronizer", expirationHandler: { [weak self, weak logger] in
                 logger?.info("BackgroundTask Expiration Handler Called")
                 guard let self = self else { return }
                 self.synchronizer.stop()
+                self.shouldRetryRestart = true
                 self.invalidateBackgroundActivity()
             })
         }
@@ -330,10 +337,12 @@ final class ZECCWalletEnvironment: ObservableObject {
                 
                 self.invalidateBackgroundActivity()
                 do {
-                    try self.synchronizer.start()
+                    try self.synchronizer.start(retry: self.shouldRetryRestart)
+                    self.shouldRetryRestart = false
                 } catch {
                     logger?.debug("applicationWillEnterForeground --> Error restarting: \(error)")
                 }
+                
                 
             }
             .store(in: &appCycleCancellables)
@@ -520,6 +529,15 @@ extension ZECCWalletEnvironment {
     }
 }
 
+extension ZECCWalletEnvironment {
+    func shouldShowAutoShieldingNoticeScreen() -> Bool {
+        return !UserSettings.shared.didShowAutoShieldingNotice
+    }
+    
+    func registerAutoShieldingNoticeScreenShown() {
+        UserSettings.shared.didShowAutoShieldingNotice = true
+    }
+}
 
 #if ENABLE_LOGGING
 extension ZECCWalletEnvironment {

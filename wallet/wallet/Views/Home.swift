@@ -10,7 +10,12 @@ import SwiftUI
 import Combine
 import ZcashLightClientKit
 final class HomeViewModel: ObservableObject {
-    
+    enum OverlayType {
+        case feedback
+        case autoShieldingNotice
+        case shieldNowDialog
+        case autoShielding
+    }
     enum ModalDestinations: Identifiable {
         case profile
         case receiveFunds
@@ -28,6 +33,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    enum PushDestination {
+        case send
+        case history
+        case balance
+    }
+    
     
     var isFirstAppear = true
     let genericErrorMessage = "An error ocurred, please check your device logs"
@@ -41,12 +52,14 @@ final class HomeViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var showHistory = false
     @Published var syncStatus: SyncStatus = .disconnected
-    var lastError: UserFacingErrors?
     @Published var totalBalance: Double = 0
     @Published var verifiedBalance: Double = 0
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
-    
+    @Published var overlayType: OverlayType? = nil
+    @Published var isOverlayShown = false
+    @Published var pushDestination: PushDestination?
+    var lastError: UserFacingErrors?
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
@@ -61,7 +74,7 @@ final class HomeViewModel: ObservableObject {
             .sink(receiveValue: { [weak self] _ in
                 self?.unbindSubcribedEnvironmentEvents()
             }
-        ).store(in: &cancellable)
+            ).store(in: &cancellable)
         
         NotificationCenter.default.publisher(for: .sendFlowClosed)
             .receive(on: RunLoop.main)
@@ -70,7 +83,7 @@ final class HomeViewModel: ObservableObject {
                 self?.sendingPushed = false
                 self?.bindToEnvironmentEvents()
             }
-        ).store(in: &cancellable)
+            ).store(in: &cancellable)
         
     }
     
@@ -99,21 +112,33 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else { return }
                 
                 self.show(error: error)
-        }
-        .store(in: &environmentCancellables)
+            }
+            .store(in: &environmentCancellables)
         
         environment.synchronizer.pendingTransactions
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
-            
-        }) { [weak self] (pendingTransactions) in
-            self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
-                .map( { DetailModel(pendingTransaction: $0)})
-        }.store(in: &cancellable)
+                
+            }) { [weak self] (pendingTransactions) in
+                self?.pendingTransactions = pendingTransactions.filter({ $0.minedHeight == BlockHeight.unmined && $0.errorCode == nil })
+                    .map( { DetailModel(pendingTransaction: $0)})
+            }.store(in: &cancellable)
         
         environment.synchronizer.syncStatus
             .receive(on: DispatchQueue.main)
             .map({ $0.isSyncing })
+            .removeDuplicates()
+            .map({ status in
+                // Issue 286: Force the app to be awake while syncing
+                if status {
+                    logger.debug("--SHOULD NOT SLEEP--")
+                    UIApplication.shared.isIdleTimerDisabled = true
+                } else {
+                    logger.debug("--SHOULD SLEEP 💤😴--")
+                    UIApplication.shared.isIdleTimerDisabled = false
+                }
+                return status
+            })
             .assign(to: \.isSyncing, on: self)
             .store(in: &environmentCancellables)
         
@@ -121,6 +146,27 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: \.syncStatus, on: self)
             .store(in: &environmentCancellables)
+        
+        environment.synchronizer.syncStatus
+            .filter({ $0 == .synced})
+            .first()
+            .compactMap({ [weak environment] status -> OverlayType? in
+                Session.unique.markFirstSync()
+                guard let env = environment else { return nil }
+                
+                if env.shouldShowAutoShieldingNotice {
+                    return OverlayType.autoShieldingNotice
+                } else if env.autoShielder.strategy.shouldAutoShield {
+                    return OverlayType.shieldNowDialog
+                }
+                return nil
+            })
+            .receive(on: DispatchQueue.main)
+            .sink { overlay in
+                self.overlayType = overlay
+                self.isOverlayShown = true
+            }
+            .store(in: &cancellable)
     }
     
     func unbindSubcribedEnvironmentEvents() {
@@ -154,22 +200,22 @@ final class HomeViewModel: ObservableObject {
         
         
         let defaultAlert = Alert(title: Text(error.title),
-                                message: Text(error.message),
-                                dismissButton: .default(Text("button_close"),
-                                                    action: errorAction))
+                                 message: Text(error.message),
+                                 dismissButton: .default(Text("button_close"),
+                                                         action: errorAction))
         switch error {
         case .synchronizerError(let canRetry):
             if canRetry {
                 return Alert(
-                        title: Text(error.title),
-                        message: Text(error.message),
-                        primaryButton: .default(Text("button_close"),action: errorAction),
-                        secondaryButton: .default(Text("Retry"),
-                                                     action: {
-                                                        self.clearError()
-                                                        try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
-                                                        })
-                           )
+                    title: Text(error.title),
+                    message: Text(error.message),
+                    primaryButton: .default(Text("button_close"),action: errorAction),
+                    secondaryButton: .default(Text("Retry"),
+                                              action: {
+                                                self.clearError()
+                                                try? ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+                                              })
+                )
             } else {
                 return defaultAlert
             }
@@ -185,7 +231,7 @@ final class HomeViewModel: ObservableObject {
     
     func retrySyncing() {
         do {
-           try ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
+            try ZECCWalletEnvironment.shared.synchronizer.start(retry: true)
         } catch {
             self.lastError = mapToUserFacingError(ZECCWalletEnvironment.mapError(error: error))
         }
@@ -198,10 +244,9 @@ struct Home: View {
     let buttonPadding: CGFloat = 40
     @State var sendingPushed = false
     @State var feedbackRating: Int? = nil
-    @State var isOverlayShown = false
-    @State var transparentBalancePushed = false
     
-    @EnvironmentObject var viewModel: HomeViewModel
+    
+    @StateObject var viewModel: HomeViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     
     
@@ -215,19 +260,20 @@ struct Home: View {
                     .foregroundColor(.red)
                     .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 2)))
             })
-                
-                
+            
+            
         case .unprepared:
             Text("Unprepared")
                 .foregroundColor(.red)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zGray2, lineWidth: 2)))
-                
+            
         case .downloading(let progress):
             SyncingButton(animationType: .frameProgress(startFrame: 0, endFrame: 100, progress: 1.0, loop: true)) {
                 Text("Downloading \(Int(progress.progress * 100))%")
                     .foregroundColor(.white)
             }
-                
+            .frame(width: 100, height: buttonHeight)
+            
         case .validating:
             Text("Validating")
                 .font(.system(size: 15).italic())
@@ -238,17 +284,20 @@ struct Home: View {
                 Text("Scanning \(Int(scanProgress.progress * 100 ))%")
                     .foregroundColor(.white)
             }
+            .frame(width: 100, height: buttonHeight)
         case .enhancing(let enhanceProgress):
             SyncingButton(animationType: .circularLoop) {
                 Text("Enhancing \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
                     .foregroundColor(.white)
             }
-               
+            .frame(width: 100, height: buttonHeight)
+            
         case .fetching:
             SyncingButton(animationType: .circularLoop) {
                 Text("Fetching")
                     .foregroundColor(.white)
             }
+            .frame(width: 100, height: buttonHeight)
             
         case .stopped:
             Button(action: {
@@ -271,13 +320,15 @@ struct Home: View {
             })
         case .synced:
             ZStack {
-                
+                NavigationLink(destination: EmptyView()) {
+                    EmptyView()
+                }
                 NavigationLink(
                     destination: LazyView(
                         SendTransaction()
                             .environmentObject(
                                 SendFlow.current! //fixme
-                        )
+                            )
                             .navigationBarTitle("",displayMode: .inline)
                             .navigationBarHidden(true)
                     ), isActive: self.$sendingPushed
@@ -289,9 +340,10 @@ struct Home: View {
                     .onReceive(self.viewModel.$sendingPushed) { pushed in
                         if pushed {
                             self.startSendFlow()
-                        } else {
-                            self.endSendFlow()
                         }
+//                        else {
+//                            self.endSendFlow()
+//                        }
                     }
                     .disabled(!canSend)
                     .opacity(canSend ? 1 : 0.6)
@@ -351,7 +403,7 @@ struct Home: View {
     
     var walletDetails: some View {
         Button(action: {
-            self.viewModel.showHistory = true
+            self.viewModel.pushDestination = .history
         }, label: {
             Text("button_wallethistory")
                 .foregroundColor(.white)
@@ -366,7 +418,31 @@ struct Home: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack {            
+            NavigationLink(
+                destination: WalletBalanceBreakdown()
+                    .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: WalletBalanceBreakdownViewModel())),
+                tag: HomeViewModel.PushDestination.balance,
+                selection: $viewModel.pushDestination,
+                label: { EmptyView()} )
+            
+            
+            NavigationLink(
+                destination:
+                    LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
+                                .environmentObject(WalletDetailsViewModel())
+                                .navigationBarTitle(Text(""), displayMode: .inline)
+                                .navigationBarHidden(true)),
+                tag: HomeViewModel.PushDestination.history,
+                selection: $viewModel.pushDestination,
+                label: { EmptyView() })
+                .isDetailLink(false)
+            
+            NavigationLink(
+                destination: EmptyView(),
+                label: {
+                    EmptyView()
+                })
             
             if self.isSendingEnabled {
                 ZcashBackground(showGradient: self.isSendingEnabled)
@@ -375,101 +451,94 @@ struct Home: View {
                     .edgesIgnoringSafeArea(.all)
             }
             GeometryReader { geo in
-               VStack(alignment: .center, spacing: 5) {
-                ZcashNavigationBar(
-                    leadingItem: {
-                        Button(action: {
-                            self.viewModel.destination = .receiveFunds
-                            tracker.track(.tap(action: .receive), properties: [:])
-                        }) {
-                            Image("QRCodeIcon")
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24)
-                                .accessibility(label: Text("Receive Funds"))
-                            
-                        }
-                },
-                    headerItem: {
-                        Text("balance_amounttosend")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white)
-                            .opacity(self.isSendingEnabled ? 1 : 0.4)
-                            .onLongPressGesture {
-                                self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                VStack(alignment: .center, spacing: 0) {
+                    
+                    ZcashNavigationBar(
+                        leadingItem: {
+                            Button(action: {
+                                self.viewModel.destination = .receiveFunds
+                                tracker.track(.tap(action: .receive), properties: [:])
+                            }) {
+                                Image("QRCodeIcon")
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24)
+                                    .accessibility(label: Text("Receive Funds"))
+                                
                             }
-                },
-                    trailingItem: {
-                        Button(action: {
-                            tracker.track(.tap(action: .showProfile), properties: [:])
-                            self.viewModel.destination = .profile
-                        }) {
-                            Image("person_pin-24px")
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .opacity(0.6)
-                                .accessibility(label: Text("Your Profile"))
-                                .frame(width: 24)
-                        }
-                })
-                    .frame(height: 64)
-                    .padding([.leading, .trailing], 16)
-                    .padding([.top], geo.safeAreaInsets.top-10)
-                
-                SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
-                    .opacity(amountOpacity)
-                    .scaledToFit()
-                if self.isSyncing {
-                    self.balanceView(
-                        shieldedBalance: self.viewModel.shieldedBalance,
-                        transparentBalance: self.viewModel.transparentBalance)
-                        .padding([.horizontal], self.buttonPadding)
-                } else {
-                    NavigationLink(
-                        destination: WalletBalanceBreakdown()
-                                        .environmentObject(WalletBalanceBreakdownViewModel()),
-                        isActive: $transparentBalancePushed,
-                        label: {
+                        },
+                        headerItem: {
+                            Text("balance_amounttosend")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white)
+                                .opacity(self.isSendingEnabled ? 1 : 0.4)
+                                .onLongPressGesture {
+                                    self.viewModel.setAmount(self.viewModel.shieldedBalance.verified)
+                                }
+                        },
+                        trailingItem: {
+                            Button(action: {
+                                tracker.track(.tap(action: .showProfile), properties: [:])
+                                self.viewModel.destination = .profile
+                            }) {
+                                Image("person_pin-24px")
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .opacity(0.6)
+                                    .accessibility(label: Text("Your Profile"))
+                                    .frame(width: 24)
+                            }
+                        })
+                        .frame(height: 64)
+                        .padding([.leading, .trailing], 16)
+                        .padding([.top], geo.safeAreaInsets.top-10)
+                    VStack(alignment: .center, spacing: 5) {
+                        SendZecView(zatoshi: self.$viewModel.sendZecAmountText)
+                            .opacity(amountOpacity)
+                            .scaledToFit()
+                        if self.isSyncing {
                             self.balanceView(
                                 shieldedBalance: self.viewModel.shieldedBalance,
                                 transparentBalance: self.viewModel.transparentBalance)
-                                .padding([.horizontal], self.buttonPadding)
-                        })
-                }
-                
-                Spacer()
-                
-                KeyPad(value: $viewModel.sendZecAmountText)
-                    .frame(alignment: .center)
+                        } else {
+                            Button(action: {
+                                self.viewModel.pushDestination = .balance
+                            }, label: {
+                                self.balanceView(
+                                        shieldedBalance: self.viewModel.shieldedBalance,
+                                    transparentBalance: self.viewModel.transparentBalance)
+                            })
+                        }
+                        
+                        Spacer()
+                        
+                        KeyPad(value: $viewModel.sendZecAmountText)
+                            .frame(alignment: .center)
+                            
+                            .opacity(self.isSendingEnabled ? 1.0 : 0.3)
+                            .disabled(!self.isSendingEnabled)
+                            
+                        Spacer()
+                        
+                        buttonFor(syncStatus: self.viewModel.syncStatus)
+                            .frame(height: self.buttonHeight)
+                       
+                        walletDetails
+                            .opacity(viewModel.isSyncing ? 0.4 : 1.0)
+                            .disabled(viewModel.isSyncing)
+                        
+                    }
+                    .padding([.bottom], 20)
                     .padding(.horizontal, buttonPadding)
-                    .opacity(self.isSendingEnabled ? 1.0 : 0.3)
-                    .disabled(!self.isSendingEnabled)
-                    .alert(isPresented: self.$viewModel.showError) {
-                        self.viewModel.errorAlert
                 }
-                
-                Spacer()
-                
-                buttonFor(syncStatus: self.viewModel.syncStatus)
-                    .frame(height: self.buttonHeight)
-                    .padding(.horizontal, buttonPadding)
-                
-                NavigationLink(
-                    destination:
-                        LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                        .environmentObject(WalletDetailsViewModel())
-                        .navigationBarTitle(Text(""), displayMode: .inline)
-                        .navigationBarHidden(true))
-                    ,isActive: self.$viewModel.showHistory) {
-                    walletDetails
-                }.isDetailLink(false)
-                    .opacity(viewModel.isSyncing ? 0.4 : 1.0)
-                    .disabled(viewModel.isSyncing)
             }
-            .padding([.bottom], 20)
-          }
+            .padding(0)
+        }
+        .padding(0)
+        .alert(isPresented: self.$viewModel.showError) {
+            self.viewModel.errorAlert
         }
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
             switch item {
@@ -495,12 +564,18 @@ struct Home: View {
         .navigationBarHidden(true)
         .onAppear {
             tracker.track(.screen(screen: .home), properties: [:])
-            tracker.track(.tap(action: .balanceDetail), properties: [:])
             showFeedbackIfNeeded()
         }
-        .zOverlay(isOverlayShown: $isOverlayShown) {
+        .zOverlay(isOverlayShown: $viewModel.isOverlayShown) {
+            feedbackOrNotice()
+        }
+    }
+    
+    @ViewBuilder func feedbackOrNotice() -> some View {
+        switch viewModel.overlayType {
+        case .feedback:
             FeedbackDialog(rating: $feedbackRating) { feedbackResult in
-                self.isOverlayShown = false
+                self.viewModel.isOverlayShown = false
                 switch feedbackResult {
                 case .score(let rating):
                     tracker.track(.feedback, properties: [
@@ -513,9 +588,35 @@ struct Home: View {
                 
             }
             .frame(height: 240)
+            .padding(.horizontal, 24)
+        case .autoShielding:
+            AutoShieldView(isPresented: self.$viewModel.isOverlayShown)
+                
+                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shielder: self.appEnvironment.autoShielder)))
+        case .shieldNowDialog:
+            ShieldNowDialog {
+                self.viewModel.overlayType = .autoShielding
+            } dismissBlock: {
+                self.viewModel.isOverlayShown = false
+                self.viewModel.overlayType = nil
+                Session.unique.markAutoShield()
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 100)
+        default:
+            AutoShieldingNotice {
+                tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
+                
+                self.appEnvironment.registerAutoShieldingNoticeScreenShown()
+                
+                if appEnvironment.autoShielder.strategy.shouldAutoShield {
+                    self.viewModel.overlayType = .autoShielding
+                } else {
+                    self.viewModel.isOverlayShown = false
+                }
+            }
         }
     }
-    
 }
 
 extension BlockHeight {
@@ -528,10 +629,11 @@ extension BlockHeight {
 extension Home {
     func showFeedbackIfNeeded() {
         #if ENABLE_LOGGING
-        if appEnvironment.shouldShowFeedbackDialog {
-            appEnvironment.registerFeedbackSolicitation(on: Date())
+        if !appEnvironment.shouldShowAutoShieldingNotice && appEnvironment.shouldShowFeedbackDialog {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.isOverlayShown = true
+                appEnvironment.registerFeedbackSolicitation(on: Date())
+                self.viewModel.isOverlayShown = true
+                self.viewModel.overlayType = .feedback
             }
         }
         #endif

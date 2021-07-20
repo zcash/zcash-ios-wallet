@@ -17,6 +17,7 @@ struct LottieAnimation: UIViewRepresentable {
         case progress(progress: Float)
         case frameProgress(startFrame: Float, endFrame: Float, progress: Float, loop: Bool)
         case circularLoop
+        case playOnce
     }
     var isPlaying: Bool = false
     var filename: String
@@ -41,6 +42,7 @@ struct LottieAnimation: UIViewRepresentable {
         let animationView = AnimationView()
         
         let animation = Lottie.Animation.named(filename)
+        
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.animation = animation
         animationView.contentMode = .scaleAspectFit
@@ -74,6 +76,8 @@ struct LottieAnimation: UIViewRepresentable {
 
             uiView.play(fromFrame: nil, toFrame: progressTimeFrame, loopMode: loop ? .loop : .none, completion: nil)
             context.coordinator.lastProgress = progress
+        case .playOnce:
+            uiView.play()
         }
     }
 }

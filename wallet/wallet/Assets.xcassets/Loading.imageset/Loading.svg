@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="412px" height="732px" viewBox="0 0 412 732" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>Loading</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="33.0295099%" fx="50%" fy="33.0295099%" r="130.700664%" gradientTransform="translate(0.500000,0.330295),scale(1.000000,0.562842),rotate(65.557000),translate(-0.500000,-0.330295)" id="radialGradient-1">
+            <stop stop-color="#FFD000" offset="0%"></stop>
+            <stop stop-color="#FFB300" offset="48.7858953%"></stop>
+            <stop stop-color="#FF9400" offset="100%"></stop>
+        </radialGradient>
+        <filter x="-4.8%" y="-4.8%" width="109.6%" height="109.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Loading" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Primary-Color" fill="#FFB900">
+            <rect x="0" y="0" width="412" height="732"></rect>
+        </g>
+        <rect id="Rectangle" fill="url(#radialGradient-1)" x="0" y="0" width="412" height="732"></rect>
+        <g id="zcash-icon-black" filter="url(#filter-2)" transform="translate(122.000000, 176.000000)" fill="#231F20" fill-rule="nonzero">
+            <path d="M83.5018523,0 C37.4572861,0 0,37.4572861 0,83.4981477 C0,129.539009 37.4572861,167 83.5018523,167 C129.546419,167 167,129.542714 167,83.4981477 C167,37.4535815 129.542714,0 83.5018523,0 Z M83.5018523,153.215156 C45.0591406,153.215156 13.7848444,121.940859 13.7848444,83.4981477 C13.7848444,45.055436 45.0591406,13.7848444 83.5018523,13.7848444 C121.944564,13.7848444 153.215156,45.0591406 153.215156,83.4981477 C153.215156,121.937155 121.940859,153.215156 83.5018523,153.215156 Z" id="Shape"></path>
+            <polygon id="Path" points="113 57.5864321 113 44.9107764 90.4290868 44.9107764 90.4290868 31 76.5672431 31 76.5672431 44.9107764 54 44.9107764 54 61.7010429 88.9867504 61.7010429 60.3749067 101.258085 54 109.39882 54 122.074476 76.5672431 122.074476 76.5672431 135.941009 78.2297835 135.941009 78.2297835 136 88.7665464 136 88.7665464 135.941009 90.4290868 135.941009 90.4290868 122.074476 113 122.074476 113 105.284209 78.0095795 105.284209 106.621423 65.7271674"></polygon>
+        </g>
+    </g>
+</svg>
