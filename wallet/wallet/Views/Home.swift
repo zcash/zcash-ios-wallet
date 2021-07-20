@@ -127,6 +127,18 @@ final class HomeViewModel: ObservableObject {
         environment.synchronizer.syncStatus
             .receive(on: DispatchQueue.main)
             .map({ $0.isSyncing })
+            .removeDuplicates()
+            .map({ status in
+                // Issue 286: Force the app to be awake while syncing
+                if status {
+                    logger.debug("--SHOULD NOT SLEEP--")
+                    UIApplication.shared.isIdleTimerDisabled = true
+                } else {
+                    logger.debug("--SHOULD SLEEP 💤😴--")
+                    UIApplication.shared.isIdleTimerDisabled = false
+                }
+                return status
+            })
             .assign(to: \.isSyncing, on: self)
             .store(in: &environmentCancellables)
         
